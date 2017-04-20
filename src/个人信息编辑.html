@@ -1,0 +1,69 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">我的帐户 / 个人信息</p>
+    <a style="float: right;" href="#">< 回上页</a>
+</div>
+<div class="setting">
+    <div class="data-setting">
+        <h3>资料设定</h3>
+        <ul>
+            <li>
+                <span>称谓*</span>
+                <span style="float:right;">v</span>
+            </li>
+            <li>
+                <span>名字*</span>
+                <span style="float:right;">v</span>
+            </li>
+            <li>姓氏*</li>
+            <li>
+                <span>生日</span>
+                <ul style="float:right;" class="date">
+                    <li>
+                        <span>v</span>
+                        <span>年</span>
+                    </li>
+                    <li>
+                        <span>v</span>
+                        <span>月</span>
+                    </li>
+                    <li>
+                        <span>v</span>
+                        <span>日</span>
+                    </li>
+                </ul>
+            </li>
+            <li>电话号码*</li>
+        </ul>
+    </div>
+    <div class="data-setting">
+        <h3>地址设定</h3>
+        <ul>
+            <li>
+                <span>国别 / 区域*</span>
+                <span style="float:right;">v</span>
+            </li>
+            <li>
+                <span>省/州*</span>
+                <span style="float:right;">v</span>
+            </li>
+            <li>
+                <span>城区*</span>
+                <span style="float:right;">v</span>
+            </li>
+            <li>详细地址</li>
+            <li>郵編*</li>
+        </ul>
+    </div>
+    <div class="complete">
+        <a href="#">完成</a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

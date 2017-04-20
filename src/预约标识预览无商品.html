@@ -1,0 +1,26 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left"><svg><use xlink:href="#appointment-nav"></use></svg>门市预约</p>
+    <a style="float: right;" href="#">X</a>
+</div>
+<div class="no-message">
+    <p>您的预约目前是空的</p>
+</div>
+<div class="explain">
+    <div class="choose-store">
+        <a href="#">选择预约门市</a>
+    </div>
+    <ul>
+        <li><a href="#">购物说明<span>></span></a></li>
+        <li><a href="#">使用条款<span>></span></a></li>
+        <li><a href="#">配送规则<span>></span></a></li>
+    </ul>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

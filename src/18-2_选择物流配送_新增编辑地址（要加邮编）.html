@@ -1,0 +1,54 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-EditAddress">
+    <div class="content">
+        <div class="title">編輯地址 <a>回上一步</a></div>
+        <div class="recipients">
+            <div class="title">收件人*</div>
+            <div class="name">姓名* <input type="text"></div>
+            <div class="appellation j_appelPopup">称谓* <input type="text"> <span> ></span></div>
+            <div class="tel">电话号码* <input type="tel"></div>
+        </div>
+        <div class="address">
+            <div class="title">地址*</div>
+            <div class="country">国别 / 区域* <input type="text"> <span> ></span></div>
+            <div class="province">省/州* <input type="text"> <span> ></span></div>
+            <div class="city">城区* <input type="text"> <span> ></span></div>
+            <div class="detailedAddress">详细地址 <input type="text"></div>
+            <div class="more">地址更多信息 <input type="text"></div>
+        </div>
+        <button type="button" class="btn">完成</button>
+    </div>
+</div>
+
+<!--称谓弹框-->
+<ul class="appellation-popup">
+    <li class="title">称谓*</li>
+    <li>先生</li>
+    <li class="active">女士</li>
+    <li>小姐</li>
+    <li>无</li>
+</ul>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+
+        //点击称谓弹窗
+        $(".j_appelPopup").on("click",function () {
+            layer.open({
+                type:1,
+                title: false,
+                content:$(".appellation-popup"),
+                shade:0.8,
+                area:['30rem','20rem']
+            });
+        });
+
+        //关闭弹窗
+        $(".j_appelPopup>li").on("click",function () {
+            layer.close(layer.index);
+        });
+    });
+</script>
+@include('include/foot.html')

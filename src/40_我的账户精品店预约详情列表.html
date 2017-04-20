@@ -1,0 +1,31 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-orderList clearfix">
+    <div class="dx-title">我的帐户 / 门市预约详细 <a href="#">回上页</a></div>
+    <div class="content">
+        <div class="dx-reservation">预约单</div>
+        <div class="dx-reservaList clearfix">
+            <div class="time">2017-01-15</div>
+            <div class="orderNumber">12345AABBCC</div>
+            <div class="status">已到店</div>
+        </div>
+        <div class="dx-reservaList clearfix">
+            <div class="time">2017-01-15</div>
+            <div class="orderNumber">12345AABBCC</div>
+            <div class="status">已取消</div>
+        </div>
+        <div class="dx-reservaList clearfix">
+            <div class="time">2017-01-15</div>
+            <div class="orderNumber">12345AABBCC</div>
+            <div class="status">处理中</div>
+        </div>
+    </div>
+    <div class="check clearfix"><span>查看所有预约單</span><a href="#">></a></div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

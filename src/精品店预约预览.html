@@ -1,0 +1,55 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">门市预约</p>
+    <a style="float: right;" href="#">X</a>
+</div>
+<div class="order-main clearfix">
+    <div class="order-main-left">
+        <p class="product-num">产品编号 1B1184 Z</p>
+        <img src="images/order_01.png" alt="">
+        <p class="product-name">玉镯提包系列黑色刺绣托特包</p>
+        <div class="color-size">
+            <p>黑色</p>
+            <p>M号</p>
+        </div>
+        <p class="price">单价　¥ 11,504</p>
+        <ul class="do-list-icon">
+            <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
+            <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+        </ul>
+    </div>
+    <div class="order-main-right">
+        <p class="product-num">产品编号 1B1184 Z</p>
+        <img src="images/order_02.png" alt="">
+        <p class="product-name">玉镯提包系列黑色刺绣托特包</p>
+        <div class="color-size">
+            <p>黑色</p>
+            <p>M号</p>
+        </div>
+        <p class="price">单价　¥ 11,504</p>
+        <ul class="do-list-icon">
+            <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
+            <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+        </ul>
+    </div>
+</div>
+<div class="explain">
+    <div class="choose-store">
+        <a href="#">选择预约门市</a>
+    </div>
+    <ul>
+        <li><a href="#">购物说明<span>></span></a></li>
+        <li><a href="#">使用条款<span>></span></a></li>
+        <li><a href="#">配送规则<span>></span></a></li>
+    </ul>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

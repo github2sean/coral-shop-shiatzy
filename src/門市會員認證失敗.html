@@ -1,0 +1,27 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="back-up clearfix">
+    <a href="#">
+        <h3>回上一步</h3>
+    </a>
+</div>
+<div class="club">
+    <h3>夏姿门市 ART CLUB 會員驗證</h3>
+    <p>请输入会员手机号码
+        <input type="text">
+    </p>
+    <a href="#">认证</a>
+    <span>驗證失敗，請重新確認手機號碼。</span>
+    <div class="club-bottom">
+        <p>加入夏姿陈Art Club会员，可</p>
+        <p>尊享xxxxxxxxxxxxxxxxxxxxxxx.</p>
+    </div>
+</div>
+
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

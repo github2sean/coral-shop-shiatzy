@@ -1,0 +1,61 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">预约完成</p>
+    <a style="float: right;" href="#">< 我的账户</a>
+</div>
+<div class="verify-message">
+    <div class="verify-message-top">
+        <h2>预约单号码：＃＃＃＃＃＃＃＃＃＃</h2>
+        <ul>
+            <li>预约单送出日期：2017-1-15</li>
+            <li>预约门市：台北中山旗舰店</li>
+            <li>地址：</li>
+            <li>电话：</li>
+            <li>营业时间：</li>
+        </ul>
+    </div>
+    <div class="verify-message-middle">
+        <h2>商品详情</h2>
+        <div class="verify-main">
+            <img src="images/verify_01.png" alt="">
+            <div class="img-message">
+                <h3>玉镯提包系列黑色刺绣托特包</h3>
+                <h6>产品编号 1B1184 Z</h6>
+                <div style="display: inline-block;" class="size">
+                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
+                    <p>M号</p>
+                </div>
+                <p>数量：1</p>
+                <p>单价　¥ 11,504</p>
+            </div>
+        </div>
+        <p class="order-state">状态：预约成功</p>
+        <div class="verify-main">
+            <img src="images/verify_01.png" alt="">
+            <div class="img-message">
+                <h3>玉镯提包系列黑色刺绣托特包</h3>
+                <h6>产品编号 1B1184 Z</h6>
+                <div style="display: inline-block;" class="size">
+                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
+                    <p>M号</p>
+                </div>
+                <p>数量：1</p>
+                <p>单价　¥ 11,504</p>
+            </div>
+        </div>
+        <p class="order-state">状态：缺货中</p>
+    </div>
+    <div class="verify-message-bottom">
+        <h2>预计订单总额：¥ 10,404</h2>
+        <p>您的订单将于1-3个工作日内尽快配送至指定门店，请耐心等待。精品店预约订单遵循门店销售规则，不享有在线购物的“7天轻松退货”政策。</p>
+        <a href="#">回首页</a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

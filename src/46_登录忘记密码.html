@@ -1,0 +1,26 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-login dx-ForgotPassword">
+    <div class="dx-title clearfix">
+        <div class="member">忘记密码</div>
+        <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
+    </div>
+    <div class="content">
+        <div class="title">修改您的登入密码，请于下方输入您的电子邮箱</div>
+        <input type="email" placeholder="输入您的电子邮箱">
+        <div class="dx-verify clearfix">
+            <input type="text" class="verify" placeholder="输入右方验证码">
+            <div class="dx-verify-pic"><img src="images/verify_03.jpg" alt=""></div>
+        </div>
+        <div class="remind">验证码输入错误，请重新输入</div>
+        <button type="button" class="btn">发送</button>
+        <div class="register">尚未拥有帐号？ 注册</div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

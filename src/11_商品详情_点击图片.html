@@ -1,0 +1,21 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-commodity">
+    <div class="content">
+        <img src="images/goods-pic05.jpg" alt="">
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+
+        $(".j_s_slider").bxSlider({
+            auto:false,
+            pager:false,
+            controls:true
+        });
+
+    });
+</script>
+@include('include/foot.html')

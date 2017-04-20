@@ -1,0 +1,67 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">预约完成</p>
+    <a style="float: right;" href="#">< 我的账户</a>
+</div>
+<div class="verify-message">
+    <div class="verify-message-top">
+        <h2>退货单号：＃＃＃＃＃＃＃＃＃＃</h2>
+        <div class="return-time">
+            <p>退货申请2017-1-15，已于2017-1-30提交，总计¥ 11,504的退款申请。</p>
+        </div>
+    </div>
+    <div class="verify-message-middle">
+        <h2>退货详情</h2>
+        <div style="padding-left: 3rem;" class="verify-main">
+            <img src="images/verify_01.png" alt="">
+            <div style="margin-left: 6rem;" class="img-message">
+                <h3>玉镯提包系列黑色刺绣托特包</h3>
+                <h6>产品编号 1B1184 Z</h6>
+                <div style="display: inline-block;" class="size">
+                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
+                    <p>M号</p>
+                </div>
+                <p>数量：1</p>
+                <p>单价　¥ 11,504</p>
+            </div>
+        </div>
+        <p style="padding-left: 3rem;" class="order-state">状态：退款处理中</p>
+        <div style="padding-left: 3rem;" class="verify-main">
+            <img src="images/verify_01.png" alt="">
+            <div style="margin-left: 6rem;" class="img-message">
+                <h3>玉镯提包系列黑色刺绣托特包</h3>
+                <h6>产品编号 1B1184 Z</h6>
+                <div style="display: inline-block;" class="size">
+                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
+                    <p>M号</p>
+                </div>
+                <p>数量：1</p>
+                <p>单价　¥ 11,504</p>
+            </div>
+        </div>
+        <p style="padding-left: 3rem; margin-bottom:4.5rem;" class="order-state">状态：已退款</p>
+    </div>
+    <div style="margin-bottom: 7rem;" class="verify-message-bottom">
+        <h2 style="text-align: right;padding-right: 1.5rem;">退回总额：¥ 12,000</h2>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">> </span>
+            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+        </a>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">> </span>
+            <span style="float: left;">隐私权政策</span>
+        </a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

@@ -1,0 +1,65 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-wish clearfix">
+    <div class="dx-title">我的帐户 / 愿望清单 <a href="#">回上页</a></div>
+    <div class="content">
+        <div class="dx-total">
+            <div class="title">所有商品</div>
+            <ul class="list">
+                <li>女士</li>
+                <li class="active">男士</li>
+                <li>包袋</li>
+                <li>鞋履</li>
+            </ul>
+        </div>
+        <div class="dx-GoodsDetails">
+            <div class="goods clearfix">
+                <div class="goods-left">
+                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
+                </div>
+                <div class="goods-right">
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                    <div class="color">黑色<span>M号</span></div>
+                    <div class="preferential-price delete">单价&nbsp; &yen; <span>11,504</span></div>
+                    <div class="price">优惠价&nbsp; &yen; <span>10,504</span></div>
+                </div>
+                <ul class="do-list-icon">
+                    <li><a href="javascript:;" class="j_bag icon-bag"><svg><use xlink:href="#bag"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                </ul>
+            </div>
+            <div class="goods clearfix">
+                <div class="goods-left">
+                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
+                </div>
+                <div class="goods-right">
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                    <div class="color">黑色<span>M号</span></div>
+                    <div class="price"><span class="SoldOut">已售完</span></div>
+                </div>
+                <ul class="do-list-icon">
+                    <li><a href="javascript:;" class="j_bag active icon-bag"><svg><use xlink:href="#bag-active"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment active"><svg><use xlink:href="#ap-active"></use></svg></a></li>
+                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="dx-clause">
+            <ul>
+                <li><a href="#">购物说明</a></li>
+                <li><a href="#">使用条款</a></li>
+                <li class="last"><a href="#">配送规则</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

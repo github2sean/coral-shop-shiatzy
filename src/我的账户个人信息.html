@@ -1,0 +1,74 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">我的账户</p>
+    <a style="float: right;" href="#">< 回上页</a>
+</div>
+<div class="my-account">
+    <div style="display: inline-block;" class="my-account-title">
+        <p style="margin-right: 1.7005rem;">欢迎您</p>
+        <p>SHC</p>
+    </div>
+    <div class="account-message">
+        <ul>
+            <li>
+                <a href="#">
+                    <span>帐户详情</span>
+                    <span style="float: right;">编辑 ></span>
+                </a>
+            </li>
+            <li class="deit-message">
+                <ol>
+                    <li>名字：资讯部</li>
+                    <li>姓氏：夏姿</li>
+                    <li>电邮：shc＠shiatzychen.com</li>
+                    <li>电话号码：0922200416</li>
+                    <li>地址：</li>
+                </ol>
+            </li>
+            <li>
+                <a href="#">
+                    <span>会员等级：一般会员</span>
+                    <span style="float: right;">></span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span>邮箱及密码信息修改 </span>
+                    <span style="float: right;">></span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span>夏姿门市 ART CLUB 會員驗證</span>
+                    <span style="float: right;">></span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span>我的订阅</span>
+                    <span style="float: right;">></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">>　</span>
+            <span style="float: left;">隐私权政策</span>
+        </a>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">>　</span>
+            <span style="float: left;">隐私权政策</span>
+        </a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

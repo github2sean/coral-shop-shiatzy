@@ -1,0 +1,31 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-registered">
+    <div class="dx-title">账户注册 <a href="#">回上页</a></div>
+    <div class="content">
+        <div class="title">您的 SHIATZY CHEN 收藏清单与个人信息 <br>将在 SHIATZY CHEN 网站内存档备用。</div>
+        <input type="email" placeholder="电子邮箱">
+        <input type="password" placeholder="创建密码">
+        <input type="password" placeholder="再次输入密码">
+        <div class="dx-verify clearfix">
+            <input type="text" class="verify" placeholder="输入右方验证码">
+            <div class="dx-verify-pic"><img src="images/verify_03.jpg" alt=""></div>
+        </div>
+        <div class="remind">验证码输入错误，请重新输入</div>
+        <button type="button" class="btn">完 成</button>
+        <div class="notice">当您注册即表示您同意接受SHIATZY CHEN公司的条款和隐私权政策。</div>
+    </div>
+    <div class="thirdparty">
+        <div class="title">使用第三方帐号快速登入</div>
+        <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
+        <div class="dx-instructions"><a href="#">使用说明</a></div>
+        <div class="dx-privacy"><a href="#">隐私权政策</a></div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

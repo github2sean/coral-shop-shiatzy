@@ -1,0 +1,37 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-wish clearfix">
+    <div class="dx-title">我的帐户 / 愿望清单 <a href="#">回上页</a></div>
+    <div class="content">
+        <div class="dx-collect">您未有任何收收藏</div>
+        <div class="dx-recommend">
+            <div class="title">推荐商品</div>
+            <div class="goods clearfix">
+                <div class="goods-left">
+                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                </div>
+                <div class="goods-right">
+                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                </div>
+            </div>
+        </div>
+        <div class="dx-clause">
+            <ul>
+                <li><a href="#">购物说明</a></li>
+                <li><a href="#">使用条款</a></li>
+                <li class="last"><a href="#">配送规则</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

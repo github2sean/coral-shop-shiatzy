@@ -1,0 +1,56 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">订购完成</p>
+    <a style="float: right;" href="#">< 我的帐户</a>
+</div>
+<div class="unfinished">
+    <h3>您的订单尚未完成付款</h3>
+    <p>订单号码：＃＃＃＃＃＃＃＃＃＃</p>
+    <div class="again-btn">
+        <a href="#">重新付款</a>
+    </div>
+    <div class="verify-message-middle">
+        <h2>商品详情</h2>
+        <div class="verify-main">
+            <img src="images/verify_01.png" alt="">
+            <div class="img-message">
+                <h3>玉镯提包系列黑色刺绣托特包</h3>
+                <h6>产品编号 1B1184 Z</h6>
+                <div style="display: inline-block;" class="size">
+                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
+                    <p>M号</p>
+                </div>
+                <p>数量：1</p>
+                <p>单价　¥ 11,504</p>
+            </div>
+        </div>
+    </div>
+    <div class="order-details">
+        <h4>帐单详情<span>v</span></h4>
+        <ul>
+            <li>玉镯提包系列黑色刺绣托特包<span>¥ 11,504</span></li>
+            <li>优惠应用<span>¥ -50</span></li>
+            <li>Art Club会员优惠<span>¥ -10</span></li>
+            <li>关税和税收<span>¥ 100</span></li>
+            <li>运费<span>¥ 50</span></li>
+        </ul>
+        <p>总计<span>¥ 12,000</span></p>
+    </div>
+    <div class="order-details">
+        <h4>付款</h4>
+        <p>支付宝/银联在线/ VISA</p>
+    </div>
+    <div class="delivery-detail">
+        <h4>配送明细</h4>
+        <p>配送门市：台北中山旗舰店</p>
+        <p>发票：不需要</p>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

@@ -1,0 +1,54 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">邮箱及密码信息修改</p>
+    <a style="float: right;" href="#">< 回上页</a>
+</div>
+<div class="mail-change">
+    <h4>請在此處修改您您的電子郵件設定或密碼。</h4>
+    <h4>*須填欄位</h4>
+    <div class="register-mail">
+        <p>您的登入郵箱：</p>
+        <p style="margin-bottom: 2rem;">SHC＠SHIATZYCHEN.COM</p>
+        <div class="input">
+            <i>*</i>
+            <input type="text" value="請輸入變更登入电子邮箱地址" onfocus="if (value =='請輸入變更登入电子邮箱地址'){value =''}" onblur="if (value ==''){value='請輸入變更登入电子邮箱地址'}"/>
+        </div>
+        <div class="input">
+            <i>*</i>
+            <input type="text" value="請輸入變更登入电子邮箱地址" onfocus="if (value =='請輸入變更登入电子邮箱地址'){value =''}" onblur="if (value ==''){value='請輸入變更登入电子邮箱地址'}"/>
+        </div>
+        <a href="#">
+            <span><</span>
+            确认
+        </a>
+    </div>
+</div>
+<div class="password-change">
+    <div class="register-mail">
+        <p style="margin-bottom: 2rem;">修改登入密碼</p>
+        <div class="input">
+            <i>*</i>
+            <input type="text" value="請輸入原始登入密碼" onfocus="if (value =='請輸入原始登入密碼'){value =''}" onblur="if (value ==''){value='請輸入原始登入密碼'}"/>
+        </div>
+        <div class="input">
+            <i>*</i>
+            <input type="text" value="請輸入新密碼" onfocus="if (value =='請輸入新密碼'){value =''}" onblur="if (value ==''){value='請輸入新密碼'}"/>
+        </div>
+        <div class="input">
+            <i>*</i>
+            <input type="text" value="請再次輸入新密碼" onfocus="if (value =='請再次輸入新密碼'){value =''}" onblur="if (value ==''){value='請再次輸入新密碼'}"/>
+        </div>
+        <a href="#">
+            <span><</span>
+            确认
+        </a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

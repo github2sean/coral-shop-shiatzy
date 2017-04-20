@@ -1,0 +1,28 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-shopping">
+    <div class="dx-title clearfix">
+        <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span>购物车</div>
+        <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
+    </div>
+    <div class="content">
+        <p>您的购物车目前是空的</p>
+    </div>
+    <div class="shopping-start">
+        <a href="#" class="shopping">开始购物</a>
+        <div class="dx-clause">
+            <ul>
+                <li><a href="#">购物说明</a></li>
+                <li><a href="#">使用条款</a></li>
+                <li class="last"><a href="#">配送规则</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

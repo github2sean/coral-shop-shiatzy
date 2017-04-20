@@ -1,0 +1,130 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="order">
+    <p style="float: left">预约完成</p>
+    <a style="float: right;" href="#">< 我的账户</a>
+</div>
+<div class="verify-message">
+    <div class="return-way clearfix">
+        <h3>选择退货方式</h3>
+        <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
+    </div>
+    <p>订单编号：<span>12345AABBCC</span></p>
+    <p>订单编号：<span>2017-1-15</span></p>
+    <div class="return-commodity clearfix">
+        <div>
+            <span class="mr-2">
+                <label class="radiobox">
+                    <input type="checkbox">
+                    <i class="i-radiobox"></i>
+                    <img src="images/goods-pic01.jpg" alt="">
+                </label>
+            </span>
+        </div>
+        <div>
+            <p>玉镯提包系列黑色刺绣托特包<span>v</span></p>
+            <span>产品编号 1B1184 Z</span>
+        </div>
+    </div>
+    <div class="return-list clearfix">
+        <p>请勾选退货理由（可复选）</p>
+        <ul>
+            <li>尺寸</li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
+                </div>
+            </li>
+        </ul>
+        <ul>
+            <li>尺寸</li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
+                </div>
+            </li>
+        </ul>
+        <ul>
+            <li>尺寸</li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div style="padding-left: 4rem;" class="return-commodity clearfix">
+        <img style="float: left;" src="images/goods-pic01.jpg" alt="">
+        <div style="margin-top: 3.5rem;margin-left: 0.7rem;">
+            <p>玉镯提包系列黑色刺绣托特包<span style="margin-left: 6rem;">v</span></p>
+            <span>产品编号 1B1184 Z</span>
+        </div>
+    </div>
+    <div class="return-btn">
+        <a href="#">< 確認</a>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">> </span>
+            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+        </a>
+    </div>
+    <div class="privacy">
+        <a href="#">
+            <span style="float:left;">> </span>
+            <span style="float: left;">隐私权政策</span>
+        </a>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+    });
+</script>
+@include('include/foot.html')

@@ -1,0 +1,36 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-shipping">
+    <div class="dx-title">運送地址设定 <a href="#">回上页</a></div>
+    <div class="content">
+        <a href="javascript:;" class="new-address">新增地址 +</a>
+        <div class="address">
+            <div class="title">地址一 <span class="icon iconfont">&#xe618;</span></div>
+            <div class="text clearfix">
+                <div class="text-left">
+                    <div class="postcode">248</div>
+                    <div class="street">新北市五股区五权六路40号</div>
+                    <div class="tel">电话：02-7705-4888</div>
+                </div>
+                <div class="text-right">
+                    <div class="compile"><a href="javascript:;">编辑 ></a></div>
+                    <div class="del"><a href="javascript:;">删除 -</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="address address2">
+            <div class="title">地址二</div>
+        </div>
+    </div>
+    <div class="btn">
+        <button type="button" class="accounts-btn">< 确认</button>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+
+    });
+</script>
+@include('include/foot.html')

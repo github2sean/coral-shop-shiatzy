@@ -1,0 +1,30 @@
+{
+  "concat":{
+    "css":[
+      "build/css/bootstrap.css",
+      "../../lib/animate.css/animate.css",
+      "../../lib/hover/hover.css"
+    ],
+    "js":[
+      "../../lib/lodash-compat/lodash.min.js",
+      "../../lib/jquery/dist/jquery.min.js",
+      "../../lib/layer/build/layer.js",
+
+      "../../lib/bootstrap/js/transition.js",
+      "../../lib/bootstrap/js/affix.js",
+      "../../lib/bootstrap/js/alert.js",
+      "../../lib/bootstrap/js/button.js",
+      "../../lib/bootstrap/js/carousel.js",
+      "../../lib/bootstrap/js/collapse.js",
+      "../../lib/bootstrap/js/dropdown.js",
+      "../../lib/bootstrap/js/modal.js",
+      "../../lib/bootstrap/js/tooltip.js",
+      "../../lib/bootstrap/js/popover.js",
+      "../../lib/bootstrap/js/scrollspy.js",
+      "../../lib/bootstrap/js/tab.js"
+    ]
+  },
+  "copy":[
+    {"name":"src/js/layer/skin","value":"../../lib/layer/build/skin/**/*"}
+  ]
+}

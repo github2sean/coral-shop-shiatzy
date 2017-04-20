@@ -1,0 +1,94 @@
+@include('include/head.html')
+@include('include/header.html')
+<div class="dx-commodity">
+    <div class="content">
+        <div class="title">玉镯提包系列黑色刺绣托特包</div>
+        <div class="number">产品编号 1B1184 Z</div>
+        <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
+        <div class="dx-bag-slide">
+            <ul class="j_s_slider">
+                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+            </ul>
+        </div>
+        <div class="price">&yen; <span>11,504</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+        <div class="color">
+            <div class="title">黑色(还有3款颜色)</div>
+            <ul class="clearfix hide">
+                <li><a href=""><img src="images/bag_03.jpg" alt=""></a></li>
+                <li><a href=""><img src="images/bag_05.jpg" alt=""></a></li>
+                <li><a href=""><img src="images/bag_07.jpg" alt=""></a></li>
+                <li><a href=""><img src="images/bag_09.jpg" alt=""></a></li>
+            </ul>
+        </div>
+        <div class="size">
+            <div class="title">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
+            <ul class="hide">
+                <li class="active"><a href="">S<span></span></a> </li>
+                <li><a href="">M<span></span></a> </li>
+                <li class="SoldOut"><a href="">L<span>(已售完)</span></a></li>
+            </ul>
+        </div>
+        <button type="button" class="addition">添加到购物袋</button>
+        <button type="button" class="order">精品店预约</button>
+        <div class="remind"><span class="icon iconfont">&#xe77d;</span>什么是精品店预约</div>
+    </div>
+    <div class="dx-GoodsDetails">
+        <div class="title">产品详细信息</div>
+        <p class="text hide">品牌标志性的玉镯提包，以刺绣形式诠释出台湾插画家川贝母的童趣画作，为整体注入鲜活俏皮的时尚感。单品内设里衬，可轻松收纳你的必备物品；带拉链隔层则可将小件重要物品稳妥存放。不妨用其搭配本季刺绣服饰单品，完成total look的完美搭配。</p>
+        <ul class="list hide">
+            <li>贴布刺绣，玉镯提手</li>
+            <li>100% 成牛皮</li>
+            <li>意大利制造</li>
+            <li>产品尺寸：24.5厘米/9.6英寸（长），16厘米/6.3英寸（宽），20厘米/7.9英寸（高）</li>
+        </ul>
+    </div>
+    <div class="maybeLike clearfix">
+        <div class="title">您也许也喜欢</div>
+        <div class="left">
+            <div class="pic">
+                <img src="images/bag_10_07.jpg" alt="">
+            </div>
+            <div class="name">厚底系带楔型鞋</div>
+            <div class="price">&yen; 3,090</div>
+            <ul class="color clearfix">
+                <li style="background-color: #000"></li>
+                <li style="background-color: #b5272d"></li>
+                <li style="background-color: #1b1464"></li>
+                <li style="background-color: #662d85"></li>
+                <li style="background-color: #fff"></li>
+            </ul>
+        </div>
+        <div class="left" style="border-right: none">
+            <div class="pic">
+                <img src="images/bag_10_09.jpg" alt="">
+            </div>
+            <div class="name">厚底系带楔型鞋</div>
+            <div class="price">&yen; 3,090</div>
+            <ul class="color clearfix">
+                <li style="background-color: #000"></li>
+                <li style="background-color: #b5272d"></li>
+                <li style="background-color: #1b1464"></li>
+                <li style="background-color: #662d85"></li>
+                <li style="background-color: #fff"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+@include('include/footer.html')
+<script>
+    $(function(){
+        commonApp.init();
+
+        $(".j_s_slider").bxSlider({
+            auto:false,
+            pager:false,
+            controls:true
+        });
+
+    });
+</script>
+@include('include/foot.html')

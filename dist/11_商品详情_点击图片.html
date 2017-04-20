@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title></title>
+    <!-- css -->
+    <link rel="stylesheet" href="iconfont/iconfont.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/dookayui.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/dx.css">
+    <link rel="stylesheet" href="css/dy.css">
+</head>
+<body>
+    <header class="top-bar">
+        <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
+        <span class="do-logo-w"><img src="images/logo.png" alt=""></span>
+        <!--Todo:导航icon-->
+        <ul class="top-right-nav">
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+        </ul>
+    </header>
+    <div class="do-nav-panel" id="j_nav_panel">
+        <div class="do-nav-head">
+            <a class="btn-left iconfont" id="j_close_nav" href="#">&#xe67d;</a>
+            <span class="do-logo-w"><img src="images/logo.png" alt=""></span>
+        </div>
+        <div class="do-nav-cnt">
+            <div class="do-search">
+                <form action="">
+                    <input type="text" placeholder="请输入搜索内容" class="j_search">
+                    <button class="iconfont">&#xe610;</button>
+                </form>
+            </div>
+            <div class="search-rec-img">
+                <a href=""><img src="images/search-img1.jpg" alt=""></a>
+                <a href=""><img src="images/search-img2.jpg" alt=""></a>
+                <a href=""><img src="images/search-img3.jpg" alt=""></a>
+            </div>
+            <ul class="guide-nav j_drop_down">
+                <li>
+                    <a href="javascript:;">女装</a>
+                    <ul class="guide-sub-nav">
+                        <li><a href="">女士系列</a></li>
+                        <li><a href="">高跟鞋</a></li>
+                        <li><a href="">靴</a></li>
+                    </ul>
+                </li>
+                <li><a href="">男装</a></li>
+                <li><a href="">包袋</a></li>
+                <li><a href="">鞋履</a></li>
+                <li><a href="">配饰</a></li>
+                <li><a href="">礼服</a></li>
+                <li><a href="">SALE</a></li>
+            </ul>
+            <ul class="do-list-lang">
+                <li><a href="">我的账户</a></li>
+                <li class="do-login"><a href="">登录</a> | <a href="">注册</a></li>
+                <li><a href="">选择其他国家或地区</a></li>
+                <li><a href="">选择語言</a></li>
+            </ul>
+            <div class="do-online-service">
+                <p class="do-online-t">在线客户服务</p>
+                <p>中文电话 4008 213 760</p>
+                <p>(仅限中国大陆地区)</p>
+                <p>周一至周五 北京时间上午9点至晚间6点</p>
+                <p class="mt-1">中/英文电子邮件 customercare@shiatzychen.com</p>
+                <p>(支持所有区域问询)</p>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+<div class="dx-commodity">
+    <div class="content">
+        <img src="images/goods-pic05.jpg" alt="">
+    </div>
+</div>
+    <a href="javascript:;" id="j_back_top" class="back-top">返回顶部</a>
+    <footer class="footer font-12">
+        <ul class="do-list-btm j_drop_down">
+            <li><a href="">我的账户</a></li>
+            <li><a href="">常见问题</a></li>
+            <li><a href="">特别服务</a></li>
+            <li>
+                <a href="javascript:;">关于我们</a>
+                <ul class="do-sub-list-btm">
+                    <li><a href="">官方网站</a></li>
+                    <li><a href="">联系我们</a></li>
+                    <li><a href="">隐私声明</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="do-list-lang">
+            <li><a href="">选择其他国家或地区</a></li>
+            <li><a href="">选择語言</a></li>
+        </ul>
+        <div class="do-subscribe-w">
+            <p>订阅最新动态资讯</p>
+            <div class="do-subscribe-from">
+                <form action="">
+                    <input type="text" placeholder="请输入电子邮件地址" class="do-fill-email">
+                    <button class="do-btn-subscribe">订阅</button>
+                </form>
+            </div>
+        </div>
+        <div class="do-online-service">
+            <p class="do-online-t">在线客户服务</p>
+            <p>中文电话 4008 213 760</p>
+            <p>(仅限中国大陆地区)</p>
+            <p>周一至周五 北京时间上午9点至晚间6点</p>
+            <p class="mt-1">中/英文电子邮件 customercare@shiatzychen.com</p>
+            <p>(支持所有区域问询)</p>
+        </div>
+        <div class="text-center do-copy">沪ICP备16022295号-1 创姿服饰（上海）有限公司</div>
+    </footer>
+</div>
+<script src="js/dookayui.min.js" merge="true"></script>
+<script src="js/common.js"></script>
+<script src="js/layer/layer.js"></script>
+<script>
+    $(function(){
+        commonApp.init();
+
+        $(".j_s_slider").bxSlider({
+            auto:false,
+            pager:false,
+            controls:true
+        });
+
+    });
+</script>
+</body>
+</html>
