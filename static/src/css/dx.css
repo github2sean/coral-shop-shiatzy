@@ -38,6 +38,7 @@ i{
     padding-left: .7rem;
 }
 .dx-orderList .dx-reservaList{
+    display: block;
     font-size: 1rem;
     line-height: 2rem;
     color: #333;
@@ -903,6 +904,7 @@ i{
     margin: 0 auto;
     font-size: 1.4rem;
     line-height: 2.8rem;
+    text-align: center;
 }
 
 /*--------------修改弹窗----------------------------*/
@@ -1306,6 +1308,7 @@ i{
 }
 .dx-commodity .content .addition,.dx-commodity .content .order{
     display: block;
+    text-align: center;
     margin: 3.4rem auto .5rem;
     background-color: #e6e6e6;
     width: 100%;

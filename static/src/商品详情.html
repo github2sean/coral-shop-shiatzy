@@ -16,7 +16,7 @@
         </div>
         <div class="price">&yen; <span>11,504</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
         <div class="color">
-            <div class="title">黑色(还有3款颜色)</div>
+            <div class="title j_choose">黑色(还有3款颜色)</div>
             <ul class="clearfix hide">
                 <li><a href=""><img src="images/bag_03.jpg" alt=""></a></li>
                 <li><a href=""><img src="images/bag_05.jpg" alt=""></a></li>
@@ -25,19 +25,19 @@
             </ul>
         </div>
         <div class="size">
-            <div class="title">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
+            <div class="title j_choose">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
             <ul class="hide">
                 <li class="active"><a href="">S<span></span></a> </li>
                 <li><a href="">M<span></span></a> </li>
                 <li class="SoldOut"><a href="">L<span>(已售完)</span></a></li>
             </ul>
         </div>
-        <button type="button" class="addition">添加到购物袋</button>
-        <button type="button" class="order">精品店预约</button>
+        <a href="购物车.html" type="button" class="addition">添加到购物袋</a>
+        <a href="" type="button" class="order">精品店预约</a>
         <div class="remind"><span class="icon iconfont">&#xe77d;</span>什么是精品店预约</div>
     </div>
     <div class="dx-GoodsDetails">
-        <div class="title">产品详细信息</div>
+        <div class="title j_choose">产品详细信息</div>
         <p class="text hide">品牌标志性的玉镯提包，以刺绣形式诠释出台湾插画家川贝母的童趣画作，为整体注入鲜活俏皮的时尚感。单品内设里衬，可轻松收纳你的必备物品；带拉链隔层则可将小件重要物品稳妥存放。不妨用其搭配本季刺绣服饰单品，完成total look的完美搭配。</p>
         <ul class="list hide">
             <li>贴布刺绣，玉镯提手</li>
@@ -50,7 +50,7 @@
         <div class="title">您也许也喜欢</div>
         <div class="left">
             <div class="pic">
-                <img src="images/bag_10_07.jpg" alt="">
+                <a href=""><img src="images/bag_10_07.jpg" alt=""></a>
             </div>
             <div class="name">厚底系带楔型鞋</div>
             <div class="price">&yen; 3,090</div>
@@ -64,7 +64,7 @@
         </div>
         <div class="left" style="border-right: none">
             <div class="pic">
-                <img src="images/bag_10_09.jpg" alt="">
+                <a href=""><img src="images/bag_10_09.jpg" alt=""></a>
             </div>
             <div class="name">厚底系带楔型鞋</div>
             <div class="price">&yen; 3,090</div>
@@ -88,6 +88,10 @@
             pager:false,
             controls:true
         });
+
+        $(".j_choose").on("click",function () {
+            $(this).siblings().toggleClass("hide");
+        })
 
     });
 </script>

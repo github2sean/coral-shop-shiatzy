@@ -45,7 +45,7 @@ var lodash = require('lodash');
 
 // 加载配置项
 var config = lodash.extend(
-    require('../../config.json'),
+    // require('../../config.json'),
     require('./config.json')
 );
 
