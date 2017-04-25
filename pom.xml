@@ -650,4 +650,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- 插件仓库，指定私服 -->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <url>http://maven.lingyongdai.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <url>http://maven.lingyongdai.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
