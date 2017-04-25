@@ -1,0 +1,1398 @@
+
+/*公共*/
+i{
+    font-style: normal;
+}
+.delete{
+    text-decoration: line-through;
+}
+.hide2{
+    display: none;
+}
+/*40_我的账户精品店预约详情列表*/
+.dx-title{
+    height: 4.2rem;
+    padding: 0 1.7rem 0 2.1rem;
+    background-color: #999;
+    font-size: 1.4rem;
+    line-height: 4.2rem;
+    color: #fff;
+}
+.dx-title a{
+    float: right;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 4.2rem;
+}
+.dx-title a:before{
+    content: "<";
+    margin-right: .8rem;
+}
+.dx-orderList .content{
+    padding: .3rem 1.7rem 0 2.1rem;
+}
+.dx-reservation{
+    font-size: 1.4rem;
+    line-height: 5.3rem;
+    color: #333;
+    padding-left: .7rem;
+}
+.dx-orderList .dx-reservaList{
+    display: block;
+    font-size: 1rem;
+    line-height: 2rem;
+    color: #333;
+    border-bottom: .2rem solid #ccc;
+    margin-bottom: 2.1rem;
+}
+.dx-orderList .dx-reservaList .time{
+    float: left;
+}
+.dx-orderList .dx-reservaList .orderNumber{
+    float: left;
+    padding-left: 8%;
+}
+.dx-orderList .dx-reservaList .status{
+    float: right;
+    padding-right: 3.5rem;
+}
+.dx-orderList .check{
+    margin-top: 6.2rem;
+    border-bottom: .2rem solid #ccc;
+    font-size: 1rem;
+    line-height: 2rem;
+}
+.dx-orderList .check span{
+    float: left;
+    padding-left: 4.2rem;
+}
+.dx-orderList .check a{
+    float: right;
+    margin-right: 6.2rem;
+}
+
+/*41_我的账户精品店预约详情展开页*/
+.dx-orderDetails .content{
+    padding: .3rem 1.7rem 0 2.1rem;;
+}
+.dx-orderDetails .orderNumber{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-orderDetails .dx-details{
+    padding-left: .8rem;
+}
+.dx-orderDetails .dx-details div{
+    margin: .8rem 0;
+    font-size: 1rem;
+    line-height: 2rem;
+}
+.dx-orderDetails .dx-details .retail a{
+    color: #999;
+    border-bottom: .07rem solid #999;
+}
+.dx-orderDetails .dx-details .retail a:after{
+    content: ">";
+    margin-left: .5rem;
+}
+.dx-orderDetails .dx-GoodsDetails{
+    margin-top: .4rem;
+}
+.dx-orderDetails .dx-GoodsDetails .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;;
+}
+.dx-orderDetails .dx-GoodsDetails .goods{
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    border-bottom: .07rem solid #ccc;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-left{
+    float: left;
+    width: 6.9rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-left .pic{
+    width: 5.5rem;
+    height: 9.2rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-left .pic img{
+    display: block;
+    width: 100%;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-left .status{
+    font-size: .8rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-right{
+    float: right;
+    width: 13rem;
+    /*margin-left: 12%;*/
+}
+.dx-orderDetails .dx-GoodsDetails .goods-right .name{
+    font-size: 1rem;
+    margin: 1.3rem 0 .8rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-right .number{
+    font-size: .6rem;
+    margin-bottom: .8rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-right .color,
+.dx-orderDetails .dx-GoodsDetails .goods-right .quantity{
+    font-size: .7rem;
+    margin-bottom: .8rem;
+}
+.dx-orderDetails .dx-GoodsDetails .goods-right .price{
+    font-size: 1rem;
+    text-align: right;
+}
+.dx-orderDetails .dx-total{
+    border-top: .2rem solid #ccc;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.dx-orderDetails .dx-explain{
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 6.5rem;
+}
+.dx-orderDetails .dx-instructions,
+.dx-orderDetails .dx-privacy{
+    border-bottom: .15rem solid #ccc;
+    margin-bottom: 1rem;
+    padding-left: 2.3rem;
+}
+.dx-orderDetails .dx-instructions a,
+.dx-orderDetails .dx-privacy a{
+    font-size: 1rem;
+    line-height: 2rem;
+}
+.dx-orderDetails .dx-instructions a:before,
+.dx-orderDetails .dx-privacy a:before{
+    content: ">";
+    margin-left: -1rem;
+    margin-right: 1rem;
+}
+
+/*42_我的账户愿望清单打开及标识打开无商品*/
+.dx-wish .dx-collect{
+    margin-top: 3.2rem;
+    margin-bottom: 8.8rem;
+    font-size: 1.4rem;
+    line-height: 3.7rem;
+    border-bottom: .2rem solid #ccc;
+    text-align: center;
+}
+.dx-wish .dx-recommend{
+    border-top: .2rem solid #ccc;
+    padding: 2rem 2rem 0;
+}
+.dx-wish .dx-recommend .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-wish .dx-recommend .goods-left{
+    float: left;
+    /*width: 13rem;*/
+    text-align: center;
+    margin-right: .6rem;
+}
+.dx-wish .dx-recommend .goods-right{
+    float: right;
+    /*width: 13rem;*/
+    text-align: center;
+}
+.dx-wish .dx-recommend .goods-left .pic,
+.dx-wish .dx-recommend .goods-right .pic{
+    width: 8.8rem;
+    height: 8.3rem;
+    margin: 0 auto;
+}
+.dx-wish .dx-recommend .goods-left .pic img,
+.dx-wish .dx-recommend .goods-right .pic img{
+    display: block;
+    width: 100%;
+}
+.dx-wish .dx-recommend .goods-left .name,
+.dx-wish .dx-recommend .goods-right .name{
+    font-size: .9rem;
+    margin: .6rem 0 ;
+}
+.dx-wish .dx-recommend .goods-left .number,
+.dx-wish .dx-recommend .goods-right .number{
+    font-size: .6rem;
+}
+.dx-wish .dx-clause{
+    background-color: #ccc;
+    padding: 2rem .5rem 1.2rem;
+    margin-top: 3.8rem;
+}
+.dx-wish .dx-clause li{
+    border-top: .2rem solid #d9d9d9;
+/*    height: 2.6rem;*/
+    padding-left: 1.5rem;
+    padding-top: .8rem;
+    position: relative;
+}
+.dx-wish .dx-clause li a{
+    font-size: 1rem;
+    line-height: 2rem;
+}
+.dx-wish .dx-clause li a:after{
+    content: ">";
+    position: absolute;
+    top:35%;
+    right: 2rem;
+}
+.dx-wish .dx-clause .last{
+    border-bottom: .2rem solid #d9d9d9;
+}
+
+/*43_愿望清单有商品*/
+.dx-wish .dx-total{
+    margin: 1.3rem 0;
+}
+.dx-wish .dx-total .title{
+    margin: 0 1.7rem;
+    font-size: 1.1rem;
+    line-height: 2.2rem;
+    border-bottom: .2rem solid #d9d9d9;
+}
+.dx-wish .dx-total .list li{
+    padding-left: 2.8rem;
+    font-size: .9rem;
+    line-height: 2.3rem;
+}
+.dx-wish .dx-total .list .active{
+    background-color: #e6e6e6;
+}
+.dx-wish .dx-GoodsDetails .goods{
+    padding-left: 2.7rem;
+    padding-right: 1.3rem;
+    border-top: .1rem solid #d9d9d9;
+    border-bottom: .1rem solid #d9d9d9;
+}
+.dx-wish .dx-GoodsDetails .goods-left{
+    float: left;
+    margin-right: 1.5rem;
+}
+.dx-wish .dx-GoodsDetails .goods-left .pic{
+    width: 9.7rem;
+    height: 9.2rem;
+    margin: .7rem 0;
+}
+.dx-wish .dx-GoodsDetails .goods-left .pic img{
+    width: 100%;
+    display: block;
+}
+.dx-wish .dx-GoodsDetails .goods-right{
+    float: left;
+    padding-top: 1.3rem;
+    width: 12rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .name{
+    width: 7.8rem;
+    font-size: .9rem;
+    line-height: 1.4rem;
+    margin-bottom: .3rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .number{
+    font-size: .6rem;
+    border-top: .2rem solid #d9d9d9;
+    margin-bottom: .7rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .color{
+    font-size: .7rem;
+    margin-bottom: .8rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .color span{
+    margin-left: 3.1rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .preferential-price,
+.dx-wish .dx-GoodsDetails .goods-right .price{
+    text-align: right;
+    font-size: .7rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .preferential-price{
+    color: #999;
+}
+.dx-wish .dx-GoodsDetails .goods-right .price{
+    margin-bottom: 1.5rem;
+}
+.dx-wish .dx-GoodsDetails .goods-right .price .SoldOut{
+    border-bottom: .1rem solid #666;
+}
+
+/*登录页*/
+.dx-login .dx-title{
+    background-color: #666;
+    height: 4.2rem;
+}
+.dx-login .dx-title .member{
+    float: left;
+    font-size: 1rem;
+    line-height: 4.2rem;
+}
+.dx-login .dx-title .member span{
+    margin-right: .7rem;
+}
+.dx-login .dx-title a{
+    float: right;
+    line-height: 4.2rem;
+}
+.dx-login .dx-title a:before{
+    content: "";
+}
+.dx-login .content{
+    padding: 2rem 1.9rem 0;
+}
+.dx-login .login{
+    font-size: 1rem;
+    line-height: 2rem;
+    border-bottom: .2rem solid #d9d9d9;
+}
+.dx-login .title{
+    font-size: .9rem;
+    line-height: 2rem;
+    margin-top: 1.4rem;
+}
+.dx-login .content input{
+    width: 100%;
+    height: 2.6rem;
+    border: none;
+    border: .2rem solid #b2b2b2;
+    margin-bottom: .5rem;
+    padding-left: .6rem;
+}
+.dx-login .remind{
+    font-size: .8rem;
+    line-height: 2rem;
+    text-align: center;
+    margin-bottom: 3.4rem;
+}
+.dx-login .btn{
+    width: 23rem;
+    height: 2.8rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 2.8rem;
+    background-color: #b2b2b2;
+    border: none;
+    margin: 0 auto;
+    display: block;
+}
+.dx-login .register{
+    font-size: 1rem;
+    line-height: 3.3rem;
+    text-align: center;
+    margin-bottom: 1.8rem;
+}
+.dx-login .thirdparty{
+    border-top: .2rem solid #b2b2b2;
+}
+.dx-login .thirdparty .title{
+    font-size: 1rem;
+    line-height: 4.6rem;
+    padding-left: 1.8rem;
+    margin-bottom: .8rem;
+}
+.dx-login .thirdparty .thirdparty-login{
+    text-align: center;
+}
+.dx-login .thirdparty .thirdparty-login a{
+    display: inline-block;
+    width: 3.9rem;
+    height: 3.9rem;
+    border-radius: 50%;
+    background-color: #999;
+    margin-right: .8rem;
+}
+
+/*45_登录密码输入错误*/
+.dx-login .content .dx-verify{
+    width: 100%;
+    margin-top: -1.3rem;
+    margin-bottom: 1.3rem;
+}
+.dx-login .content .verify{
+    float: left;
+    width: 50%;
+    height: 4rem;
+}
+.dx-login .dx-verify-pic{
+    float: right;
+    width: 50%;
+    height: 4rem;
+    overflow: hidden;
+}
+.dx-login .dx-verify-pic img{
+    display: block;
+    height: 4rem;
+    width: 100%;
+}
+
+/*46_登录忘记密码*/
+.dx-ForgotPassword .title{
+    font-size: 1rem;
+    line-height: 4.8rem;
+    margin-top: 0;
+}
+.dx-ForgotPassword .content input{
+    height: 4rem;
+}
+.dx-ForgotPassword .content .dx-verify{
+    margin-top: 1.3rem;
+}
+.dx-ForgotPassword .content .remind{
+    font-size: 1rem;
+    line-height: 3.5rem;
+    color: #b5272d;
+    text-align: center;
+}
+
+/*47_会员注册*/
+.dx-registered .content{
+    padding: 1.8rem 1.3rem 0;
+}
+.dx-registered .title{
+    font-size: 1rem;
+    line-height: 1.6rem;
+    text-align: center;
+    margin-bottom: 1.4rem;
+}
+.dx-registered .content input{
+    width: 100%;
+    height: 3.7rem;
+    border: none;
+    border: .2rem solid #b2b2b2;
+    margin-bottom: 1.5rem;
+    padding-left: 2.2rem;
+}
+.dx-registered .dx-verify{
+    width: 100%;
+}
+.dx-registered .dx-verify .verify{
+    float: left;
+    width: 50%;
+    margin-bottom: 0;
+}
+.dx-registered .dx-verify-pic{
+    float: right;
+    width: 50%;
+    height: 3.7rem;
+    overflow: hidden;
+}
+.dx-registered .dx-verify-pic img{
+    display: block;
+    height: 3.7rem;
+    width: 100%;
+}
+.dx-registered .content .remind{
+    font-size: 1rem;
+    line-height: 6.5rem;
+    color: #b5272d;
+    text-align: center;
+    margin-bottom: 1.3rem;
+}
+.dx-registered .content .btn{
+    width: 23rem;
+    height: 2.8rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    color: #fff;
+    background-color: #b2b2b2;
+    border: none;
+    margin: 0 auto;
+    display: block;
+}
+.dx-registered .content .notice{
+    font-size: .6rem;
+    text-align: center;
+    margin-top: 2.8rem;
+    margin-bottom: 3.4rem;
+}
+.dx-registered .thirdparty{
+    border-top: .2rem solid #b2b2b2;
+}
+.dx-registered .thirdparty .title{
+    font-size: 1rem;
+    line-height: 4.6rem;
+    text-align: left;
+    padding-left: 1.8rem;
+    margin-bottom: .8rem;
+}
+.dx-registered .thirdparty .thirdparty-login{
+    text-align: center;
+    margin-bottom: 5.6rem;
+}
+.dx-registered .thirdparty .thirdparty-login a{
+    display: inline-block;
+    width: 3.9rem;
+    height: 3.9rem;
+    border-radius: 50%;
+    background-color: #999;
+    margin-right: .8rem;
+}
+.dx-registered .dx-instructions,
+.dx-registered .dx-privacy{
+    border-bottom: .15rem solid #ccc;
+    margin-bottom: 1rem;
+    padding-left: 2.3rem;
+}
+.dx-registered .dx-instructions a,
+.dx-registered .dx-privacy a{
+    font-size: 1rem;
+    line-height: 2.1rem;
+}
+.dx-registered .dx-instructions a:before,
+.dx-registered .dx-privacy a:before{
+    content: ">";
+    margin-left: -1rem;
+    margin-right: 1rem;
+}
+/*常见问题*/
+.dx-CommonProblems .content{
+    padding: 1.8rem 1.3rem 0;
+}
+.dx-CommonProblems .content li a{
+    display: block;
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-CommonProblems .content .first-title{
+    margin-bottom: 2.2rem;
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-CommonProblems .content .first-title a:after{
+    content: ">";
+    float: right;
+    margin-right: .7rem;
+    transform: rotate(90deg);
+}
+.dx-CommonProblems .content .second-title a{
+    padding-left: 2.8rem;
+}
+.dx-CommonProblems .content .second-title a:after {
+    content: ">";
+    transform: rotate(90deg);
+    float: right;
+    margin-right: 2.4rem;
+}
+.dx-CommonProblems .content .second-title li{
+    margin: 1.8rem 0;
+}
+.dx-CommonProblems .content .second-title li p{
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 2.1rem;
+    padding: 0 3.2rem 0 1.4rem;
+}
+
+/*12_购物袋无商品*/
+.dx-shopping .dx-title {
+    background-color: #333;
+    height: 4.2rem;
+    position: relative;
+}
+/*.dx-shopping .dx-title:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: .5rem solid transparent;
+    border-right: .5rem solid transparent;
+    border-bottom: 1rem solid red;
+    position: absolute;
+    right: 0;
+    top: 0;
+}*/
+.dx-shopping .dx-title .member{
+    float: left;
+    font-size: 1.2rem;
+    line-height: 4.2rem;
+    position: relative;
+}
+.dx-shopping .dx-title .member span{
+    position: relative;
+    left: 0;
+    top: 6px;
+}
+.dx-shopping .dx-title a{
+    float: right;
+    line-height: 4.2rem;
+}
+.dx-shopping .dx-title a:before{
+    content: "";
+}
+.dx-shopping .content{
+    text-align: center;
+}
+.dx-shopping .content p{
+    width: 14rem;
+    font-size: 1rem;
+    border-bottom: .2rem solid #ccc;
+    margin: 4.2rem auto;
+}
+.dx-shopping .shopping-start{
+    background-color: #ccc;
+    padding: 0 .6rem;
+}
+.dx-shopping .shopping-start{
+    padding-top: 1.4rem;
+}
+.dx-shopping .shopping-start .shopping{
+    display: block;
+    width: 18.5rem;
+    height: 1.9rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.9rem;
+    background-color: #333;
+    color: #fff;
+    margin: 0 auto;
+}
+.dx-shopping .shopping-start .dx-clause{
+    background-color: #ccc;
+    padding: 1rem .5rem 1.2rem;
+}
+.dx-shopping .shopping-start .dx-clause li{
+    border-top: .2rem solid #d9d9d9;
+    padding-left: 1.5rem;
+    padding-top: .8rem;
+    position: relative;
+}
+.dx-shopping .shopping-start .dx-clause li a{
+    font-size: .9rem;
+    line-height: 2rem;
+}
+.dx-shopping .shopping-start .dx-clause li a:after{
+    content: ">";
+    position: absolute;
+    top:35%;
+    right: 2rem;
+}
+.dx-shopping .shopping-start .dx-clause .last{
+    border-bottom: .2rem solid #d9d9d9;
+}
+.dx-shopping .dx-GoodsDetails{
+    margin-top: .4rem;
+}
+.dx-shopping .dx-GoodsDetails .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: .8rem;
+    border-bottom: .2rem solid #ccc;;
+}
+.dx-shopping .dx-GoodsDetails .goods{
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    border-bottom: .07rem solid #ccc;
+}
+.dx-shopping .dx-GoodsDetails .goods-left{
+    float: left;
+    width: 9.7rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-left .pic{
+    width: 9.7rem;
+    height: 9.2rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-left .pic img{
+    display: block;
+    width: 100%;
+}
+.dx-shopping .dx-GoodsDetails .goods-right{
+    float: left;
+    text-align: left;
+    /*margin-left: 12%;*/
+}
+.dx-shopping .dx-GoodsDetails .goods-right .name{
+    font-size: 1rem;
+    margin: 1.3rem 0 .8rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-right .number{
+    font-size: .6rem;
+    margin-bottom: .8rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-right .color,
+.dx-shopping .dx-GoodsDetails .goods-right .quantity{
+    font-size: .7rem;
+    margin-bottom: .8rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-right .color span{
+    margin-left: 3rem;
+}
+.dx-shopping .dx-GoodsDetails .goods-right .quantity{
+    display: inline-block;
+}
+.dx-shopping .dx-GoodsDetails .goods-right .quantity a{
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: .1rem solid #ccc;
+    line-height: 1rem;
+    text-align: center;
+    margin: 0 .4rem;
+}
+
+.dx-shopping .dx-GoodsDetails .goods-right .price{
+    font-size: 1rem;
+    display: inline-block;
+    margin-left: 1.5rem;
+}
+.dx-shopping .dx-GoodsDetails .total{
+    font-size: 1rem;
+    text-align: right;
+    margin-right: 2rem;
+    margin-bottom: 3.5rem;
+}
+.dx-shopping .dx-GoodsDetails .total span{
+    margin-left: 1.8rem;
+    font-size: 1.5rem;
+}
+
+/*14_结算页1_无优惠代码*/
+.dx-accounts .content{
+    padding: 1.5rem 1.2rem 0;
+}
+.dx-accounts .dx-GoodsDetails{
+    border: .07rem solid #ccc;
+    margin-bottom: 1rem;
+}
+.dx-accounts .dx-GoodsDetails .goods{
+    padding: .4rem 1.8rem 0 2.1rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-left{
+    float: left;
+    width: 5.5rem;
+    margin-right: .9rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-left .pic{
+    width: 5.5rem;
+    height: 9.2rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-left .pic img{
+    display: block;
+    width: 100%;
+}
+.dx-accounts .dx-GoodsDetails .goods-right{
+    float: left;
+    width: 17rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .name{
+    font-size: 1rem;
+    margin: 1.3rem 0 .8rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .number{
+    font-size: .6rem;
+    margin-bottom: .8rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .color,
+.dx-accounts .dx-GoodsDetails .goods-right .quantity{
+    font-size: .7rem;
+    margin-bottom: .8rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .color span{
+    margin-left: 3rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .color span:before{
+    content: "|";
+    margin-left: -1.5rem;
+    margin-right: 1.5rem;
+}
+.dx-accounts .dx-GoodsDetails .goods-right .price{
+    font-size: 1rem;
+    margin-left: 8.4rem;
+}
+.dx-accounts .dx-GoodsDetails .alter a{
+    display: block;
+    width: 100%;
+    height: 2rem;
+    background-color: #e6e6e6;
+    border: .2rem solid #d2d2d2;
+    text-align: right;
+    padding-right: 1.4rem;
+    font-size: 1rem;
+}
+.dx-accounts .privilege{
+    border: .2rem solid #d2d2d2;
+    padding: 0 .7rem;
+    margin-bottom: 3.4rem;
+}
+.dx-accounts .privilege .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: .7rem;
+    border-bottom: .2rem solid #d2d2d2;
+}
+.dx-accounts .privilege .title:after{
+    content: ">";
+    transform: rotate(90deg);
+    float: right;
+    margin-right: 1rem;
+}
+.dx-accounts .privilege form{
+    height: 3rem;
+}
+.dx-accounts .privilege input{
+    border: none;
+    height: 2rem;
+    margin-top: .5rem;
+}
+.dx-accounts .privilege .text{
+    padding-left: .7rem;
+    float: left;
+}
+.dx-accounts .privilege .btn{
+    padding: .3rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    background-color: #fff;
+    border: none;
+    border: .2rem solid #ccc;
+    float: right;
+    margin-top: .5rem;
+}
+.dx-accounts .total{
+    padding: 0;
+    margin-bottom: 4.1rem;
+}
+.dx-accounts .total .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: 2rem;
+    border-bottom: .2rem solid #d2d2d2;
+}
+.dx-accounts .total .wrap{
+    padding: 0 2rem;
+}
+.dx-accounts .total .wrap div{
+    height: 2rem;
+    border-bottom: .2rem solid #d2d2d2;
+    font-size: 1rem;
+    margin-top: .8rem;
+    padding-left: 1.3rem;
+}
+.dx-accounts .total .wrap div span{
+    float: right;
+    margin-right: 1.3rem;
+}
+.dx-accounts .total .wrap .predict{
+    border-top: .2rem solid #d2d2d2;
+    margin-top: 1.3rem;
+    line-height: 3.4rem;
+    height: 3.4rem;
+}
+.dx-accounts .accounts-btn{
+    display: block;
+    width: 27.6rem;
+    height: 2.8rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin: 0 auto;
+    font-size: 1.4rem;
+    line-height: 2.8rem;
+    text-align: center;
+}
+
+/*--------------修改弹窗----------------------------*/
+.alter-popup{
+    padding: 2.6rem 1.4rem 0 2.6rem;
+    display: none;
+}
+.alter-popup .dx-goods{
+    margin-bottom: 1.8rem;
+}
+.alter-popup .dx-goods .goods-pic{
+    float: left;
+    width: 5.4rem;
+    height: 20.8rem;
+    margin-right: 1.6rem;
+}
+.alter-popup .dx-goods .goods-pic span{
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.alter-popup .dx-goods .goods-pic img{
+    width: 5.4rem;
+    height: 9.2rem;
+    vertical-align: middle;
+}
+.alter-popup .dx-goods .goods-details{
+    float: left;
+    width: 18rem;
+}
+.alter-popup .dx-goods .goods-details .name{
+    font-size: 1rem;
+    margin-bottom: .8rem;
+}
+.alter-popup .dx-goods .goods-details .number{
+    font-size: .6rem;
+    margin-bottom: 1.4rem;
+    text-align: center;
+}
+.alter-popup .dx-goods .goods-details .color{
+    margin-bottom: .7rem;
+}
+.alter-popup .dx-goods .goods-details .color .title,
+.alter-popup .dx-goods .goods-details .size .title{
+    font-size: 1rem;
+    line-height: 2rem;
+}
+.alter-popup .dx-goods .goods-details .color .title:after,
+.alter-popup .dx-goods .goods-details .size .title:after{
+    content: ">";
+    float: right;
+    transform: rotate(90deg);
+}
+.alter-popup .dx-goods .goods-details .color ul,
+.alter-popup .dx-goods .goods-details .size ul{
+    border-top: .2rem solid #d2d2d2;
+    border-bottom: .2rem solid #d2d2d2;
+}
+.alter-popup .dx-goods .goods-details .color ul li a,
+.alter-popup .dx-goods .goods-details .size ul li a{
+    font-size: .8rem;
+    line-height: 1.5rem;
+    padding-left: .7rem;
+}
+.alter-popup .dx-goods .goods-details .color .active,
+.alter-popup .dx-goods .goods-details .size .active{
+    background-color: #ccc;
+}
+.alter-popup .dx-goods .goods-details .size{
+    margin-bottom: .4rem;
+}
+.alter-popup .dx-goods .goods-details .quantity{
+    font-size: 1rem;
+}
+.alter-popup .dx-goods .goods-details .quantity a{
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    border: .2rem solid #d2d2d2;
+    vertical-align: middle;
+    line-height: 1.4rem;
+    text-align: center;
+    font-size: 1rem;
+    padding-bottom: 1.2rem;
+}
+.alter-popup .dx-goods .goods-details .quantity .minus{
+    margin-left: 1.4rem;
+}
+.alter-popup .dx-goods .goods-details .quantity input{
+    margin: 0 .9rem;
+    border: none;
+    width: 1rem;
+}
+.alter-popup .btn{
+    width: 100%;
+    display: block;
+    height: 2.8rem;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    background-color: #ccc;
+    border: none;
+    color: #f9f9f9;
+}
+.question-popup{
+    display: none;
+}
+
+/*15-2_结算页2_优惠代码应用成功*/
+.dx-accounts .content .remind{
+    font-size: 1rem;
+    line-height: 2rem;
+    text-align: center;
+    margin-top: -3rem;
+    margin-bottom: 3rem;
+    border-bottom: .2rem solid #d2d2d2;
+    color: #b5272d;
+}
+.dx-accounts .total .wrap .member{
+    border: none;
+}
+
+/*16_结算页3_优惠代码应用失败*/
+.dx-accounts .content .privilege .delete{
+    display: inline-block;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    margin-right: .5rem;
+    float: right;
+    margin-top: .7rem;
+}
+
+/*18_结算页5_选择物流配送*/
+.dx-shipping .content{
+    padding: 0 1.2rem;
+    margin-bottom: 4rem;
+}
+.dx-shipping .new-address{
+    display: block;
+    width: 9.7rem;
+    height: 2.7rem;
+    font-size: 1rem;
+    line-height: 2.7rem;
+    border: .2rem solid #ccc;
+    text-align: center;
+    margin: 2.4rem auto 1.7rem;
+}
+.dx-shipping .content .address{
+    border: .2rem solid #ccc;
+    padding: 1.4rem .8rem 0;
+}
+.dx-shipping .content .address .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    padding-left: 2.2rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-shipping .content .address .title span{
+    float: right;
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
+    margin-right: .8rem;
+    cursor: pointer;
+}
+.dx-shipping .content .address .text-left{
+    float: left;
+    width: 18rem;
+    height: 7rem;
+    padding-left: 2.2rem;
+    font-size: 1rem;
+}
+.dx-shipping .content .address .text-left div{
+    line-height: 2rem;
+}
+.dx-shipping .content .address .text-right{
+    float: right;
+    font-size: 1rem;
+    line-height: 2.4rem;
+    text-align: left;
+}
+.dx-shipping .content .address .text-right a{
+    color: #b0b0b0;
+}
+.dx-shipping .content .address2 .title{
+    margin-bottom: 3.3rem;
+}
+.dx-shipping .content .address2 .title:after{
+    content: ">";
+    float: right;
+    transform: rotate(90deg);
+    margin-right: .8rem;
+}
+.dx-shipping .btn{
+    padding: 0 1.2rem;
+    width: 100%;
+}
+.dx-shipping .btn .accounts-btn{
+    display: block;
+    width: 100%;
+    height: 2.8rem;
+    font-size: 1rem;
+    line-height: 2.8rem;
+    background-color: #999;
+    color: #fff;
+    text-align: center;
+    margin-right: 1.2rem;
+    border: none;
+}
+/*18-2_选择物流配送_新增编辑地址（要加邮编）*/
+.dx-EditAddress .content{
+    padding: 1rem 2rem 0;
+}
+.dx-EditAddress .content .title{
+    font-size: 1.4rem;
+    line-height: 4rem;
+    color: #999;
+}
+.dx-EditAddress .content .title a{
+    display: inline-block;
+    float: right;
+    width: 7rem;
+    height: 2.4rem;
+    font-size: 1rem;
+    line-height: 2.4rem;
+    text-align: center;
+    border: .2rem solid #ccc;
+    margin-top: .7rem;
+}
+
+.dx-EditAddress .recipients div,
+.dx-EditAddress .address div{
+    font-size: 1rem;
+    line-height: 1.8rem;
+    border-bottom: .2rem solid #ccc;
+    color: #999;
+    margin-bottom: 1.8rem;
+}
+.dx-EditAddress .recipients .title,
+.dx-EditAddress .address .title{
+    font-size: 1.4rem;
+    line-height: 5.5rem;
+    border: none;
+    margin-bottom: 0;
+}
+.dx-EditAddress .recipients div input,
+.dx-EditAddress .address div input{
+    border: none;
+    width: 60%;
+}
+.dx-EditAddress .recipients div span,
+.dx-EditAddress .address div span{
+    float: right;
+    transform: rotate(90deg);
+}
+.dx-EditAddress .content .btn{
+    display: block;
+    width: 100%;
+    height: 2.8rem;
+    font-size: 1rem;
+    line-height: 2.8rem;
+    background-color: #999;
+    color: #fff;
+    text-align: center;
+    border: none;
+    padding: 0;
+    margin-top: 3.2rem;
+}
+.appellation-popup{
+    display: none;
+}
+.appellation-popup li{
+    width: 31.8rem;
+    height: 4.2rem;
+    background-color: #090909;
+    color: #999;
+    font-size: 1.4rem;
+    line-height: 4.2rem;
+    text-align: center;
+}
+.appellation-popup .title{
+    background-color: #666;
+    color: #fff;
+
+}
+.appellation-popup .active{
+    background-color: #2f2f2f;
+}
+
+.dx-pickUp{
+    padding: 4rem 2rem 0;
+}
+.dx-pickUp .submit-btn a{
+    width: 100%;
+    display: block;
+    height: 1.8rem;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    background-color: #ccc;
+    border: none;
+    color: #f9f9f9;
+}
+.quantitys{
+    border: none;
+    width: 1.2rem;
+}
+
+/*商品页*/
+.dx-commodity .content{
+    padding: 1.7rem 2rem 0;
+    margin-bottom: 1.8rem;
+}
+.dx-commodity .title{
+    font-size: 1.4rem;
+    line-height: 3.7rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-commodity .number {
+    font-size: 1rem;
+    line-height: 2rem;
+    margin-bottom: 2.7rem;
+}
+.dx-commodity .dx-bag-slide{
+    width: 18.5rem;
+    margin: 0 auto;
+}
+.dx-commodity .magnify{
+    float: right;
+    margin-right: 15%;
+}
+.dx-commodity .dx-bag-slide .bx-wrapper .bx-prev{
+    left: -20%;
+}
+.dx-commodity .dx-bag-slide .bx-wrapper .bx-next{
+    right: -21%;
+}
+.dx-commodity .content .price{
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    border-bottom: .2rem solid #ccc;
+    margin-bottom: .7rem;
+    height: 2.5rem;
+}
+.dx-commodity .content .price a{
+    display: inline-block;
+    float: right;
+    margin-right: 1.5rem;
+}
+
+.dx-commodity .content .color .title{
+    font-size: 1rem;
+    line-height: 2rem;
+    color: #000;
+}
+.dx-commodity .content .color .title:after,.dx-commodity .content .size .title:after{
+    content: ">";
+    transform: rotate(90deg);
+    float: right;
+    margin-right: 2rem;
+}
+.dx-commodity .content .color ul{
+    padding-top: 1.6rem;
+    border-bottom: .2rem solid #ccc;
+}
+.dx-commodity .content .color li{
+    float: left;
+    margin-right: 1.2rem;
+}
+.dx-commodity .content .size{
+    margin-top: 1rem;
+}
+.dx-commodity .content .size .title{
+    font-size: 1.2rem;
+    line-height: 1.9rem;
+    color: #000;
+}
+.dx-commodity .content .size .title span{
+    font-size: .8rem;
+    color: #000;
+}
+.dx-commodity .content .size ul{
+    border-bottom: .2rem solid #d2d2d2;
+}
+.dx-commodity .content .size ul li a{
+    font-size: .8rem;
+    line-height: 1.5rem;
+    padding-left: .7rem;
+}
+.dx-commodity .content .size ul li span{
+    font-size: .8rem;
+}
+.dx-commodity .content .size .active{
+    background-color: #ccc;
+}
+.dx-commodity .content .size .SoldOut a{
+    color: #999;
+}
+.dx-commodity .content .addition,.dx-commodity .content .order{
+    display: block;
+    text-align: center;
+    margin: 3.4rem auto .5rem;
+    background-color: #e6e6e6;
+    width: 100%;
+    font-size: .9rem;
+    line-height: 2.6rem;
+    height: 2.6rem;
+    border: none;
+    border: .2rem solid #999;
+}
+.dx-commodity .content .order{
+    margin: 0 auto;
+    line-height: 2.6rem;
+    background-color: #fff;
+}
+.dx-commodity .content .remind {
+    font-size: .8rem;
+    line-height: 2.2rem;
+    text-align: center;
+}
+.dx-commodity .dx-GoodsDetails{
+    padding: 0 1.2rem;
+    margin-bottom: 7.7rem;
+}
+.dx-commodity .dx-GoodsDetails .title{
+    font-size: .9rem;
+    line-height: 1.7rem;
+    height: 1.7rem;
+    padding-left: 1rem;
+}
+.dx-commodity .dx-GoodsDetails .title:after{
+    content: ">";
+    transform: rotate(90deg);
+    float: right;
+    margin-right: 2rem;
+}
+.dx-commodity .dx-GoodsDetails .text{
+    font-size: .9rem;
+    line-height: 1.6rem;
+    padding-top: .5rem;
+    padding-left: 1rem;
+    margin-bottom: 1.4rem;
+}
+.dx-commodity .dx-GoodsDetails .list{
+    border-top: .2rem solid #ccc;
+    padding-top: 1rem;
+}
+.dx-commodity .dx-GoodsDetails .list li{
+    font-size: .9rem;
+    line-height: 1.8rem;
+    margin-left: 1.8rem;
+    list-style: circle;
+}
+.dx-commodity .maybeLike .title{
+    font-size: .9rem;
+    line-height: 2rem;
+    border-bottom: .2rem solid #999;
+    padding-left: 2rem;
+}
+.dx-commodity .maybeLike .left{
+    width: 15rem;
+    margin-top: 2rem;
+    float: left;
+    border-right: .2rem solid #f2f2f2;
+    text-align: center;
+}
+.dx-commodity .maybeLike .pic{
+    margin: 2.7rem 0;
+}
+.dx-commodity .maybeLike .name{
+    font-size: .9rem;
+    margin-bottom: 1.5rem;
+}
+.dx-commodity .maybeLike .price{
+    font-size: .6rem;
+    margin-bottom: 1.3rem;
+}
+.dx-commodity .maybeLike .color{
+    margin: 0 auto;
+    width: 6rem;
+}
+.dx-commodity .maybeLike .color li{
+    float: left;
+    margin-right: .2rem;
+    width: 1rem;
+    height: 1rem;
+    border: .2rem solid #ccc;
+}

@@ -6,33 +6,33 @@
 
     <!--配置写的数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="driverClassName" value="${market.jdbc.driverClassName}"/>
-        <property name="url" value="${market.jdbc.url}"/>
-        <property name="username" value="${market.jdbc.username}"/>
-        <property name="password" value="${market.jdbc.password}"/>
+        <property name="driverClassName" value="${shiatzy.jdbc.driverClassName}"/>
+        <property name="url" value="${shiatzy.jdbc.url}"/>
+        <property name="username" value="${shiatzy.jdbc.username}"/>
+        <property name="password" value="${shiatzy.jdbc.password}"/>
         <!-- 初始化链接大小 -->
-        <property name="initialSize" value="${market.pool.initialSize}"/>
+        <property name="initialSize" value="${shiatzy.pool.initialSize}"/>
         <!-- 最大连接数 -->
-        <property name="maxActive" value="${market.pool.maxActive}"/>
+        <property name="maxActive" value="${shiatzy.pool.maxActive}"/>
         <!-- 连接池中最小空闲连接数 -->
-        <property name="minIdle" value="${market.pool.minIdle}"/>
+        <property name="minIdle" value="${shiatzy.pool.minIdle}"/>
         <!-- 默认值是无限大，当连接池中连接已经用完了，等待建立一个新连接的最大毫秒数 ( 在抛异常之前 ) -->
-        <property name="maxWait" value="${market.pool.maxWait}"/>
+        <property name="maxWait" value="${shiatzy.pool.maxWait}"/>
         <!-- 默认值是 true ，当从连接池取连接时，验证这个连接是否有效 -->
-        <property name="testOnBorrow" value="${market.pool.testOnBorrow}"/>
+        <property name="testOnBorrow" value="${shiatzy.pool.testOnBorrow}"/>
         <!-- 指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除.注意: 设置为true后如果要生效,validationQuery参数必须设置为非空字符串 -->
-        <property name="testWhileIdle" value="${market.pool.testWhileIdle}"/>
+        <property name="testWhileIdle" value="${shiatzy.pool.testWhileIdle}"/>
         <!-- SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录 -->
-        <property name="validationQuery" value="${market.pool.validationQuery}"/>
+        <property name="validationQuery" value="${shiatzy.pool.validationQuery}"/>
         <!-- 默认值是 flase, 当从把该连接放回到连接池的时，验证这个连接是否有效 -->
-        <property name="testOnReturn" value="${market.pool.testOnReturn}"/>
+        <property name="testOnReturn" value="${shiatzy.pool.testOnReturn}"/>
         <!-- 默认值是 1000 * 60 * 30(30 分钟 ) ，连接池中连接可空闲的时间 -->
-        <property name="minEvictableIdleTimeMillis" value="${market.pool.minEvictableIdleTimeMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${shiatzy.pool.minEvictableIdleTimeMillis}"/>
         <!-- 默认值是 -1 ，每隔一段多少毫秒跑一次回收空闲线程的线程(空闲链接回收器) -->
-        <property name="timeBetweenEvictionRunsMillis" value="${market.pool.timeBetweenEvictionRunsMillis}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${shiatzy.pool.timeBetweenEvictionRunsMillis}"/>
         <!-- 解密密码必须要配置的项 -->
-        <property name="filters" value="${market.pool.filters}"/>
-        <property name="connectionProperties" value="${market.pool.connectionProperties}"/>
+        <property name="filters" value="${shiatzy.pool.filters}"/>
+        <property name="connectionProperties" value="${shiatzy.pool.connectionProperties}"/>
     </bean>
 
     <bean id="coralHostSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -53,7 +53,7 @@
                 mappers=com.dookay.coral.common.persistence.Mapper
             </value>
         </property>
-        <property name="sqlSessionFactoryBeanName" value="lydCoreSqlSessionFactory"/>
+        <property name="sqlSessionFactoryBeanName" value="coralHostSqlSessionFactory"/>
     </bean>
 
 </beans>
