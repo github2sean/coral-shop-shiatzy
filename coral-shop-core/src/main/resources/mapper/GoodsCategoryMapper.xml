@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.GoodsCategoryMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`parent_id` as 'parentId',
+		    	a.`prototype_id` as 'prototypeId',
+		    	a.`name` as 'name',
+		    	a.`description` as 'description',
+		    	a.`slug` as 'slug',
+		    	a.`thumb` as 'thumb',
+		    	a.`is_valid` as 'isValid',
+		    	a.`display_order` as 'displayOrder',
+		    	a.`create_time` as 'createTime',
+		    	a.`creator_id` as 'creatorId',
+		    </trim>
+	   	from 
+	    	`t_goods_category` as a
+	</sql>
+  
+</mapper>

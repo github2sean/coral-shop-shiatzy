@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.GoodsAttributeValueMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`goods_id` as 'goodsId',
+		    	a.`prototype_attribute_id` as 'prototypeAttributeId',
+		    	a.`prototype_attribute_option_id` as 'prototypeAttributeOptionId',
+		    	a.`value` as 'value',
+		    </trim>
+	   	from 
+	    	`t_goods_attribute_value` as a
+	</sql>
+  
+</mapper>

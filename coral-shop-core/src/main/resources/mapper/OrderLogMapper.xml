@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.order.mapper.OrderLogMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`order_id` as 'orderId',
+		    	a.`create_time` as 'createTime',
+		    	a.`admin_id` as 'adminId',
+		    	a.`message` as 'message',
+		    	a.`is_successed` as 'isSuccessed',
+		    </trim>
+	   	from 
+	    	`t_order_log` as a
+	</sql>
+  
+</mapper>

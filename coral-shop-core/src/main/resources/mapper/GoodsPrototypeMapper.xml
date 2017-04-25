@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.GoodsPrototypeMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`name` as 'name',
+		    	a.`code` as 'code',
+		    	a.`description` as 'description',
+		    	a.`create_time` as 'createTime',
+		    	a.`creator_id` as 'creatorId',
+		    </trim>
+	   	from 
+	    	`t_goods_prototype` as a
+	</sql>
+  
+</mapper>

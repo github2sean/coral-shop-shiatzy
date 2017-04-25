@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ModuleMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`name` as 'name',
+		    	a.`description` as 'description',
+		    	a.`label` as 'label',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    </trim>
+	   	from 
+	    	`t_security_module` as a
+	</sql>
+  
+</mapper>

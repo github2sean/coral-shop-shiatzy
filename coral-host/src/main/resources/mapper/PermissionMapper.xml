@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="PermissionMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`name` as 'name',
+		    	a.`type` as 'type',
+		    	a.`url` as 'url',
+		    	a.`parent_id` as 'parentId',
+		    	a.`parent_ids` as 'parentIds',
+		    	a.`permission` as 'permission',
+		    	a.`available` as 'available',
+		    	a.`module_id` as 'moduleId',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    </trim>
+	   	from 
+	    	`t_security_permission` as a
+	</sql>
+  
+</mapper>

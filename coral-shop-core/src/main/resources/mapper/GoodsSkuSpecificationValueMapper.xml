@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.GoodsSkuSpecificationValueMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`sku_id` as 'skuId',
+		    	a.`goods_id` as 'goodsId',
+		    	a.`prototype_specification_id` as 'prototypeSpecificationId',
+		    	a.`prototype_specification_option_id` as 'prototypeSpecificationOptionId',
+		    	a.`name` as 'name',
+		    	a.`value` as 'value',
+		    	a.`image_url` as 'imageUrl',
+		    </trim>
+	   	from 
+	    	`t_goods_sku_specification_value` as a
+	</sql>
+  
+</mapper>

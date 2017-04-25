@@ -1,0 +1,70 @@
+<context schema="coral_market">
+
+	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+					connectionURL="jdbc:mysql://192.168.2.22:3306/coral_market?characterEncoding=utf8"
+					uName="root" password="100001" />
+
+	<!-- 数据类型 -->	
+	<javaTypeResolver>
+		<property name="int" value="Integer" />
+		<property name="tinyint" value="Integer" />
+		<property name="bigint" value="Long" />
+		<property name="char" value="String" />
+		<property name="varchar" value="String" />
+		<property name="text" value="String" />
+		<property name="float" value="Float" />
+		<property name="double" value="Double" />
+		<property name="decimal" value="Double" />
+		<property name="smallint" value="Integer" />
+		<property name="timestamp" value="Date" />
+		<property name="datetime" value="Date" />
+		<property name="bit" value="Boolean" />
+	</javaTypeResolver>
+	
+	<!--管理员模块-->
+	<table tableName="t_security_admin" domainObjectName="Admin"
+		   packageName="com.dookay.coral.host.system" desc="管理员信息表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<table tableName="t_security_module" domainObjectName="Module"
+		   packageName="com.dookay.coral.host.system" desc="系统模块信息表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<table tableName="t_security_permission" domainObjectName="Permission"
+		   packageName="com.dookay.coral.host.system" desc="系统权限信息表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<table tableName="t_security_permission_assign" domainObjectName="PermissionAssign"
+		   packageName="com.dookay.coral.host.system" desc="系统权限 角色 关联授权表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<table tableName="t_security_role" domainObjectName="Role"
+		   packageName="com.dookay.coral.host.system" desc="系统角色表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<table tableName="t_security_role_assign" domainObjectName="RoleAssign"
+		   packageName="com.dookay.coral.host.system" desc="系统管理员 角色 关联授权表" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.system.query" />
+	</table>
+	<!--管理员模块-->
+	
+	<!-- 账户模块 开始-->
+	<table tableName="t_user_account" domainObjectName="Account"
+		   packageName="com.dookay.coral.host.user" desc="统一账户表" author="stone">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.host.user.query" />
+	</table>
+	<table tableName="t_user_account_binding" domainObjectName="AccountBinding"
+		   packageName="com.dookay.coral.host.user" desc="账户第三方绑定" author="stone">
+		<generatedKey column="user_id" identity="true" />
+			<dto packageName="com.dookay.coral.host.user.query" />
+	</table>
+	<!-- 账户模块 结束-->
+
+</context>

@@ -1,0 +1,148 @@
+<context schema="coral_shop_shiatzy">
+
+	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+					connectionURL="jdbc:mysql://192.168.2.27:3306/coral_shop_shiatzy?characterEncoding=utf8"
+					uName="root" password="dookay100001" />
+
+	<!-- 数据类型 -->	
+	<javaTypeResolver>
+		<property name="int" value="Integer" />
+		<property name="tinyint" value="Integer" />
+		<property name="bigint" value="Long" />
+		<property name="char" value="String" />
+		<property name="varchar" value="String" />
+		<property name="text" value="String" />
+		<property name="float" value="Float" />
+		<property name="double" value="Double" />
+		<property name="decimal" value="Double" />
+		<property name="smallint" value="Integer" />
+		<property name="timestamp" value="Date" />
+		<property name="datetime" value="Date" />
+		<property name="bit" value="Boolean" />
+	</javaTypeResolver>
+
+	<!--商品模块 开始-->
+	<table tableName="t_goods" domainObjectName="Goods"
+		   packageName="com.dookay.coral.shop.goods" desc="商品" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_attribute_value" domainObjectName="GoodsAttributeValue"
+		   packageName="com.dookay.coral.shop.goods" desc="商品属性值" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_category" domainObjectName="GoodsCategory"
+		   packageName="com.dookay.coral.shop.goods" desc="商品分类" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_prototype" domainObjectName="GoodsPrototype"
+		   packageName="com.dookay.coral.shop.goods" desc="商品原型" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_prototype_attribute" domainObjectName="GoodsPrototypeAttribute"
+		   packageName="com.dookay.coral.shop.goods" desc="原型属性" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_prototype_attribute_option" domainObjectName="GoodsPrototypeAttributeOption"
+		   packageName="com.dookay.coral.shop.goods" desc="原型属性选项" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_prototype_specification" domainObjectName="GoodsPrototypeSpecification"
+		   packageName="com.dookay.coral.shop.goods" desc="原型规格" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_prototype_specification_option" domainObjectName="GoodsPrototypeSpecificationOption"
+		   packageName="com.dookay.coral.shop.goods" desc="原型规格选项" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_sku" domainObjectName="GoodsSku"
+		   packageName="com.dookay.coral.shop.goods" desc="商品sku" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_sku_specification_value" domainObjectName="GoodsSkuSpecificationValue"
+		   packageName="com.dookay.coral.shop.goods" desc="商品sku规格值" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<!--商品模块 结束-->
+
+	<!--订单模块 开始-->
+	<table tableName="t_order" domainObjectName="Order"
+		   packageName="com.dookay.coral.shop.order" desc="商品sku规格值" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order" domainObjectName="Order"
+		   packageName="com.dookay.coral.shop.order" desc="订单" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_item" domainObjectName="OrderItem"
+		   packageName="com.dookay.coral.shop.order" desc="订单明细" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_log" domainObjectName="OrderLog"
+		   packageName="com.dookay.coral.shop.order" desc="订单日志" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_return_request" domainObjectName="OrderReturnRequest"
+		   packageName="com.dookay.coral.shop.order" desc="订单退货申请" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_return_request_item" domainObjectName="OrderReturnRequestItem"
+		   packageName="com.dookay.coral.shop.order" desc="订单退货申请明细" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_shopping_cart_item" domainObjectName="OrderShoppingCartItem"
+		   packageName="com.dookay.coral.shop.order" desc="购物车" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<!--订单模块 结束-->
+
+	<!--营销模块 开始-->
+	<table tableName="t_promotion_coupon" domainObjectName="Coupon"
+		   packageName="com.dookay.coral.shop.promotion" desc="优惠券" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.promotion.query" />
+	</table>
+	<!--营销模块 结束-->
+
+	<!--客户模块 开始-->
+	<table tableName="t_customer" domainObjectName="Customer"
+		   packageName="com.dookay.coral.shop.customer" desc="客户" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.customer.query" />
+	</table>
+	<table tableName="t_customer_address" domainObjectName="CustomerAddress"
+		   packageName="com.dookay.coral.shop.customer" desc="客户地址" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.customer.query" />
+	</table>
+	<!--客户模块 结束-->
+
+	<!--内容模块 开始-->
+	<table tableName="t_content_item" domainObjectName="ContentItem"
+		   packageName="com.dookay.coral.shop.content" desc="内容" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
+	<table tableName="t_content_category" domainObjectName="ContentCategory"
+		   packageName="com.dookay.coral.shop.content" desc="内容分类" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
+	<!--内容模块 结束-->
+</context>

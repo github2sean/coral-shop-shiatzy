@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>coral-shop-shiatzy</artifactId>
+        <groupId>com.dookay</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>shiatzy-web-admin</artifactId>
+    <packaging>war</packaging>
+    <name>shiatzy-web-admin Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <!--工程内依赖 开始-->
+        <dependency>
+            <groupId>com.dookay</groupId>
+            <artifactId>coral-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dookay</groupId>
+            <artifactId>coral-adapter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dookay</groupId>
+            <artifactId>coral-host</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dookay</groupId>
+            <artifactId>coral-shop-core</artifactId>
+        </dependency>
+        <!--工程内依赖 结束-->
+
+        <!-- Restful API 文档-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <!-- json组件 start -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--json组件 end -->
+
+        <!--common start -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+        <!--common end -->
+    </dependencies>
+    <build>
+        <finalName>shiatzy-web-admin</finalName>
+    </build>
+</project>
