@@ -24,6 +24,8 @@ public interface IAccountService extends IBaseService<AccountDomain> {
 
     Boolean validateAccount(String userName,String password);
 
+    Boolean isExist(String userName);
+
     List<AccountDomain> getAccountList(AccountQuery accountQuery);
 
     PageList<AccountDomain> getAccountPageList(AccountQuery accountQuery);

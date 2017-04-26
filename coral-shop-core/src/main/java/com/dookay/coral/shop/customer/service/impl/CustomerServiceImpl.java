@@ -55,7 +55,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 			insertCustomer = new CustomerDomain();
 			insertCustomer.setAccountId(accountDomain.getId());
 			insertCustomer.setEmail(accountDomain.getEmail());
-			insertCustomer.setCreateTime(insertCustomer.getCreateTime());
+			insertCustomer.setCreateTime(accountDomain.getCreateTime());
 		}
 		return createCustomer(insertCustomer);
 	}

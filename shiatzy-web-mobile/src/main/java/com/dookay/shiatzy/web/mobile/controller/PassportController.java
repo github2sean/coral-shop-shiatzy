@@ -32,7 +32,8 @@ public class PassportController extends MobileBaseController{
     private Logger logger = Logger.getLogger(PassportController.class);
     @Autowired
     private IAccountService accountService;
-    private ICustomerService iCustomerService;
+    @Autowired
+    private ICustomerService customerService;
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
@@ -65,16 +66,17 @@ public class PassportController extends MobileBaseController{
         String userName = registerForm.getEmail();
         String password = registerForm.getPassword();
         String validCode = registerForm.getValidCode();
+        System.out.print("userName"+userName+" password"+password+" validCode"+validCode);
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
-           Boolean isExist =  accountService.validateAccount(userName,password);
+           Boolean isExist =  accountService.isExist(userName);
             if(!isExist){
                 AccountDomain accountDomain = new AccountDomain();
                 accountDomain.setUserName(userName);
                 accountDomain.setPassword(password);
                 accountDomain.setEmail(userName);
                 accountDomain.setCreateTime(new Date());
-                CustomerDomain retCustomer = iCustomerService.register(null,accountDomain);
+                CustomerDomain retCustomer = customerService.register(null,accountDomain);
                 if(retCustomer==null) {
                     return successResult("注册失败");
                 }

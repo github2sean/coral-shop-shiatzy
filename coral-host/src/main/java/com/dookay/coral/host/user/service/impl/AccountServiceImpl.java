@@ -56,6 +56,14 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
         }
         return this.comparePassword(accountDomain,password);
     }
+    @Override
+    public Boolean isExist(String userName) {
+        AccountDomain accountDomain=this.getAccount(userName);
+        if (accountDomain!=null){
+            throw new ServiceException("账户存在");
+        }
+        return false;
+    }
 
     @Override
     public List<AccountDomain> getAccountList(AccountQuery accountQuery) {
