@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.customer.service;
 
 import com.dookay.coral.common.service.IBaseService;
+import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 
 /**
@@ -10,5 +11,15 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
  * @version : v0.0.1
  */
 public interface ICustomerService extends IBaseService<CustomerDomain> {
+    /**
+     * 注册客户
+     * @param customerDomain
+     * @param accountDomain
+     * @return
+     */
+    CustomerDomain register(CustomerDomain customerDomain, AccountDomain accountDomain);
 
+    CustomerDomain createCustomer(CustomerDomain customerDomain);
+
+    CustomerDomain getAccount(Long accountId);
 }

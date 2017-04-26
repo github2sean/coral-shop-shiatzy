@@ -239,18 +239,16 @@
                 <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-core-asl</artifactId>
-                <version>1.9.2</version>
+                <version>1.9.13</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
-                <version>1.9.2</version>
+                <version>1.9.13</version>
             </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
@@ -394,9 +392,9 @@
             </dependency>
 
             <dependency>
-                <groupId>javax.servlet.jsp</groupId>
+                <groupId>javax.servlet</groupId>
                 <artifactId>jsp-api</artifactId>
-                <version>2.2</version>
+                <version>2.0</version>
             </dependency>
 
             <!-- Restful API 文档 -->

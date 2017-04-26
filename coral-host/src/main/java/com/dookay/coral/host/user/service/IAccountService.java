@@ -24,6 +24,8 @@ public interface IAccountService extends IBaseService<AccountDomain> {
 
     AccountDomain getAccountByEmail(String email);
 
+    Boolean isExist(String userName);
+
     List<AccountDomain> getAccountList(AccountQuery accountQuery);
 
     PageList<AccountDomain> getAccountPageList(AccountQuery accountQuery);
