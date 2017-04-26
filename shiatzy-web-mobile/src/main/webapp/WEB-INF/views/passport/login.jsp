@@ -20,7 +20,7 @@
         <input type="password" placeholder="输入您的密码" name="loginForm.password">
         <div class="remind"><a href="注册登录.登录.忘记密码.html">忘记密码？</a></div>
         <!--添加的a标签用来演示-->
-        <a href="我的账户.首页.html"><button type="button" class="loginBtn">登入</button></a>
+        <button type="button" class="loginBtn">登入</button>
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/register">注册</a></div>
     </div>
     <div class="thirdparty">
