@@ -30,7 +30,7 @@
                     <li>姓氏：${customerDomain.firstName}</li>
                     <li>电邮：${accountDomain.email}</li>
                     <li>电话号码：${customerDomain.phone}</li>
-                    <li>地址：${accountDomain.cellphone}</li>
+                    <li>地址：${customerAddressDomain.adress}</li>
                 </ol>
             </li>
             <li>
@@ -40,7 +40,7 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.个人信息.邮箱密码修改.html">
+                <a href="/u/account/toUpdateEmail">
                     <span>邮箱及密码信息修改 </span>
                     <span style="float: right;">></span>
                 </a>

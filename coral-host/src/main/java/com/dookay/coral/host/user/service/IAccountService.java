@@ -43,4 +43,7 @@ public interface IAccountService extends IBaseService<AccountDomain> {
     void changePassword(AccountDomain accountDomain, String oldPassword, String newPassword);
 
     void changeUserName(AccountDomain accountDomain,String newUserName);
+
+    Boolean updateEmailOrPassword(AccountDomain accountDomain,String newEmail,String newPassword);
+
 }

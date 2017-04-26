@@ -19,6 +19,7 @@
         <input type="email" placeholder="输入您的电子邮箱" name="userName">
         <input type="password" placeholder="输入您的密码" name="password">
         <div class="remind"><a href="${ctx}/passport/toForget">忘记密码？</a></div>
+        <div class="remind loginInfo"></div>
         <!--添加的a标签用来演示-->
         <button type="button" class="loginBtn">登入</button>
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
@@ -31,11 +32,17 @@
 
     <script>
         $(function () {
+            $(".loginInfo").hide();
             $(".loginBtn").click(function () {
                 var $form = $(".loginForm");
                 var data  = $form.serializeArray();
                 $.post("/passport/login.do",data,function (data) {
-                    alert(data.message);
+                    var code = data.code;
+                    if(code == '200'){
+                        location.href = "${ctx}/home/index";
+                    }else{
+                        $(".loginInfo").show().css("color","red").text(data.message);
+                    }
                 })
             });
         });

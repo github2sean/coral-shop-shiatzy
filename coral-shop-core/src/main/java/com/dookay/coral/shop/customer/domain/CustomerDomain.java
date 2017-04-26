@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.customer.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import java.util.Date;
  * @since : 2017年04月24日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_customer")
 public class CustomerDomain implements Serializable {
 
@@ -128,6 +131,20 @@ public class CustomerDomain implements Serializable {
 	public void setSubscribeType(Integer subscribeType){
 		this.subscribeType = subscribeType;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "CustomerDomain{" +
+				"id=" + id +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", email='" + email + '\'' +
+				", phone='" + phone + '\'' +
+				", customerLevel=" + customerLevel +
+				", isArtClubMember=" + isArtClubMember +
+				", accountId=" + accountId +
+				", createTime=" + createTime +
+				", subscribeType=" + subscribeType +
+				'}';
+	}
 }

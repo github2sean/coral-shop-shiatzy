@@ -1,13 +1,18 @@
 package com.dookay.coral.shop.customer.service.impl;
 
+import com.dookay.coral.common.exception.ExceptionUtils;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.query.AccountQuery;
+import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.host.user.service.impl.AccountServiceImpl;
+import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.query.CustomerQuery;
+import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.Account;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.standard.DateTimeContext;
 import org.springframework.stereotype.Service;
@@ -38,7 +43,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	
 
 	@Autowired
-	private AccountServiceImpl accountService;
+	private IAccountService accountService;
+
+	private ICustomerAddressService customerAddressService;
 
 	/**
 	 * 注册客户
@@ -76,6 +83,22 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 		CustomerQuery query = new CustomerQuery();
 		query.setAccountId(accountId);
 		return super.getOne(query);
+	}
+
+	@Override
+	@org.springframework.transaction.annotation.Transactional("transactionManager")
+	public Boolean updateCustomer(AccountDomain updateAccount, CustomerDomain updateCustomer, CustomerAddressDomain updaCustomerAddress) {
+		Boolean isSuccess = true;
+		try {
+			customerAddressService.update(updaCustomerAddress);
+			accountService.update(updateAccount);
+			update(updateCustomer);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			ExceptionUtils.throwBaseException("修改失败");
+		}
+		return isSuccess;
 	}
 
 }

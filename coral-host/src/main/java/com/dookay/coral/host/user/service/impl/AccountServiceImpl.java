@@ -172,6 +172,30 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
         super.update(accountDomain);
     }
 
+    @Override
+    public Boolean updateEmailOrPassword(AccountDomain accountDomain, String newEmail, String newPassword) {
+        Boolean isSuccess = true;
+        try {
+            if(comparePassword(accountDomain,accountDomain.getPassword())){
+                if(StringUtils.isNotBlank(newEmail)){
+                    changeUserName(accountDomain,newEmail);
+                }
+                if(StringUtils.isNotBlank(newPassword)){
+                    changePassword(accountDomain,accountDomain.getPassword(),newPassword);
+                }
+
+            }else{
+                isSuccess = false;
+                throw new ServiceException("登录密码错误");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            isSuccess = false;
+            throw new ServiceException("修改失败");
+        }
+            return isSuccess;
+    }
+
     /**
      * 加密admin中的password并修改password
      *

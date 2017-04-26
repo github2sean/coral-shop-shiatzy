@@ -2,6 +2,7 @@ package com.dookay.coral.shop.customer.service;
 
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 
 /**
@@ -22,4 +23,7 @@ public interface ICustomerService extends IBaseService<CustomerDomain> {
     CustomerDomain createCustomer(CustomerDomain customerDomain);
 
     CustomerDomain getAccount(Long accountId);
+
+    Boolean updateCustomer(AccountDomain updateAccount, CustomerDomain updateCustomer, CustomerAddressDomain updaCustomerAddress);
+
 }
