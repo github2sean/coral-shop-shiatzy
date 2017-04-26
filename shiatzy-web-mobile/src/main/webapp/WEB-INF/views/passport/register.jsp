@@ -33,7 +33,11 @@
     <script>
         $(function () {
             $(".registerBtn").click(function () {
-                $(".registerForm").submit();
+                var $form = $(".registerForm");
+                var data  = $form.serializeArray();
+                $.post("/passport/register.do",data,function (data) {
+                    alert(data.message);
+                })
             });
         });
     </script>

@@ -7,6 +7,7 @@ import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
+import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +44,11 @@ public class PassportController extends MobileBaseController{
     @RequestMapping(value = "toLogin", method = RequestMethod.GET)
     public String toLogin(){
         return "/passport/login";
+    }
+
+    @RequestMapping(value = "toForget", method = RequestMethod.GET)
+    public String toForget(){
+        return "/passport/forgetPassword";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -83,5 +89,17 @@ public class PassportController extends MobileBaseController{
         }
 
         return successResult("注册成功");
+    }
+
+    @RequestMapping(value = "sendPassword", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult sendPassword(@ModelAttribute ForgetForm forgetForm){
+        beanValidator(forgetForm);
+        String userName = forgetForm.getUserName();
+        String validCode = forgetForm.getValidCode();
+
+
+
+        return successResult("发送成功"+userName+" "+validCode);
     }
 }

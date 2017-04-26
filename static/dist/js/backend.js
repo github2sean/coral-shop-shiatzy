@@ -479,7 +479,7 @@ var backendApp = function () {
                 function LoginDialogConstructor(options) {
                     this.options = options || {};
                     var _obj = this;
-                    $.get("/u/passport/ajaxlogin", function (data) {
+                    $.get("/user/passport/ajaxlogin", function (data) {
                         var loginModelDialog = dialog({
                             content: data,
                             padding: 0,
@@ -499,7 +499,7 @@ var backendApp = function () {
                                 } else if (loginData.Type == 2) {
                                     $.confirm2(loginData.Msg, function () {
                                         options.callback();
-                                        window.open("/u/passport/sinaOauthLogin");
+                                        window.open("/user/passport/sinaOauthLogin");
                                     }, function () {
                                         options.callback();
                                     });
@@ -527,7 +527,7 @@ var backendApp = function () {
                 };
             })();
             $.loginExcute = function (callback) {
-                $.post("/u/passport/IsLogin", function (data) {
+                $.post("/user/passport/IsLogin", function (data) {
                     if (data.code == 4) {
                         callback();
                     } else {

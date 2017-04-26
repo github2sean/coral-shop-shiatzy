@@ -17,7 +17,7 @@ public class HomeController extends MobileBaseController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
-        ModelAndView mv = new ModelAndView("/home/index");
+        ModelAndView mv = new ModelAndView("home/index");
         return mv;
     }
 }

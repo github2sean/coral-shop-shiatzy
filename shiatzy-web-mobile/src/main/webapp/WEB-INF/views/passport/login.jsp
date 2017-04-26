@@ -12,17 +12,18 @@
         <div class="member"><span><img src="images/icon-member.png" alt=""></span>会员</div>
         <a href="" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
-    <form class="loginForm" method="post" action="/passport/login"></form>
+    <form class="loginForm" method="post" action="/passport/login">
     <div class="content">
         <div class="login">登入</div>
         <div class="title">请于下方输入您的电子邮箱与密码登入</div>
         <input type="email" placeholder="输入您的电子邮箱" name="userName">
         <input type="password" placeholder="输入您的密码" name="password">
-        <div class="remind"><a href="注册登录.登录.忘记密码.html">忘记密码？</a></div>
+        <div class="remind"><a href="${ctx}/passport/toForget">忘记密码？</a></div>
         <!--添加的a标签用来演示-->
         <button type="button" class="loginBtn">登入</button>
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
     </div>
+    </form>
     <div class="thirdparty">
         <div class="title">使用第三方帐号快速登入</div>
         <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
@@ -31,7 +32,11 @@
     <script>
         $(function () {
             $(".loginBtn").click(function () {
-                $(".loginForm").submit();
+                var $form = $(".loginForm");
+                var data  = $form.serializeArray();
+                $.post("/passport/login.do",data,function (data) {
+                    alert(data.message);
+                })
             });
         });
     </script>

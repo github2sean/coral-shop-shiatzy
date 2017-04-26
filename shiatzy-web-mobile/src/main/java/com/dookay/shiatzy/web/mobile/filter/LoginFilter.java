@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String loginRef = "/passport/login?ref=" + URLEncoder.encode(request.getServletPath(), "UTF-8");
+        String loginRef = "/passport/toLogin?ref=" + URLEncoder.encode(request.getServletPath(), "UTF-8");
 //        IAccountService accountService = SpringContextHolder.getBean("accountService");
         if (UserContext.isGuest()) {
             response.sendRedirect(loginRef);
