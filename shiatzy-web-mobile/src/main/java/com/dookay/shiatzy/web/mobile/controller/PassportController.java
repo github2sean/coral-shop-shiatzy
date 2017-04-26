@@ -66,7 +66,6 @@ public class PassportController extends MobileBaseController{
         String userName = registerForm.getEmail();
         String password = registerForm.getPassword();
         String validCode = registerForm.getValidCode();
-        System.out.print("userName"+userName+" password"+password+" validCode"+validCode);
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
            Boolean isExist =  accountService.isExist(userName);
