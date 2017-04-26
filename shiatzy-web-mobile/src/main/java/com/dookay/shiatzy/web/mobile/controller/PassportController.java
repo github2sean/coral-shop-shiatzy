@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by admin on 2017/4/25.
@@ -71,6 +72,8 @@ public class PassportController extends MobileBaseController{
                 AccountDomain accountDomain = new AccountDomain();
                 accountDomain.setUserName(userName);
                 accountDomain.setPassword(password);
+                accountDomain.setEmail(userName);
+                accountDomain.setCreateTime(new Date());
                 CustomerDomain retCustomer = iCustomerService.register(null,accountDomain);
                 if(retCustomer==null) {
                     return successResult("注册失败");
