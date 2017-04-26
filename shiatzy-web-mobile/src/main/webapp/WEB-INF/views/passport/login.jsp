@@ -16,12 +16,12 @@
     <div class="content">
         <div class="login">登入</div>
         <div class="title">请于下方输入您的电子邮箱与密码登入</div>
-        <input type="email" placeholder="输入您的电子邮箱" name="email">
+        <input type="email" placeholder="输入您的电子邮箱" name="userName">
         <input type="password" placeholder="输入您的密码" name="password">
         <div class="remind"><a href="注册登录.登录.忘记密码.html">忘记密码？</a></div>
         <!--添加的a标签用来演示-->
         <button type="button" class="loginBtn">登入</button>
-        <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/register">注册</a></div>
+        <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
     </div>
     <div class="thirdparty">
         <div class="title">使用第三方帐号快速登入</div>
