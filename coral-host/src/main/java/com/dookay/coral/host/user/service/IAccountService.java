@@ -22,11 +22,15 @@ public interface IAccountService extends IBaseService<AccountDomain> {
 
     AccountDomain getAccount(String userName);
 
-    Boolean validateAccount(String userName,String password);
+    AccountDomain getAccountByEmail(String email);
 
     List<AccountDomain> getAccountList(AccountQuery accountQuery);
 
     PageList<AccountDomain> getAccountPageList(AccountQuery accountQuery);
+
+    Boolean validateAccount(String userName,String password);
+
+    void  registerAccount(AccountDomain accountDomain);
 
     AccountDomain createAccount(AccountDomain accountDomain);
 
