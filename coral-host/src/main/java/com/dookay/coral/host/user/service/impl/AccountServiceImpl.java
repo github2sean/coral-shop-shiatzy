@@ -49,6 +49,13 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
     }
 
     @Override
+    public AccountDomain getAccountByEmail(String email) {
+        AccountQuery query = new AccountQuery();
+        query.setEmail(email);
+        return super.getOne(query);
+    }
+
+    @Override
     public Boolean validateAccount(String userName, String password) {
         AccountDomain accountDomain=this.getAccount(userName);
         if (accountDomain==null){
@@ -63,6 +70,29 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
             throw new ServiceException("账户存在");
         }
         return false;
+    }
+
+    @Override
+    public void registerAccount(AccountDomain accountDomain) {
+        if (!StringUtils.isNotBlank(accountDomain.getUserName())) {
+            throw new ServiceException("用户名不能为空");
+        }
+        if(!StringUtils.isNotBlank(accountDomain.getEmail())){
+            throw new ServiceException("邮箱不能为空");
+        }
+        if (!StringUtils.isNotBlank(accountDomain.getPassword())) {
+            throw new ServiceException("密码不能为空");
+        }
+        AccountDomain checkUserName = getAccount(accountDomain.getUserName());
+        if (checkUserName != null) {
+            throw new ServiceException("用户名已存在");
+        }
+        AccountDomain checkEmail = getAccountByEmail(accountDomain.getEmail());
+        if(checkEmail !=null){
+            throw new ServiceException("邮箱已存在");
+        }
+        encryptPassword(accountDomain);
+        super.create(accountDomain);
     }
 
     @Override
