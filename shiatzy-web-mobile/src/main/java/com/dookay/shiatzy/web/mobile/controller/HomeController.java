@@ -12,10 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 2017/4/25
  */
 @Controller
-@RequestMapping("")
+@RequestMapping("home/")
 public class HomeController extends MobileBaseController {
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView("/home/index");
         return mv;
