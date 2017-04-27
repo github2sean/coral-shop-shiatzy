@@ -21,5 +21,9 @@ public class SkuServiceImpl extends BaseServiceImpl<SkuDomain> implements ISkuSe
 	
 	@Autowired
 	private SkuMapper skuMapper;
-	  
+
+	@Override
+	public SkuDomain getSkuByGoodsId(Long id) {
+		return null;
+	}
 }
