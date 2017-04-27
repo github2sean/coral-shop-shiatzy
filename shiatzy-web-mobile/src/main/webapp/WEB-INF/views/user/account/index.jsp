@@ -1,14 +1,13 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">我的账户</p>
+    <p style="float: left">我的账户 </p>
     <a style="float: right;" href="注册登录.登录.html">< 回上页</a>
 </div>
 <div class="my-account">
@@ -56,14 +55,20 @@
         </ul>
     </div>
     <div class="outline">
-        <a href="注册登录.登录.html">登出</a>
+        <a type="button" class="loginOut" >登出</a>
     </div>
 
 
     <script>
 
-        $(function () {
-
+       $(function () {
+            $(".loginOut").click(function () {
+                $.post("/passport/loginOut.do",function (data) {
+                 if(data.data==1){
+                 location.href = "passport/toLogin.do";
+                 }
+                 });
+            });
 
         });
 

@@ -11,4 +11,7 @@ import com.dookay.coral.shop.goods.domain.GoodsSkuDomain;
  */
 public interface IGoodsSkuService extends IBaseService<GoodsSkuDomain> {
 
+    GoodsSkuDomain getSkuByGoodsId(Long id);
+
+
 }

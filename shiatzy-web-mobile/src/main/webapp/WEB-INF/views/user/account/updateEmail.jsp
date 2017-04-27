@@ -93,6 +93,11 @@
                 $.post("updateEmailOrPassword",data,function (data) {
                     console.log(data);
                     console.log(data.message);
+                    if(data.message!="修改成功"){
+                        $(".erroInfo2").show();
+                        $(".erroInfo2").css("color","red").text(data.message);
+                    }
+
                 });
             }
 

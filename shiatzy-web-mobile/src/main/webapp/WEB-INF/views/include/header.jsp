@@ -234,8 +234,8 @@
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><img src="${ctx}/static/images/logo.png" alt=""></span>
     <ul class="top-right-nav">
-        <li class="active"><a href="购物车.html"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">3</span></a></li>
-        <li><a href="index.html"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
+        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">3</span></a></li>
+        <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
 </header>
@@ -246,9 +246,13 @@
     </div>
     <div class="do-nav-cnt">
         <div class="do-search">
-            <form action="">
-                <input type="text" placeholder="请输入搜索内容" class="j_search">
-                <button class="iconfont">&#xe610;</button>
+            <form action="/goods/list" method="post" id="contentForm">
+                <input type="text" placeholder="请输入搜索内容" class="j_search" name="goodsName">
+                <input type="hidden" value="1"  name="pageIndex">
+                <input type="hidden" value="10"  name="pageSize">
+                <input type="hidden" value="0"  name="offset">
+                <input type="hidden" value="10"  name="limit">
+                <button class="iconfont" id="searchBtn">&#xe610;</button>
             </form>
         </div>
         <div class="search-rec-img">
@@ -273,8 +277,8 @@
             <li><a href="产品列表.html">SALE</a></li>
         </ul>
         <ul class="do-list-lang">
-            <li><a href="我的账户.首页.html">我的账户</a></li>
-            <li class="do-login"><a href="注册登录.登录.html">登录</a> | <a href="注册登录.注册.html">注册</a></li>
+            <li><a href="/u/account/index">我的账户</a></li>
+            <li class="do-login"><a href="/passport/toLogin">登录</a> | <a href="/passport/toRegister">注册</a></li>
             <li><a href="">选择其他国家或地区</a></li>
             <li><a href="">选择語言</a></li>
         </ul>
@@ -287,4 +291,12 @@
             <p>(支持所有区域问询)</p>
         </div>
     </div>
+    <script>
+        $(function () {
+            $("#searchBtn").click(function () {
+                $("#contentForm").submit();
+            });
+        });
+
+    </script>
 </div>
