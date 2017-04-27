@@ -41,7 +41,6 @@
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
-<script src="${ctx}/static/js/plugins/layer/layer.js"></script>
 <!-- 核心js插件 结束 -->
 <!-- 页面插件开始 -->
 <script src="${ctx}/static/js/common.js"></script>

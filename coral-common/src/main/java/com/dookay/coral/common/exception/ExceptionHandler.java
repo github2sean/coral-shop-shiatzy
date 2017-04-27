@@ -78,7 +78,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
      * hibernateValidator数据验证异常
      *
      * @param ex
-     * @param message
+     * @param errorMsg
      * @return
      * @author : kezhan
      * @since : 2016年12月7日
@@ -129,6 +129,17 @@ public class ExceptionHandler implements HandlerExceptionResolver {
 
         if (ex instanceof ServiceException) {
             return ex.getMessage();
+        }
+        return errorMsg;
+    }
+
+    public String IllegalArgumentExceptionValidator(Exception ex, String errorMsg){
+        if (StringUtils.isNotEmpty(errorMsg)) {
+            return errorMsg;
+        }
+
+        if (ex instanceof IllegalArgumentException) {
+            return String.format("[Assertion failed] - this argument %s is required; it must not be null",ex.getMessage());
         }
         return errorMsg;
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.order.mapper.ReturnRequestItemMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`return_request_id` as 'returnRequestId',
+		    	a.`order_item_id` as 'orderItemId',
+		    	a.`customer_id` as 'customerId',
+		    	a.`num` as 'num',
+		    	a.`return_reason` as 'returnReason',
+		    	a.`create_time` as 'createTime',
+		    	a.`status` as 'status',
+		    	a.`admin_memo` as 'adminMemo',
+		    </trim>
+	   	from 
+	    	`t_order_return_request_item` as a
+	</sql>
+  
+</mapper>

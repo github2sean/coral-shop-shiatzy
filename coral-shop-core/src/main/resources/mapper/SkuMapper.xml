@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.SkuMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`goods_id` as 'goodsId',
+		    	a.`name` as 'name',
+		    	a.`code` as 'code',
+		    	a.`price` as 'price',
+		    	a.`quantity` as 'quantity',
+		    	a.`specfications` as 'specfications',
+		    </trim>
+	   	from 
+	    	`t_goods_sku` as a
+	</sql>
+  
+</mapper>

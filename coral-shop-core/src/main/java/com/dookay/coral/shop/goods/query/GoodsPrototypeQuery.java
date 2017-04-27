@@ -1,15 +1,14 @@
 package com.dookay.coral.shop.goods.query;
 
 import com.dookay.coral.common.persistence.Query;
-
+import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * 商品原型的Query
  * @author : luxor
- * @since : 2017年04月24日
+ * @since : 2017年04月27日
  * @version : v0.0.1
  */
 public class GoodsPrototypeQuery extends Query {
