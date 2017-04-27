@@ -47,7 +47,7 @@
            com.dookay.coral.shop.order.domain,
            com.dookay.coral.shop.promotion.domain"/>
         <!-- 扫描sql配置文件:mapper需要的xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="mapperLocations" value="classpath:mapper/OrderReturnRequestItemMapper.xml"/>
     </bean>
 
     <bean id="coreMapperScannerConfigurer" class="tk.mybatis.spring.mapper.MapperScannerConfigurer">

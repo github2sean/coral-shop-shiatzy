@@ -12,7 +12,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 /**
  * 商品的业务实现类
  * @author : luxor
- * @since : 2017年04月24日
+ * @since : 2017年04月27日
  * @version : v0.0.1
  */
 @SuppressWarnings("SpringJavaAutowiringInspection")

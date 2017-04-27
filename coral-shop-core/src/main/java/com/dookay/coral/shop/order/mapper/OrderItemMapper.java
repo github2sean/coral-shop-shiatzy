@@ -6,7 +6,7 @@ import com.dookay.coral.shop.order.domain.OrderItemDomain;
 /**
  * 订单明细的mapper
  * @author : luxor
- * @since : 2017年04月24日
+ * @since : 2017年04月27日
  * @version : v0.0.1
  */
 public interface OrderItemMapper extends Mapper<OrderItemDomain> {

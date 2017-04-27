@@ -42,32 +42,32 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_prototype_attribute" domainObjectName="GoodsPrototypeAttribute"
+	<table tableName="t_goods_prototype_attribute" domainObjectName="PrototypeAttribute"
 		   packageName="com.dookay.coral.shop.goods" desc="原型属性" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_prototype_attribute_option" domainObjectName="GoodsPrototypeAttributeOption"
+	<table tableName="t_goods_prototype_attribute_option" domainObjectName="PrototypeAttributeOption"
 		   packageName="com.dookay.coral.shop.goods" desc="原型属性选项" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_prototype_specification" domainObjectName="GoodsPrototypeSpecification"
+	<table tableName="t_goods_prototype_specification" domainObjectName="PrototypeSpecification"
 		   packageName="com.dookay.coral.shop.goods" desc="原型规格" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_prototype_specification_option" domainObjectName="GoodsPrototypeSpecificationOption"
+	<table tableName="t_goods_prototype_specification_option" domainObjectName="PrototypeSpecificationOption"
 		   packageName="com.dookay.coral.shop.goods" desc="原型规格选项" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_sku" domainObjectName="GoodsSku"
+	<table tableName="t_goods_sku" domainObjectName="Sku"
 		   packageName="com.dookay.coral.shop.goods" desc="商品sku" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
-	<table tableName="t_goods_sku_specification_value" domainObjectName="GoodsSkuSpecificationValue"
+	<table tableName="t_goods_sku_specification_value" domainObjectName="SkuSpecificationValue"
 		   packageName="com.dookay.coral.shop.goods" desc="商品sku规格值" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
@@ -95,17 +95,17 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.order.query" />
 	</table>
-	<table tableName="t_order_return_request" domainObjectName="OrderReturnRequest"
+	<table tableName="t_order_return_request" domainObjectName="ReturnRequest"
 		   packageName="com.dookay.coral.shop.order" desc="订单退货申请" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.order.query" />
 	</table>
-	<table tableName="t_order_return_request_item" domainObjectName="OrderReturnRequestItem"
+	<table tableName="t_order_return_request_item" domainObjectName="ReturnRequestItem"
 		   packageName="com.dookay.coral.shop.order" desc="订单退货申请明细" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.order.query" />
 	</table>
-	<table tableName="t_order_shopping_cart_item" domainObjectName="OrderShoppingCartItem"
+	<table tableName="t_order_shopping_cart_item" domainObjectName="ShoppingCartItem"
 		   packageName="com.dookay.coral.shop.order" desc="购物车" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.order.query" />

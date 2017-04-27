@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 商品sku规格值的domain
  * @author : luxor
- * @since : 2017年04月24日
+ * @since : 2017年04月27日
  * @version : v0.0.1
  */
 @Table(name = "t_order")
