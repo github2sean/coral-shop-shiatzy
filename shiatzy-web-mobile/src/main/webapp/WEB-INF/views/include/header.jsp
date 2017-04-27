@@ -236,7 +236,7 @@
     <ul class="top-right-nav">
         <li class="active"><a href="购物车.html"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">3</span></a></li>
         <li><a href="index.html"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
-        <li><a href="我的账户.首页.html"><svg><use xlink:href="#account"></use></svg></a></li>
+        <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
 </header>
 <div class="do-nav-panel" id="j_nav_panel">

@@ -11,4 +11,6 @@ import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
  */
 public interface ICustomerAddressService extends IBaseService<CustomerAddressDomain> {
 
+    CustomerAddressDomain getAccount(Long id);
+
 }

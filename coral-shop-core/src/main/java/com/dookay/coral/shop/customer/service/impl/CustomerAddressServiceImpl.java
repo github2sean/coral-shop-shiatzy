@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.customer.service.impl;
 
+import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,13 @@ public class CustomerAddressServiceImpl extends BaseServiceImpl<CustomerAddressD
 	
 	@Autowired
 	private CustomerAddressMapper customerAddressMapper;
-	  
+
+	@Override
+	public CustomerAddressDomain getAccount(Long customerId) {
+
+		CustomerAddressQuery query = new CustomerAddressQuery();
+		query.setCustomerId(customerId);
+		return super.getOne(query);
+
+	}
 }
