@@ -39,34 +39,6 @@
         })(document, window);
 
     </script>
-    <!--[if lt IE 8]>
-    <script src="${ctx}/static/js/versiontips.js"></script>
-    <![endif]-->
-    <!--[if lt IE 9]>
-    <script src="${ctx}/static/js/html5shiv.min.js"></script>
-    <script src="${ctx}/static/js/respond.min.js"></script>
-    <![endif]-->
-    <!-- 核心js插件开始 -->
-    <script src="${ctx}/static/js/dookayui.min.js"></script>
-    <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
-    <script src="${ctx}/static/js/lodash.min.js"></script>
-    <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
-    <script src="${ctx}/static/js/plugins/jquery-bxslider/jquery.bxslider.js"></script>
-    <!-- 核心js插件 结束 -->
-    <!-- 页面插件开始 -->
-    <script src="${ctx}/static/js/common.js"></script>
-    <script src="${ctx}/static/js/plugins/validator/jquery.validator.min.js"></script>
-    <script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
-    <script src="${ctx}/static/js/backend.js"></script>
-    <!-- 页面插件结束 -->
-    <!-- js页面应用 开始 -->
-    <script>
-        $(function () {
-            commonApp.init();
-            backendApp.init();
-        });
-    </script>
-    <!-- js页面应用 结束 -->
 </head>
 <div style="display: none;">
     <svg xmlns="http://www.w3.org/2000/svg">
