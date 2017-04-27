@@ -30,6 +30,8 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 
 	@Override
 	public List getGoodsList(GoodsQuery query) {
+		query.setPageSize(1);
+		query.setLimit(1);
 
 		return super.getList(query);
 	}

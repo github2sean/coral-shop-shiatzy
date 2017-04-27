@@ -67,7 +67,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	}
 
 	@Override
-	public void UpdateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num) {
+	public void updateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num) {
 		Long customerId = customerDomain.getId();
 		ShoppingCartItemDomain shoppingCartItemDomain = super.get(shoppingCartItemId);
 		if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){

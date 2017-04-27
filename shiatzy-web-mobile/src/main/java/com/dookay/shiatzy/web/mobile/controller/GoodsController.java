@@ -6,10 +6,10 @@ import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.GoodsSkuDomain;
+import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsService;
-import com.dookay.coral.shop.goods.service.IGoodsSkuService;
+import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class GoodsController {
     @Autowired
     private IGoodsService goodsService;
     @Autowired
-    private IGoodsSkuService goodsSkuService;
+    private ISkuService skuService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ModelAndView list(@ModelAttribute QueryGoodsForm queryGoodsForm){
@@ -56,11 +56,11 @@ public class GoodsController {
 
         System.out.print("query:"+query);
         List<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        List<GoodsSkuDomain> skuList = new ArrayList<GoodsSkuDomain>();
+        /*List<SkuDomain> skuList = new ArrayList<SkuDomain>();
         for (int i=0;goodsList!=null&&goodsList.size()>0&&i<goodsList.size();i++){
 
-            skuList.add(goodsSkuService.getSkuByGoodsId(goodsList.get(i).getId()));
-        }
+            skuList.add(skuService.getSkuByGoodsId(goodsList.get(i).getId()));
+        }*/
 
         System.out.print("goodsList:"+JsonUtils.toJSONString(goodsList));
 

@@ -27,7 +27,7 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
      */
     void addToCart(CustomerDomain customerDomain, SkuDomain skuDomain, Integer shoppingCartType, int num);
 
-    void UpdateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num);
+    void updateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num);
 
     List<ShoppingCartItemDomain> listShoppingCartItemByCustomerId(Long customerId, Integer shoppingCartType);
 }
