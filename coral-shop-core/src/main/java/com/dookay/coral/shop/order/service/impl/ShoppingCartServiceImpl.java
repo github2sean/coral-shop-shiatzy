@@ -27,7 +27,7 @@ import java.util.Objects;
  * @version : v0.0.1
  */
 @SuppressWarnings("SpringJavaAutowiringInspection")
-@Service("shoppingCartItemService")
+@Service("shoppingCartService")
 public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDomain> implements IShoppingCartService {
 	
 	@Autowired

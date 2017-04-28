@@ -25,7 +25,7 @@
                 </div>
                 <p class="do-pro-t ellipsis-2l" name="goodsName">${row.name}</p>
                 <p class="do-pro-price ellipsis" name="goodsPrice">¥ 3,090</p>
-                <ul class="do-list-color" name="skuId" data-value="${row.skuId}">
+                <ul class="do-list-color" name="skuId" data-value="">
                     <li style="background: #000000"></li>
                     <li style="background: #b5272d"></li>
                     <li style="background: #1b1464"></li>
