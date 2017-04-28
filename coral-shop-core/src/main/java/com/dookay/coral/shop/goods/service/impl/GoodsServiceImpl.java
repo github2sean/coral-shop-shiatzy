@@ -3,6 +3,7 @@ package com.dookay.coral.shop.goods.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
+import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	private GoodsMapper goodsMapper;
 
 	@Override
-	public List getGoodsList(GoodsQuery query) {
-		query.setPageSize(1);
-		query.setLimit(1);
-
-		return super.getList(query);
+	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
+		return getPageList(query);
 	}
 }

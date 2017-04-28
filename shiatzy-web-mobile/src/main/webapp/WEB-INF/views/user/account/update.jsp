@@ -84,30 +84,32 @@
             <li>郵編<input type="text"  /></li>
         </ul>
     </div>
+    <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
     <div class="complete">
         <a type="button" class="updateBtn">完成</a>
     </div>
 </form>
-    <script>
-        $(function () {
 
-            $("input").css({"border":"0px","margin-left":"10px"});
-            $("select").css({"border":"0px","margin-right":"10px"});
-            $(".updateBtn").click(function () {
-                var  $updateAccountForm = $(".updateAccountForm");
-                var  data = $updateAccountForm.serializeArray();
-
-                $.post("/u/account/update",data,function (data) {
-                    console.log(data.message);
-                });
-
-
-            });
-        });
-
-    </script>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+<script>
+    $(function () {
 
+        $("input").css({"border":"0px","margin-left":"10px"});
+        $("select").css({"border":"0px","margin-right":"10px"});
+        $(".updateBtn").click(function () {
+            var  $updateAccountForm = $(".updateAccountForm");
+            var  data = $updateAccountForm.serializeArray();
+
+            $.post("/u/account/update",data,function (data) {
+                console.log(data.message);
+                $("#showInfo").show().text(data.message);
+            });
+
+
+        });
+    });
+
+</script>

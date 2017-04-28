@@ -16,6 +16,8 @@ public class QueryGoodsForm {
 
     private Long categoryId;//分类Id
 
+    private Long prototypeId;//原型Id
+
     private String goodsName;//商品名
 
 }

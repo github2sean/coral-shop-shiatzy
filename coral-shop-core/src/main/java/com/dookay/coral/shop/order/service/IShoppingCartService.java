@@ -30,4 +30,9 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
     void updateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num);
 
     List<ShoppingCartItemDomain> listShoppingCartItemByCustomerId(Long customerId, Integer shoppingCartType);
+
+    Boolean removeFromWish(CustomerDomain customerDomain, SkuDomain skuDomain);
+
+    ShoppingCartItemDomain isExistInWish(CustomerDomain customerDomain, SkuDomain skuDomain);
+
 }

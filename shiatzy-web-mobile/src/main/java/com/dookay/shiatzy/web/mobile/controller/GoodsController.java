@@ -5,11 +5,9 @@ import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
-import com.dookay.coral.shop.goods.service.IGoodsService;
-import com.dookay.coral.shop.goods.service.ISkuService;
+import com.dookay.coral.shop.goods.service.*;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,42 +32,59 @@ public class GoodsController {
     private IGoodsService goodsService;
     @Autowired
     private ISkuService skuService;
+    @Autowired
+    private IGoodsPrototypeService goodsPrototypeService;
+    @Autowired
+    private IPrototypeAttributeService prototypeAttributeService;
+    @Autowired
+    private IPrototypeAttributeOptionService prototypeAttributeOptionService;
+    @Autowired
+    private IPrototypeSpecificationService prototypeSpecificationService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ModelAndView list(@ModelAttribute QueryGoodsForm queryGoodsForm){
-       /* private Integer pageIndex = 1;//当前页码
-        private Integer pageSize = 20; //页面大小，默认20
-        private Integer offset = 0; // 行偏移
-        private Integer limit;    //获取最大数量
-        private String orderBy;// 排序字段
-        private Boolean isDesc = true;// 是否倒序，默认是
-        private QueryCriteria queryCriteria;*/
-
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
+        query.setPrototypeId(queryGoodsForm.getPrototypeId());
         query.setPageIndex(queryGoodsForm.getPageIndex());
         query.setPageSize(queryGoodsForm.getPageSize());
         query.setLimit(queryGoodsForm.getLimit());
         query.setOffset(queryGoodsForm.getOffset());
         query.setOrderBy("id");
-
         System.out.print("query:"+query);
-        List<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        /*List<SkuDomain> skuList = new ArrayList<SkuDomain>();
-        for (int i=0;goodsList!=null&&goodsList.size()>0&&i<goodsList.size();i++){
-
-            skuList.add(skuService.getSkuByGoodsId(goodsList.get(i).getId()));
-        }*/
-
-        System.out.print("goodsList:"+JsonUtils.toJSONString(goodsList));
-
-
-
+        PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
+        PageList<SkuDomain> goodsSku = skuService.getPageList(query);
+        System.out.print("goodsSku:"+JsonUtils.toJSONString(goodsSku));
         ModelAndView modelAndView = new ModelAndView("goods/list");
         modelAndView.addObject("goodsList",goodsList);
+        modelAndView.addObject("goodsSku",goodsSku);
         return modelAndView;
     }
 
+    @RequestMapping(value = "details" ,method = RequestMethod.GET)
+    public ModelAndView details(Long goodsId){
+
+        GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
+        SkuDomain skuDomain = skuService.getSkuByGoodsId(goodsId);//得到Sku
+
+        Long prototypeId = goodsDomain.getPrototypeId();
+        GoodsPrototypeDomain goodsPrototype = goodsPrototypeService.get(prototypeId);//得到原型
+
+        PrototypeAttributeDomain prototypeAttribute = prototypeAttributeService.getAttributeByPrototypeId(goodsPrototype.getId());//得到原型属性
+        List  attrOptionList = prototypeAttributeOptionService.getListByAttributeId(prototypeAttribute.getId());//得到原型属性选项值
+
+        PrototypeSpecificationDomain prototypeSpecification = prototypeSpecificationService.getSpecificationByPrototypeId(goodsPrototype.getId());//得到原型规格
+        List speciOptionList = prototypeSpecificationOptionService.getListBySpecificationId(prototypeAttribute.getId());//得到原型规格选项值
+
+        ModelAndView mv = new ModelAndView("goods/details");
+        mv.addObject("attrOptionList",attrOptionList);
+        mv.addObject("speciOptionList",speciOptionList);
+        mv.addObject("goodsDomain",goodsDomain);
+        mv.addObject("skuDomain",skuDomain);
+        return mv;
+    }
 
 }

@@ -16,15 +16,15 @@
         </div>
     </div>
     <ul class="do-pro-list">
-        <c:forEach var="row" items="${goodsList}">
+        <c:forEach var="row" items="${goodsSku.list}">
 
         <li>
-            <a href="商品详情.html">
+            <a href="/goods/details?goodsId=${row.goodsId}">
                 <div class="do-img">
                     <img src="images/list-img1.jpg" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-2l" name="goodsName">${row.name}</p>
-                <p class="do-pro-price ellipsis" name="goodsPrice">¥ 3,090</p>
+                <p class="do-pro-price ellipsis" name="goodsPrice">${row.price}</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                     <li style="background: #000000"></li>
                     <li style="background: #b5272d"></li>
@@ -35,7 +35,7 @@
             </a>
             <!--Todo:收藏按钮-->
             <i class="icon-collect j_collect active" data-value="${row.id}">
-                <svg class="do-heart"><use xlink:href="#heart-red"></use></svg>
+                <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
 
@@ -167,6 +167,10 @@
         <li><a href="">售价（低-高）</a></li>
     </ul>
 </div>
+
+<jsp:include page="/WEB-INF/views/include/footer.jsp">
+    <jsp:param name="nav" value="首页"/>
+</jsp:include>
 <script>
 
     $(function () {
@@ -174,21 +178,32 @@
 
         //var cartNum  = $(".do-num").val();
         $(".j_collect").each(function () {
+            var skuId = $(this).attr("data-value");
             $(this).click(function () {
-                var goodsId = $(this).attr("data-value");
-                var data  = {"goodsId":goodsId};
-                $.post("/cart/add",data,function (data) {
-                    if(data.data==1){
-                        console.log(data.message);
+                var isLogin = '${sessionScope.user_context}';
+                if(isLogin==null || isLogin ==""){
+                    location.href="${ctx}/passport/toLogin";
+                }
+                var isAdd =  $(".j_collect").find("use").attr("xlink:href");
+                console.log(isAdd);
+                var data  = {"skuId":skuId,"num":1,"type":2};
+                var url = "";
+                if(isAdd=="#heart-red"){
+                    url = "/cart/addToCart";
+                }else if(isAdd=="#heart"){
+                    url = "/cart/removeFromWish";
+                }
+                console.log(url);
+                $.post(url,data,function (result) {
+                    console.log(result);
+                    if(result.code==200){
+                        console.log(result.message);
                     }
                 });
             });
 
         });
 
+
     });
 </script>
-<jsp:include page="/WEB-INF/views/include/footer.jsp">
-    <jsp:param name="nav" value="首页"/>
-</jsp:include>
-

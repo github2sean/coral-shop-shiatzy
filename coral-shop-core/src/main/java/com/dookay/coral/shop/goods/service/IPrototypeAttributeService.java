@@ -11,4 +11,6 @@ import com.dookay.coral.shop.goods.domain.PrototypeAttributeDomain;
  */
 public interface IPrototypeAttributeService extends IBaseService<PrototypeAttributeDomain> {
 
+    PrototypeAttributeDomain getAttributeByPrototypeId(Long id);
+
 }

@@ -30,20 +30,27 @@
         <div class="dx-instructions"><a href="#">使用说明</a></div>
         <div class="dx-privacy"><a href="#">隐私权政策</a></div>
     </div>
-    <script>
-        $(function () {
-            $(".registerBtn").click(function () {
-                var $form = $(".registerForm");
-                var data  = $form.serializeArray();
-                $.post("/passport/register.do",data,function (data) {
-                    alert(data.message);
-                })
-            });
-        });
-    </script>
+
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+<script>
+    $(function () {
+        $(".registerBtn").click(function () {
+            var $form = $(".registerForm");
+            var data  = $form.serializeArray();
+            $.post("/passport/register.do",data,function (data) {
+               // alert(data.message);
 
+                if (data.code==200){
+                    location.href = "${ctx}/passport/toLogin";
+                }else{
+                    $(".remind").text(data.message);
+                }
+
+            })
+        });
+    });
+</script>
 

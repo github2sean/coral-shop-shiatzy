@@ -59,6 +59,10 @@
 
 </div>
 </form>
+
+<jsp:include page="/WEB-INF/views/include/footer.jsp">
+    <jsp:param name="nav" value="首页"/>
+</jsp:include>
 <script>
 
     $(function () {
@@ -105,7 +109,3 @@
 
     });
 </script>
-<jsp:include page="/WEB-INF/views/include/footer.jsp">
-    <jsp:param name="nav" value="首页"/>
-</jsp:include>
-

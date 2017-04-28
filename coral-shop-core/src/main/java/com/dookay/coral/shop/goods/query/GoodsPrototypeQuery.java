@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.goods.query;
 
 import com.dookay.coral.common.persistence.Query;
+import lombok.Data;
 import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
@@ -11,8 +12,11 @@ import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 public class GoodsPrototypeQuery extends Query {
-	
+
+	private Long goodsId;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsPrototypeDomain.class);

@@ -87,4 +87,30 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		shoppingCartItemQuery.setShoppingCartType(shoppingCartType);
 		return super.getList(shoppingCartItemQuery);
 	}
+
+	@Override
+	public Boolean removeFromWish(CustomerDomain customerDomain, SkuDomain skuDomain) {
+		try {
+			ShoppingCartItemDomain shoppingCart= isExistInWish(customerDomain,skuDomain);
+			if(shoppingCart!=null){
+				Long shopCartId = shoppingCart.getId();
+				delete(shopCartId);
+			}else{
+				throw new ServiceException("心愿单中不存在此商品");
+			}
+		}catch (Exception e){
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public ShoppingCartItemDomain isExistInWish(CustomerDomain customerDomain, SkuDomain skuDomain) {
+		ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+		query.setCustomerId(customerDomain.getId());
+		query.setSkuId(skuDomain.getId());
+		query.setShoppingCartType(2);
+		ShoppingCartItemDomain shoppingCart = getOne(query);
+		return shoppingCart;
+	}
 }

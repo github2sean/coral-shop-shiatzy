@@ -263,12 +263,13 @@
             <p>(支持所有区域问询)</p>
         </div>
     </div>
-    <script>
-        $(function () {
-            $("#searchBtn").click(function () {
-                $("#contentForm").submit();
-            });
-        });
 
-    </script>
 </div>
+<script>
+    $(function () {
+        $("#searchBtn").click(function () {
+            $("#contentForm").submit();
+        });
+    });
+
+</script>

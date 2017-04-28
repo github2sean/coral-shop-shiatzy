@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.goods.service.impl;
 
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,8 @@ public class SkuServiceImpl extends BaseServiceImpl<SkuDomain> implements ISkuSe
 
 	@Override
 	public SkuDomain getSkuByGoodsId(Long id) {
-		return null;
+		SkuQuery query = new SkuQuery();
+		query.setGoodsId(id);
+		return getOne(query);
 	}
 }

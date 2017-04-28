@@ -18,6 +18,7 @@ public class GoodsQuery extends Query {
 
 	private  String name;
 	private  Long categoryId;
+	private  Long prototypeId;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -30,6 +31,10 @@ public class GoodsQuery extends Query {
 
 		if (valid(categoryId)){
 			criteria.andEqualTo("categoryId",categoryId);
+		}
+
+		if (valid(prototypeId)){
+			criteria.andEqualTo("prototypeId",prototypeId);
 		}
 
 		return queryCriteria;

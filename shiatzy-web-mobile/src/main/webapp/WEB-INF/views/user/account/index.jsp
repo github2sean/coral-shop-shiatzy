@@ -59,22 +59,23 @@
     </div>
 
 
-    <script>
 
-       $(function () {
-            $(".loginOut").click(function () {
-                $.post("/passport/loginOut.do",function (data) {
-                 if(data.data==1){
-                 location.href = "passport/toLogin.do";
-                 }
-                 });
-            });
-
-        });
-
-    </script>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
+<script>
+
+    $(function () {
+        $(".loginOut").click(function () {
+            $.post("/passport/loginOut.do",function (data) {
+                if(data.data==1){
+                    location.href = "passport/toLogin.do";
+                }
+            });
+        });
+
+    });
+
+</script>

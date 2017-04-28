@@ -17,6 +17,7 @@ import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 public class ShoppingCartItemQuery extends Query {
 	private Integer shoppingCartType;
 	private Long customerId;
+	private Long skuId;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ShoppingCartItemDomain.class);
@@ -26,6 +27,9 @@ public class ShoppingCartItemQuery extends Query {
 		}
 		if(valid(shoppingCartType)){
 			criteria.andEqualTo("shoppingCartType",shoppingCartType);
+		}
+		if(valid(skuId)){
+			criteria.andEqualTo("skuId",skuId);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

@@ -8,6 +8,7 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
+import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by admin on 2017/4/27.
@@ -41,6 +44,12 @@ public class ShoppingCartController extends BaseController{
         Integer shoppingCartType = addShoppingCartForm.getType();
         SkuDomain skuDomain =  skuService.get(addShoppingCartForm.getSkuId());
         Integer num = addShoppingCartForm.getNum();
+        if(shoppingCartType==2){
+            ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
+            if(queryShoppingCart!=null){
+                return  successResult("心愿单中已经存在");
+            }
+        }
         shoppingCartService.addToCart(customerDomain, skuDomain, shoppingCartType,num);
         return  successResult("添加成功");
     }
@@ -51,6 +60,19 @@ public class ShoppingCartController extends BaseController{
         shoppingCartService.removeFromCart(shoppingCartItemId);
         return  successResult("删除成功");
     }
+
+    @RequestMapping(value = "removeFromWish" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult removeFromWish(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        SkuDomain skuDomain =  skuService.get(addShoppingCartForm.getSkuId());
+        if(!shoppingCartService.removeFromWish(customerDomain,skuDomain)){
+            successResult("删除失败");
+        }
+        return  successResult("删除成功");
+    }
+
 
     @RequestMapping(value = "updateCart" ,method = RequestMethod.POST)
     @ResponseBody
@@ -63,13 +85,22 @@ public class ShoppingCartController extends BaseController{
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
         ModelAndView mv = new ModelAndView("shoppingcart/list");
+        mv.addObject("cartList",cartList);
         return mv;
     }
 
     @RequestMapping(value = "wishlist" ,method = RequestMethod.GET)
     public ModelAndView wishlist(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
+
         ModelAndView mv = new ModelAndView("wishlist/list");
+        mv.addObject("wishList",wishList);
         return mv;
     }
 

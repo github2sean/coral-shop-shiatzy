@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.goods.service;
 
+import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
@@ -16,6 +17,6 @@ import java.util.List;
 public interface IGoodsService extends IBaseService<GoodsDomain> {
 
 
-    List getGoodsList(GoodsQuery query);
+    PageList<GoodsDomain> getGoodsList(GoodsQuery query);
 
 }

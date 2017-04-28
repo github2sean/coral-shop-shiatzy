@@ -14,16 +14,17 @@
     </div>
     <div class="content">
         <div class="dx-GoodsDetails">
+            <c:forEach var="row" items="${cartList}">
             <div class="goods clearfix">
                 <div class="goods-left">
                     <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
                 </div>
                 <div class="goods-right">
-                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
-                    <div class="number">产品编号 1B1184 Z</div>
-                    <div class="color">黑色<span>M号</span></div>
-                    <div class="quantity">数量: <a href="#" class="minus">-</a><input class="quantitys" type="text" value="1"><a href="#" class="add">+</a></div>
-                    <div class="price">单价&nbsp; &yen; <span>11,504</span></div>
+                    <div class="name">${row.goodsName}</div>
+                    <div class="number">产品编号 ${row.goodsCode}</div>
+                    <div class="goods_color" data-value=${row.skuSpecifications}>&nbsp;&nbsp;<div class="goods_size">S</div></div>
+                    <div class="quantity">数量: <a href="#" class="minus">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add">+</a></div>
+                    <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -31,14 +32,15 @@
                     <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
-            <div class="goods clearfix">
+            </c:forEach>
+            <%--<div class="goods clearfix">
                 <div class="goods-left">
                     <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">玉镯提包系列黑色刺绣托特包</div>
                     <div class="number">产品编号 1B1184 Z</div>
-                    <div class="color">黑色<span>M号</span></div>
+                    <div class="color" >黑色<span >M号</span></div>
                     <div class="quantity">数量: <a href="#" class="minus">-</a><input class="quantitys" type="text" value="1"><a href="#" class="add">+</a></div>
                     <div class="price">单价&nbsp; &yen; <span>11,504</span></div>
                 </div>
@@ -47,7 +49,7 @@
                     <li><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart-red"></use></svg></a></li>
                     <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
-            </div>
+            </div>--%>
             <div class="total">小计 <span>&yen; &nbsp;23,008</span></div>
         </div>
     </div>
@@ -62,12 +64,11 @@
         </div>
     </div>
 </div>
-<script>
 
-    $(function () {
-        //console.log('${goodsList}');
-    });
-</script>
+
+<jsp:include page="/WEB-INF/views/include/footer.jsp">
+    <jsp:param name="nav" value="首页"/>
+</jsp:include>
 <script>
     $(function(){
         commonApp.init();
@@ -84,11 +85,14 @@
             }else {
                 $("#min").attr("disabled","disabled");
             }
+        });
+
+        $(".goods_color").each(function () {
+            var str = $(this).attr("data-value");
+            console.log(str);
+            jsonObj = jQuery.parseJSON(str);
+            $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
         })
 
     });
 </script>
-<jsp:include page="/WEB-INF/views/include/footer.jsp">
-    <jsp:param name="nav" value="首页"/>
-</jsp:include>
-
