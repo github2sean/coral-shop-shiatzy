@@ -28,6 +28,10 @@
             <groupId>com.dookay</groupId>
             <artifactId>coral-shop-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.dookay</groupId>
+            <artifactId>coral-security</artifactId>
+        </dependency>
         <!--工程内依赖 结束-->
 
         <!-- Restful API 文档-->

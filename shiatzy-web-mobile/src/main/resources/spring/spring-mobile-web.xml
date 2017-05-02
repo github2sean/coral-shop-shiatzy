@@ -15,7 +15,7 @@
 
     <aop:aspectj-autoproxy/>
 
-    <mvc:view-controller path="/" view-name="redirect:/"/>
+    <mvc:view-controller path="/" view-name="redirect:/home/index"/>
 
 
     <!-- 使用Annotation自动注册Bean，只扫描@Controller，否则事务会失效 -->
