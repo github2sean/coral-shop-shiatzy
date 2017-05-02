@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.order.mapper.ShoppingCartItemMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`shopping_cart_type` as 'shoppingCartType',
+		    	a.`customer_id` as 'customerId',
+		    	a.`sku_id` as 'skuId',
+		    	a.`num` as 'num',
+		    	a.`goods_name` as 'goodsName',
+		    	a.`goods_code` as 'goodsCode',
+		    	a.`goods_price` as 'goodsPrice',
+		    	a.`sku_specifications` as 'skuSpecifications',
+		    </trim>
+	   	from 
+	    	`t_order_shopping_cart_item` as a
+	</sql>
+  
+</mapper>

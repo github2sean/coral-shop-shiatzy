@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AdminMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`real_name` as 'realName',
+		    	a.`user_name` as 'userName',
+		    	a.`password` as 'password',
+		    	a.`salt` as 'salt',
+		    	a.`phone` as 'phone',
+		    	a.`email` as 'email',
+		    	a.`locked` as 'locked',
+		    	a.`description` as 'description',
+		    	a.`last_login_time` as 'lastLoginTime',
+		    	a.`last_login_ip` as 'lastLoginIp',
+		    	a.`login_count` as 'loginCount',
+		    	a.`is_customer` as 'isCustomer',
+		    	a.`company_code` as 'companyCode',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    	a.`create_admin` as 'createAdmin',
+		    	a.`update_admin` as 'updateAdmin',
+		    	a.`region_code` as 'regionCode',
+		    </trim>
+	   	from 
+	    	`t_security_admin` as a
+	</sql>
+  
+</mapper>

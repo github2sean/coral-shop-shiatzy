@@ -1,0 +1,829 @@
+.order{
+    height:4.1739rem;
+    background: #999999;
+    padding: 0 1.7778rem 0 2.1642rem;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    margin-bottom: 2.0096rem;
+}
+.order p,
+.order a{
+    display: block;
+    line-height: 4.1739rem;
+    color: #fff;
+}
+.order svg{
+    position: relative;
+    top: .5rem;
+    right: .5rem;
+}
+.order-main{
+    text-align: center;
+    border: 1px solid #cccccc;
+}
+.order-main-left{
+    width: 50%;
+    float: left;
+    border-right: 1px solid #cccccc;
+    border-bottom: 2px solid #cccccc;
+    position: relative;
+}
+.order-main-left .do-list-icon,
+.order-main-right .do-list-icon{
+    top: 3rem;
+}
+.order-main-right{
+    width: 50%;
+    float: right;
+    border-left: 1px solid #cccccc;
+    border-bottom: 2px solid #cccccc;
+    position: relative;
+}
+.order-main .product-num{
+    font-size: 0.6183rem;
+    line-height: 1.3913rem;
+}
+.order-main .color-size p{
+    display: inline;
+    width: 50%;
+    padding: 0 0.6183rem;
+}
+.order-main img{
+    margin-bottom: 0.2318rem;
+}
+.order-main .product-name{
+    font-size: 0.8502rem;
+    line-height: 1.5458rem;
+}
+.order-main .color-size{
+    font-size: 0.6183rem;
+    line-height: 0.9275rem;
+    margin-bottom: 1.9323rem;
+}
+.order-main .price{
+    font-size:0.7729rem;
+    line-height: 1.0821rem;
+    margin-bottom:0.3865rem;
+}
+.order-main .order-price{
+    padding-top: 1.855rem;
+    padding-right:2.4734rem;
+    float: right;
+}
+.order-main .order-price p{
+    font-size: 1.0821rem;
+}
+.order-stores{
+    border-left:1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    padding: 4.4058rem 1.314rem 4.8696rem;
+}
+.order-stores h1{
+    font-size: 1.3913rem;
+}
+.model-select-box,
+.model-select-box ul li{
+    font-size: 1.0821rem;
+}
+.model-select-box .model-select-store,
+.model-select-box .model-select-country,
+.model-select-box .model-select-city{
+    border-bottom: solid #cccccc 2px;
+    margin-bottom: 2.7826rem;
+}
+.model-select-box .model-select-text span{
+    line-height: 2.087rem;
+}
+.model-select-option li{
+    line-height:2.5507rem;
+    border-bottom: 2px solid #cccccc;
+}
+.model-select-box .model-select-store{
+    margin-bottom: 0;
+}
+.model-select-box ul .active{
+    background: #cccccc;
+}
+.stores-introduce,
+.setting{
+    padding: 0 1.5459rem;
+}
+.stores-introduce h2{
+    font-size: 1.3913rem;
+}
+.submit-btn{
+    text-align: center;
+}
+.submit-btn a{
+    display: inline-block;
+    background: #000;
+    width: 90%;
+    color: #fff; 
+    text-align: center;
+    line-height: 4.8696rem;
+    margin-top: 2.087rem;
+}
+.verify-message{
+    padding: 0 1.2367rem;
+}
+.verify-message .verify-message-top h2{
+    font-size:1.3913rem;
+    text-indent: 0.8502rem;
+    margin-bottom: 1.7778rem;
+}
+.verify-message .verify-message-top ul{
+    text-indent: 0.8502rem;
+    font-size: 1.0821rem;
+}
+.verify-message .verify-message-top ul li{
+    margin-bottom: 1.5459rem;
+}
+.verify-message-middle>h2{
+    font-size: 1.0821rem;
+    text-indent: 0.8502rem;
+    margin-top: 2.8599rem;
+    border-bottom: 2px solid #cccccc;
+}
+.verify-main .img-message h3,
+.verify-main .img-message h6,
+.verify-main .img-message p{
+    font-size: 0.9275rem;
+    margin: 0;
+}
+.verify-main{
+    height: 8.2705rem;
+    padding-left:1.5459rem;
+    border-bottom: 2px #cccccc solid;
+}
+.verify-main img{
+    display: inline-block;
+    float: left;
+    height: 100%;
+}
+.verify-main .img-message{
+    float: left;
+    margin-left: 3.0918rem;
+}
+.verify-main .img-message h3{
+    margin-bottom: 0;
+    line-height: 2.3961rem;
+    margin-top: 0.5rem;
+}
+.verify-main .img-message p:last-child{
+    float: right;
+}
+.order-state{
+    font-size: 0.7729rem;
+    padding-left: 1.3459rem;
+    margin-top: .5rem;
+}
+.verify-message-bottom h2{
+    font-size: 1.0821rem;
+    text-align: center;
+    border-top: 1px solid #cccccc;
+    line-height: 1.855rem;
+}
+.verify-message-bottom p{
+    font-size: 0.9275rem;
+    padding:0 1.5459rem;
+    line-height:1.6232rem;
+}
+.verify-message-bottom a{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+     color: #fff;
+    font-size: 18px;
+    margin-top: 3.4783rem;
+    line-height: 2.7826rem;
+}
+.my-account{
+    padding: 0 1.9324rem;
+}
+.my-account-title{
+    margin-bottom: 3.0918rem;
+}
+.my-account-title p{
+    float: left;
+    font-size: 1.3914rem;
+    line-height: 1.9324rem;
+}
+.my-account-message ul li,
+.account-message ul li{
+    display: inherit;
+    margin-bottom: 5.1787rem;
+    border-bottom: 1px solid #cccccc;
+    padding-left:2.3188rem;
+    font-size: 1.0821rem;
+}
+.account-message ul li{
+    padding-left: 0;
+}
+.outline a{
+    display: inline-block;
+    border-bottom: 1px solid #cccccc;
+}
+.my-account-message .deit-message,
+.account-message .deit-message{
+    border-bottom: none;
+    margin-top: -4rem;
+    margin-bottom: 3rem;
+}
+.account-message .deit-message ol li{
+    border:none;
+    margin-bottom: 0;
+    line-height: 1.6232rem;
+    padding-left:2.3188rem;
+}
+.privacy{
+    border-bottom: 1px solid #cccccc;
+}
+.privacy a{
+    display: inline-block;
+    line-height: 0.5rem;
+    font-size: 1.0821rem;
+}
+.data-setting h3{
+    font-size: 1.3914rem;
+}
+.data-setting ul li{
+    margin-bottom: 2.5507rem;
+    border-bottom: 1px solid #cccccc;
+    color: #999999;
+}
+.data-setting ul{
+    margin-bottom: 4.3285rem;
+}
+.complete a{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 3.4783rem;
+    line-height: 2.7826rem;
+}
+.data-setting .date{
+    margin-bottom: 0;
+}
+.data-setting .date li{
+    margin-bottom: 0;
+    border-bottom: none;
+    float: left;
+    padding-right:2.5507rem;
+}
+.back-up a h3{
+    font-size: 1.3914rem;
+    float: right;
+    border: 1px solid #cccccc;
+    margin-right: 1.0821rem;
+    line-height:2.5507rem;
+    padding: 0.778rem 1.2367rem;
+    color: #999999;
+}
+.club,
+.club-card{
+    padding: 0 23px 0 28px;
+    margin-top: 9.0435rem;
+}
+.club h3{
+    font-size: 1.3914rem;
+    line-height: 2.5507rem;
+    margin-bottom: 1.9324rem;
+}
+.club p{
+    font-size: 1.0821rem;
+    line-height: 2.087rem;
+}
+.club h3,
+.club p{
+    border-bottom: 2px solid #999999;
+    text-align: center;
+}
+.club input{
+    width: 100%;
+    border-bottom: none;
+    border-right: 2px solid #999999;
+}
+.club a{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 3.4783rem;
+    line-height: 2.7826rem;
+    margin-bottom: 4.6377rem;
+}
+.club .club-bottom p{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.club-card{
+    position: relative;
+    text-align: center;
+}
+.card-title{
+    position: absolute;
+    top: 3.401rem;
+    left: 20%;
+    color: #fff;
+    border-bottom: 1px solid #999999;
+    padding:0 2.5507rem;
+}
+.card-name{
+    position: absolute;
+    top: 8rem;
+    left: 40%;
+    color: #fff;
+}
+.card-num{
+    position: absolute;
+    top: 10.5rem;
+    left: 25%;
+    color: #fff;
+}
+.anew{
+    text-align: center;
+}
+.anew p{
+    display: inline-block;
+    margin-top: 4.6377rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid #999999;
+    padding: 0 2.5507rem;
+}
+.club-bottom{
+    text-align: center;
+    font-size: 1.0821rem;
+    color: #999999;
+}
+.club span{
+    display: inherit;
+    text-align: center;
+    color: #b5272d;
+    font-size: 1.0821rem;
+    margin-bottom:4.6377rem;
+}
+.mail-change{
+    padding: 0 1.7778rem 0 2.1642rem;
+    border-bottom: 2px solid #999999;
+}
+.password-change,
+.order-finish{
+    padding: 0 1.7778rem 0 2.1642rem;
+}
+.mail-change h4,
+.password-change h4{
+    font-size: 1.0821rem;
+    color: #999999;
+    margin: 0;
+}
+.mail-change .register-mail,
+.password-change .register-mail{
+    margin-top: 2.5507rem;
+}
+.mail-change .register-mail p,
+.password-change .register-mail p{
+    font-size: 1.0821rem;
+    margin-bottom: 0;
+}
+.mail-change .register-mail input,
+.password-change .register-mail input{
+    width: 100%;
+    font-size: 1.0821rem;
+    line-height: 3.942rem;
+    padding-left:2.3188rem;
+    margin-bottom: 1.1rem;
+    border:2px solid #999999;
+}
+.mail-change a,
+.password-change a{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 2.6rem;
+    line-height: 2.7826rem;
+    margin-bottom: 4.6377rem;
+}
+.register-mail .input{
+    position: relative;
+
+}
+.register-mail i{
+    position: absolute;
+    top: -0.6184rem;
+    right: 0;
+    color: #b5272d;
+}
+.my-account .contact h3{
+    font-size: 1.0821rem;
+    border-bottom: solid #999999 2px;
+    line-height: 1.5459rem;
+}
+.mr-2{
+    font-size: 1.0821rem;
+
+}
+.mr-2 .radiobox{
+    text-indent:3rem;
+}
+.i-radiobox{
+    margin-right: 3.0918rem;
+}
+.finish a{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 2.6rem;
+    line-height: 2.7826rem;
+    margin-bottom: 4.6377rem;
+}
+.order-finish>h3{
+    font-size: 1.3913rem;
+    text-align: center;
+}
+.order-finish .delivery h3,
+.order-finish .delivery .delivery-message span{
+    font-size: 1.0821rem;
+}
+.order-finish .delivery .delivery-message span{
+    margin-bottom: 1.0821rem;
+    display: inherit;
+}
+.order-finish .delivery .delivery-message{
+    background-color: #cccccc;
+    padding:1.5459rem 1.5459rem 1.7778rem 3.0918rem;
+}
+.order-finish .delivery .delivery-message p{
+    font-size: 1.0821rem;
+    margin-bottom: 0;
+}
+.order-finish .delivery .delivery-message a,
+.drugstore a{
+    display: block;
+    float: right;
+    border-bottom: 1px solid #999999;
+    font-size: 1.0821rem;
+}
+.drugstore{
+    padding: 0 1.5459rem 0 3.0918rem;
+    border: 2px solid #999999;
+    border-top: none;
+}
+.drugstore{
+    height: 61px;
+}
+.drugstore p{
+    line-height: 4.7923rem;
+    font-size: 1.0821rem;
+    display: block;
+    float: left;
+}
+.drugstore a{
+    margin-top: 2.7053rem;
+}
+.pay-options{
+    background-color: #cccccc;
+    font-size: 1.0821rem;
+    text-align: center;
+    line-height: 3.2rem;
+}
+.delivery ul li{
+    font-size: 1.0821rem;
+    line-height: 3.5rem;
+    padding-left: 2.7rem;
+    border-bottom: 2px solid #cccccc;
+}
+.delivery ul .active{
+    background: #cccccc;
+}
+.delivery ul{
+    margin-bottom: 3.8647rem;
+}
+.delivery ul+p{
+    line-height: 1.8rem;
+    border-bottom: 2px solid #cccccc;
+    text-align: center;
+    margin-bottom: 5rem;
+}
+.order-pay a{
+    display:inherit;
+    background-color: #666666;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 2.6rem;
+    line-height: 2.7826rem;
+    margin-bottom: 1.9rem;
+}
+.order-pay span{
+    font-size: 0.8rem;
+}
+.order-pay{
+    margin-bottom: 5rem;
+}
+.pay-way p,
+.order-safe p{
+    line-height: 1.8rem;
+    border-bottom: 2px solid #cccccc;
+    text-align: center;
+}
+.pay-way .way-img,
+.order-safe .safe-img{
+    padding: 0 1.5rem 0 1.5rem;
+    text-align: center;
+}
+.pay-way,
+.order-safe{
+    margin-bottom: 4.5rem;
+}
+.unfinished h3{
+    font-size: 1.3913rem;
+    text-align: center;
+    margin-bottom: 0;
+    color: #000000;
+}
+.unfinished h3+p{
+    font-size: 0.9rem;
+    text-align: center;
+    color: #999999;
+}
+.again-btn a{
+    display:inherit;
+    background-color: #666666;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 2.6rem;
+    line-height: 2.7826rem;
+    margin-bottom: 1.9rem;
+}
+.unfinished{
+    padding: 0 1.5459rem 0 1.5459rem;
+}
+.order-details h4{
+    font-size:1.0821rem;
+    line-height: 1.8rem;
+    border-bottom: 2px solid #cccccc;
+    text-indent: 0.8502rem;
+}
+.order-details h4 span{
+    float: right;
+}
+.order-details h4+ul{
+    border-bottom: 2px solid #cccccc;
+    text-indent: 0.8502rem;
+}
+.order-details h4+ul li{
+    font-size: 0.9rem;
+}
+.order-details h4+ul li span{
+    float: right;
+}
+.order-details ul+p{
+    text-indent: 0.8502rem;
+    margin-bottom: 3.8647rem;
+}
+.order-details ul+p span{
+    float: right;
+}
+.order-details h4+p{
+    font-size: 1.0821rem;
+    text-indent: 0.8502rem;
+}
+.delivery-detail{
+    margin-top: 3.8647rem;
+    text-indent: 0.8502rem;
+}
+.delivery-detail h4{
+    font-size: 0.9rem;
+    border-bottom: 2px #cccccc solid;
+}
+.delivery-detail p{
+    font-size: 0.9rem;
+}
+.order-num h3{
+    font-size: 1.3913rem;
+    text-align: left;
+    text-indent: 1.6rem;
+    margin-top: 0;
+}
+.order-num h3+p{
+    font-size: 1.0821rem;
+    float: left;
+}
+.order-num h3+p span{
+    margin-left: 2.7053rem;
+}
+.order-date p{
+    font-size: 1.0821rem;
+}
+.information h4{
+    font-size: 1.0821rem;
+    line-height: 1.8rem;
+    border-bottom: 2px solid #cccccc;
+    text-indent: 0.8502rem;
+}
+.information h4 span{
+    float: right;
+}
+.information p{
+    font-size: 0.9rem;
+    text-indent: 0.8502rem;
+}
+.information span{
+    font-size: 1.0821rem;
+    margin-left: 0.8502rem;
+}
+.information .i-radiobox{
+    margin-left: 3.8647rem;
+}
+.information .radiobox{
+    display: inline;
+}
+.information .clearfix p{
+    display: inline;
+}
+.information .clearfix p span{
+    float: right;
+}
+.information .clearfix{
+    border-bottom: 2px solid #cccccc;
+}
+.information{
+    margin-bottom: 3.8647rem;
+}
+.unfinished .privacy{
+    text-indent: 0.6rem;
+}
+.explain{
+    margin-top: 2.7053rem;
+    text-align: center;
+    background-color: #cccccc;
+    padding-top: 1.3913rem;
+}
+.choose-store a{
+    display: inline-block;
+    width: 18.5507rem;
+    color: #fff;
+    background-color: #333333;
+    line-height: 1.8rem;
+    text-align: center;
+}
+.choose-store{
+    margin-bottom: 1.9rem;
+}
+.explain ul>li{
+    border-bottom: 1px solid #d9d9d9;
+    margin: 0 .7rem;
+    text-align: left;
+}
+.explain ul>li>a{
+    display: block;
+    padding: 1rem 1.7rem .6rem;
+}
+.explain ul>li>a>span{
+    float: right;
+}
+.no-message{
+    text-align: center;
+}
+.no-message p{
+    display: inline-block;
+    border-bottom: 2px solid #cccccc;
+    padding: 0 1.5459rem;
+}
+.verify-message .privacy{
+    text-indent: .6rem;
+    margin-bottom: .5rem;
+}
+.return-time{
+    font-size: 1.0821rem;
+    padding: 0 2.5rem;
+}
+.sales-return-message{
+    border-top: 2px solid #cccccc;
+    border-bottom: 2px solid #cccccc;
+    margin-top: .5rem;
+    margin-bottom: 3rem;
+}
+.sales-return-message p{
+    padding-left: 3rem;
+    font-size: 1.0821rem;
+    margin-bottom: 0;
+    line-height: 2.5rem;
+}
+.sales-return-message p img{
+    margin-right: 1rem;
+}
+.sales-return-message p span{
+    float: right;
+}
+.return-way h3{
+    font-size: 1.3913rem;
+    display: inline;
+}
+.return-way p{
+    font-size: .9rem;
+    float: right;
+    margin-top: 1rem;
+}
+.return-way+p{
+    font-size: .9rem;
+}
+.return-way+p+p{
+    font-size: .9rem;
+    margin-bottom: 3rem;
+}
+.return-btn{
+    display:inherit;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    line-height: 2.7826rem;
+    margin-bottom: 1.9rem;
+    margin-top: 8rem;
+}
+.return-commodity p{
+    font-size: .9rem;
+    margin-bottom: 0;
+}
+.return-commodity span{
+    font-size: .7rem;
+}
+.return-commodity .radiobox{
+    text-indent: 0;
+}
+.return-commodity .radiobox .i-radiobox{
+    margin-right: 0;
+}
+.return-commodity>div{
+    float: left;
+}
+.return-commodity>div+div p{
+    font-size: .9rem;
+    margin-bottom: 0;
+}
+.return-commodity>div+div span{
+    font-size: .7rem;
+}
+.return-commodity{
+    position: relative;
+}
+.return-commodity>div+div{
+    position: absolute;
+    top: 38%;
+    left: 30%;
+}
+.return-commodity>div+div p span{
+    margin-left: 6rem;
+}
+.return-list h3{
+    font-size: 1.3913rem;
+}
+.return-list ul li .i-radiobox{
+    margin-right: .2rem;
+}
+.return-list ul li:first-child{
+    font-size: 1.1rem;
+    text-indent: 3rem;
+    position: relative;
+}
+.return-list ul li:first-child:after{
+    content: '';
+    position: absolute;
+    width: 6rem;
+    height: 1px;
+    background-color: #cccccc;
+    display: block;
+    bottom: 0;
+    left: 3rem;
+}
+.return-list ul{
+    float: left;
+}
+.return-list{
+    border-bottom: 2px solid #cccccc;
+}
+.returnWay{
+    padding: 0 1.7778rem 0 2.1642rem;
+}
+.returnWay h4{
+    text-indent: .6rem;
+    font-size: 1.0821rem;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+.returnWay p{
+    font-size: 1.0821rem;
+    text-indent: .6rem;
+}
+.returnWay span{
+    margin-left: .3rem;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.host.user.mapper.AccountExtentionMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`user_id` as 'userId',
+		    	a.`client` as 'client',
+		    	a.`open_id` as 'openId',
+		    	a.`access_token` as 'accessToken',
+		    	a.`nickname` as 'nickname',
+		    	a.`raw_data` as 'rawData',
+		    </trim>
+	   	from 
+	    	`t_user_account_extension` as a
+	</sql>
+  
+</mapper>

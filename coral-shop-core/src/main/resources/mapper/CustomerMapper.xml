@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.customer.mapper.CustomerMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`first_name` as 'firstName',
+		    	a.`last_name` as 'lastName',
+		    	a.`email` as 'email',
+		    	a.`phone` as 'phone',
+		    	a.`customer_level` as 'customerLevel',
+		    	a.`is_art_club_member` as 'isArtClubMember',
+		    	a.`account_id` as 'accountId',
+		    	a.`create_time` as 'createTime',
+		    	a.`subscribe_type` as 'subscribeType',
+		    </trim>
+	   	from 
+	    	`t_customer` as a
+	</sql>
+  
+</mapper>

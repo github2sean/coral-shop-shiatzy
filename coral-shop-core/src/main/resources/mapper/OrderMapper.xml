@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.order.mapper.OrderMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`order_no` as 'orderNo',
+		    	a.`customer_id` as 'customerId',
+		    	a.`store_id` as 'storeId',
+		    	a.`status` as 'status',
+		    	a.`order_time` as 'orderTime',
+		    	a.`shipping_method` as 'shippingMethod',
+		    	a.`shipped_time` as 'shippedTime',
+		    	a.`shipper_company` as 'shipperCompany',
+		    	a.`tracking_number` as 'trackingNumber',
+		    	a.`ship_shop_id` as 'shipShopId',
+		    	a.`ship_name` as 'shipName',
+		    	a.`ship_title` as 'shipTitle',
+		    	a.`ship_phone` as 'shipPhone',
+		    	a.`ship_contry` as 'shipContry',
+		    	a.`ship_province` as 'shipProvince',
+		    	a.`ship_city` as 'shipCity',
+		    	a.`ship_address` as 'shipAddress',
+		    	a.`ship_memo` as 'shipMemo',
+		    	a.`pyament_method` as 'pyamentMethod',
+		    	a.`paid_time` as 'paidTime',
+		    	a.`bill_required` as 'billRequired',
+		    	a.`bill_title` as 'billTitle',
+		    	a.`coupon_id` as 'couponId',
+		    	a.`coupon_discount` as 'couponDiscount',
+		    	a.`member_discount` as 'memberDiscount',
+		    	a.`ship_fee` as 'shipFee',
+		    	a.`order_total` as 'orderTotal',
+		    </trim>
+	   	from 
+	    	`t_order` as a
+	</sql>
+  
+</mapper>
