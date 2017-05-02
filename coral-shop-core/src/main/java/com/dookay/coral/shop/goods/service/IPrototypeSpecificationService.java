@@ -11,4 +11,6 @@ import com.dookay.coral.shop.goods.domain.PrototypeSpecificationDomain;
  */
 public interface IPrototypeSpecificationService extends IBaseService<PrototypeSpecificationDomain> {
 
+    PrototypeSpecificationDomain getSpecificationByPrototypeId(Long id);
+
 }

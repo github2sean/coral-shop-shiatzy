@@ -137,12 +137,15 @@ public class AccountController extends MobileBaseController {
     public JsonResult updateEmailOrPassword(@ModelAttribute UpdateEamilForm updateEamilForm){
 
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        System.out.print("updateEamilForm:"+ JsonUtils.toJSONString(updateEamilForm));
         Boolean checkAccount = accountService.validateAccount(accountDomain.getEmail(),updateEamilForm.getPassword());
         if(checkAccount){
             Boolean isSuccess =  accountService.updateEmailOrPassword(accountDomain,updateEamilForm.getNewEmail(),updateEamilForm.getNewPassword());
             if(!isSuccess){
                 return successResult("修改失败");
             }
+        }else{
+            return successResult("用户名和密码不匹配");
         }
 
         return successResult("修改成功");

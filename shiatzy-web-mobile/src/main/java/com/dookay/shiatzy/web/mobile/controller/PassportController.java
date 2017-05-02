@@ -102,4 +102,19 @@ public class PassportController extends MobileBaseController{
 
         return successResult("发送成功"+userName+" "+validCode);
     }
+
+    @RequestMapping(value = "loginOut", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult loginOut(){
+        try{
+            AccountDomain accountDomain = UserContext.current().getAccountDomain();
+            if(accountDomain!=null){
+                UserContext.signOut();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return successResult("退出失败",0);
+        }
+        return successResult("退出成功",1);
+    }
 }

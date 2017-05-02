@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.goods.service.impl;
 
+import com.dookay.coral.shop.goods.query.PrototypeSpecificationQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,11 @@ public class PrototypeSpecificationServiceImpl extends BaseServiceImpl<Prototype
 	
 	@Autowired
 	private PrototypeSpecificationMapper prototypeSpecificationMapper;
-	  
+
+	@Override
+	public PrototypeSpecificationDomain getSpecificationByPrototypeId(Long id) {
+		PrototypeSpecificationQuery query = new PrototypeSpecificationQuery();
+		query.setPrototypeId(id);
+		return getOne(query);
+	}
 }

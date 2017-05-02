@@ -30,25 +30,25 @@
         <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
     </div>
 
-    <script>
-        $(function () {
-            $(".loginInfo").hide();
-            $(".loginBtn").click(function () {
-                var $form = $(".loginForm");
-                var data  = $form.serializeArray();
-                $.post("/passport/login.do",data,function (data) {
-                    var code = data.code;
-                    if(code == '200'){
-                        location.href = "${ctx}/home/index";
-                    }else{
-                        $(".loginInfo").show().css("color","red").text(data.message);
-                    }
-                })
-            });
-        });
-    </script>
+
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
-
+<script>
+    $(function () {
+        $(".loginInfo").hide();
+        $(".loginBtn").click(function () {
+            var $form = $(".loginForm");
+            var data  = $form.serializeArray();
+            $.post("/passport/login.do",data,function (data) {
+                var code = data.code;
+                if(code == '200'){
+                    location.href = "${ctx}/home/index";
+                }else{
+                    $(".loginInfo").show().css("color","red").text(data.message);
+                }
+            });
+        });
+    });
+</script>

@@ -59,6 +59,10 @@
 
 </div>
 </form>
+
+<jsp:include page="/WEB-INF/views/include/footer.jsp">
+    <jsp:param name="nav" value="首页"/>
+</jsp:include>
 <script>
 
     $(function () {
@@ -93,6 +97,11 @@
                 $.post("updateEmailOrPassword",data,function (data) {
                     console.log(data);
                     console.log(data.message);
+                    if(data.message!="修改成功"){
+                        $(".erroInfo2").show();
+                        $(".erroInfo2").css("color","red").text(data.message);
+                    }
+
                 });
             }
 
@@ -100,7 +109,3 @@
 
     });
 </script>
-<jsp:include page="/WEB-INF/views/include/footer.jsp">
-    <jsp:param name="nav" value="首页"/>
-</jsp:include>
-
