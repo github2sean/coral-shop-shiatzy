@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+  		http://www.springframework.org/schema/aop
+  		http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!-- Realm实现 -->
+    <bean id="statelessRealm" class="com.dookay.coral.security.realm.StatelessRealm">
+        <property name="cachingEnabled" value="false"/>
+    </bean>
+
+
+    <!-- Subject工厂 -->
+    <bean id="subjectFactory" class="com.dookay.coral.security.mgt.StatelessDefaultSubjectFactory"/>
+
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+        <property name="sessionValidationSchedulerEnabled" value="false"/>
+    </bean>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="statelessRealm"/>
+        <property name="subjectDAO.sessionStorageEvaluator.sessionStorageEnabled"
+                  value="false"/>
+        <property name="subjectFactory" ref="subjectFactory"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+    <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod"
+                  value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+
+    <!-- filter -->
+    <!-- 替换默认的form 验证过滤器 -->
+    <bean id="formAuthenticationFilter" class="com.dookay.coral.security.filter.authc.StatelessAuthcFilter">
+
+    </bean>
+
+    <!-- 退出登录过滤器 -->
+    <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+        <property name="redirectUrl" value="${shiro.logout.success.url}"/>
+    </bean>
+
+    <!--鉴权过滤器-->
+    <bean id="permissionAuthorizationFilter"
+          class="com.dookay.coral.security.filter.authc.PermissionAuthorizationFilter">
+    </bean>
+
+    <!-- shiro 过滤 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${shiro.login.url}"/>
+        <property name="unauthorizedUrl" value="${shiro.unauthorizedUrl}"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="logout" value-ref="logoutFilter"/>
+                <entry key="perms" value-ref="permissionAuthorizationFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <!-- 登录页面的所有请求，包括资源文件全部设定为匿名 修改用户信息功能需要验证登录，其他都使用user过滤器。即rememberMe功能。 -->
+            <value>
+                /favicon.ico = anon
+                /static/** = anon
+                /doc/** = anon
+                /wechat/** = anon
+                /v2/api-docs=anon
+                /jcaptcha* = anon
+                /api/passport/login = anon
+                /api/common = anon
+                /logout = logout
+                /api/jsp/controller.jsp=anon
+                /** = authc,perms,roles
+            </value>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- AOP式方法级权限检查  -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <!-- 提供给shiro sessionDao -->
+    <bean id="redisManager" class="com.dookay.coral.security.session.RedisManager">
+        <property name="expire" value="${redis.expireTime}"/>
+        <property name="host" value="${redis.host}"/>
+        <property name="password" value="${redis.pass}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+    </bean>
+
+</beans>
