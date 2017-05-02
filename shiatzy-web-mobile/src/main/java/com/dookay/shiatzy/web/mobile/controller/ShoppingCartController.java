@@ -114,6 +114,7 @@ public class ShoppingCartController extends BaseController{
         shoppingCartService.wishToCart(customerDomain,shoppingCartItemId);
         return  successResult("修改成功");
     }
+
     @RequestMapping(value = "wishToBoutique" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult wishToBoutique(Long shoppingCartItemId){
@@ -134,6 +135,7 @@ public class ShoppingCartController extends BaseController{
         mv.addObject("orderDomain",orderDomain);
         return mv;
     }
+
 
     @RequestMapping(value = "details" ,method = RequestMethod.GET)
     public ModelAndView settlement(){
