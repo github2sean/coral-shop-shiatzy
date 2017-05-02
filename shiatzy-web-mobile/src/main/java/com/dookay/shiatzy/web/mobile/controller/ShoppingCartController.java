@@ -8,7 +8,10 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
+import com.dookay.coral.shop.order.domain.OrderDomain;
+import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,10 +101,49 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
-
         ModelAndView mv = new ModelAndView("wishlist/list");
         mv.addObject("wishList",wishList);
         return mv;
     }
+
+    @RequestMapping(value = "wishToCart" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult wishToCart(Long shoppingCartItemId){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        shoppingCartService.wishToCart(customerDomain,shoppingCartItemId);
+        return  successResult("修改成功");
+    }
+    @RequestMapping(value = "wishToBoutique" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult wishToBoutique(Long shoppingCartItemId){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        shoppingCartService.wishToBoutique(customerDomain,shoppingCartItemId);
+        return  successResult("修改成功");
+    }
+
+
+    @RequestMapping(value = "createOrder" ,method = RequestMethod.GET)
+    public ModelAndView createOrder(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
+        OrderDomain orderDomain =  shoppingCartService.createOrder(customerDomain,cartList);
+        ModelAndView mv = new ModelAndView("shoppingcart/settlement");
+        mv.addObject("orderDomain",orderDomain);
+        return mv;
+    }
+
+    @RequestMapping(value = "details" ,method = RequestMethod.GET)
+    public ModelAndView settlement(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
+        ModelAndView mv = new ModelAndView("shoppingcart/details");
+        mv.addObject("cartList",cartList);
+        return mv;
+    }
+
 
 }

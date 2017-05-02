@@ -151,4 +151,13 @@ public class AccountController extends MobileBaseController {
         return successResult("修改成功");
     }
 
+
+    @RequestMapping(value = "toSetAdress", method = RequestMethod.GET)
+    public ModelAndView toSetAdress(){
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        ModelAndView mv = new ModelAndView("user/account/setAdress");
+        mv.addObject("customerDomain",customerDomain);
+        return mv;
+    }
 }

@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.我的订单.订单详情.列表.html">
+                <a href="/order/list">
                     <span><svg><use xlink:href="#ac-order"></use></svg></span>
                     <span>订单详情</span>
                     <span style="float: right;">></span>
@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.愿望清单.html">
+                <a href="/cart/wishlist">
                     <span><svg><use xlink:href="#heart"></use></svg></span>
                     <span>愿望清单</span>
                     <span style="float: right;">></span>

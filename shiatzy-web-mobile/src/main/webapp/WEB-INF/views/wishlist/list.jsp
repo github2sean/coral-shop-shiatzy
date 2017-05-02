@@ -10,7 +10,9 @@
 <div class="dx-wish clearfix">
     <div class="dx-title">愿望清单<a href="我的账户.首页.html">回上页</a></div>
     <div class="content">
-        <div class="dx-total">
+        <c:if test="${not empty wishList}">
+        <div id="toggleDiv">
+            <div class="dx-total">
             <div class="title">您的收藏</div>
             <ul class="list">
                 <li>女士</li>
@@ -18,41 +20,37 @@
                 <li>包袋</li>
                 <li>鞋履</li>
             </ul>
+            </div>
         </div>
+        </c:if>
+
+
+            <div id="toggleDiv2">
+            <div class="dx-collect">愿望清单（0）</div>
+            </div>
+
+    </div>
         <div class="dx-GoodsDetails">
-            <div class="goods clearfix">
+            <c:forEach var="row" items="${wishList}">
+            <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
                     <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
                 </div>
                 <div class="goods-right">
-                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
-                    <div class="number">产品编号 1B1184 Z</div>
-                    <div class="color">黑色<span>M号</span></div>
-                    <div class="preferential-price delete">单价&nbsp; &yen; <span>11,504</span></div>
+                    <div class="name">${row.goodsName}</div>
+                    <div class="number">${row.goodsCode}</div>
+                    <div class="goods_color" data-value=${row.skuSpecifications}>黑色&nbsp;&nbsp;&nbsp;&nbsp;<span>M号</span></div>
+                    <div class="preferential-price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                     <div class="price">优惠价&nbsp; &yen; <span>10,504</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_bag icon-bag"><svg><use xlink:href="#bag"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_bag icon-bag toCart" data-value="${row.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment toBoutique" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
-            <div class="goods clearfix">
-                <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
-                </div>
-                <div class="goods-right">
-                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
-                    <div class="number">产品编号 1B1184 Z</div>
-                    <div class="color">黑色<span>M号</span></div>
-                    <div class="price"><span class="SoldOut">已告罄</span></div>
-                </div>
-                <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_bag active icon-bag"><svg><use xlink:href="#bag-active"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_appointment active"><svg><use xlink:href="#ap-active"></use></svg></a></li>
-                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
-                </ul>
-            </div>
+            </c:forEach>
+
         </div>
         <div class="dx-clause">
             <ul>
@@ -63,14 +61,52 @@
         </div>
     </div>
 </div>
-<script>
 
-    $(function () {
-        //console.log('${goodsList}');
-    });
-</script>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
+<script>
+
+    $(function () {
+
+        if(${empty wishList}){
+            $("#toggleDiv2").show();
+        }else{
+            $("#toggleDiv2").hide();
+        }
+
+        $(".toCart").each(function () {
+            var $nowDiv = $(this);
+            $nowDiv.click(function () {
+                var cartId = $(this).attr("data-value");
+                $.post("/cart/wishToCart",{"shoppingCartItemId":cartId},function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        console.log(data.code);
+                        $nowDiv.parents(".goodsDiv").remove();
+                    }
+                });
+            });
+            
+        });
+        
+        
+
+        $(".goods_color").each(function () {
+            var str = $(this).attr("data-value");
+            if(str!=null && str!=""){
+                str = str.replace("，",",");
+                str = str.replace("：",":");
+                str = str.replace("“","\"");
+                str = str.replace("”","\"");
+                str = str.replace("｛","{");
+                str = str.replace("｝","}");
+            }
+            console.log("str:"+str);
+            jsonObj = jQuery.parseJSON(str);
+            $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
+        });
+    });
+</script>

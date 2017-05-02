@@ -15,7 +15,7 @@
     <div class="content">
         <div class="dx-GoodsDetails">
             <c:forEach var="row" items="${cartList}">
-            <div class="goods clearfix">
+            <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
                     <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
                 </div>
@@ -23,13 +23,13 @@
                     <div class="name">${row.goodsName}</div>
                     <div class="number">产品编号 ${row.goodsCode}</div>
                     <div class="goods_color" data-value=${row.skuSpecifications}>&nbsp;&nbsp;<div class="goods_size">S</div></div>
-                    <div class="quantity">数量: <a href="#" class="minus">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add">+</a></div>
+                    <div class="quantity">数量: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
                     <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                    <li><a href="javascript:;"  class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
             </c:forEach>
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="shopping-start">
-        <a href="购物车.结算页.html" class="shopping">查看购物袋 / 结帐</a>
+        <a href="/cart/details" class="shopping">查看购物袋 / 结帐</a>
         <div class="dx-clause">
             <ul>
                 <li><a href="#">购物说明</a></li>
@@ -75,24 +75,54 @@
         //点击数量增加减少
         $(".add").on("click",function () {
             var t = $(this).parent().find(".quantitys");
-            t.val(parseInt(t.val())+1);
+            var num = parseInt(t.val())+1;
+            var id = $(this).attr("data-value");
+            t.val(num);
+            var data = {"shoppingCartItemId":id,"num":num};
+            $.post("/cart/updateCart",data,function () {
+            });
+
             $(".minus").removeAttr("disabled");
         });
         $(".minus").on("click",function () {
             var t = $(this).parent().find(".quantitys");
+            var id = $(this).attr("data-value");
             if (parseInt(t.val())>1){
-                t.val(parseInt(t.val())-1);
+                var num = parseInt(t.val())-1;
+                t.val(num);
+                var data = {"shoppingCartItemId":id,"num":num};
+                $.post("/cart/updateCart",data,function () {
+                });
             }else {
+               /* $.post("/cart/removeFromCart",{"id":id},function () {
+                });*/
                 $("#min").attr("disabled","disabled");
             }
         });
 
+        $(".deleteBtn").on("click",function () {
+            var id = $(this).attr("data-value");
+            console.log(id);
+            $.post("/cart/removeFromCart",{"id":id},function (data) {
+                console.log(data);
+            });
+            $(this).parents(".goodsDiv").remove();
+        });
+
         $(".goods_color").each(function () {
             var str = $(this).attr("data-value");
-            console.log(str);
+            if(str!=null && str!=""){
+                str.replace("，",",");
+                str.replace("：",":");
+                str.replace("“","\"");
+                str.replace("”","\"");
+                str.replace("｛","{");
+                str.replace("｝","}");
+            }
+            console.log("str:"+str);
             jsonObj = jQuery.parseJSON(str);
             $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        })
+        });
 
     });
 </script>

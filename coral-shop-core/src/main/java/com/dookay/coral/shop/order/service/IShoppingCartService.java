@@ -3,6 +3,7 @@ package com.dookay.coral.shop.order.service;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 
 import java.util.List;
@@ -34,5 +35,11 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
     Boolean removeFromWish(CustomerDomain customerDomain, SkuDomain skuDomain);
 
     ShoppingCartItemDomain isExistInWish(CustomerDomain customerDomain, SkuDomain skuDomain);
+
+    OrderDomain createOrder(CustomerDomain customerDomain, List<ShoppingCartItemDomain> cartList);
+
+    void wishToCart(CustomerDomain customerDomain, Long shoppingCartItemId);
+
+    void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId);
 
 }
