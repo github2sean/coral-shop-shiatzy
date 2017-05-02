@@ -9,9 +9,7 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
-import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
-import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +140,7 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
-        ModelAndView mv = new ModelAndView("shoppingcart/details");
+        ModelAndView mv = new ModelAndView("shoppingcart/orderInfo");
         mv.addObject("cartList",cartList);
         return mv;
     }
