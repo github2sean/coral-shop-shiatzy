@@ -1,11 +1,11 @@
-@include('include/head.html')
-@include('include/header.html')
+@include('include/head.html') @include('include/header.html')
 <div class="order">
     <p style="float: left">门市取货设定</p>
-    <a style="float: right;" href="#">< 回上页</a>
+    <a style="float: right;" href="#">
+        < 回上页</a>
 </div>
 <div class="dx-pickUp">
-    <div class="model-select-box">
+    <!-- <div class="model-select-box">
         <div class="model-select-country" data-value="">
             <span style="padding-left: 20px;">国别 / 区域</span>
             <span style="float: right;">v</span>
@@ -25,7 +25,7 @@
             <li data-option="3">广州</li>
         </ul>
     </div>
-    <div class="model-select-box">
+     <div class="model-select-box">
         <div class="model-select-store" data-value="">
             <span style="padding-left: 20px;">门市选择</span>
             <span style="float: right;">v</span>
@@ -37,24 +37,53 @@
             <li class="active" data-option="4">上海恒隆精品店</li>
             <li data-option="5" class="seleced">上海奕歐來店</li>
         </ul>
-    </div>
-    <div class="stores-introduce">
-        <h2>上海恒隆精品店</h2>
-        <p>上海市靜安區南京西路1266號恆隆廣場</p>
-        <p>3F321鋪</p>
-        <p>+86 21 6240 0910</p>
-    </div>
-    <div class="submit-btn">
-        <a href="门市预约.提交订单.html">< 确认</a>
-    </div>
+    </div>-->
+    <form>
+        <div id="location_choose" class="location_choose">
+            <select class="province select_control"></select>
+            <select class="city select_control"></select>
+            <select class="store select_control">
+                <option value="">门店选择</option>
+                <option value="">店铺1</option>
+                <option value="">店铺2</option>
+                <option value="">店铺3</option>
+            </select>
+        </div>
+        <div class="stores-introduce">
+            <h2>上海恒隆精品店</h2>
+            <p>上海市靜安區南京西路1266號恆隆廣場</p>
+            <p>3F321鋪</p>
+            <p>+86 21 6240 0910</p>
+        </div>
+        <div class="submit-btn">
+            <a href="门市预约.提交订单.html">
+                < 确认</a>
+        </div>
+    </form>
 </div>
 @include('include/footer.html')
 <script>
-    $(function(){
+  $(function () {
         commonApp.init();
     });
 </script>
+<script src="js/cxSelect/js/jquery.cxselect.js"></script>
 <script>
+  $('#location_choose').cxSelect({
+    url: 'js/cxSelect/js/cityData.min.json', // 如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
+    selects: ['province', 'city'], // 数组，请注意顺序
+    emptyStyle: 'none'
+  });
+  $(".city").one("change", function () {
+    $(".store").show();
+  })
+  $(".store").one("change", function () {
+
+    $(".stores-introduce").show();
+  })
+</script>
+
+<!--<script>
     //下拉列表
     $(function () {
         function selectModel() {
@@ -156,5 +185,5 @@
         }
         selectModel();
     })
-</script>
+</script>-->
 @include('include/foot.html')
