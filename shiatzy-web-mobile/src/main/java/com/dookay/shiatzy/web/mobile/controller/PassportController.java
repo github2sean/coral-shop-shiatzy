@@ -1,6 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.web.JsonResult;
+import com.dookay.coral.common.web.jcaptcha.JCaptcha;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
@@ -67,11 +68,15 @@ public class PassportController extends MobileBaseController{
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult register(@ModelAttribute RegisterForm registerForm){
+    public JsonResult register(@ModelAttribute RegisterForm registerForm,HttpServletRequest request){
         beanValidator(registerForm);
         String userName = registerForm.getEmail();
         String password = registerForm.getPassword();
         String validCode = registerForm.getValidCode();
+
+        if (!JCaptcha.validateResponse(request, validCode)) {
+           return errorResult("验证码错误");
+        }
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
            Boolean isExist =  accountService.isExist(userName);

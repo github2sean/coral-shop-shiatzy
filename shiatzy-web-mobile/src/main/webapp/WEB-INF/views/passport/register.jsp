@@ -17,7 +17,7 @@
         <input type="password" placeholder="再次输入密码" name="confirm_password">
         <div class="dx-verify clearfix">
             <input type="text" class="verify" placeholder="输入右方验证码" name="validCode">
-            <div class="dx-verify-pic"><img src="images/verify_03.jpg" alt=""></div>
+            <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
         </div>
         <div class="remind">验证码输入错误，请重新输入</div>
         <button type="button" class="registerBtn">注 册</button>
