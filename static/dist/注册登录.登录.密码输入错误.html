@@ -36,7 +36,7 @@
 <div style="display: none;">
     <svg xmlns="http://www.w3.org/2000/svg">
         <symbol id="ac-add" viewBox="0 0 22 22">
-            <g> <path style="fill:#FFFFFF;stroke:#333333;stroke-width:0.5;" d="M17.078,8.98c0-3.303-2.676-5.98-5.979-5.98
+            <g><path style="fill:#FFFFFF;stroke:#333333;stroke-width:0.5;" d="M17.078,8.98c0-3.303-2.676-5.98-5.979-5.98
 		c-3.303,0-5.98,2.678-5.98,5.98c0,3.12,2.398,5.653,5.445,5.926L11.099,19l0.534-4.094C14.682,14.631,17.078,12.1,17.078,8.98z"/> <polygon style="fill:none;stroke:#333333;stroke-width:0.5;" points="11.099,8.163 9.75,6.813 8.4,7.892 8.4,9.511 11.099,12.209
 		13.797,9.511 13.797,7.892 12.449,6.813 	"/> </g> <g> <circle style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" cx="132.76" cy="180.545" r="6.45"/> <line style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" x1="137.32" y1="185.105" x2="141.311" y2="189.096"/> </g>
         </symbol>
@@ -197,22 +197,22 @@
 </div>
     <header class="top-bar">
         <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
-        <span class="do-logo-w"><img src="images/logo.png" alt=""></span>
+        <a href="index.html" class="do-logo-w"><img src="images/logo.png" alt=""></a>
         <ul class="top-right-nav">
             <li class="active"><a href="购物车.html"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">3</span></a></li>
-            <li><a href="index.html"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
+            <li><a href="门市预约.商品列表.html"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
             <li><a href="我的账户.首页.html"><svg><use xlink:href="#account"></use></svg></a></li>
         </ul>
     </header>
     <div class="do-nav-panel" id="j_nav_panel">
         <div class="do-nav-head">
             <a class="btn-left iconfont" id="j_close_nav" href="#">&#xe67d;</a>
-            <span class="do-logo-w"><img src="images/logo.png" alt=""></span>
+            <a class="do-logo-w"><img src="images/logo.png" alt=""></a>
         </div>
         <div class="do-nav-cnt">
             <div class="do-search">
                 <form action="">
-                    <input type="text" placeholder="请输入搜索内容" class="j_search">
+                    <input type="text" placeholder="连衣裙、外套" class="j_search">
                     <button class="iconfont">&#xe610;</button>
                 </form>
             </div>
@@ -225,9 +225,14 @@
                 <li>
                     <a href="javascript:;">女装</a>
                     <ul class="guide-sub-nav">
-                        <li><a href="产品列表.html">女士系列</a></li>
-                        <li><a href="产品列表.html">高跟鞋</a></li>
-                        <li><a href="产品列表.html">靴</a></li>
+                        <li><a href="产品列表.html">2017春夏系列</a></li>
+                        <li><a href="产品列表.html">2017早春系列</a></li>
+                        <li><a href="产品列表.html">全部服装</a></li>
+                        <li><a href="产品列表.html">连衣裙</a></li>
+                        <li><a href="产品列表.html">外套&夹克</a></li>
+                        <li><a href="产品列表.html">半身裙</a></li>
+                        <li><a href="产品列表.html">上衣</a></li>
+                        <li><a href="产品列表.html">裤子</a></li>
                     </ul>
                 </li>
                 <li><a href="产品列表.html">男装</a></li>
@@ -240,8 +245,8 @@
             <ul class="do-list-lang">
                 <li><a href="我的账户.首页.html">我的账户</a></li>
                 <li class="do-login"><a href="注册登录.登录.html">登录</a> | <a href="注册登录.注册.html">注册</a></li>
-                <li><a href="">选择其他国家或地区</a></li>
-                <li><a href="">选择語言</a></li>
+                <li><a href="">选择区域</a></li>
+                <li><a href="">选择语言</a></li>
             </ul>
             <div class="do-online-service">
                 <p class="do-online-t">在线客户服务</p>
@@ -256,21 +261,21 @@
     <div class="main-content">
 <div class="dx-login">
     <div class="dx-title clearfix">
-        <div class="member"><span><img src="images/icon-member.png" alt=""></span>我的账户</div>
+        <div class="member"><span><img src="images/icon-member.png" alt=""></span>会员</div>
         <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <div class="content">
-        <div class="login">登录</div>
-        <div class="title">请于下方输入您的电子邮箱及密码</div>
-        <input type="email" placeholder="电子邮箱">
-        <input type="password" placeholder="密码">
+        <div class="login">登入</div>
+        <div class="title">请于下方输入您的电子邮箱与密码登入</div>
+        <input type="email" placeholder="输入您的电子邮箱">
+        <input type="password" placeholder="输入您的密码">
         <div class="remind">忘记密码？</div>
         <div class="dx-verify clearfix">
             <input type="text" class="verify" placeholder="输入右方验证码">
             <div class="dx-verify-pic"><img src="images/verify_03.jpg" alt=""></div>
         </div>
-        <button type="button" class="btn">登录</button>
-        <div class="register">尚未拥有账号？前往注册</div>
+        <button type="button" class="btn">登入</button>
+        <div class="register">尚未拥有帐号？ 注册</div>
     </div>
     <div class="thirdparty">
         <div class="title">使用第三方帐号快速登入</div>
