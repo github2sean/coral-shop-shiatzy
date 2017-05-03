@@ -10,7 +10,7 @@
 <div class="dx-accounts">
     <div class="dx-title">结账 <a href="商品详情.html">回上页</a></div>
     <div class="content">
-        <c:forEach var="row" items="${cartList}">
+        <c:forEach var="row" items="${sessionScope.cartList}">
         <div class="dx-GoodsDetails">
             <div class="goods clearfix">
                 <div class="goods-left">
@@ -33,9 +33,9 @@
         </div>
         </c:forEach>
         <div class="privilege">
-            <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2">&#xe77d;</a></div>
+            <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" placeholder="请输入优惠代码" class="text"><button type="button" class="btn">确定</button>
+                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button>
             </form>
         </div>
     </div>
@@ -85,10 +85,10 @@
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+
 <script>
     $(function(){
         commonApp.init();
-
         //修改弹窗
         $(".j_alter").on("click",function () {
             layer.open({
@@ -140,6 +140,19 @@
                 $("#min").attr("disabled","disabled");
             }
         })
+
+        //
+        $(".couponBtn").click(function () {
+            console.log("使用成功");
+           var couponCode = $(".couponCode").val();
+            $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
+                if(data.code=200){
+                    console.log("使用成功");
+                }else{
+                    console.log(data.message);
+                }
+            });
+        });
 
         $(".goods_color").each(function () {
             var str = $(this).attr("data-value");

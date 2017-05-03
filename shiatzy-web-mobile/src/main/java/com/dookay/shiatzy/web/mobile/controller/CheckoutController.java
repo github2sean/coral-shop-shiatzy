@@ -25,6 +25,7 @@ import com.dookay.coral.shop.promotion.service.ICouponService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +42,7 @@ import java.util.List;
  * @since 2017/5/2
  */
 @RequestMapping("checkout/")
+@Controller
 public class CheckoutController  extends BaseController{
 
     @Autowired
@@ -65,6 +67,7 @@ public class CheckoutController  extends BaseController{
     private ISkuService skuService;
 
     private static String CART_LIST = "cartList";
+    private static String ODER = "order";
     /**
      * 从购物车初始化订单
      * @return
@@ -82,9 +85,9 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         session.setAttribute(CART_LIST,cartList);
-        session.setAttribute("order",order);
+        session.setAttribute(ODER,order);
         //跳转到结算页面
-        return "redirect:checkout/orderInfo";
+        return "redirect:orderInfo";
     }
 
     /**
@@ -97,10 +100,12 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         //如果session为空，跳转到商品列表页面
-        if(session.getAttribute(CART_LIST)==null){
+        List cartList = (List) session.getAttribute(CART_LIST);
+        if(cartList==null){
             return new ModelAndView("redirect:home/index");
         }
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
+        mv.addObject(CART_LIST,cartList);
         return mv;
     }
 
@@ -151,13 +156,13 @@ public class CheckoutController  extends BaseController{
      * 设置收货地址
      * @return
      */
-    @RequestMapping(value = "/setAddress", method = RequestMethod.POST)
+    @RequestMapping(value = "setAddress", method = RequestMethod.POST)
     public JsonResult setAddress(Long addressId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
 
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
-        OrderDomain orderDomain = (OrderDomain)session.getAttribute("order");
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ODER);
 
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
         orderDomain.setShipName(customerAddressDomain.getFirstName()+customerAddressDomain.getLastName());
@@ -168,7 +173,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipAddress(customerAddressDomain.getAdress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
 
-        session.setAttribute("order",orderDomain);
+        session.setAttribute(ODER,orderDomain);
         return successResult("操作成功");
     }
 
@@ -176,7 +181,7 @@ public class CheckoutController  extends BaseController{
      * 设置自提门店
      * @return
      */
-    @RequestMapping(value = "/setStore", method = RequestMethod.POST)
+    @RequestMapping(value = "setStore", method = RequestMethod.POST)
     public JsonResult setStore(){
 
         //数据库暂无门店
@@ -188,13 +193,13 @@ public class CheckoutController  extends BaseController{
      * 设置支付方式
      * @return
      */
-    @RequestMapping(value = "/setPaymentMethod", method = RequestMethod.POST)
+    @RequestMapping(value = "setPaymentMethod", method = RequestMethod.POST)
     public JsonResult setPaymentMethod(Integer paymentId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
         order.setPaymentMethod(paymentId);
-        session.setAttribute("order",order);
+        session.setAttribute(ODER,order);
         return successResult("操作成功");
     }
 
@@ -202,13 +207,13 @@ public class CheckoutController  extends BaseController{
      * 设置配送方式
      * @return
      */
-    @RequestMapping(value = "/setShippingMethod", method = RequestMethod.POST)
+    @RequestMapping(value = "setShippingMethod", method = RequestMethod.POST)
     public JsonResult setShippingMethod(Integer shippingMethodId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
         order.setShippingMethod(shippingMethodId);
-        session.setAttribute("order",order);
+        session.setAttribute(ODER,order);
         return successResult("操作成功");
     }
 
@@ -217,24 +222,15 @@ public class CheckoutController  extends BaseController{
      * @param couponCode
      * @return
      */
-    @RequestMapping(value = "/useCoupon", method = RequestMethod.POST)
+    @RequestMapping(value = "useCoupon", method = RequestMethod.POST)
     public JsonResult useCoupon(String couponCode){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
-
-        CouponQuery query = new CouponQuery();
-        query.setCode(couponCode);
-        CouponDomain couponDomain = couponService.getOne(query);
-        if(couponDomain == null){
-            //TODO
-        }
-        int num = couponDomain.getLeft();
-        if(num<=0){
-            return errorResult("优惠券次数不足");
-        }else{
+        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        CouponDomain couponDomain = couponService.checkCoupon(couponCode);
+        if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
-            session.setAttribute("order",order);
+            session.setAttribute(ODER,order);
         }
         return successResult("操作成功");
     }
@@ -243,22 +239,20 @@ public class CheckoutController  extends BaseController{
      * 提交订单
      * @return
      */
-    @RequestMapping(value = "/submitOrder", method = RequestMethod.POST)
+    @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
     public JsonResult submitOrder(){
         //从session中获取订单对象,对象至少包含商品列表、优惠券
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
-        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("cartList");
+        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
         CouponDomain couponDomain = couponService.get(couponId);
-        int num  = couponDomain.getLeft();
         List<Long> itemIds = new ArrayList<Long>();
-        if(num>0){
-
+        if(couponService.checkCoupon(couponDomain.getCode())!=null){
             //创建明细
-            for(int j = 0;j<cartList.size();j++){
+            for(int j = 0;cartList!=null&&cartList.size()>0&&j<cartList.size();j++){
                 ShoppingCartItemDomain items = cartList.get(j);
                 OrderItemDomain orderItemDomain = new OrderItemDomain();
                 orderItemDomain.setOrderId(order.getId());
@@ -273,17 +267,14 @@ public class CheckoutController  extends BaseController{
                 orderItemDomain.setGoodsCode(items.getGoodsCode());
                 orderItemDomain.setGoodsPrice(items.getGoodsPrice());
                 orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
-
                 orderService.create(order);
                 orderItemService.create(orderItemDomain);
             }
-        }else {
-            return errorResult("优惠券次数不足",couponId);
         }
 
         //清除session
-        session.setAttribute("order",null);
-
+        session.setAttribute(ODER,null);
+        session.setAttribute(CART_LIST,null);
         //清除购物车
 
         for(int i=0 ;cartList!=null && cartList.size()>0 && i<cartList.size();i++){
