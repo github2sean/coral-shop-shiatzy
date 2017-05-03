@@ -57,6 +57,9 @@ public class OrderDomain implements Serializable {
 	/*取货门店id*/
 	private Long shipShopId;
 
+	/*配送国家id*/
+	private Long shippingCountryId;
+
 	/*收货地址id*/
 	private Long shipAddressId;
 
