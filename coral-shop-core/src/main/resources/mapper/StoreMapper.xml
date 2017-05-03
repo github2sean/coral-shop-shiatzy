@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.store.mapper.StoreMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`rank` as 'rank',
+		    	a.`is_valid` as 'isValid',
+		    	a.`country_id` as 'countryId',
+		    	a.`city_id` as 'cityId',
+		    	a.`name` as 'name',
+		    	a.`en_title` as 'enTitle',
+		    	a.`address` as 'address',
+		    	a.`en_address` as 'enAddress',
+		    	a.`tel` as 'tel',
+		    	a.`time` as 'time',
+		    	a.`en_time` as 'enTime',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    </trim>
+	   	from 
+	    	`t_store` as a
+	</sql>
+  
+</mapper>

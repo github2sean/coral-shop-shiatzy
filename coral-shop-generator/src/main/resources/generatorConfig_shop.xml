@@ -110,6 +110,16 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.order.query" />
 	</table>
+	<table tableName="t_order_reservation" domainObjectName="Reservation"
+		   packageName="com.dookay.coral.shop.order" desc="预约单" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
+	<table tableName="t_order_reservation_item" domainObjectName="ReservationItem"
+		   packageName="com.dookay.coral.shop.order" desc="预约单明细" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.order.query" />
+	</table>
 	<!--订单模块 结束-->
 
 	<!--营销模块 开始-->
@@ -145,4 +155,30 @@
 		<dto packageName="com.dookay.coral.shop.content.query" />
 	</table>
 	<!--内容模块 结束-->
+
+	<!--店铺模块 开始-->
+	<table tableName="t_store" domainObjectName="Store"
+		   packageName="com.dookay.coral.shop.store" desc="店铺" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.store.query" />
+	</table>
+	<table tableName="t_store_country" domainObjectName="StoreCountry"
+		   packageName="com.dookay.coral.shop.store" desc="店铺国家" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.store.query" />
+	</table>
+	<table tableName="t_store_city" domainObjectName="StoreCity"
+		   packageName="com.dookay.coral.shop.store" desc="店铺城市" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.store.query" />
+	</table>
+	<!--店铺模块 结束-->
+
+	<!--系统模块 开始-->
+	<table tableName="t_shipping_country" domainObjectName="ShippingCountry"
+		   packageName="com.dookay.coral.shop.shipping" desc="配送国家" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.shipping.query" />
+	</table>
+	<!--系统模块 结束-->
 </context>
