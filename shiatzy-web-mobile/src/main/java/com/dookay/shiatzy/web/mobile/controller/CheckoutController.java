@@ -82,7 +82,7 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         session.setAttribute(CART_LIST,cartList);
-        session.setAttribute("order",order);
+        session.setAttribute(CART_LIST,order);
         //跳转到结算页面
         return "redirect:checkout/orderInfo";
     }
@@ -168,7 +168,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipAddress(customerAddressDomain.getAdress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
 
-        session.setAttribute("order",orderDomain);
+        session.setAttribute(CART_LIST,orderDomain);
         return successResult("操作成功");
     }
 
@@ -194,7 +194,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute("order");
         order.setPaymentMethod(paymentId);
-        session.setAttribute("order",order);
+        session.setAttribute(CART_LIST,order);
         return successResult("操作成功");
     }
 
@@ -208,7 +208,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute("order");
         order.setShippingMethod(shippingMethodId);
-        session.setAttribute("order",order);
+        session.setAttribute(CART_LIST,order);
         return successResult("操作成功");
     }
 
@@ -221,11 +221,11 @@ public class CheckoutController  extends BaseController{
     public JsonResult useCoupon(String couponCode){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(CART_LIST);
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
-            session.setAttribute("order",order);
+            session.setAttribute(CART_LIST,order);
         }
         return successResult("操作成功");
     }
@@ -239,7 +239,7 @@ public class CheckoutController  extends BaseController{
         //从session中获取订单对象,对象至少包含商品列表、优惠券
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(CART_LIST);
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("cartList");
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
@@ -268,7 +268,7 @@ public class CheckoutController  extends BaseController{
         }
 
         //清除session
-        session.setAttribute("order",null);
+        session.setAttribute(CART_LIST,null);
 
         //清除购物车
 
