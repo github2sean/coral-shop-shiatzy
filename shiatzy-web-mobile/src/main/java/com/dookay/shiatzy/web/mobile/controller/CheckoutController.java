@@ -157,7 +157,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
 
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
-        OrderDomain orderDomain = (OrderDomain)session.getAttribute("order");
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(CART_LIST);
 
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
         orderDomain.setShipName(customerAddressDomain.getFirstName()+customerAddressDomain.getLastName());
@@ -192,7 +192,7 @@ public class CheckoutController  extends BaseController{
     public JsonResult setPaymentMethod(Integer paymentId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(CART_LIST);
         order.setPaymentMethod(paymentId);
         session.setAttribute(CART_LIST,order);
         return successResult("操作成功");
@@ -206,7 +206,7 @@ public class CheckoutController  extends BaseController{
     public JsonResult setShippingMethod(Integer shippingMethodId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute("order");
+        OrderDomain order = (OrderDomain)session.getAttribute(CART_LIST);
         order.setShippingMethod(shippingMethodId);
         session.setAttribute(CART_LIST,order);
         return successResult("操作成功");
