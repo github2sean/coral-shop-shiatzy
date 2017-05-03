@@ -103,7 +103,7 @@
         $(".deleteBtn").on("click",function () {
             var id = $(this).attr("data-value");
             console.log(id);
-            $.post("/cart/removeFromCart",{"id":id},function (data) {
+            $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
                 console.log(data);
             });
             $(this).parents(".goodsDiv").remove();

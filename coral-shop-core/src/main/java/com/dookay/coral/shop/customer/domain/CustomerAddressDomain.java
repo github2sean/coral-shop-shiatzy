@@ -47,116 +47,12 @@ public class CustomerAddressDomain implements Serializable {
 	private Long cityId;
 	
 	/*详细地址*/
-	private String adress;
+	private String address;
 	
 	/*备注*/
 	private String memo;
 	
 	/*客户id*/
 	private Long customerId;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public String getFirstName(){
-		return firstName;
-	}
-	
-	public void setFirstName(String firstName){
-		this.firstName = firstName;
-	}
-	
-	public String getLastName(){
-		return lastName;
-	}
-	
-	public void setLastName(String lastName){
-		this.lastName = lastName;
-	}
-	
-	public String getTitle(){
-		return title;
-	}
-	
-	public void setTitle(String title){
-		this.title = title;
-	}
-	
-	public String getPhone(){
-		return phone;
-	}
-	
-	public void setPhone(String phone){
-		this.phone = phone;
-	}
-	
-	public Long getCountryId(){
-		return countryId;
-	}
-	
-	public void setCountryId(Long countryId){
-		this.countryId = countryId;
-	}
-	
-	public Long getProvinceId(){
-		return provinceId;
-	}
-	
-	public void setProvinceId(Long provinceId){
-		this.provinceId = provinceId;
-	}
-	
-	public Long getCityId(){
-		return cityId;
-	}
-	
-	public void setCityId(Long cityId){
-		this.cityId = cityId;
-	}
-	
-	public String getAdress(){
-		return adress;
-	}
-	
-	public void setAdress(String adress){
-		this.adress = adress;
-	}
-	
-	public String getMemo(){
-		return memo;
-	}
-	
-	public void setMemo(String memo){
-		this.memo = memo;
-	}
-	
-	public Long getCustomerId(){
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId){
-		this.customerId = customerId;
-	}
 
-	@Override
-	public String toString() {
-		return "CustomerAddressDomain{" +
-				"id=" + id +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", title='" + title + '\'' +
-				", phone='" + phone + '\'' +
-				", countryId=" + countryId +
-				", provinceId=" + provinceId +
-				", cityId=" + cityId +
-				", adress='" + adress + '\'' +
-				", memo='" + memo + '\'' +
-				", customerId=" + customerId +
-				'}';
-	}
 }

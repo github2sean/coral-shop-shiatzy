@@ -36,6 +36,8 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
 
     ShoppingCartItemDomain isExistInWish(CustomerDomain customerDomain, SkuDomain skuDomain);
 
+    ShoppingCartItemDomain isExistInCart(CustomerDomain customerDomain, SkuDomain skuDomain,Integer cartType);
+
     OrderDomain createOrder(CustomerDomain customerDomain, List<ShoppingCartItemDomain> cartList);
 
     void wishToCart(CustomerDomain customerDomain, Long shoppingCartItemId);

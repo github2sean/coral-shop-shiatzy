@@ -92,7 +92,7 @@ public class AccountController extends MobileBaseController {
         Long countryId = getCustomeAddress.getCountryId();
         Long provinceId = getCustomeAddress.getProvinceId();
         Long cityId = getCustomeAddress.getCityId();
-        String adress = getCustomeAddress.getAdress();
+        String address = getCustomeAddress.getAddress();
 
         Long accountId = UserContext.current().getAccountDomain().getId();
         AccountDomain updateAccount = accountService.get(accountId);
@@ -104,12 +104,13 @@ public class AccountController extends MobileBaseController {
         updateCustomer.setLastName(lastName);
         updateCustomer.setPhone(phone);
 
-        CustomerAddressDomain updaCustomerAddress = customerAddressService.getAccount(updateCustomer.getId());
+        Long addressId = updateAccountForm.getAddressId();
+        CustomerAddressDomain updaCustomerAddress = customerAddressService.get(addressId);
         updaCustomerAddress.setTitle(title);
         updaCustomerAddress.setCountryId(countryId);
         updaCustomerAddress.setProvinceId(provinceId);
         updaCustomerAddress.setCityId(cityId);
-        updaCustomerAddress.setAdress(adress);
+        updaCustomerAddress.setAddress(address);
         updaCustomerAddress.setLastName(lastName);
         updaCustomerAddress.setFirstName(firstName);
         updaCustomerAddress.setPhone(phone);
@@ -160,4 +161,31 @@ public class AccountController extends MobileBaseController {
         mv.addObject("customerDomain",customerDomain);
         return mv;
     }
+
+    @RequestMapping(value = "toValidVip", method = RequestMethod.GET)
+    public ModelAndView toValidVip(){
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        ModelAndView mv = new ModelAndView("user/account/validVip");
+        mv.addObject("customerDomain",customerDomain);
+        return mv;
+    }
+
+    @RequestMapping(value = "validVip", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult validVip(String phoneNumber){
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        customerService.validVip(customerDomain,phoneNumber);
+        return successResult("验证成功");
+    }
+
+    @RequestMapping(value = "vipDetail", method = RequestMethod.GET)
+    public ModelAndView vipDetail(){
+        //TODO 查询会员卡号
+
+        ModelAndView mv = new ModelAndView("user/account/vipDetail");
+        return mv;
+    }
+
 }

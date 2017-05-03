@@ -4,6 +4,7 @@ import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -120,15 +122,48 @@ public class CheckoutController  extends BaseController{
         CustomerAddressQuery query = new CustomerAddressQuery();
         query.setCustomerId(customerDomain.getId());
         List addressList = customerAddressService.getList(query);
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView("user/account/listAddress");
         mv.addObject("addressList",addressList);
         return mv;
     }
 
-    @RequestMapping(value = "addAddress",method = RequestMethod.GET)
+    @RequestMapping(value = "toAddAddress",method = RequestMethod.GET)
     public  ModelAndView addAddress(){
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView("user/account/addAddress");
         return mv;
+    }
+
+    @RequestMapping(value = "toUpdateAddress",method = RequestMethod.GET)
+    public  ModelAndView toUpdateAddress(Long addressId){
+        CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
+        ModelAndView mv = new ModelAndView("user/account/updateAddress");
+        mv.addObject("address",customerAddressDomain);
+        return mv;
+    }
+
+    @RequestMapping(value = "updateAddress",method = RequestMethod.POST)
+    @ResponseBody
+    public  JsonResult updateAddress(@ModelAttribute AddressModel addressModel,Long addressId){
+       CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
+
+        customerAddressDomain.setLastName(addressModel.getLastName());
+        customerAddressDomain.setFirstName(addressModel.getFirstName());
+        customerAddressDomain.setPhone(addressModel.getPhone());
+        customerAddressDomain.setMemo(addressModel.getMemo());
+        customerAddressDomain.setTitle(addressModel.getTitle());
+        customerAddressDomain.setCountryId(addressModel.getCountryId());
+        customerAddressDomain.setCityId(addressModel.getCityId());
+        customerAddressDomain.setProvinceId(addressModel.getProvinceId());
+        customerAddressDomain.setAddress(addressModel.getAddress());
+        customerAddressService.update(customerAddressDomain);
+        return successResult("修改成功");
+    }
+
+    @RequestMapping(value = "removeAddress",method = RequestMethod.POST)
+    @ResponseBody
+    public  JsonResult removeAddress(Long addressId){
+        customerAddressService.delete(addressId);
+        return successResult("删除成功");
     }
 
     @RequestMapping(value = "addAddress", method = RequestMethod.POST)
@@ -137,17 +172,16 @@ public class CheckoutController  extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         CustomerAddressDomain customerAddressDomain = new CustomerAddressDomain();
         customerAddressDomain.setCustomerId(customerDomain.getId());
-        customerAddressDomain.setPhone(customerDomain.getPhone());
-        customerAddressDomain.setLastName(customerDomain.getLastName());
-        customerAddressDomain.setFirstName(customerDomain.getFirstName());
 
+        customerAddressDomain.setLastName(addressModel.getLastName());
+        customerAddressDomain.setFirstName(addressModel.getFirstName());
+        customerAddressDomain.setPhone(addressModel.getPhone());
         customerAddressDomain.setMemo(addressModel.getMemo());
         customerAddressDomain.setTitle(addressModel.getTitle());
         customerAddressDomain.setCountryId(addressModel.getCountryId());
         customerAddressDomain.setCityId(addressModel.getCityId());
         customerAddressDomain.setProvinceId(addressModel.getProvinceId());
-        customerAddressDomain.setAdress(addressModel.getAdress());
-
+        customerAddressDomain.setAddress(addressModel.getAddress());
         customerAddressService.create(customerAddressDomain);
         return successResult("操作成功");
     }
@@ -170,7 +204,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipCity(customerAddressDomain.getCityId()+"");
         orderDomain.setShipCountry(customerAddressDomain.getCountryId()+"");
         orderDomain.setShipProvince(customerAddressDomain.getProvinceId()+"");
-        orderDomain.setShipAddress(customerAddressDomain.getAdress());
+        orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
 
         session.setAttribute(ODER,orderDomain);

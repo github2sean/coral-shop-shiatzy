@@ -26,4 +26,5 @@ public interface ICustomerService extends IBaseService<CustomerDomain> {
 
     Boolean updateCustomer(AccountDomain updateAccount, CustomerDomain updateCustomer, CustomerAddressDomain updaCustomerAddress);
 
+    CustomerDomain validVip(CustomerDomain customerDomain,String phoneNumber);
 }
