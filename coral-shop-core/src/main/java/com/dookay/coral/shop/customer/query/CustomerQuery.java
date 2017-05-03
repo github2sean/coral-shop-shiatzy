@@ -17,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 public class CustomerQuery extends Query {
 
 	private Long accountId;
+	private String phone;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -26,7 +27,9 @@ public class CustomerQuery extends Query {
 		if(valid(accountId)){
 			criteria.andEqualTo("accountId",accountId);
 		}
-
+		if(valid(phone)){
+			criteria.andEqualTo("phone",phone);
+		}
 
 		//todo 写查询逻辑
 		return queryCriteria;

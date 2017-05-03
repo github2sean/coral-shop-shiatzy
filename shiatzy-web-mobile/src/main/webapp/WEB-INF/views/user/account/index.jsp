@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.门市预约.列表.html">
+                <a href="/checkout/listAddress">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
                     <span>常用收件门市/地址设定</span>
                     <span style="float: right;">></span>

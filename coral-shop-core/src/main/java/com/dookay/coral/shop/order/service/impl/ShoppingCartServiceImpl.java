@@ -134,6 +134,17 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	}
 
 	@Override
+	public ShoppingCartItemDomain isExistInCart(CustomerDomain customerDomain, SkuDomain skuDomain,Integer cartType) {
+		ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+		query.setCustomerId(customerDomain.getId());
+		query.setSkuId(skuDomain.getId());
+		query.setShoppingCartType(cartType);
+		ShoppingCartItemDomain shoppingCart = getOne(query);
+		return shoppingCart;
+	}
+
+
+	@Override
 	@Transactional("transactionManager")
 	public OrderDomain createOrder(CustomerDomain customerDomain, List<ShoppingCartItemDomain> cartList) {
 		OrderDomain retOrderDomain = null;

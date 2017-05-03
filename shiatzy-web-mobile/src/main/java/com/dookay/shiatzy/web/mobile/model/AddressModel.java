@@ -2,15 +2,20 @@ package com.dookay.shiatzy.web.mobile.model;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+
 /**
  * @author Luxor
  * @version v0.0.1
  * @since 2017/5/2
  */
 @Data
+@Entity
 public class AddressModel {
 
     private Long id;
+
+    private String name;
 
     /*名*/
     private String firstName;
@@ -34,7 +39,7 @@ public class AddressModel {
     private Long cityId;
 
     /*详细地址*/
-    private String adress;
+    private String address;
 
     /*备注*/
     private String memo;

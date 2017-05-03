@@ -80,8 +80,8 @@
                     </select>
                 </span>
             </li>
-            <li>详细地址<input type="text"  value="${customerAddressDomain.adress}" name="customerAddressDomain.adress"/></li>
-            <li>郵編<input type="text"  /></li>
+            <li>详细地址<input type="text"  value="${customerAddressDomain.address}" name="customerAddressDomain.address"/></li>
+            <li>郵編<input type="text"  /><input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
         </ul>
     </div>
     <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
@@ -107,8 +107,6 @@
                 console.log(data.message);
                 $("#showInfo").show().text(data.message);
             });
-
-
         });
     });
 

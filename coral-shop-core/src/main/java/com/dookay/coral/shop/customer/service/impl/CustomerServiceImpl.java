@@ -105,7 +105,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	}
 
 	@Override
-	@org.springframework.transaction.annotation.Transactional("transactionManager")
+	@Transactional("transactionManager")
 	public Boolean updateCustomer(AccountDomain updateAccount, CustomerDomain updateCustomer, CustomerAddressDomain updaCustomerAddress) {
 		System.out.print("ac"+updateAccount+"\ncu:"+updateCustomer+"\ncua:"+updaCustomerAddress);
 		Boolean isSuccess = true;
@@ -117,6 +117,25 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 			throw new ServiceException("修改失败");
 		}
 		return isSuccess;
+	}
+
+	@Override
+	@Transactional("transactionManager")
+	public CustomerDomain validVip(CustomerDomain customerDomain,String phoneNumber) {
+
+		CustomerQuery query = new CustomerQuery();
+		//TODO
+		query.setAccountId(customerDomain.getAccountId());
+		query.setPhone(phoneNumber);
+		CustomerDomain customer = getOne(query);
+		if(customer==null){
+			throw new ServiceException("验证会员失败");
+		}else{
+			customer.setIsArtClubMember(1);
+			customer.setCustomerLevel(1);
+			update(customer);
+		}
+		return customer;
 	}
 
 }
