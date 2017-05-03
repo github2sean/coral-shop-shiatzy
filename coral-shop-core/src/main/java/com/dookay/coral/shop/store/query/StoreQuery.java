@@ -4,6 +4,7 @@ import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.criteria.Criteria;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.store.domain.StoreDomain;
+import lombok.Data;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -12,13 +13,25 @@ import tk.mybatis.mapper.entity.Example;
  * @since : 2017年05月03日
  * @version : v0.0.1
  */
+@Data
 public class StoreQuery extends Query {
-	
+
+	private String countryId;
+	private String cityId;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(StoreDomain.class);
 		Example.Criteria criteria =queryCriteria.createCriteria();
-		
+
+		if (valid(cityId)){
+			criteria.andEqualTo("cityId",cityId);
+		}
+		if (valid(countryId)){
+			criteria.andEqualTo("countryId",countryId);
+		}
+
+
 		//todo 写查询逻辑
 		return queryCriteria;
 	}

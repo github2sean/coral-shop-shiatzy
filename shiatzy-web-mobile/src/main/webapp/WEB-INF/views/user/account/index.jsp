@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li>
-                <a href="门市预约.商品列表.html">
+                <a href="/boutique/list">
                     <span><svg><use xlink:href="#ap-small"></use></svg></span>
                     <span>精品店预约详情</span>
                     <span style="float: right;">></span>
