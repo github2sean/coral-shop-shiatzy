@@ -43,4 +43,6 @@ public class GoodsController extends BaseApiController {
 
         return ResponseEntity.ok().body(goodsDomainPageList);
     }
+
+
 }

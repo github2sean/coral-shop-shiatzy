@@ -33,4 +33,11 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
 		return getPageList(query);
 	}
+
+	@Override
+	public int countGoodsByCategoryId(Long categoryId) {
+		GoodsQuery goodsQuery = new GoodsQuery();
+		goodsQuery.setCategoryId(categoryId);
+		return super.count(goodsQuery);
+	}
 }
