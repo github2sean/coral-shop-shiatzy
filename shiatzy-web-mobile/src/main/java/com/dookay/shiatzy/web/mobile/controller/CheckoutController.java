@@ -222,17 +222,8 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute("order");
-
-        CouponQuery query = new CouponQuery();
-        query.setCode(couponCode);
-        CouponDomain couponDomain = couponService.getOne(query);
-        if(couponDomain == null){
-            //TODO
-        }
-        int num = couponDomain.getLeft();
-        if(num<=0){
-            return errorResult("优惠券次数不足");
-        }else{
+        CouponDomain couponDomain = couponService.checkCoupon(couponCode);
+        if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
             session.setAttribute("order",order);
         }
@@ -253,12 +244,10 @@ public class CheckoutController  extends BaseController{
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
         CouponDomain couponDomain = couponService.get(couponId);
-        int num  = couponDomain.getLeft();
         List<Long> itemIds = new ArrayList<Long>();
-        if(num>0){
-
+        if(couponService.checkCoupon(couponDomain.getCode())!=null){
             //创建明细
-            for(int j = 0;j<cartList.size();j++){
+            for(int j = 0;cartList!=null&&cartList.size()>0&&j<cartList.size();j++){
                 ShoppingCartItemDomain items = cartList.get(j);
                 OrderItemDomain orderItemDomain = new OrderItemDomain();
                 orderItemDomain.setOrderId(order.getId());
@@ -273,12 +262,9 @@ public class CheckoutController  extends BaseController{
                 orderItemDomain.setGoodsCode(items.getGoodsCode());
                 orderItemDomain.setGoodsPrice(items.getGoodsPrice());
                 orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
-
                 orderService.create(order);
                 orderItemService.create(orderItemDomain);
             }
-        }else {
-            return errorResult("优惠券次数不足",couponId);
         }
 
         //清除session
