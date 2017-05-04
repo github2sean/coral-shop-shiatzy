@@ -9,12 +9,9 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.OrderLogDomain;
-import com.dookay.coral.shop.order.query.OrderItemQuery;
-import com.dookay.coral.shop.order.query.OrderLogQuery;
-import com.dookay.coral.shop.order.query.OrderQuery;
-import com.dookay.coral.shop.order.service.IOrderItemService;
-import com.dookay.coral.shop.order.service.IOrderLogService;
-import com.dookay.coral.shop.order.service.IOrderService;
+import com.dookay.coral.shop.order.domain.ReservationDomain;
+import com.dookay.coral.shop.order.query.*;
+import com.dookay.coral.shop.order.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +38,10 @@ public class OrderController extends BaseController {
     private ICustomerService customerService;
     @Autowired
     private IOrderLogService orderLogService;
+    @Autowired
+    private IReturnRequestService returnRequestService;
+    @Autowired
+    private IReservationService reservationService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -49,8 +50,20 @@ public class OrderController extends BaseController {
         OrderQuery query = new OrderQuery();
         query.setCustomerId(customerDomain.getId());
         List orderList = orderService.getList(query);
+
+        //退货单
+        ReturnRequestQuery query2 = new ReturnRequestQuery();
+        query2.setCustomerId(customerDomain.getId());
+        List returnList= returnRequestService.getList(query2);
+        //预约单查询
+        ReservationQuery query3 = new ReservationQuery();
+        query3.setCustomerId(customerDomain.getId());
+        List reservationList  = reservationService.getList(query3);
+
         ModelAndView mv = new ModelAndView("user/order/list");
         mv.addObject("orderList",orderList);
+        mv.addObject("returnList",returnList);
+        mv.addObject("reservationList",reservationList);
         return mv;
     }
 

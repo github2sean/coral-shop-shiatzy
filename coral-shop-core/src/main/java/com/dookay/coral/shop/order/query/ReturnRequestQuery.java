@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.order.query;
 
 import com.dookay.coral.common.persistence.Query;
+import lombok.Data;
 import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
@@ -11,13 +12,19 @@ import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 public class ReturnRequestQuery extends Query {
-	
+
+	private Long customerId;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ReturnRequestDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
-		
+
+		if(valid(customerId)){
+			criteria.andEqualTo("customerId",customerId);
+		}
+
 		//todo 写查询逻辑
 		return queryCriteria;
 	}

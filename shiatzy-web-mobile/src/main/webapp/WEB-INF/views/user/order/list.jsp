@@ -17,6 +17,14 @@
             <div class="status" data-value="${row.status}"></div>
         </a>
         </c:forEach>
+        <div class="dx-reservation">我的退货单</div>
+        <c:forEach var="row" items="${returnList}">
+            <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
+                <div class="time">${row.orderTime}</div>
+                <div class="orderNumber">${row.orderNo}</div>
+                <%--<div class="status" data-value="${row.status}"></div>--%>
+            </a>
+        </c:forEach>
 
     </div>
     <div class="check clearfix"><span>查看所有预约單</span><a href="#">></a></div>
