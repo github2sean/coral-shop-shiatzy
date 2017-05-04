@@ -52,12 +52,7 @@ public class BoutiqueController extends BaseController{
     private ICustomerService customerService;
     @Autowired
     private ISkuService skuService;
-    @Autowired
-    private IStoreService storeService;
-    @Autowired
-    private IStoreCityService storeCityService;
-    @Autowired
-    private IStoreCountryService storeCountryService;
+
 
 
     private static int  SHOPPINGCART_TYPE = 3;//精品店
@@ -71,9 +66,9 @@ public class BoutiqueController extends BaseController{
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),SHOPPINGCART_TYPE);
         List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
         for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
-           if(i!=0&&i%2!=0){
-               continue;
-           }
+            if(i!=0&&i%2!=0){
+                continue;
+            }
             PreOderItem preOderItem = i+1<cartList.size()?new PreOderItem(cartList.get(i),cartList.get(i+1)):new PreOderItem(cartList.get(i),null);
             preOderItemList.add(preOderItem);
         }
@@ -104,42 +99,6 @@ public class BoutiqueController extends BaseController{
     public JsonResult removeFromBoutique(Long shoppingcartId){
         shoppingCartService.removeFromCart(shoppingcartId);
         return  successResult("删除成功");
-    }
-
-    @RequestMapping(value = "initChoose" ,method = RequestMethod.GET)
-    public ModelAndView initChoose(){
-        List<StoreCountryDomain> storeCountryList  = storeCountryService.getList(new StoreCountryQuery());
-        ModelAndView mv = new ModelAndView("");
-        mv.addObject("storeCountryList",storeCountryList);
-        return mv;
-    }
-
-    @RequestMapping(value = "chooseCity" ,method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult chooseCity(String countryId){
-        StoreCityQuery query = new StoreCityQuery();
-        query.setCountryId(countryId);
-        List<StoreCityDomain>  storeCityList = storeCityService.getList(query);
-        return successResult("初始化城市",storeCityList);
-    }
-
-    @RequestMapping(value = "chooseCountryAndCity" ,method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult chooseShop(String countryId,String cityId){
-        StoreQuery query = new StoreQuery();
-        query.setCityId(cityId);
-        query.setCountryId(countryId);
-        List<StoreDomain> storeList = storeService.getList(query);
-        return successResult("初始化门店",storeList);
-    }
-
-    @RequestMapping(value = "submitPreOrder" ,method = RequestMethod.POST)
-    @ResponseBody
-    public  JsonResult submitPreOrder(){
-
-        ReservationDomain reservationDomain = new ReservationDomain();
-
-        return successResult("提交成功");
     }
 
 

@@ -50,7 +50,7 @@
 </c:forEach>
 <div class="explain">
     <div class="choose-store">
-        <a href="门市预约.提交订单.html">选择预约门市</a>
+        <a href="/reservation/initChoose">选择预约门市</a>
     </div>
     <ul>
         <li><a href="#">购物说明<span>></span></a></li>

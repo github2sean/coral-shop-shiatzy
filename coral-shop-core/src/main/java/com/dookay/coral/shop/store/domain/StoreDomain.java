@@ -20,7 +20,7 @@ public class StoreDomain implements Serializable {
 	
 	/*主键编号*/
 	@Id
-	private Integer id;
+	private Long id;
 	
 	/*排序*/
 	private Integer rank;
@@ -61,11 +61,11 @@ public class StoreDomain implements Serializable {
 	/*更新时间*/
 	private Date updateTime;
 	
-	public Integer getId(){
+	public Long getId(){
 		return id;
 	}
 	
-	public void setId(Integer id){
+	public void setId(Long id){
 		this.id = id;
 	}
 	
