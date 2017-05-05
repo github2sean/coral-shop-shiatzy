@@ -18,6 +18,11 @@ public class ShoppingCartItemQuery extends Query {
 	private Integer shoppingCartType;
 	private Long customerId;
 	private Long skuId;
+	private String goodsName;
+	private String goodsCode;
+	private Double goodsPrice;
+	private String skuSpecifications;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ShoppingCartItemDomain.class);
@@ -30,6 +35,18 @@ public class ShoppingCartItemQuery extends Query {
 		}
 		if(valid(skuId)){
 			criteria.andEqualTo("skuId",skuId);
+		}
+		if(valid(goodsName)){
+			criteria.andEqualTo("goodsName",goodsName);
+		}
+		if(valid(goodsPrice)){
+			criteria.andEqualTo("goodsPrice",goodsPrice);
+		}
+		if(valid(skuSpecifications)){
+			criteria.andEqualTo("goodsName",skuSpecifications);
+		}
+		if(valid(goodsCode)){
+			criteria.andEqualTo("goodsCode",goodsCode);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

@@ -16,10 +16,16 @@ import tk.mybatis.mapper.entity.Example;
 @Data
 public class CouponQuery extends Query {
 
+	private String code;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(CouponDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
+
+		if(valid(code)){
+			criteria.andEqualTo("code",code);
+		}
 
 		//todo 写查询逻辑
 		return queryCriteria;

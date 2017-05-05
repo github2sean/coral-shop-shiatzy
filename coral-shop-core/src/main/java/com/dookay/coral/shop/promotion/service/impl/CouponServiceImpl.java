@@ -1,6 +1,8 @@
 package com.dookay.coral.shop.promotion.service.impl;
 
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.shop.promotion.query.CouponQuery;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,8 @@ import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.promotion.mapper.CouponMapper;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+
+import java.util.Date;
 
 /**
  * 优惠券的业务实现类
@@ -23,4 +27,25 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 	@Autowired
 	private CouponMapper couponMapper;
 
+	@Override
+	public CouponDomain checkCoupon(String couponCode) {
+		CouponQuery query = new CouponQuery();
+		query.setCode(couponCode);
+		CouponDomain couponDomain = getOne(query);
+		if(couponDomain==null){
+			throw new ServiceException("无此优惠券");
+		}else{
+			int num = couponDomain.getLeft();
+			Date startTime = couponDomain.getStartTime();
+			Date endTime = couponDomain.getEndTime();
+			Date nowTime = new Date();
+			if(nowTime.after(endTime) || nowTime.before(startTime)){
+				throw new ServiceException("优惠券失效");
+			}
+			if(num<=0){
+				throw new ServiceException("优惠券使用次数不足");
+			}
+		}
+		return couponDomain;
+	}
 }

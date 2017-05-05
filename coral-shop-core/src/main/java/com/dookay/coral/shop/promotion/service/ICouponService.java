@@ -11,4 +11,6 @@ import com.dookay.coral.shop.promotion.domain.CouponDomain;
  */
 public interface ICouponService extends IBaseService<CouponDomain> {
 
+   CouponDomain checkCoupon(String couponCode);
+
 }

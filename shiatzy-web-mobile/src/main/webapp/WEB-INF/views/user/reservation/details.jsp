@@ -1,0 +1,71 @@
+<%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
+
+<jsp:include page="/WEB-INF/views/include/header.jsp">
+    <jsp:param name="nav" value="首页"/>
+    <jsp:param name="pageTitle" value="首页"/>
+</jsp:include>
+
+<div class="dx-orderDetails clearfix">
+    <div class="dx-title">精品店预约订单详情<a href="我的账户.我的订单.订单详情.列表.html">返回上页</a></div>
+    <div class="content">
+        <div class="dx-reservation">预约单详情</div>
+        <div class="orderNumber">预约单编号 12345AABBCC</div>
+        <div class="dx-details">
+            <div class="date">订单日期 : <span>2017-1-15</span></div>
+            <div class="retail">预约门店 : <span>台北中山旗舰店</span> <a href="#">地图</a></div>
+            <div class="site">地址 : <span></span></div>
+            <div class="telephone">电话 : <span></span></div>
+            <div class="time">营业时间 : <span></span></div>
+            <div class="status">订单状态 : <span>已到店</span></div>
+            <div class="retentionTime">订单保留至: <span>2017-1-15</span></div>
+            <div class="remake">备注栏位 : <span>会添加文字说明</span></div>
+        </div>
+        <div class="dx-GoodsDetails">
+            <div class="title">商品详情</div>
+            <div class="goods clearfix">
+                <div class="goods-left">
+                    <div class="pic"><img src="images/goods-pic01.jpg" alt=""></div>
+                    <div class="status">状态 : <span>预约成功</span></div>
+                </div>
+                <div class="goods-right">
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                    <div class="color">黑色<span>M号</span></div>
+                    <div class="quantity">数量:<span>1</span></div>
+                    <div class="price">单价&nbsp; &yen; <span>11,504</span></div>
+                </div>
+            </div>
+            <div class="goods clearfix">
+                <div class="goods-left">
+                    <div class="pic"><img src="images/goods-pic01.jpg" alt=""></div>
+                    <div class="status">状态 : <span>缺货中</span></div>
+                </div>
+                <div class="goods-right">
+                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
+                    <div class="number">产品编号 1B1184 Z</div>
+                    <div class="color">黑色<span>M号</span></div>
+                    <div class="quantity">数量:<span>1</span></div>
+                    <div class="price">单价&nbsp; &yen;11,504</div>
+                </div>
+            </div>
+        </div>
+        <div class="dx-total">预计订单总额 : &yen; <span>10,404</span></div>
+        <div class="dx-explain">您的订单将于1-3个工作日内尽快配送至指定门店，请耐心等待。精品店预约订单遵循门店销售规则，不享有在线购物的“7天轻松退货”政策。</div>
+        <div class="dx-instructions"><a href="#">在线客户服务</a></div>
+        <!--<div class="dx-privacy"><a href="#">隐私权政策</a></div>-->
+    </div>
+</div>
+<jsp:include page="/WEB-INF/views/include/footer.jsp">
+    <jsp:param name="nav" value="首页"/>
+</jsp:include>
+
+<script>
+
+    $(function () {
+
+
+    });
+
+</script>

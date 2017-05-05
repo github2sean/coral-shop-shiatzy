@@ -10,7 +10,8 @@ import com.dookay.coral.common.enums.IEnum;
 public enum ShoppingCartTypeEnum implements IEnum {
 
     SHOPPING_CART(1, "购物车"),
-    WISH_LIST(2,"心愿单");
+    WISH_LIST(2,"心愿单"),
+    RESERVATION(3,"精品店预约");
 
     private int value;
     private String description;

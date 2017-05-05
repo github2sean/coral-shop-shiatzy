@@ -17,4 +17,6 @@ public class UpdateAccountForm {
 
     private AccountDomain accountDomain;
 
+    private Long addressId;
+
 }

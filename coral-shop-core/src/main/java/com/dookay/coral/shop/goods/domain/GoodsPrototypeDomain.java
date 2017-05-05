@@ -36,6 +36,9 @@ public class GoodsPrototypeDomain implements Serializable {
 	
 	/*创建人id*/
 	private Long creatorId;
+
+	/*是否有效：1有效 0无效*/
+	private Integer isValid;
 	
 	public Long getId(){
 		return id;
@@ -84,6 +87,13 @@ public class GoodsPrototypeDomain implements Serializable {
 	public void setCreatorId(Long creatorId){
 		this.creatorId = creatorId;
 	}
-	
-	
+
+
+	public Integer getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Integer isValid) {
+		this.isValid = isValid;
+	}
 }

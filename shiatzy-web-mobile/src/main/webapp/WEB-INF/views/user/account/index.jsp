@@ -25,28 +25,28 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.我的订单.订单详情.列表.html">
+                <a href="/order/list">
                     <span><svg><use xlink:href="#ac-order"></use></svg></span>
                     <span>订单详情</span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
-                <a href="门市预约.商品列表.html">
+                <a href="/boutique/list">
                     <span><svg><use xlink:href="#ap-small"></use></svg></span>
                     <span>精品店预约详情</span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
-                <a href="我的账户.愿望清单.html">
+                <a href="/cart/wishlist">
                     <span><svg><use xlink:href="#heart"></use></svg></span>
                     <span>愿望清单</span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
-                <a href="我的账户.门市预约.列表.html">
+                <a href="/checkout/listAddress">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
                     <span>常用收件门市/地址设定</span>
                     <span style="float: right;">></span>

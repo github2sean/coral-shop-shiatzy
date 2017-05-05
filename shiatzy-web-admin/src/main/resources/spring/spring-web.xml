@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <aop:aspectj-autoproxy />
+
+    <!-- 使用Annotation自动注册Bean，只扫描@Controller，否则事务会失效 -->
+    <context:component-scan base-package="com.dookay.shiatzy.web.admin" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- 开启SpringMVC注解模式 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+            <!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="prettyPrint" value="true"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 静态资源映射 -->
+
+    <mvc:resources mapping="/doc/**" location="/WEB-INF/doc/"/>
+    <mvc:resources mapping="/index.html" location="/WEB-INF/"/>
+    <!-- 视图引擎配置-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass">
+            <value>
+                org.springframework.web.servlet.view.JstlView
+            </value>
+        </property>
+        <property name="order" value="1" />
+    </bean>
+    <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+    <!--&lt;!&ndash; 上传文件拦截，设置最大上传文件大小   10M=10*1024*1024(B)=10485760 bytes &ndash;&gt;-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 ; -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--  文件大小最大值
+     <property name="maxUploadSize" value="10485760" />
+     <property name="maxInMemorySize" value="40960"/> -->
+    </bean>
+
+    <bean class="com.dookay.shiatzy.web.admin.config.SwaggerConfig" />
+
+    <!--&lt;!&ndash; 全局异常处理 &ndash;&gt;-->
+    <!--<bean class="com.dookay.coral.common.exception.ExceptionHandler">-->
+        <!--<property name="errorUrl" value="/error/500"></property>-->
+    <!--</bean>-->
+
+    <!-- 初始化权限字符到数据库 -->
+    <bean id="initPermissionListener" class="com.dookay.shiatzy.web.admin.security.InitPermissionListener">
+        <property name="permissionService" ref="permissionService"></property>
+        <property name="permissionAssignService" ref="permissionAssignService"></property>
+        <property name="moduleService" ref="moduleService"></property>
+        <property name="initializePermissionEnable" value="${shiro.permission.enable}"></property>
+    </bean>
+
+    <!-- lyd-security -->
+    <import resource="classpath:spring/spring-security-mvc.xml"/>
+</beans>

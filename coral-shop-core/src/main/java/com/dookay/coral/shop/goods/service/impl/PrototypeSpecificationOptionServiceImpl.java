@@ -27,12 +27,10 @@ public class PrototypeSpecificationOptionServiceImpl extends BaseServiceImpl<Pro
 	@Autowired
 	private PrototypeSpecificationOptionMapper prototypeSpecificationOptionMapper;
 
-
-
 	@Override
 	public List getListBySpecificationId(Long id) {
 		PrototypeSpecificationOptionQuery query = new PrototypeSpecificationOptionQuery();
-		query.setProtorypeSpecificationId(id);
+		query.setPrototypeSpecificationId(id);
 		return getList(query);
 	}
 }

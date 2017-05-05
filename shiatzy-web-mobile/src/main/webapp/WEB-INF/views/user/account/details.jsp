@@ -30,12 +30,19 @@
                     <li>姓氏：${customerDomain.firstName}</li>
                     <li>电邮：${accountDomain.email}</li>
                     <li>电话号码：${customerDomain.phone}</li>
-                    <li>地址：${customerAddressDomain.adress}</li>
+                    <li>地址：${customerAddressDomain.address}</li>
                 </ol>
             </li>
             <li>
                 <a href="#">
-                    <span>会员等级：一般会员</span>
+                    <c:choose>
+                        <c:when test="${customerDomain.isArtClubMember==0}">
+                            <span>会员等级：非会员</span>
+                        </c:when>
+                        <c:when test="${customerDomain.isArtClubMember==1}">
+                            <span>会员等级：${customerDomain.customerLevel}</span>
+                        </c:when>
+                    </c:choose>
                     <span style="float: right;">></span>
                 </a>
             </li>
@@ -46,7 +53,7 @@
                 </a>
             </li>
             <li>
-                <a href="我的账户.个人信息.art_club认证.html">
+                <a href="/u/account/toValidVip">
                     <span>ART CLUB会员认证 </span>
                     <span style="float: right;">></span>
                 </a>

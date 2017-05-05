@@ -19,4 +19,11 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
 
     PageList<GoodsDomain> getGoodsList(GoodsQuery query);
 
+    /**
+     * 统计分类下商品数量
+     * @param categoryId
+     * @return
+     */
+    int countGoodsByCategoryId(Long categoryId);
+
 }

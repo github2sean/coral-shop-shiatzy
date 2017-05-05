@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.order.mapper.ReservationMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`rank` as 'rank',
+		    	a.`is_visible` as 'isVisible',
+		    	a.`status` as 'status',
+		    	a.`customer_id` as 'customerId',
+		    	a.`reservation_no` as 'reservationNo',
+		    	a.`store_title` as 'storeTitle',
+		    	a.`tel` as 'tel',
+		    	a.`address` as 'address',
+		    	a.`time` as 'time',
+		    	a.`note` as 'note',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    </trim>
+	   	from 
+	    	`t_order_reservation` as a
+	</sql>
+  
+</mapper>
