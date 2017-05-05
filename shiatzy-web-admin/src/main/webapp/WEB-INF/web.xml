@@ -46,7 +46,7 @@
   </filter-mapping>
 
   <!-- shiro 安全过滤器 -->
-  <filter>
+ <!-- <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     <init-param>
@@ -58,8 +58,7 @@
     <filter-name>shiroFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
-
+  </filter-mapping>-->
 
   <!-- MVC Servlet -->
   <servlet>

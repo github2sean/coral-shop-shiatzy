@@ -23,7 +23,7 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 	private Long id;
 	
 	/*原型规格id*/
-	private String protorypeSpecificationId;
+	private Long prototypeSpecificationId;
 	
 	/*选项名称*/
 	private String name;
@@ -41,14 +41,7 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 	public void setId(Long id){
 		this.id = id;
 	}
-	
-	public String getProtorypeSpecificationId(){
-		return protorypeSpecificationId;
-	}
-	
-	public void setProtorypeSpecificationId(String protorypeSpecificationId){
-		this.protorypeSpecificationId = protorypeSpecificationId;
-	}
+
 	
 	public String getName(){
 		return name;
@@ -73,6 +66,13 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 	public void setDisplayOrder(String displayOrder){
 		this.displayOrder = displayOrder;
 	}
-	
-	
+
+
+	public Long getPrototypeSpecificationId() {
+		return prototypeSpecificationId;
+	}
+
+	public void setPrototypeSpecificationId(Long prototypeSpecificationId) {
+		this.prototypeSpecificationId = prototypeSpecificationId;
+	}
 }
