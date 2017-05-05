@@ -12,6 +12,7 @@ import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +34,24 @@ public class GoodsPrototypeController extends BaseApiController {
 
     @ApiOperation(value = "列出商品原型", httpMethod = "GET", response = GoodsPrototypeDomain.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PageList<GoodsPrototypeDomain>> listActivity(@ModelAttribute GoodsPrototypeQuery goodsPrototypeQuery) {
+    public ResponseEntity<PageList<GoodsPrototypeDomain>> list(@ModelAttribute GoodsPrototypeQuery goodsPrototypeQuery) {
         PageList<GoodsPrototypeDomain> goodsDomainPageList = goodsPrototypeService.getPageList(goodsPrototypeQuery);
 
         return ResponseEntity.ok().body(goodsDomainPageList);
     }
 
+    @ApiOperation(value = "获取商品原型", httpMethod = "GET", response = GoodsPrototypeDomain.class)
+    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity<GoodsPrototypeDomain> get(@Param("id") Long id) {
+        GoodsPrototypeDomain goodsPrototypeDomain = goodsPrototypeService.get(id);
+
+        return ResponseEntity.ok().body(goodsPrototypeDomain);
+    }
+
     @ApiOperation(value = "创建商品原型",httpMethod = "POST")
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity create(GoodsPrototypeDomain domain) {
-
+        domain.setCreateTime(new Date());
         goodsPrototypeService.create(domain);
         return successResponse("创建成功");
     }
@@ -55,8 +64,8 @@ public class GoodsPrototypeController extends BaseApiController {
     }
 
     @ApiOperation(value = "删除商品原型", httpMethod = "POST")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@PathVariable Long id) {
+    @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity delete(@Param("id") Long id) {
         goodsPrototypeService.delete(id);
         return successResponse("删除成功");
     }

@@ -16,12 +16,15 @@ import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
 public class GoodsPrototypeQuery extends Query {
 
 	private Long goodsId;
-
+	private String name;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsPrototypeDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
-		
+		if(valid(name)){
+			String nameLike = "%"+name+"%";
+			criteria.andLike("name",nameLike);
+		}
 		//todo 写查询逻辑
 		return queryCriteria;
 	}
