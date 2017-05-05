@@ -18,6 +18,8 @@ public class GoodsCategoryQuery extends Query {
 	private Long parentId;
 
 	private Integer isValid;
+
+	private Integer level;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsCategoryDomain.class);
@@ -27,6 +29,9 @@ public class GoodsCategoryQuery extends Query {
 		}
 		if(valid(isValid)){
 			criteria.andEqualTo("isValid",isValid);
+		}
+		if(valid(level)){
+			criteria.andEqualTo("level",level);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

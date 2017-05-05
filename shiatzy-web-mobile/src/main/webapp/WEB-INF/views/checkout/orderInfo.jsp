@@ -47,7 +47,7 @@
             <div class="predict">预计订单总额 <span>&yen; 10,404</span></div>
         </div>
     </div>
-    <a href="/checkout/submitOrder" type="button" class="accounts-btn">结账</a>
+    <a href="/checkout/settlement" type="button" class="accounts-btn">结账</a>
 </div>
 
 <!-------修改弹窗开始------->

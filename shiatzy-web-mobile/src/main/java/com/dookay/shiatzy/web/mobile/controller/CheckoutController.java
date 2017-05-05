@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -108,6 +109,29 @@ public class CheckoutController  extends BaseController{
         }
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
         mv.addObject(CART_LIST,cartList);
+        return mv;
+    }
+
+    @RequestMapping(value = "settlement",method = RequestMethod.GET)
+    public ModelAndView settlement(){
+        //获取订单session
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        //如果session为空，跳转到商品列表页面
+        List cartList = (List) session.getAttribute(CART_LIST);
+        if(cartList==null){
+            return new ModelAndView("redirect:home/index");
+        }
+
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        CustomerAddressQuery query = new CustomerAddressQuery();
+        query.setCustomerId(customerDomain.getId());
+        List addressList = customerAddressService.getList(query);
+
+        ModelAndView mv=  new ModelAndView("checkout/settlement");
+        mv.addObject(CART_LIST,cartList);
+        mv.addObject("addressList",addressList);
         return mv;
     }
 
@@ -282,28 +306,31 @@ public class CheckoutController  extends BaseController{
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
-        CouponDomain couponDomain = couponService.get(couponId);
+        if(couponId!=null ){
+            CouponDomain couponDomain = couponService.get(couponId);
+            couponService.checkCoupon(couponDomain.getCode());
+        }
         List<Long> itemIds = new ArrayList<Long>();
-        if(couponService.checkCoupon(couponDomain.getCode())!=null){
-            //创建明细
-            for(int j = 0;cartList!=null&&cartList.size()>0&&j<cartList.size();j++){
-                ShoppingCartItemDomain items = cartList.get(j);
-                OrderItemDomain orderItemDomain = new OrderItemDomain();
-                orderItemDomain.setOrderId(order.getId());
-                SkuDomain skuDomain = skuService.get(items.getSkuId());
-                if (skuDomain.getQuantity()<=0){
-                    itemIds.add(skuDomain.getGoodsId());
-                    continue;
-                }
-                orderItemDomain.setSkuId(items.getSkuId());
-                orderItemDomain.setNum((long)items.getNum());
-                orderItemDomain.setGoodsName(items.getGoodsName());
-                orderItemDomain.setGoodsCode(items.getGoodsCode());
-                orderItemDomain.setGoodsPrice(items.getGoodsPrice());
-                orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
-                orderService.create(order);
-                orderItemService.create(orderItemDomain);
+        //创建订单
+        orderService.create(order);
+        //创建明细
+        for(int j = 0;cartList!=null&&cartList.size()>0&&j<cartList.size();j++){
+            ShoppingCartItemDomain items = cartList.get(j);
+            OrderItemDomain orderItemDomain = new OrderItemDomain();
+            orderItemDomain.setOrderId(order.getId());
+            SkuDomain skuDomain = skuService.get(items.getSkuId());
+            if (skuDomain.getQuantity()<=0){
+                itemIds.add(skuDomain.getGoodsId());
+                continue;
             }
+            orderItemDomain.setSkuId(items.getSkuId());
+            orderItemDomain.setNum((long)items.getNum());
+            orderItemDomain.setGoodsName(items.getGoodsName());
+            orderItemDomain.setGoodsCode(items.getGoodsCode());
+            orderItemDomain.setGoodsPrice(items.getGoodsPrice());
+            orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
+            System.out.println("order:"+ JsonUtils.toJSONString(order));
+            orderItemService.create(orderItemDomain);
         }
 
         //清除session

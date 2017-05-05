@@ -13,14 +13,17 @@
 </div>
 <div class="order-finish">
     <h3>订单总额：¥ 11,504</h3>
-    <div class="delivery">
+    <div class="delivery content">
         <h3>1. 配送</h3>
-        <div class="delivery-message">
+
+        <c:forEach var="row" items="${addressList}">
+        <div class="delivery-message" style="margin-top: 2px">
             <span>快递运送</span>
-            <p>資訊部</p>
-            <p style="display: initial;">新北市五股区五权六路40号</p>
+            <p>${row.firstName}${row.lastName}</p>
+            <p style="display: initial;">${row.address}</p>
             <a href="购物车.结算页.物流配送.编辑.html">编辑 ></a>
         </div>
+        </c:forEach>
         <div class="drugstore">
             <p>门店取货</p>
             <a href="购物车.结算页.门店取货.html">编辑 ></a>
@@ -46,7 +49,7 @@
         <p>2件商品　v</p>
     </div>
     <div class="order-pay">
-        <a href="我的账户.我的订单.订单详情.已支付.html">订购付款</a>
+        <a href="#" class="submitBtn">订购付款</a>
         <span>提交订单即表示您同意接受 SHIATZY CHEN 公司条款 和 隐私权政策。</span>
     </div>
     <div class="pay-way">
@@ -73,6 +76,15 @@
 <script>
     $(function(){
 
+        $(".submitBtn").click(function () {
+
+            $.post("/checkout/submitOrder",function (data) {
+                console.log(data);
+                if(data.code==200){
+
+                }
+            });
+        });
 
     });
 </script>

@@ -17,7 +17,6 @@
     </div>
     <ul class="do-pro-list">
         <c:forEach var="row" items="${goodsSku.list}">
-
         <li>
             <a href="/goods/details?goodsId=${row.goodsId}">
                 <div class="do-img">
@@ -38,7 +37,30 @@
                 <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
-
+        </c:forEach>
+        <c:forEach var="row" items="${skuList}" >
+            <c:forEach var="line" items="${row}" >
+            <li>
+                <a href="/goods/details?goodsId=${line.goodsId}&skuId=${line.id}">
+                    <div class="do-img">
+                        <img src="images/list-img1.jpg" alt="">
+                    </div>
+                    <p class="do-pro-t ellipsis-2l" name="goodsName">${line.name}</p>
+                    <p class="do-pro-price ellipsis" name="goodsPrice">${line.price}</p>
+                    <ul class="do-list-color" name="skuId" data-value="">
+                        <li style="background: #000000"></li>
+                        <li style="background: #b5272d"></li>
+                        <li style="background: #1b1464"></li>
+                        <li style="background: #662d85"></li>
+                        <li style="background: #fff;border:1px solid #000"></li>
+                    </ul>
+                </a>
+                <!--Todo:收藏按钮-->
+                <i class="icon-collect j_collect active" data-value="${line.id}">
+                    <svg class="do-heart"><use xlink:href="#heart"></use></svg>
+                </i>
+            </li>
+                </c:forEach>
         </c:forEach>
         <%--<li>
             <a href="商品详情.html">
@@ -179,12 +201,13 @@
         //var cartNum  = $(".do-num").val();
         $(".j_collect").each(function () {
             var skuId = $(this).attr("data-value");
+
             $(this).click(function () {
                 var isLogin = '${sessionScope.user_context}';
                 if(isLogin==null || isLogin ==""){
                     location.href="${ctx}/passport/toLogin";
                 }
-                var isAdd =  $(".j_collect").find("use").attr("xlink:href");
+                var isAdd =  $(this).find("use").attr("xlink:href");
                 console.log(isAdd);
                 var data  = {"skuId":skuId,"num":1,"type":2};
                 var url = "";
@@ -203,7 +226,5 @@
             });
 
         });
-
-
     });
 </script>

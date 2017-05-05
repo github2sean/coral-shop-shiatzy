@@ -3,6 +3,8 @@ package com.dookay.coral.shop.goods.service;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 
+import java.util.List;
+
 /**
  * 商品sku的业务层接口
  * @author : luxor
@@ -11,7 +13,7 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
  */
 public interface ISkuService extends IBaseService<SkuDomain> {
 
-    SkuDomain getSkuByGoodsId(Long id);
+    List<SkuDomain> getSkuByGoodsId(Long id);
 
 
 }

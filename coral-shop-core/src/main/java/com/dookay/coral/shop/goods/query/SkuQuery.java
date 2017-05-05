@@ -22,7 +22,7 @@ public class SkuQuery extends Query {
 		Example.Criteria criteria = queryCriteria.createCriteria();
 
 		if (valid(goodsId)){
-			criteria.andEqualTo(goodsId);
+			criteria.andEqualTo("goodsId",goodsId);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;
