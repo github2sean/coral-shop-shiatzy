@@ -42,3 +42,6 @@ build/
 */src/main/resources/rebel.xml
 
 
+.vscode/
+
+
