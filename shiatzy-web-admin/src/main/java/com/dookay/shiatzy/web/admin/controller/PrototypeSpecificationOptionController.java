@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/goods/prototype/specification/option")
-@Api(tags="goodsPrototypeSpecificationOption",value = "/api/goods/prototype/specification/option", description = "商品原型规格选项相关接口")
+@Api(tags="prototype",value = "/api/goods/prototype/specification/option", description = "商品原型相关接口")
 public class PrototypeSpecificationOptionController extends BaseApiController {
 
     @Autowired

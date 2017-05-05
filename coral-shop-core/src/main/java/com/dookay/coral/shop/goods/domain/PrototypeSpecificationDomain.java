@@ -24,7 +24,10 @@ public class PrototypeSpecificationDomain implements Serializable {
 	
 	/*规格名称*/
 	private String name;
-	
+
+	/*规格说明*/
+	private String description;
+
 	/*显示顺序*/
 	private Integer displayOrder;
 	
@@ -73,6 +76,13 @@ public class PrototypeSpecificationDomain implements Serializable {
 	public void setIsColor(Integer isColor){
 		this.isColor = isColor;
 	}
-	
-	
+
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

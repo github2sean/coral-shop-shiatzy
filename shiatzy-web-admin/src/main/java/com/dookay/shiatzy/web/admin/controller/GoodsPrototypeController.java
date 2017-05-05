@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Luxor
@@ -27,15 +28,15 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping(value = "/api/goods/prototype")
-@Api(tags="goodsPrototype",value = "/api/goods/prototype", description = "商品原型相关接口")
+@Api(tags="prototype",value = "/api/goods/prototype", description = "商品原型相关接口")
 public class GoodsPrototypeController extends BaseApiController {
     @Autowired
     private IGoodsPrototypeService goodsPrototypeService;
 
     @ApiOperation(value = "列出商品原型", httpMethod = "GET", response = GoodsPrototypeDomain.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PageList<GoodsPrototypeDomain>> list(@ModelAttribute GoodsPrototypeQuery goodsPrototypeQuery) {
-        PageList<GoodsPrototypeDomain> goodsDomainPageList = goodsPrototypeService.getPageList(goodsPrototypeQuery);
+    public ResponseEntity<List<GoodsPrototypeDomain>> list(@ModelAttribute GoodsPrototypeQuery goodsPrototypeQuery) {
+        List<GoodsPrototypeDomain> goodsDomainPageList = goodsPrototypeService.getList(goodsPrototypeQuery);
 
         return ResponseEntity.ok().body(goodsDomainPageList);
     }

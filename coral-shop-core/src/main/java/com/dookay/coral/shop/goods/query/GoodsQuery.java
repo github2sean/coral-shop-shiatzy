@@ -7,6 +7,8 @@ import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.List;
+
 /**
  * 商品的Query
  * @author : luxor
@@ -20,6 +22,7 @@ public class GoodsQuery extends Query {
 	private  Long categoryId;
 	private  Long prototypeId;
 
+	private List<Long> ids;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
@@ -35,6 +38,9 @@ public class GoodsQuery extends Query {
 
 		if (valid(prototypeId)){
 			criteria.andEqualTo("prototypeId",prototypeId);
+		}
+		if(valid(ids)){
+			criteria.andIn("id",ids);
 		}
 
 		return queryCriteria;

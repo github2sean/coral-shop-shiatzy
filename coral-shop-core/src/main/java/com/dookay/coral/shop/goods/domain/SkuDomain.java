@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -39,9 +40,15 @@ public class SkuDomain implements Serializable {
 	
 	/*库存数量*/
 	private Integer quantity;
-	
+
 	/*商品规格json*/
 	private String specifications;
-	
+
+	/*创建时间*/
+	private Date createTime;
+
+	/*商品*/
+	@Transient
+	private GoodsDomain goods;
 
 }

@@ -1,9 +1,12 @@
 package com.dookay.coral.shop.goods.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +16,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_goods")
 public class GoodsDomain implements Serializable {
 
@@ -54,102 +58,9 @@ public class GoodsDomain implements Serializable {
 	
 	/*缩略图*/
 	private String thumb;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public String getBrief(){
-		return brief;
-	}
-	
-	public void setBrief(String brief){
-		this.brief = brief;
-	}
-	
-	public String getCode(){
-		return code;
-	}
-	
-	public void setCode(String code){
-		this.code = code;
-	}
-	
-	public String getDescription(){
-		return description;
-	}
-	
-	public void setDescription(String description){
-		this.description = description;
-	}
-	
-	public String getDetails(){
-		return details;
-	}
-	
-	public void setDetails(String details){
-		this.details = details;
-	}
-	
-	public Long getPrototypeId(){
-		return prototypeId;
-	}
-	
-	public void setPrototypeId(Long prototypeId){
-		this.prototypeId = prototypeId;
-	}
-	
-	public Long getCategoryId(){
-		return categoryId;
-	}
-	
-	public void setCategoryId(Long categoryId){
-		this.categoryId = categoryId;
-	}
-	
-	public Integer getIsPublished(){
-		return isPublished;
-	}
-	
-	public void setIsPublished(Integer isPublished){
-		this.isPublished = isPublished;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Date getUpdateTime(){
-		return updateTime;
-	}
-	
-	public void setUpdateTime(Date updateTime){
-		this.updateTime = updateTime;
-	}
-	
-	public String getThumb(){
-		return thumb;
-	}
-	
-	public void setThumb(String thumb){
-		this.thumb = thumb;
-	}
-	
-	
+
+	/*商品分类*/
+	@Transient
+	private GoodsCategoryDomain goodsCategory;
+
 }

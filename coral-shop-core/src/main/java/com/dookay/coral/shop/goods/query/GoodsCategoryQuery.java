@@ -7,6 +7,8 @@ import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 
+import java.util.List;
+
 /**
  * 商品分类的Query
  * @author : luxor
@@ -18,6 +20,8 @@ public class GoodsCategoryQuery extends Query {
 	private Long parentId;
 
 	private Integer isValid;
+	private List<Long> ids;
+	private Integer level;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsCategoryDomain.class);
@@ -27,6 +31,12 @@ public class GoodsCategoryQuery extends Query {
 		}
 		if(valid(isValid)){
 			criteria.andEqualTo("isValid",isValid);
+		}
+		if(valid(ids)){
+			criteria.andIn("id",ids);
+		}
+		if(valid(level)){
+			criteria.andEqualTo("level",level);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

@@ -2,13 +2,11 @@ package com.dookay.shiatzy.web.admin.controller;
 
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.web.MediaTypes;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.extension.GoodsCategoryExtension;
+import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.extension.GoodsExtension;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
-import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Luxor
@@ -31,51 +27,50 @@ import java.util.stream.Collectors;
  * @since 2017/5/2
  */
 @RestController
-@RequestMapping(value = "/api/goods")
-@Api(tags="goods",value = "/api/goods", description = "商品相关接口")
-public class GoodsController extends BaseApiController {
-
+@RequestMapping(value = "/api/goods/sku")
+@Api(tags="sku",value = "/api/goods/sku", description = "商品sku相关接口")
+public class SkuController extends BaseApiController {
+    
     @Autowired
-    private IGoodsService goodsService;
+    private ISkuService skuService;
     @Autowired
-    private GoodsCategoryExtension goodsCategoryExtension;
-
-    @ApiOperation(value = "获取商品列表", httpMethod = "GET", response = ListGoodsResponse.class)
+    private GoodsExtension goodsExtension;
+    
+    @ApiOperation(value = "获取商品sku列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PageList<GoodsDomain>> list(@ModelAttribute GoodsQuery goodsQuery) {
-        PageList<GoodsDomain> goodsDomainPageList = goodsService.getPageList(goodsQuery);
-        goodsCategoryExtension.withGoodsCategory(goodsDomainPageList);
-
-        return ResponseEntity.ok().body(goodsDomainPageList);
+    public ResponseEntity<PageList<SkuDomain>> list(@ModelAttribute GoodsQuery goodsQuery) {
+        PageList<SkuDomain> pageList = skuService.getPageList(goodsQuery);
+        goodsExtension.withGoods(pageList);
+        return ResponseEntity.ok().body(pageList);
     }
-
-    @ApiOperation(value = "获取商品", httpMethod = "GET", response = GoodsDomain.class)
+    
+    @ApiOperation(value = "获取商品sku", httpMethod = "GET", response = SkuDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<GoodsDomain> get(@Param("id") Long id) {
-        GoodsDomain domain = goodsService.get(id);
-        goodsCategoryExtension.withGoodsCategory(domain);
+    public ResponseEntity<SkuDomain> get(@Param("id") Long id) {
+        SkuDomain domain = skuService.get(id);
+        goodsExtension.withGoods(domain);
         return ResponseEntity.ok().body(domain);
     }
-
-    @ApiOperation(value = "创建商品",httpMethod = "POST")
+    
+    @ApiOperation(value = "创建商品sku",httpMethod = "POST")
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity create(GoodsDomain domain) {
+    public ResponseEntity create(SkuDomain domain) {
         domain.setCreateTime(new Date());
-        goodsService.create(domain);
+        skuService.create(domain);
         return successResponse("创建成功");
     }
-
-    @ApiOperation(value = "修改商品", httpMethod = "POST")
+    
+    @ApiOperation(value = "修改商品sku", httpMethod = "POST")
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity update(GoodsDomain domain) {
-        goodsService.update(domain);
+    public ResponseEntity update(SkuDomain domain) {
+        skuService.update(domain);
         return successResponse("编辑成功");
     }
-
-    @ApiOperation(value = "删除商品", httpMethod = "POST")
+    
+    @ApiOperation(value = "删除商品sku", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity delete(@Param("id") Long id) {
-        goodsService.delete(id);
+        skuService.delete(id);
         return successResponse("删除成功");
     }
 }

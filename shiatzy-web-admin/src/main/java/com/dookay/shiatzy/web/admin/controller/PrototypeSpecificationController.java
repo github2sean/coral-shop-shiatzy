@@ -27,7 +27,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping(value = "/api/goods/prototype/specification")
-@Api(tags="goodsPrototypeSpecification",value = "/api/goods/prototype/specification", description = "商品原型规格相关接口")
+@Api(tags="prototype",value = "/api/goods/prototype/specification", description = "商品原型相关接口")
 public class PrototypeSpecificationController extends BaseApiController {
     @Autowired
     private IGoodsPrototypeService goodsPrototypeService;
