@@ -7,27 +7,25 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">我的帐户 / 订单详情 <a href="我的账户.首页.html">回上页</a></div>
+    <div class="dx-title">精品店预约详情 <a href="我的账户.首页.html">返回上页</a></div>
     <div class="content">
-        <div class="dx-reservation">我的订单</div>
-        <c:forEach var="row" items="${orderList}">
-        <a href="/order/details?orderId=${row.id}" class="dx-reservaList clearfix">
-            <div class="time">${row.orderTime}</div>
-            <div class="orderNumber">${row.orderNo}</div>
-            <div class="status" data-value="${row.status}"></div>
+        <div class="dx-reservation">预约订单</div>
+
+        <c:forEach var="row" items="${reservationList}">
+        <a href="/reservation/details?reservationId=${row.id}" class="dx-reservaList clearfix">
+            <div class="time">${row.createTime}</div>
+            <div class="orderNumber">${row.reservationNo}</div>
+            <div class="status">
+                <c:choose>
+                    <c:when test="${row.status==0}">
+                        已提交
+                    </c:when>
+                </c:choose>
+                </div>
         </a>
         </c:forEach>
-        <div class="dx-reservation">我的退货单</div>
-        <c:forEach var="row" items="${returnList}">
-            <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
-                <div class="time">${row.orderTime}</div>
-                <div class="orderNumber">${row.orderNo}</div>
-                <%--<div class="status" data-value="${row.status}"></div>--%>
-            </a>
-        </c:forEach>
-
     </div>
-    <div class="check clearfix"><span>查看所有预约單</span><a href="#">></a></div>
+    <div class="check clearfix"><span>查看所有订单</span><a href="#">></a></div>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -38,7 +36,7 @@
     $(function () {
 
 
-        $(".status").each(function () {
+        /*$(".status").each(function () {
             var status = $(this).attr("data-value");
             if(status == '1'){
                 $(this).text("待付款");
@@ -51,7 +49,7 @@
             }else if(status == '-1'){
                 $(this).text("已取消");
             }
-        });
+        });*/
 
 
     });

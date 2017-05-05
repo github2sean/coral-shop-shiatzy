@@ -55,7 +55,11 @@
         <p>新北市五股区五权六路40号</p>
         <p>資訊部</p>
         <div class="clearfix">
-            <span class="mr-2"><label class="radiobox"><input type="checkbox">申请退货<i class="i-radiobox"></i></label></span>
+            <span class="mr-2">
+                <label class="radiobox"><input type="checkbox">申请退货
+                <a href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}"><i class="i-radiobox returnBtn"></i></a>
+                </label>
+            </span>
             <p><a href="我的账户.退货申请.我要退货.退货理由.html">退货说明<span>></span></a></p>
         </div>
     </div>
@@ -76,3 +80,11 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
+<script>
+
+    $(function () {
+
+
+    });
+
+</script>

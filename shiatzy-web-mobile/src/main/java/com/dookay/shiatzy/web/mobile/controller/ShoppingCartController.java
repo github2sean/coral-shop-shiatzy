@@ -110,7 +110,7 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         shoppingCartService.wishToCart(customerDomain,shoppingCartItemId);
-        return  successResult("修改成功");
+        return  successResult("操作成功");
     }
 
     @RequestMapping(value = "wishToBoutique" ,method = RequestMethod.POST)
@@ -119,7 +119,7 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         shoppingCartService.wishToBoutique(customerDomain,shoppingCartItemId);
-        return  successResult("修改成功");
+        return  successResult("操作成功");
     }
 
 

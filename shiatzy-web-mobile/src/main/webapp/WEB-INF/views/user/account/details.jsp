@@ -35,7 +35,14 @@
             </li>
             <li>
                 <a href="#">
-                    <span>会员等级：一般会员</span>
+                    <c:choose>
+                        <c:when test="${customerDomain.isArtClubMember==0}">
+                            <span>会员等级：非会员</span>
+                        </c:when>
+                        <c:when test="${customerDomain.isArtClubMember==1}">
+                            <span>会员等级：${customerDomain.customerLevel}</span>
+                        </c:when>
+                    </c:choose>
                     <span style="float: right;">></span>
                 </a>
             </li>
