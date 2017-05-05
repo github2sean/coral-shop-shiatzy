@@ -233,20 +233,27 @@
             <a href=""><img src="images/search-img3.jpg" alt=""></a>
         </div>
         <ul class="guide-nav j_drop_down">
-            <li>
+            <%--<li>
                 <a href="javascript:;">女装</a>
                 <ul class="guide-sub-nav">
                     <li><a href="产品列表.html">女士系列</a></li>
                     <li><a href="产品列表.html">高跟鞋</a></li>
                     <li><a href="产品列表.html">靴</a></li>
                 </ul>
+            </li>--%>
+            <c:forEach var="level1" items="${categoryLevle1List}">
+            <li>
+                <a href="/goods/listByCategory?categoryId=${level1.id}">${level1.name}
+                    <ul class="guide-sub-nav">
+                    <c:forEach var="level2" items="${categoryLevle2List}">
+                        <c:if test="${level2.parentId==level1.id}">
+                            <li><a href="/goods/listByCategory?categoryId=${level2.id}">${level2.name}</a></li>
+                        </c:if>
+                    </c:forEach>
+                    </ul>
+                </a>
             </li>
-            <li><a href="产品列表.html">男装</a></li>
-            <li><a href="产品列表.html">包袋</a></li>
-            <li><a href="产品列表.html">鞋履</a></li>
-            <li><a href="产品列表.html">配饰</a></li>
-            <li><a href="产品列表.html">礼服</a></li>
-            <li><a href="产品列表.html">SALE</a></li>
+            </c:forEach>
         </ul>
         <ul class="do-list-lang">
             <li><a href="/u/account/index">我的账户</a></li>

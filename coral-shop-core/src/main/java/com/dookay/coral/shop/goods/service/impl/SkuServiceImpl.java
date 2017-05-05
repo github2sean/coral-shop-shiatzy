@@ -10,6 +10,8 @@ import com.dookay.coral.shop.goods.mapper.SkuMapper;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.ISkuService;
 
+import java.util.List;
+
 /**
  * 商品sku的业务实现类
  * @author : luxor
@@ -24,9 +26,9 @@ public class SkuServiceImpl extends BaseServiceImpl<SkuDomain> implements ISkuSe
 	private SkuMapper skuMapper;
 
 	@Override
-	public SkuDomain getSkuByGoodsId(Long id) {
+	public List<SkuDomain> getSkuByGoodsId(Long id) {
 		SkuQuery query = new SkuQuery();
 		query.setGoodsId(id);
-		return getOne(query);
+		return getList(query);
 	}
 }

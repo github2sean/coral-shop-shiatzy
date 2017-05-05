@@ -8,9 +8,9 @@
 </jsp:include>
 
 <div class="dx-commodity">
-    <div class="content">
-        <div class="title">${goodsDomain.brief}</div>
-        <div class="number">${goodsDomain.code}</div>
+    <div class="content" style="margin-top: 50px">
+        <div class="title">${skuDomainList[0].name}</div>
+        <div class="number">${skuDomainList[0].code}</div>
         <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
         <div class="dx-bag-slide">
             <ul class="j_s_slider">
@@ -21,7 +21,7 @@
                 <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
             </ul>
         </div>
-        <div class="price">&yen; <span>${skuDomain.price}</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+        <div class="price">&yen; <span>${skuDomainList[0].price}</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
         <div class="color">
             <div class="title j_choose">黑色(还有3款颜色)</div>
             <ul class="clearfix hide">
@@ -38,12 +38,14 @@
                 <c:forEach var="row" items="${speciOptionList}">
                 <li class="active"><a href="" data-value="${row.id}">${row.value}<span></span></a> </li>
                 </c:forEach>
-                <%--<li><a href="">M<span></span></a> </li>
-                <li class="SoldOut"><a href="">L<span>(已售完)</span></a></li>--%>
+                <c:if test="${quantity<=0}">
+                <li><a href="">M<span></span></a> </li>
+                <li class="SoldOut"><a href="">L<span>(已售完)</span></a></li>
+                </c:if>
             </ul>
         </div>
-        <a type="button" class="addToCart">添加到购物袋</a>
-        <a href="" type="button" class="addToBoutique">精品店预约</a>
+        <a type="button" class="addition addToCart">添加到购物袋</a>
+        <a type="button" class="order addToBoutique">精品店预约</a>
         <div class="remind"><span class="icon iconfont">&#xe77d;</span>什么是精品店预约</div>
     </div>
     <div class="dx-GoodsDetails">
@@ -108,7 +110,11 @@
 
 
         $(".addToCart").click(function () {
-            var skuId = ${skuDomain.id};
+            var isLogin = '${user_context}';
+            if(isLogin==''){
+                location.href="/passport/toLogin";
+            }
+            var skuId = ${skuDomainList[0].id};
             var url = "/cart/addToCart";
             var data = {"skuId":skuId,"num":1,"type":1};
             $.post(url,data,function (result) {
@@ -120,8 +126,20 @@
             });
         });
         $(".addToBoutique").click(function () {
-
+            var isLogin = '${user_context}';
+            if(isLogin==''){
+                location.href="/passport/toLogin";
+            }
+            var skuId = ${skuDomainList[0].id};
+            var url = "/boutique/addToBoutique";
+            var data = {"skuId":skuId,"num":1,"type":3};
+            $.post(url,data,function (result) {
+                console.log(result);
+                if(result.code==200){
+                    console.log(result.message);
+                    location.href="/boutique/list";
+                }
+            });
         });
-
     });
 </script>
