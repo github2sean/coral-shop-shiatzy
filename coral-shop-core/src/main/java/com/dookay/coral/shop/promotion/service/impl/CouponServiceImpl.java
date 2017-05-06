@@ -35,7 +35,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 		if(couponDomain==null){
 			throw new ServiceException("无此优惠券");
 		}else{
-			int num = couponDomain.getLeft();
+			int num = couponDomain.getLeftTimes();
 			Date startTime = couponDomain.getStartTime();
 			Date endTime = couponDomain.getEndTime();
 			Date nowTime = new Date();

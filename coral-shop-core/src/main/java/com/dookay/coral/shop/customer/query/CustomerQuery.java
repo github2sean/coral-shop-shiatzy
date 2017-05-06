@@ -18,6 +18,7 @@ public class CustomerQuery extends Query {
 
 	private Long accountId;
 	private String phone;
+	private String firstName;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -29,6 +30,9 @@ public class CustomerQuery extends Query {
 		}
 		if(valid(phone)){
 			criteria.andEqualTo("phone",phone);
+		}
+		if (valid(firstName)){
+			criteria.andLike("firstName","%"+firstName+"%");
 		}
 
 		//todo 写查询逻辑

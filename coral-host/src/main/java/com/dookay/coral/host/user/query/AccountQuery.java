@@ -25,6 +25,7 @@ public class AccountQuery extends Query {
     private AccountTypeEnum accountStatus;
     private String keyword;
     private List<Long> ids;
+    private Integer isValid;
 
     @Override
     public QueryCriteria toCriteria() {
@@ -48,6 +49,10 @@ public class AccountQuery extends Query {
 
         if (valid(accountStatus)) {
             criteria.andEqualTo("accountStatus", accountStatus.getValue());
+        }
+
+        if(valid(isValid)){
+            criteria.andEqualTo("isValid",isValid);
         }
 
         if (valid(keyword)) {

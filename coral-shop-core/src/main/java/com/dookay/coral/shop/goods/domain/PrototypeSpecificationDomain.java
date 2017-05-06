@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.goods.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_goods_prototype_specification")
 public class PrototypeSpecificationDomain implements Serializable {
 
@@ -37,52 +40,5 @@ public class PrototypeSpecificationDomain implements Serializable {
 	/*是否颜色：1是 0否*/
 	private Integer isColor;
 	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public Integer getDisplayOrder(){
-		return displayOrder;
-	}
-	
-	public void setDisplayOrder(Integer displayOrder){
-		this.displayOrder = displayOrder;
-	}
-	
-	public Long getPrototypeId(){
-		return prototypeId;
-	}
-	
-	public void setPrototypeId(Long prototypeId){
-		this.prototypeId = prototypeId;
-	}
-	
-	public Integer getIsColor(){
-		return isColor;
-	}
-	
-	public void setIsColor(Integer isColor){
-		this.isColor = isColor;
-	}
 
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }
