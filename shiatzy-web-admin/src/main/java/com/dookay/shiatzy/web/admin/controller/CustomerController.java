@@ -89,7 +89,6 @@ public class CustomerController extends BaseApiController {
         return successResponse("启用成功");
     }
 
-
     @ApiOperation(value = "获取会员", httpMethod = "GET", response = CustomerDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<CustomerDomain> get(@Param("id") Long id) {
