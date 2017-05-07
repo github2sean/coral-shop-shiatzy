@@ -30,7 +30,7 @@ public class PrototypeSpecificationOptionServiceImpl extends BaseServiceImpl<Pro
 	@Override
 	public List getListBySpecificationId(Long id) {
 		PrototypeSpecificationOptionQuery query = new PrototypeSpecificationOptionQuery();
-		query.setPrototypeSpecificationId(id);
+		query.setSpecificationId(id);
 		return getList(query);
 	}
 }

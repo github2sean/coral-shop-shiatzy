@@ -63,7 +63,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			throw new ServiceException("商品ID为空");
 		}
 	}
-	
+
 	@Override
 	public void addToCart(CustomerDomain customerDomain, SkuDomain skuDomain, Integer shoppingCartType, int num) {
 		Assert.notNull(customerDomain,"customerDomain");
