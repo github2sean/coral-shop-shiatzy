@@ -28,15 +28,12 @@ public class SkuDomain implements Serializable {
 	
 	/*商品id*/
 	private Long goodsId;
-	
-	/*商品名称*/
-	private String name;
-	
-	/*sku编码*/
-	private String code;
-	
-	/*单价*/
-	private Double price;
+
+	/*项目id*/
+	private Long itemId;
+
+	/*商品编号*/
+	private String goodsNo;
 	
 	/*库存数量*/
 	private Integer quantity;
@@ -47,8 +44,15 @@ public class SkuDomain implements Serializable {
 	/*创建时间*/
 	private Date createTime;
 
+	/*更新时间*/
+	private Date updateTime;
+
 	/*商品*/
 	@Transient
 	private GoodsDomain goods;
+
+	/*商品项目*/
+	@Transient
+	private GoodsItemDomain goodsItem;
 
 }

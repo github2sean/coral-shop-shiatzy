@@ -28,17 +28,19 @@ public class PrototypeSpecificationDomain implements Serializable {
 	/*规格名称*/
 	private String name;
 
+	/*英文名称*/
+	private String EnName;
+
 	/*规格说明*/
 	private String description;
 
 	/*显示顺序*/
-	private Integer displayOrder;
+	private Integer rank;
 	
 	/*原型id*/
 	private Long prototypeId;
 	
 	/*是否颜色：1是 0否*/
 	private Integer isColor;
-	
 
 }

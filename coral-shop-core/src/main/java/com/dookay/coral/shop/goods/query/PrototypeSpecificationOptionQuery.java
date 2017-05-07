@@ -15,14 +15,14 @@ import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 @Data
 public class PrototypeSpecificationOptionQuery extends Query {
 
-	private Long prototypeSpecificationId;
+	private Long specificationId;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(PrototypeSpecificationOptionDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
 
-		if(valid(prototypeSpecificationId)){
-			criteria.andEqualTo("prototypeSpecificationId",prototypeSpecificationId);
+		if(valid(specificationId)){
+			criteria.andEqualTo("specificationId",specificationId);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

@@ -4,8 +4,11 @@ import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
@@ -13,6 +16,7 @@ import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +53,8 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 
 	@Autowired
 	private IOrderItemService orderItemService;
-
+	@Autowired
+	private IGoodsItemService goodsItemService;
 	@Override
 	public void removeFromCart(Long id) {
 		if(id!=null){
@@ -57,7 +62,6 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		}else {
 			throw new ServiceException("商品ID为空");
 		}
-
 	}
 
 	@Override
@@ -72,12 +76,12 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		}
 
 		GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
-
+		GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
 		ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
 		shoppingCartItemDomain.setCustomerId(customerDomain.getId());
 		shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
 		shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
-		shoppingCartItemDomain.setGoodsPrice(skuDomain.getPrice());
+		shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
 		shoppingCartItemDomain.setSkuId(skuDomain.getId());
 		shoppingCartItemDomain.setShoppingCartType(shoppingCartType);
 		shoppingCartItemDomain.setNum(num);

@@ -10,31 +10,40 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * 原型规格选项的domain
+ * 商品颜色的domain
  * @author : luxor
- * @since : 2017年04月27日
+ * @since : 2017年05月06日
  * @version : v0.0.1
  */
 @Data
-@Table(name = "t_goods_prototype_specification_option")
-public class PrototypeSpecificationOptionDomain implements Serializable {
+@Table(name = "t_goods_color")
+public class GoodsColorDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	/*主键id*/
 	@Id
 	private Long id;
 	
-	/*原型规格id*/
-	private Long specificationId;
+	/*排序*/
+	private Integer rank;
 	
-	/*选项名称*/
+	/*是否有效*/
+	private Integer isValid;
+	
+	/*名称*/
 	private String name;
 	
 	/*英文名称*/
 	private String enName;
 	
-	/*显示顺序*/
-	private String rank;
+	/*颜色*/
+	private String color;
+	
+	/*创建时间*/
+	private Date createTime;
+	
+	/*更新时间*/
+	private Date updateTime;
 
 }
