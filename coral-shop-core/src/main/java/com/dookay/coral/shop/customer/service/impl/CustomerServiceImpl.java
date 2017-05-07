@@ -138,4 +138,18 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 		return customer;
 	}
 
+	@Override
+	public void forbid(Long id) {
+		AccountDomain accountDomain = accountService.get(id);
+		accountDomain.setIsValid(0);
+		accountService.update(accountDomain);
+	}
+
+	@Override
+	public void enable(Long id) {
+		AccountDomain accountDomain = accountService.get(id);
+		accountDomain.setIsValid(1);
+		accountService.update(accountDomain);
+	}
+
 }
