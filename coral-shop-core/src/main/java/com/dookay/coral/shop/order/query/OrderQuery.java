@@ -24,6 +24,7 @@ public class OrderQuery extends Query {
 
 	private Date orderTime;
 
+	private String orderNo;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -40,6 +41,9 @@ public class OrderQuery extends Query {
 			criteria.andEqualTo("status",status);
 		}
 
+		if(valid(orderNo)){
+			criteria.andLike("orderNo",""+orderNo+"");
+		}
 
 		//todo 写查询逻辑
 		return queryCriteria;
