@@ -1,11 +1,17 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.store.domain.StoreDomain;
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单退货申请的domain
@@ -13,6 +19,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_order_return_request")
 public class ReturnRequestDomain implements Serializable {
 
@@ -48,97 +55,16 @@ public class ReturnRequestDomain implements Serializable {
 	
 	/*退货门店id*/
 	private Long returnShopId;
-	
+	@Transient
+	private StoreDomain storeDomain;
+
 	/*客户id*/
 	private Long customerId;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Long getOrderId(){
-		return orderId;
-	}
-	
-	public void setOrderId(Long orderId){
-		this.orderId = orderId;
-	}
-	
-	public String getOrderNo(){
-		return orderNo;
-	}
-	
-	public void setOrderNo(String orderNo){
-		this.orderNo = orderNo;
-	}
-	
-	public Date getOrderTime(){
-		return orderTime;
-	}
-	
-	public void setOrderTime(Date orderTime){
-		this.orderTime = orderTime;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Integer getReturnShippingMethod(){
-		return returnShippingMethod;
-	}
-	
-	public void setReturnShippingMethod(Integer returnShippingMethod){
-		this.returnShippingMethod = returnShippingMethod;
-	}
-	
-	public String getMemo(){
-		return memo;
-	}
-	
-	public void setMemo(String memo){
-		this.memo = memo;
-	}
-	
-	public String getShipName(){
-		return shipName;
-	}
-	
-	public void setShipName(String shipName){
-		this.shipName = shipName;
-	}
-	
-	public String getShipAddress(){
-		return shipAddress;
-	}
-	
-	public void setShipAddress(String shipAddress){
-		this.shipAddress = shipAddress;
-	}
-	
-	public Long getReturnShopId(){
-		return returnShopId;
-	}
-	
-	public void setReturnShopId(Long returnShopId){
-		this.returnShopId = returnShopId;
-	}
-	
-	public Long getCustomerId(){
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId){
-		this.customerId = customerId;
-	}
-	
-	
+	@Transient
+	private CustomerDomain customerDomain;
+
+	/*退货商品列表 */
+	@Transient
+	private List<ReturnRequestItemDomain> returnRequestItemDomainList;
+
 }
