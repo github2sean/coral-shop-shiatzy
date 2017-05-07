@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 客户的domain
@@ -57,5 +58,9 @@ public class CustomerDomain implements Serializable {
 	/*对应帐号 */
 	@Transient
 	private AccountDomain accountDomain;
+
+	/*对应地址 */
+	@Transient
+	private List<CustomerAddressDomain> customerAddressList;
 
 }

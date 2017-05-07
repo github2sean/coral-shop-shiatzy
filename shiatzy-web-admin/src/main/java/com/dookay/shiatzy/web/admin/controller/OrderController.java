@@ -9,11 +9,14 @@ import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
+import com.dookay.coral.shop.order.extension.OrderExtension;
+import com.dookay.coral.shop.order.form.SendGoodsForm;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.shiatzy.web.admin.base.BaseApiController;
+import com.dookay.shiatzy.web.admin.exception.ValidException;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,20 +45,25 @@ public class OrderController extends BaseApiController {
     @Autowired
     private IOrderItemService orderItemService;
 
+    @Autowired
+    private OrderExtension orderExtension;
+
+    private static Integer HAVE_SEND = 3;
+
     @ApiOperation(value = "获取订单列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<PageList<OrderDomain>> list(@ModelAttribute OrderQuery orderQuery) {
         PageList<OrderDomain> orderDomainPageList = orderService.getPageList(orderQuery);
+        orderExtension.withOrderItem(orderDomainPageList);
         return ResponseEntity.ok().body(orderDomainPageList);
     }
 
     @ApiOperation(value = "获取订单商品", httpMethod = "GET", response = GoodsDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PageList<OrderItemDomain>> get(@Param("id") Long id) {
-        OrderItemQuery query = new OrderItemQuery();
-        query.setOrderId(id);
-        PageList<OrderItemDomain>  orderItemDomainPageList = orderItemService.getPageList(query);
-        return ResponseEntity.ok().body(orderItemDomainPageList);
+    public ResponseEntity<OrderDomain> get(@Param("id") Long id) {
+        OrderDomain orderDomain = orderService.get(id);
+        orderExtension.withOrderItem(orderDomain);
+        return ResponseEntity.ok().body(orderDomain);
     }
 
     @ApiOperation(value = "创建订单",httpMethod = "POST")
@@ -78,5 +86,24 @@ public class OrderController extends BaseApiController {
     public ResponseEntity delete(@Param("id") Long id) {
         orderService.delete(id);
         return successResponse("删除成功");
+    }
+
+    @ApiOperation(value = "订单发货", httpMethod = "POST")
+    @RequestMapping(value = "/sendGoods", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity sendGoods(@ModelAttribute SendGoodsForm sendGoodsForm) {
+
+        OrderDomain orderDomain = orderService.get(sendGoodsForm.getOrderId());
+        //填写快递单号和快递公司
+        orderDomain.setShipperCompany(sendGoodsForm.getShipperCompany());
+        orderDomain.setTrackingNumber(sendGoodsForm.getTrackingNumber());
+        //发货时间
+        orderDomain.setShippedTime(new Date());
+        //修改status为3
+        if(orderDomain.getStatus()!=2){
+            return exception(new ValidException("订单状态异常"));
+        }
+        orderDomain.setStatus(HAVE_SEND);
+        orderService.update(orderDomain);
+        return successResponse("操作成功");
     }
 }
