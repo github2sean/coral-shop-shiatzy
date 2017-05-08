@@ -47,18 +47,6 @@ public class ReturnRequestExtension {
         ReturnRequestItemQuery query = new ReturnRequestItemQuery();
         query.setReturnRequestId(returnRequestDomain.getId());
         List<ReturnRequestItemDomain> returnRequestItemDomainList = returnRequestItemService.getList(query);
-        for(ReturnRequestItemDomain line:returnRequestItemDomainList){
-            String returnReason = line.getReturnReason();
-            JSONObject json  = JSON.parseObject(returnReason);
-            String returnReasonText = "";
-            for(Map.Entry<String,Object> entry:json.entrySet()){
-                if(entry.getValue()!=null&&!"".equals(entry.getValue())){
-                    returnReasonText = returnReasonText+entry.getKey()+":"+entry.getValue()+";";
-                }
-            }
-
-        }
-
         returnRequestDomain.setReturnRequestItemDomainList(returnRequestItemDomainList);
     }
 
