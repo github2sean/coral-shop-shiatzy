@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.order.extension;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerQuery;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Luxor
@@ -44,6 +47,18 @@ public class ReturnRequestExtension {
         ReturnRequestItemQuery query = new ReturnRequestItemQuery();
         query.setReturnRequestId(returnRequestDomain.getId());
         List<ReturnRequestItemDomain> returnRequestItemDomainList = returnRequestItemService.getList(query);
+        for(ReturnRequestItemDomain line:returnRequestItemDomainList){
+            String returnReason = line.getReturnReason();
+            JSONObject json  = JSON.parseObject(returnReason);
+            String returnReasonText = "";
+            for(Map.Entry<String,Object> entry:json.entrySet()){
+                if(entry.getValue()!=null&&!"".equals(entry.getValue())){
+                    returnReasonText = returnReasonText+entry.getKey()+":"+entry.getValue()+";";
+                }
+            }
+
+        }
+
         returnRequestDomain.setReturnRequestItemDomainList(returnRequestItemDomainList);
     }
 
@@ -62,7 +77,5 @@ public class ReturnRequestExtension {
         CustomerDomain customerDomain = customerService.get(returnRequestDomain.getCustomerId());
         returnRequestDomain.setCustomerDomain(customerDomain);
     }
-
-
 
 }

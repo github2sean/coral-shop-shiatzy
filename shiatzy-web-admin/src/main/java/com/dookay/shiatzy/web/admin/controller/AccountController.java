@@ -9,13 +9,9 @@ import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -58,7 +54,7 @@ public class AccountController extends BaseApiController {
 
     @ApiOperation(value = "删除用户", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         accountService.delete(id);
         return successResponse("删除成功");
     }

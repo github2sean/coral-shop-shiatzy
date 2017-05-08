@@ -20,13 +20,9 @@ import com.dookay.shiatzy.web.admin.exception.ValidException;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -60,7 +56,7 @@ public class OrderController extends BaseApiController {
 
     @ApiOperation(value = "获取订单商品", httpMethod = "GET", response = GoodsDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<OrderDomain> get(@Param("id") Long id) {
+    public ResponseEntity<OrderDomain> get(@RequestParam("id") Long id) {
         OrderDomain orderDomain = orderService.get(id);
         orderExtension.withOrderItem(orderDomain);
         return ResponseEntity.ok().body(orderDomain);
@@ -83,7 +79,7 @@ public class OrderController extends BaseApiController {
 
     @ApiOperation(value = "删除订单", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         orderService.delete(id);
         return successResponse("删除成功");
     }

@@ -16,13 +16,9 @@ import com.dookay.shiatzy.web.admin.exception.ValidException;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -56,7 +52,7 @@ public class ReturnRequestController extends BaseApiController {
 
     @ApiOperation(value = "获取退货单商品", httpMethod = "GET", response = GoodsDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<ReturnRequestDomain> get(@Param("id") Long id) {
+    public ResponseEntity<ReturnRequestDomain> get(@RequestParam("id") Long id) {
         ReturnRequestDomain returnRequestDomain = returnRequestService.get(id);
         returnRequestExtension.withReturnRequestItem(returnRequestDomain);
         returnRequestExtension.withCustomer(returnRequestDomain);
@@ -80,9 +76,16 @@ public class ReturnRequestController extends BaseApiController {
 
     @ApiOperation(value = "删除退货单", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         returnRequestService.delete(id);
         return successResponse("删除成功");
+    }
+
+    @ApiOperation(value = "是否同意退货", httpMethod = "POST")
+    @RequestMapping(value = "/isAgree", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity isAgree(@RequestParam("id") Long id,Long isAgree,@RequestParam("adminMemo") String adminMemo) {
+        returnRequestService.isAgree(id,isAgree,adminMemo);
+        return successResponse("操作成功");
     }
 
 

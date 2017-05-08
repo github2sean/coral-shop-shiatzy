@@ -1,9 +1,12 @@
 package com.dookay.coral.shop.order.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +16,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_order_return_request_item")
 public class ReturnRequestItemDomain implements Serializable {
 
@@ -36,7 +40,8 @@ public class ReturnRequestItemDomain implements Serializable {
 	
 	/*退货理由json*/
 	private String returnReason;
-	
+	@Transient
+	private String returnReasonText;
 	/*退货时间*/
 	private Date createTime;
 	
@@ -46,77 +51,7 @@ public class ReturnRequestItemDomain implements Serializable {
 	/*管理员备注*/
 	private String adminMemo;
 	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Long getReturnRequestId(){
-		return returnRequestId;
-	}
-	
-	public void setReturnRequestId(Long returnRequestId){
-		this.returnRequestId = returnRequestId;
-	}
-	
-	public String getOrderItemId(){
-		return orderItemId;
-	}
-	
-	public void setOrderItemId(String orderItemId){
-		this.orderItemId = orderItemId;
-	}
-	
-	public Long getCustomerId(){
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId){
-		this.customerId = customerId;
-	}
-	
-	public Integer getNum(){
-		return num;
-	}
-	
-	public void setNum(Integer num){
-		this.num = num;
-	}
-	
-	public String getReturnReason(){
-		return returnReason;
-	}
-	
-	public void setReturnReason(String returnReason){
-		this.returnReason = returnReason;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Integer getStatus(){
-		return status;
-	}
-	
-	public void setStatus(Integer status){
-		this.status = status;
-	}
-	
-	public String getAdminMemo(){
-		return adminMemo;
-	}
-	
-	public void setAdminMemo(String adminMemo){
-		this.adminMemo = adminMemo;
-	}
+
 	
 	
 }

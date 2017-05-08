@@ -11,4 +11,6 @@ import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
  */
 public interface IReturnRequestService extends IBaseService<ReturnRequestDomain> {
 
+    void isAgree(Long id, Long isAgree,String adminMemo);
+
 }
