@@ -7,6 +7,8 @@ import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import lombok.Data;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.List;
+
 /**
  * 客户地址的Query
  * @author : luxor
@@ -18,6 +20,8 @@ public class CustomerAddressQuery extends Query {
 
 	private Long customerId;
 
+	private List<Long> customerIds;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(CustomerAddressDomain.class);
@@ -26,6 +30,10 @@ public class CustomerAddressQuery extends Query {
 
 		if(valid(customerId)){
 			criteria.andEqualTo("customerId",customerId);
+		}
+
+		if(valid(customerIds)){
+			criteria.andIn("customerId",customerIds);
 		}
 
 		//todo 写查询逻辑

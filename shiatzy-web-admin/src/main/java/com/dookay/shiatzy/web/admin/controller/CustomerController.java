@@ -46,7 +46,7 @@ public class CustomerController extends BaseApiController {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<PageList<CustomerDomain>> list(@ModelAttribute CustomerQuery customerQuery) {
         PageList<CustomerDomain> customerDomainPageList = customerService.getPageList(customerQuery);
-        customerExtension.withAccount(customerDomainPageList);
+        customerExtension.withAccountAndAddress(customerDomainPageList);
         return ResponseEntity.ok().body(customerDomainPageList);
     }
 
@@ -63,7 +63,7 @@ public class CustomerController extends BaseApiController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity update(CustomerDomain domain) {
         customerService.update(domain);
-        customerExtension.withAccount(domain);
+        customerExtension.withAccountAndAddress(domain);
         return successResponse("编辑成功");
     }
 
@@ -90,7 +90,7 @@ public class CustomerController extends BaseApiController {
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<CustomerDomain> get(@RequestParam("id") Long id) {
         CustomerDomain domain = customerService.get(id);
-        customerExtension.withAccount(domain);
+        customerExtension.withAccountAndAddress(domain);
         System.out.println("domain:"+ JsonUtils.toJSONString(domain));
         return ResponseEntity.ok().body(domain);
     }
