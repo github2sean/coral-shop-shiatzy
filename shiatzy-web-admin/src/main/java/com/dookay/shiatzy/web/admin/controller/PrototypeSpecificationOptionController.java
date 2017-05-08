@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Luxor
@@ -43,7 +40,7 @@ public class PrototypeSpecificationOptionController extends BaseApiController {
     
     @ApiOperation(value = "获取商品原型规格选项", httpMethod = "GET", response = PrototypeSpecificationOptionDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PrototypeSpecificationOptionDomain> get(@Param("id") Long id) {
+    public ResponseEntity<PrototypeSpecificationOptionDomain> get(@RequestParam("id") Long id) {
         PrototypeSpecificationOptionDomain domain = prototypeSpecificationOptionService.get(id);
 
         return ResponseEntity.ok().body(domain);
@@ -65,7 +62,7 @@ public class PrototypeSpecificationOptionController extends BaseApiController {
 
     @ApiOperation(value = "删除商品原型规格选项", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         prototypeSpecificationOptionService.delete(id);
         return successResponse("删除成功");
     }

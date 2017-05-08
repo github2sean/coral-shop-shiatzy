@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.goods.service;
 
 import com.dookay.coral.common.service.IBaseService;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
 
 /**

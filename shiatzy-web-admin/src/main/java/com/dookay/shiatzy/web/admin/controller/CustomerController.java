@@ -21,10 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -72,26 +69,26 @@ public class CustomerController extends BaseApiController {
 
     @ApiOperation(value = "删除会员", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         customerService.delete(id);
         return successResponse("删除成功");
     }
     @ApiOperation(value = "禁用会员", httpMethod = "POST")
     @RequestMapping(value = "/forbid", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity forbid(@Param("id") Long id) {
+    public ResponseEntity forbid(@RequestParam("id") Long id) {
         customerService.forbid(id);
         return successResponse("禁用成功");
     }
     @ApiOperation(value = "启用会员", httpMethod = "POST")
     @RequestMapping(value = "/enable", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity enable(@Param("id") Long id) {
+    public ResponseEntity enable(@RequestParam("id") Long id) {
         customerService.enable(id);
         return successResponse("启用成功");
     }
 
     @ApiOperation(value = "获取会员", httpMethod = "GET", response = CustomerDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<CustomerDomain> get(@Param("id") Long id) {
+    public ResponseEntity<CustomerDomain> get(@RequestParam("id") Long id) {
         CustomerDomain domain = customerService.get(id);
         customerExtension.withAccount(domain);
         System.out.println("domain:"+ JsonUtils.toJSONString(domain));

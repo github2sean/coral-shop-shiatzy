@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 商品的domain
@@ -62,5 +63,9 @@ public class GoodsDomain implements Serializable {
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;
+
+	/*商品规格*/
+	@Transient
+	private List<PrototypeSpecificationDomain> specificationList;
 
 }

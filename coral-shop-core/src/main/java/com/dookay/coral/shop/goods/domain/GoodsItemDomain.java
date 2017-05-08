@@ -45,10 +45,10 @@ public class GoodsItemDomain implements Serializable {
 	private String goodsNo;
 	
 	/*标题*/
-	private String title;
+	private String name;
 	
 	/*英文标题*/
-	private String enTitle;
+	private String enName;
 	
 	/*图片*/
 	private String thumb;

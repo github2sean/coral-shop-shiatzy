@@ -11,13 +11,9 @@ import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -46,7 +42,7 @@ public class SkuController extends BaseApiController {
     
     @ApiOperation(value = "获取商品sku", httpMethod = "GET", response = SkuDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<SkuDomain> get(@Param("id") Long id) {
+    public ResponseEntity<SkuDomain> get(@RequestParam("id") Long id) {
         SkuDomain domain = skuService.get(id);
         goodsExtension.withGoods(domain);
         return ResponseEntity.ok().body(domain);
@@ -69,7 +65,7 @@ public class SkuController extends BaseApiController {
     
     @ApiOperation(value = "删除商品sku", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         skuService.delete(id);
         return successResponse("删除成功");
     }

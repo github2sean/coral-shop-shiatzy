@@ -31,7 +31,7 @@ public class GoodsCategoryExtension {
         List<Long> categoryIds = goodsDomainList.stream().map(GoodsDomain::getCategoryId).collect(Collectors.toList());
         GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
         goodsCategoryQuery.setIds(categoryIds);
-        List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.getList(goodsCategoryQuery);
+        List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategory(goodsCategoryQuery);
         for (GoodsDomain goodsDomain:goodsDomainList){
             GoodsCategoryDomain goodsCategoryDomain = goodsCategoryDomainList.stream()
                     .filter(x-> Objects.equals(x.getId(), goodsDomain.getCategoryId())).findFirst().orElse(null);
