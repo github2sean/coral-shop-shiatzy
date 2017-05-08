@@ -17,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 public class ReservationQuery extends Query {
 
 	private Long customerId;
+	private String reservationNo;
 	
 	@Override
 	public QueryCriteria toCriteria() {
@@ -27,6 +28,11 @@ public class ReservationQuery extends Query {
 		if(valid(customerId)){
 			criteria.andEqualTo("customerId",customerId);
 		}
+
+		if(valid(reservationNo)){
+			criteria.andLike("reservationNo",""+reservationNo+"");
+		}
+
 		//todo 写查询逻辑
 		return queryCriteria;
 	}
