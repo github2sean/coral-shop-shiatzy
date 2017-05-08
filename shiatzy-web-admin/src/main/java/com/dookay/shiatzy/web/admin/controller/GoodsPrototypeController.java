@@ -43,7 +43,7 @@ public class GoodsPrototypeController extends BaseApiController {
 
     @ApiOperation(value = "获取商品原型", httpMethod = "GET", response = GoodsPrototypeDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<GoodsPrototypeDomain> get(@Param("id") Long id) {
+    public ResponseEntity<GoodsPrototypeDomain> get(@RequestParam("id") Long id) {
         GoodsPrototypeDomain goodsPrototypeDomain = goodsPrototypeService.get(id);
 
         return ResponseEntity.ok().body(goodsPrototypeDomain);
@@ -66,7 +66,7 @@ public class GoodsPrototypeController extends BaseApiController {
 
     @ApiOperation(value = "删除商品原型", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         goodsPrototypeService.delete(id);
         return successResponse("删除成功");
     }

@@ -63,6 +63,10 @@ public class GoodsCategoryServiceImpl extends BaseServiceImpl<GoodsCategoryDomai
 		for (GoodsCategoryDomain goodsCategoryDomain :goodsCategoryDomainList){
 			List<GoodsCategoryDomain> childrenCategoryList = this.listCategoryByParentId(goodsCategoryDomain.getId());
 			goodsCategoryDomain.setChildren(childrenCategoryList);
+			if(goodsCategoryDomain.getParentId() != null && goodsCategoryDomain.getParentId()>0){
+				GoodsCategoryDomain parent = this.get(goodsCategoryDomain.getParentId());
+				goodsCategoryDomain.setParent(parent);
+			}
 		}
 		return goodsCategoryDomainList;
 	}

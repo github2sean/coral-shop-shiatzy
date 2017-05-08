@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -41,7 +38,7 @@ public class GoodsColorController extends BaseApiController {
 
     @ApiOperation(value = "获取商品颜色", httpMethod = "GET", response = GoodsColorDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<GoodsColorDomain> get(@Param("id") Long id) {
+    public ResponseEntity<GoodsColorDomain> get(@RequestParam("id") Long id) {
         GoodsColorDomain domain = goodsColorService.get(id);
 
         return ResponseEntity.ok().body(domain);
@@ -64,7 +61,7 @@ public class GoodsColorController extends BaseApiController {
 
     @ApiOperation(value = "删除商品颜色", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         goodsColorService.delete(id);
         return successResponse("删除成功");
     }

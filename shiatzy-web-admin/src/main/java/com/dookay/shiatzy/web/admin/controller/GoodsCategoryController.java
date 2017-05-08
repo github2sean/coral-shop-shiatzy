@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -45,7 +42,7 @@ public class GoodsCategoryController extends BaseApiController {
 
     @ApiOperation(value = "获取商品分类", httpMethod = "GET", response = GoodsCategoryDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<GoodsCategoryDomain> get(@Param("id") Long id) {
+    public ResponseEntity<GoodsCategoryDomain> get(@RequestParam("id") Long id) {
         GoodsCategoryDomain domain = goodsCategoryService.get(id);
 
         return ResponseEntity.ok().body(domain);
@@ -68,7 +65,7 @@ public class GoodsCategoryController extends BaseApiController {
 
     @ApiOperation(value = "删除商品分类", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         goodsCategoryService.delete(id);
         return successResponse("删除成功");
     }

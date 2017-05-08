@@ -21,5 +21,6 @@ public class GoodsPrototypeServiceImpl extends BaseServiceImpl<GoodsPrototypeDom
 	
 	@Autowired
 	private GoodsPrototypeMapper goodsPrototypeMapper;
-	  
+
+
 }

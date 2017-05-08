@@ -16,10 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -51,9 +48,13 @@ public class GoodsController extends BaseApiController {
 
     @ApiOperation(value = "获取商品", httpMethod = "GET", response = GoodsDomain.class)
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<GoodsDomain> get(@Param("id") Long id) {
+    public ResponseEntity<GoodsDomain> get(@RequestParam("id") Long id,
+                                           @RequestParam(value = "withSpecificationList",required = false) Long withSpecificationList) {
         GoodsDomain domain = goodsService.get(id);
         goodsCategoryExtension.withGoodsCategory(domain);
+        if(withSpecificationList!= null){
+            goodsService.withSpecificationList(domain);
+        }
         return ResponseEntity.ok().body(domain);
     }
 
@@ -74,7 +75,7 @@ public class GoodsController extends BaseApiController {
 
     @ApiOperation(value = "删除商品", httpMethod = "POST")
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity delete(@Param("id") Long id) {
+    public ResponseEntity delete(@RequestParam("id") Long id) {
         goodsService.delete(id);
         return successResponse("删除成功");
     }

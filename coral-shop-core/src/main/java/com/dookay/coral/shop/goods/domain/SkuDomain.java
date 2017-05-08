@@ -47,6 +47,9 @@ public class SkuDomain implements Serializable {
 	/*更新时间*/
 	private Date updateTime;
 
+	/*是否有效*/
+	private Integer isValid;
+
 	/*商品*/
 	@Transient
 	private GoodsDomain goods;

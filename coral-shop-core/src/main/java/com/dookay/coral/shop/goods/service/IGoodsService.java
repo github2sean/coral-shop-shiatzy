@@ -26,4 +26,5 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
      */
     int countGoodsByCategoryId(Long categoryId);
 
+    void withSpecificationList(GoodsDomain goodsDomain);
 }

@@ -64,4 +64,8 @@ public class GoodsCategoryDomain implements Serializable {
 	@Transient
 	private List<GoodsCategoryDomain> children;
 
+	/*父分类*/
+	@Transient
+	private GoodsCategoryDomain parent;
+
 }

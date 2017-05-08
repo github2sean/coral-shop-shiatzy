@@ -6,8 +6,10 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 原型规格的domain
@@ -42,5 +44,8 @@ public class PrototypeSpecificationDomain implements Serializable {
 	
 	/*是否颜色：1是 0否*/
 	private Integer isColor;
+
+	@Transient
+	private List<PrototypeSpecificationOptionDomain> prototypeSpecificationOptionList;
 
 }
