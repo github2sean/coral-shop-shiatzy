@@ -1,14 +1,12 @@
 package com.dookay.coral.common.json;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -219,4 +217,12 @@ public class JsonUtils {
 		return new ResultModel(HttpStatus.OK.value(), "ok", code, obj);
 	}
 
+	public static List<Long> toLongArray(String json){
+		List<Long> longArrayList = new ArrayList<>();
+		JSONArray jsonArray = JSONArray.fromObject(json);
+		for (int i = 0; i < jsonArray.size(); i++) {
+			longArrayList.add(jsonArray.getLong(i));
+		}
+		return longArrayList;
+	}
 }

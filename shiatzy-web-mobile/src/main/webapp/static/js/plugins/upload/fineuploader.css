@@ -12,15 +12,16 @@
 .qq-upload-button {
     display: block;
     width: 105px;
-    padding: 4px 0;
+    padding: 7px 0;
     text-align: center;
+    background: #2B7DAA;
     border-bottom: 1px solid #DDD;
     color: #FFF;
     margin-bottom: 10px;
 }
 
 .qq-upload-button-hover {
-    background:  #FFFFFF;
+    background: #267199;
 }
 
 .qq-upload-button-focus {
@@ -62,7 +63,6 @@
 }
 
 .qq-upload-list {
-    display: none;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -223,10 +223,4 @@
     background:none;
     border: none;
 }
-.j_uploading{
-    background-color: transparent;
-    border: none;
-    color: #999999;
-    line-height: 1.5;
-    letter-spacing: 1px;
-}
+

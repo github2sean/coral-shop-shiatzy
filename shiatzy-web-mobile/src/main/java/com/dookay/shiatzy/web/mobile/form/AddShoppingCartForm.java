@@ -9,6 +9,10 @@ import lombok.Data;
 public class AddShoppingCartForm {
     private Integer type ;//1:购物车 2：心愿单
 
+    private Long itemId;
+
+    private Long sizeId;
+
     private Long skuId;
 
     private Integer num;

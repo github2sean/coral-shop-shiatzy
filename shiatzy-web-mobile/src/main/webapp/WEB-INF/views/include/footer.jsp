@@ -3,7 +3,7 @@
 <footer class="footer font-12">
     <ul class="do-list-btm j_drop_down">
         <li><a href="/u/account/index">我的账户</a></li>
-        <li><a href="常见问题.html">常见问题</a></li>
+        <li><a href="/content/faq">常见问题</a></li>
         <li><a href="">特别服务</a></li>
         <li>
             <a href="javascript:;">关于我们</a>
@@ -38,6 +38,7 @@
     <div class="text-center do-copy">沪ICP备16022295号-1 创姿服饰（上海）有限公司</div>
 </footer>
 </div>
+</div>
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
@@ -54,6 +55,14 @@
         commonApp.init();
         backendApp.init();
     });
+</script>
+<script>
+    $(function () {
+        $("#searchBtn").click(function () {
+            $("#contentForm").submit();
+        });
+    });
+
 </script>
 <!-- js页面应用 结束 -->
 </body>

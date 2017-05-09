@@ -44,4 +44,6 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
 
     void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId);
 
+    void withGoodsItem(List<ShoppingCartItemDomain> shoppingCartItemDomainList);
+
 }

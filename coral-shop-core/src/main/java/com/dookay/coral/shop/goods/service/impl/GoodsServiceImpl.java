@@ -1,29 +1,24 @@
 package com.dookay.coral.shop.goods.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
-import com.dookay.coral.shop.goods.domain.GoodsPrototypeDomain;
-import com.dookay.coral.shop.goods.domain.PrototypeSpecificationDomain;
-import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
-import com.dookay.coral.shop.goods.query.GoodsPrototypeQuery;
-import com.dookay.coral.shop.goods.query.GoodsQuery;
-import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
-import com.dookay.coral.shop.goods.query.PrototypeSpecificationQuery;
-import com.dookay.coral.shop.goods.service.IGoodsPrototypeService;
-import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
-import com.dookay.coral.shop.goods.service.IPrototypeSpecificationService;
+import com.dookay.coral.shop.goods.domain.*;
+import com.dookay.coral.shop.goods.query.*;
+import com.dookay.coral.shop.goods.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.goods.mapper.GoodsMapper;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.service.IGoodsService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 商品的业务实现类
@@ -44,6 +39,10 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	private IPrototypeSpecificationService prototypeSpecificationService;
 	@Autowired
 	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+	@Autowired
+	private IGoodsItemService goodsItemService;
+	@Autowired
+	private ISkuService skuService;
 	@Override
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
 		return getPageList(query);
@@ -69,6 +68,53 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			prototypeSpecificationDomain.setPrototypeSpecificationOptionList(prototypeSpecificationOptionList);
 		}
 		goodsDomain.setSpecificationList(prototypeSpecificationDomainList);
+	}
+
+	@Override
+	public void updateColors(GoodsDomain goodsDomain) {
+		GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
+		goodsItemQuery.setGoodsId(goodsDomain.getId());
+		goodsItemQuery.setIsValid(ValidEnum.YES.getValue());
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
+		List<Long> colorIds = goodsItemDomainList.stream().map(x->x.getColorId()).collect(Collectors.toList());
+		goodsDomain.setColorIds(JsonUtils.toJSONString(colorIds));
+		super.update(goodsDomain);
+	}
+
+	@Override
+	public void updateSizes(GoodsDomain goodsDomain) {
+		SkuQuery query = new SkuQuery();
+		query.setGoodsId(goodsDomain.getId());
+		query.setIsValid(ValidEnum.YES.getValue());
+		List<SkuDomain> skuDomainList = skuService.getList(query);
+		List<Long> sizeIds = new ArrayList<>();
+		for (SkuDomain skuDomain :skuDomainList){
+			JSONObject  jasonObject = JSONObject.parseObject(skuDomain.getSpecifications());
+			sizeIds.add(jasonObject.getLong("size"));
+		}
+		goodsDomain.setSizeIds(JsonUtils.toJSONString(sizeIds));
+		super.update(goodsDomain);
+	}
+
+	@Override
+	public void withGoodsItemList(List<GoodsDomain> goodsDomainList) {
+		List<Long> ids = goodsDomainList.stream().map(GoodsDomain::getId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setGoodsIds(ids);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for (GoodsDomain goodsDomain:goodsDomainList){
+			List<GoodsItemDomain> goodsItemDomainList1 = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getGoodsId(), goodsDomain.getId())).collect(Collectors.toList());
+			goodsDomain.setGoodsItemList(goodsItemDomainList1);
+		}
+	}
+
+	@Override
+	public void withGoodsItemList(GoodsDomain goodsDomain) {
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setGoodsId(goodsDomain.getId());
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		goodsDomain.setGoodsItemList(goodsItemDomainList);
 	}
 
 }

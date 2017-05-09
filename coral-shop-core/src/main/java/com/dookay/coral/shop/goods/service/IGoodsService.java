@@ -16,7 +16,6 @@ import java.util.List;
  */
 public interface IGoodsService extends IBaseService<GoodsDomain> {
 
-
     PageList<GoodsDomain> getGoodsList(GoodsQuery query);
 
     /**
@@ -27,4 +26,11 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
     int countGoodsByCategoryId(Long categoryId);
 
     void withSpecificationList(GoodsDomain goodsDomain);
+
+    void updateColors(GoodsDomain goodsDomain);
+
+    void updateSizes(GoodsDomain goodsDomain);
+
+    void withGoodsItemList(List<GoodsDomain> goodsDomainList);
+    void withGoodsItemList(GoodsDomain goodsDomain);
 }

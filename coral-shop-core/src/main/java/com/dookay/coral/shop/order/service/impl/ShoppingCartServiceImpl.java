@@ -6,6 +6,7 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
@@ -31,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 购物车的业务实现类
@@ -83,6 +85,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
 		shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
 		shoppingCartItemDomain.setSkuId(skuDomain.getId());
+		shoppingCartItemDomain.setItemId(skuDomain.getItemId());
 		shoppingCartItemDomain.setShoppingCartType(shoppingCartType);
 		shoppingCartItemDomain.setNum(num);
 		shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
@@ -229,5 +232,19 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	@Override
 	public void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId) {
 
+	}
+
+
+	@Override
+	public void withGoodsItem(List<ShoppingCartItemDomain> shoppingCartItemDomainList) {
+		List<Long> ids = shoppingCartItemDomainList.stream().map(ShoppingCartItemDomain::getItemId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIds(ids);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for (ShoppingCartItemDomain shoppingCartItemDomain:shoppingCartItemDomainList){
+			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getId(), shoppingCartItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
+			shoppingCartItemDomain.setGoodsItemDomain(goodsItemDomain);
+		}
 	}
 }

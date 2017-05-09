@@ -9,7 +9,7 @@
 
 <div class="dx-login">
     <div class="dx-title clearfix">
-        <div class="member"><span><img src="images/icon-member.png" alt=""></span>会员</div>
+        <div class="member"><span><img src="${ctx}/static/images/icon-member.png" alt=""></span>会员</div>
         <a href="" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <form class="loginForm" method="post" action="/passport/login">

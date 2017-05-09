@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="net.sf.json.JSONObject" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -12,19 +13,20 @@
         <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span>购物车</div>
         <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
+<c:if test="${cartList.size()>0}">
     <div class="content">
         <div class="dx-GoodsDetails">
             <c:forEach var="row" items="${cartList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
+                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">产品编号 ${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>&nbsp;&nbsp;<div class="goods_size">S</div></div>
+                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getLong("size")}号</span></div>
                     <div class="quantity">数量: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
-                    <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                    <div class="price">单价&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -33,24 +35,9 @@
                 </ul>
             </div>
             </c:forEach>
-            <%--<div class="goods clearfix">
-                <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic02.jpg" alt=""></div>
-                </div>
-                <div class="goods-right">
-                    <div class="name">玉镯提包系列黑色刺绣托特包</div>
-                    <div class="number">产品编号 1B1184 Z</div>
-                    <div class="color" >黑色<span >M号</span></div>
-                    <div class="quantity">数量: <a href="#" class="minus">-</a><input class="quantitys" type="text" value="1"><a href="#" class="add">+</a></div>
-                    <div class="price">单价&nbsp; &yen; <span>11,504</span></div>
-                </div>
-                <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_appointment active"><svg><use xlink:href="#ap-active"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart-red"></use></svg></a></li>
-                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
-                </ul>
-            </div>--%>
-            <div class="total">小计 <span>&yen; &nbsp;23,008</span></div>
+
+            <div class="total">小计 <span id="js_total">&yen; &nbsp;23,008</span></div>
+
         </div>
     </div>
     <div class="shopping-start">
@@ -63,6 +50,23 @@
             </ul>
         </div>
     </div>
+</c:if>
+    <c:if test="${cartList.size()==0}">
+        <div class="content">
+            <p>购物袋（0）</p>
+        </div>
+        <div class="shopping-start">
+            <a href="/" class="shopping">前往购物</a>
+            <div class="dx-clause">
+                <ul>
+                    <li><a href="#">选购女士</a></li>
+                    <li><a href="#">选购男士</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </c:if>
+
 </div>
 
 
@@ -70,8 +74,16 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    function clsTotal() {
+        $(".goods").find(".goods-right").each(function () {
+           var num =  parseInt($(this).find(".quantitys").val());
+           var price  = parseInt($(this).find(".js_price").text());
+            $("#js_total").html("&yen; &nbsp;"+num * price);
+        })
+    }
     $(function(){
         commonApp.init();
+        clsTotal();
         //点击数量增加减少
         $(".add").on("click",function () {
             var t = $(this).parent().find(".quantitys");
@@ -83,6 +95,7 @@
             });
 
             $(".minus").removeAttr("disabled");
+            clsTotal();
         });
         $(".minus").on("click",function () {
             var t = $(this).parent().find(".quantitys");
@@ -98,6 +111,7 @@
                 });*/
                 $("#min").attr("disabled","disabled");
             }
+            clsTotal();
         });
 
         $(".deleteBtn").on("click",function () {

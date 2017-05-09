@@ -15,21 +15,21 @@
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort">排序</a>
         </div>
     </div>
+
     <ul class="do-pro-list">
-        <c:forEach var="row" items="${goodsSku.list}">
+        <c:forEach var="goods" items="${goodsDomainPageList.list}">
+            <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
         <li>
-            <a href="/goods/details?goodsId=${row.goodsId}">
+            <a href="/goods/details/${firstItem.id}">
                 <div class="do-img">
-                    <img src="images/list-img1.jpg" alt="">
+                    <img src="${ImageModel.toFirst(firstItem.thumb).file}" alt="" style="height: 120px;">
                 </div>
-                <p class="do-pro-t ellipsis-2l" name="goodsName">${row.name}</p>
-                <p class="do-pro-price ellipsis" name="goodsPrice">${row.price}</p>
+                <p class="do-pro-t ellipsis-2l" name="goodsName">${goods.name}</p>
+                <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
                 <ul class="do-list-color" name="skuId" data-value="">
-                    <li style="background: #000000"></li>
-                    <li style="background: #b5272d"></li>
-                    <li style="background: #1b1464"></li>
-                    <li style="background: #662d85"></li>
-                    <li style="background: #fff;border:1px solid #000"></li>
+                <c:forEach var="goods" items="${goods.goodsItemList}">
+                    <li style="background: ${goods.colorValue}"></li>
+                </c:forEach>
                 </ul>
             </a>
             <!--Todo:收藏按钮-->
@@ -38,90 +38,6 @@
             </i>
         </li>
         </c:forEach>
-        <c:forEach var="row" items="${skuList}" >
-            <c:forEach var="line" items="${row}" >
-            <li>
-                <a href="/goods/details?goodsId=${line.goodsId}&skuId=${line.id}">
-                    <div class="do-img">
-                        <img src="images/list-img1.jpg" alt="">
-                    </div>
-                    <p class="do-pro-t ellipsis-2l" name="goodsName">${line.name}</p>
-                    <p class="do-pro-price ellipsis" name="goodsPrice">${line.price}</p>
-                    <ul class="do-list-color" name="skuId" data-value="">
-                        <li style="background: #000000"></li>
-                        <li style="background: #b5272d"></li>
-                        <li style="background: #1b1464"></li>
-                        <li style="background: #662d85"></li>
-                        <li style="background: #fff;border:1px solid #000"></li>
-                    </ul>
-                </a>
-                <!--Todo:收藏按钮-->
-                <i class="icon-collect j_collect active" data-value="${line.id}">
-                    <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-                </i>
-            </li>
-                </c:forEach>
-        </c:forEach>
-        <%--<li>
-            <a href="商品详情.html">
-                <div class="do-img">
-                    <img src="images/list-img1.jpg" alt="">
-                </div>
-                <p class="do-pro-t ellipsis-2l">${row.name}</p>
-                <p class="do-pro-price ellipsis">¥ 3,090</p>
-                <ul class="do-list-color">
-                    <li style="background: #000000"></li>
-                    <li style="background: #b5272d"></li>
-                    <li style="background: #1b1464"></li>
-                    <li style="background: #662d85"></li>
-                    <li style="background: #fff;border:1px solid #000"></li>
-                </ul>
-            </a>
-            <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect active">
-                <svg class="do-heart"><use xlink:href="#heart-red"></use></svg>
-            </i>
-        </li>
-        <li>
-            <a href="商品详情.html">
-                <div class="do-img">
-                    <img src="images/list-img2.jpg" alt="">
-                </div>
-                <p class="do-pro-t">厚底系带楔型鞋</p>
-                <p class="do-pro-price">¥ 3,090</p>
-                <ul class="do-list-color">
-                    <li style="background: #000000"></li>
-                    <li style="background: #b5272d"></li>
-                    <li style="background: #1b1464"></li>
-                    <li style="background: #662d85"></li>
-                    <li style="background: #fff;border:1px solid #000"></li>
-                </ul>
-            </a>
-            <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect">
-                <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-            </i>
-        </li>
-        <li>
-            <a href="商品详情.已售完.html">
-                <div class="do-img">
-                    <img src="images/list-img3.jpg" alt="">
-                </div>
-                <p class="do-pro-t">厚底系带楔型鞋</p>
-                <p class="do-pro-price">¥ 3,090</p>
-                <ul class="do-list-color">
-                    <li style="background: #000000"></li>
-                    <li style="background: #b5272d"></li>
-                    <li style="background: #1b1464"></li>
-                    <li style="background: #662d85"></li>
-                    <li style="background: #fff;border:1px solid #000"></li>
-                </ul>
-            </a>
-            <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect">
-                <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-            </i>
-        </li>--%>
     </ul>
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before">向下自动载入</span>
@@ -131,30 +47,24 @@
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
-        <li><a href="">玉鐲提包(5)</a></li>
-        <li><a href="">手提包(3)</a></li>
-        <li><a href="">晚宴包(1)</a></li>
-        <li><a href="">托特包(1)</a></li>
+         <c:forEach var="item" items="${categoryList}">
+            <li><a href="${UrlUtils.setParam("categoryId",item.id)}">${item.name}</a></li>
+         </c:forEach>
     </ul>
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <form action="">
+        <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
+            <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
-                <input type="checkbox" id="color1">
-                <label for="color1">红(10)</label>
+                <input type="checkbox" name="colorId" id="color${item.id}" value="${item.id}">
+                <label for="color${item.id}">${item.name}(10)</label>
             </div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="color2">
-                <label for="color2">蓝(5)</label>
-            </div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="color3">
-                <label for="color3">黑(8)</label>
-            </div>
+            </c:forEach>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">材质</div>
@@ -177,6 +87,12 @@
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">尺寸</div>
+            <c:forEach var="item" items="${sizeList}">
+                <div class="do-sort-group">
+                    <input type="checkbox" name="sizeId" id="size${item.id}" value="${item.id}">
+                    <label for="size${item.id}">${item.name}(10)</label>
+                </div>
+            </c:forEach>
         </div>
         <div class="text-center"><button type="submit" class="btn-submit">应用</button></div>
     </form>

@@ -5,6 +5,7 @@ import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.goods.domain.GoodsColorDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.query.GoodsColorQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsColorService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
@@ -36,7 +37,8 @@ public class GoodsItemServiceImpl extends BaseServiceImpl<GoodsItemDomain> imple
 	private IGoodsService goodsService;
 	@Autowired
 	private IGoodsColorService goodsColorService;
-	
+
+
 	public void withGoods(PageList<GoodsItemDomain> goodsItemDomainList){
 		this.withGoods(goodsItemDomainList.getList());
 	}
@@ -62,5 +64,18 @@ public class GoodsItemServiceImpl extends BaseServiceImpl<GoodsItemDomain> imple
 		GoodsColorDomain goodsColorDomain = goodsColorService.get(goodsItemDomain.getColorId());
 		goodsItemDomain.setGoodsColor(goodsColorDomain);
 		goodsItemDomain.setColorValue(goodsColorDomain.getColor());
+	}
+
+	@Override
+	public void withColor(List<GoodsItemDomain> goodsItemDomainList) {
+		List<Long> ids = goodsItemDomainList.stream().map(GoodsItemDomain::getColorId).collect(Collectors.toList());
+		GoodsColorQuery query = new GoodsColorQuery();
+		query.setIds(ids);
+		List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(query);
+		for (GoodsItemDomain goodsItemDomain:goodsItemDomainList){
+			GoodsColorDomain goodsDomain = goodsColorDomainList.stream()
+					.filter(x-> Objects.equals(x.getId(), goodsItemDomain.getColorId())).findFirst().orElse(null);
+			goodsItemDomain.setGoodsColor(goodsDomain);
+		}
 	}
 }

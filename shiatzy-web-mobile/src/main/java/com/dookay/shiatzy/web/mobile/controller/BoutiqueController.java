@@ -1,5 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.enums.ValidEnum;
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
@@ -8,6 +10,7 @@ import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
@@ -24,6 +27,7 @@ import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -83,7 +87,22 @@ public class BoutiqueController extends BaseController{
     public JsonResult addToBoutique(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
-        SkuDomain skuDomain =  skuService.get(addShoppingCartForm.getSkuId());
+
+        /*获取SKU*/
+        Long itemId = addShoppingCartForm.getItemId();
+        Long sizeId = addShoppingCartForm.getSizeId();
+
+        SkuQuery skuQuery = new SkuQuery();
+        skuQuery.setItemId(itemId);
+        skuQuery.setIsValid(ValidEnum.YES.getValue());
+        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+
+        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+        if(skuDomain == null)
+        {
+            throw new ServiceException("参数错误");
+        }
+        skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain,skuDomain,SHOPPINGCART_TYPE);
         if(shoppingCartItemDomain!=null){

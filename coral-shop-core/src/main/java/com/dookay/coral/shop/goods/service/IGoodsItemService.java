@@ -13,9 +13,10 @@ import java.util.List;
  * @version : v0.0.1
  */
 public interface IGoodsItemService extends IBaseService<GoodsItemDomain> {
+
     void withGoods(PageList<GoodsItemDomain> goodsItemDomainList);
     void withGoods(List<GoodsItemDomain> goodsItemDomainList);
     void withGoods(GoodsItemDomain goodsItemDomain);
     void withColor(GoodsItemDomain goodsItemDomain);
-
+    void withColor(List<GoodsItemDomain> goodsItemDomainList);
 }

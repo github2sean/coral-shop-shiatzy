@@ -214,11 +214,11 @@
 <div class="do-nav-panel" id="j_nav_panel">
     <div class="do-nav-head">
         <a class="btn-left iconfont" id="j_close_nav" href="#">&#xe67d;</a>
-        <span class="do-logo-w"><img src="images/logo.png" alt=""></span>
+        <span class="do-logo-w"><img src="${ctx}/static/images/logo.png" alt=""></span>
     </div>
     <div class="do-nav-cnt">
         <div class="do-search">
-            <form action="/goods/list" method="post" id="contentForm">
+            <form action="/goods/search" method="post" id="contentForm">
                 <input type="text" placeholder="请输入搜索内容" class="j_search" name="goodsName">
                 <input type="hidden" value="1"  name="pageIndex">
                 <input type="hidden" value="10"  name="pageSize">
@@ -228,9 +228,9 @@
             </form>
         </div>
         <div class="search-rec-img">
-            <a href=""><img src="images/search-img1.jpg" alt=""></a>
-            <a href=""><img src="images/search-img2.jpg" alt=""></a>
-            <a href=""><img src="images/search-img3.jpg" alt=""></a>
+            <a href=""><img src="${ctx}/static/images/search-img1.jpg" alt=""></a>
+            <a href=""><img src="${ctx}/static/images/search-img2.jpg" alt=""></a>
+            <a href=""><img src="${ctx}/static/images/search-img3.jpg" alt=""></a>
         </div>
         <ul class="guide-nav j_drop_down">
             <%--<li>
@@ -247,7 +247,7 @@
                     <ul class="guide-sub-nav">
                     <c:forEach var="level2" items="${categoryLevle2List}">
                         <c:if test="${level2.parentId==level1.id}">
-                            <li><a href="/goods/listByCategory?categoryId=${level2.id}">${level2.name}</a></li>
+                            <li><a href="/goods/list?categoryId=${level2.id}">${level2.name}</a></li>
                         </c:if>
                     </c:forEach>
                     </ul>
@@ -272,11 +272,4 @@
     </div>
 
 </div>
-<script>
-    $(function () {
-        $("#searchBtn").click(function () {
-            $("#contentForm").submit();
-        });
-    });
-
-</script>
+<div class="main-content">

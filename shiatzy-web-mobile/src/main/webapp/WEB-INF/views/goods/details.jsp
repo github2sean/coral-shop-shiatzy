@@ -8,40 +8,37 @@
 </jsp:include>
 
 <div class="dx-commodity">
-    <div class="content" style="margin-top: 50px">
-        <div class="title">${skuDomainList[0].name}</div>
-        <div class="number">${skuDomainList[0].code}</div>
+    <div class="content" >
+        <div class="title">${goodsDomain.name}</div>
+        <div class="number">产品编号 ${goodsItemDomain.goodsNo}</div>
         <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
         <div class="dx-bag-slide">
             <ul class="j_s_slider">
-                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
-                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
-                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
-                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
-                <li><a href="javascript:;"><img src="images/goods-pic04.jpg" alt=""></a></li>
+                <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
+                    <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                </c:forEach>
             </ul>
         </div>
-        <div class="price">&yen; <span>${skuDomainList[0].price}</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+        <div class="price">&yen; <span>${goodsItemDomain.price}</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+
         <div class="color">
-            <div class="title j_choose">黑色(还有3款颜色)</div>
+            <div class="title j_choose">${goodsItemDomain.goodsColor.name}(还有${goodsDomain.goodsItemList.size()-1}款颜色)</div>
+            <c:if test="${goodsDomain.goodsItemList.size()>1}">
             <ul class="clearfix hide">
-                <%-- <c:forEach var="row" items="${attrOptionList}"></c:forEach>--%>
-                 <li><a href=""><img src="images/bag_03.jpg" alt=""></a></li>
-                 <li><a href=""><img src="images/bag_05.jpg" alt=""></a></li>
-                 <li><a href=""><img src="images/bag_07.jpg" alt=""></a></li>
-                 <li><a href=""><img src="images/bag_09.jpg" alt=""></a></li>
+            <c:forEach var="item" items="${goodsDomain.goodsItemList}">
+                <c:if test="${item.id!=goodsItemDomain.id}">
+                 <li><a href="/goods/details/${item.id}"><img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 10px;"></a></li>
+                </c:if>
+            </c:forEach>
             </ul>
+            </c:if>
         </div>
         <div class="size">
             <div class="title j_choose">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
-            <ul class="hide">
-                <c:forEach var="row" items="${speciOptionList}">
-                <li class="active"><a href="" data-value="${row.id}">${row.value}<span></span></a> </li>
+            <ul class="hide" id="js_size">
+                <c:forEach var="item" items="${sizeList}" varStatus="status" >
+                <li class="<c:if test="${status.first}">active</c:if>" data-value="${item.id}"><a href="#" >${item.name}<span></span></a> </li>
                 </c:forEach>
-                <c:if test="${quantity<=0}">
-                <li><a href="">M<span></span></a> </li>
-                <li class="SoldOut"><a href="">L<span>(已售完)</span></a></li>
-                </c:if>
             </ul>
         </div>
         <a type="button" class="addition addToCart">添加到购物袋</a>
@@ -95,6 +92,7 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    var selectSizeId=${sizeList[0].id};
     $(function(){
         commonApp.init();
 
@@ -104,19 +102,27 @@
             controls:true
         });
 
+        $("#js_size").find("li").each(function () {
+            $(this).on("click",function () {
+                $(this).siblings().removeClass("active");
+                $(this).addClass("active");
+                selectSizeId = $(this).data("value");
+
+            })
+        })
+
         $(".j_choose").on("click",function () {
             $(this).siblings().toggleClass("hide");
         })
-
 
         $(".addToCart").click(function () {
             var isLogin = '${user_context}';
             if(isLogin==''){
                 location.href="/passport/toLogin";
             }
-            var skuId = ${skuDomainList[0].id};
+            var skuId = ${goodsItemDomain.id};
             var url = "/cart/addToCart";
-            var data = {"skuId":skuId,"num":1,"type":1};
+            var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":1};
             $.post(url,data,function (result) {
                 console.log(result);
                 if(result.code==200){
@@ -130,7 +136,7 @@
             if(isLogin==''){
                 location.href="/passport/toLogin";
             }
-            var skuId = ${skuDomainList[0].id};
+            var skuId = ${goodsItemDomain.id};
             var url = "/boutique/addToBoutique";
             var data = {"skuId":skuId,"num":1,"type":3};
             $.post(url,data,function (result) {

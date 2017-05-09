@@ -9,6 +9,7 @@
 
     <context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true" file-encoding="UTF-8"/>
     <!--载入参数-->
+    <import resource="classpath:spring/spring-config-host.xml"/>
     <import resource="classpath:spring/spring-config-core.xml"/>
     <bean class="com.dookay.coral.common.web.utils.SpringContextHolder"/>
 </beans>

@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.admin.controller;
 
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.web.MediaTypes;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.extension.GoodsExtension;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
@@ -31,6 +32,8 @@ public class SkuController extends BaseApiController {
     private ISkuService skuService;
     @Autowired
     private GoodsExtension goodsExtension;
+    @Autowired
+    private IGoodsService goodsService;
     
     @ApiOperation(value = "获取商品sku列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
@@ -53,6 +56,7 @@ public class SkuController extends BaseApiController {
     public ResponseEntity create(SkuDomain domain) {
         domain.setCreateTime(new Date());
         skuService.create(domain);
+        updateSizes(domain);
         return successResponse("创建成功");
     }
     
@@ -60,6 +64,7 @@ public class SkuController extends BaseApiController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity update(SkuDomain domain) {
         skuService.update(domain);
+        updateSizes(domain);
         return successResponse("编辑成功");
     }
     
@@ -67,6 +72,14 @@ public class SkuController extends BaseApiController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity delete(@RequestParam("id") Long id) {
         skuService.delete(id);
+        SkuDomain domain = skuService.get(id);
+        updateSizes(domain);
         return successResponse("删除成功");
+    }
+
+    private void updateSizes(SkuDomain domain){
+        GoodsDomain goodsDomain = new GoodsDomain();
+        goodsDomain.setId(domain.getGoodsId());
+        goodsService.updateSizes(goodsDomain);
     }
 }

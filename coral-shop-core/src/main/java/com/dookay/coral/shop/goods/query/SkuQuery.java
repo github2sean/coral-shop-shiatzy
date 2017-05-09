@@ -16,6 +16,8 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 public class SkuQuery extends Query {
 
 	private Long goodsId;
+	private Integer isValid;
+	private Long itemId;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(SkuDomain.class);
@@ -23,6 +25,12 @@ public class SkuQuery extends Query {
 
 		if (valid(goodsId)){
 			criteria.andEqualTo("goodsId",goodsId);
+		}
+		if (valid(itemId)){
+			criteria.andEqualTo("itemId",itemId);
+		}
+		if(valid(isValid)){
+			criteria.andEqualTo("isValid",isValid);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

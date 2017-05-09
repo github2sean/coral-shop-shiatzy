@@ -1,33 +1,38 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.shop.goods.domain.*;
+import com.dookay.coral.shop.goods.query.GoodsColorQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.*;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
+import net.sf.json.util.JSONUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by admin on 2017/4/25.
  */
 @Controller
-@RequestMapping("goods/")
-public class GoodsController {
+@RequestMapping("/goods/")
+public class GoodsController extends BaseController{
 
     @Autowired
     private IGoodsService goodsService;
@@ -43,9 +48,15 @@ public class GoodsController {
     private IPrototypeSpecificationService prototypeSpecificationService;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private IGoodsCategoryService goodsCategoryService;
+    @Autowired
+    private IGoodsColorService goodsColorService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
-    @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ModelAndView list(@ModelAttribute QueryGoodsForm queryGoodsForm){
+    @RequestMapping(value = "search", method = RequestMethod.POST)
+    public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
@@ -59,48 +70,62 @@ public class GoodsController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "listByCategory", method = RequestMethod.GET)
-    public ModelAndView listByCategory(Long categoryId){
-        GoodsQuery query = new GoodsQuery();
-        query.setCategoryId(categoryId);
-        PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList.getList()));
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public ModelAndView list(GoodsQuery query){
         ModelAndView modelAndView = new ModelAndView("goods/list");
-        List skuList = new ArrayList();
-        for(GoodsDomain line:goodsList.getList()){
-            SkuQuery skuQuery = new SkuQuery();
-            skuQuery.setGoodsId(line.getId());
-            skuList.add(skuService.getList(skuQuery));
-            System.out.println("nowSkuList:"+JsonUtils.toJSONString(skuService.getList(skuQuery)));
-        }
-        modelAndView.addObject("goodsList",goodsList);
-        modelAndView.addObject("skuList",skuList);
+        Long categoryId = query.getCategoryId();
+        modelAndView.addObject("categoryId",categoryId);
+        //商品列表
+        query.setCategoryId(categoryId);
+        List<GoodsDomain> goodsList =  goodsService.getList(query);
+        goodsService.withGoodsItemList(goodsList);
+
+        //商品分类
+        GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
+        //分类列表
+        List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
+        modelAndView.addObject("categoryList",goodsCategoryDomainList);
+        //材质列表
+        //颜色列表
+        List<Long> colorIds = new ArrayList<>();
+        goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
+        List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
+        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
+        goodsColorQuery.setIds(newColorIds);
+        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+        modelAndView.addObject("colorList",goodsColorDomainList);
+        //尺寸列表
+        List<Long> sizeIds = new ArrayList<>();
+        goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
+        List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
+        PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+        prototypeSpecificationOptionQuery.setIds(newSizeIds);
+        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+        modelAndView.addObject("sizeList",sizeList);
+
+        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+
+        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         return modelAndView;
     }
 
-    @RequestMapping(value = "details" ,method = RequestMethod.GET)
-    public ModelAndView details(Long goodsId,Long skuId){
-
+    @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
+    public ModelAndView details(@PathVariable Long itemId){
+        GoodsItemDomain goodsItemDomain =  goodsItemService.get(itemId);
+        Long goodsId = goodsItemDomain.getGoodsId();
+        goodsItemService.withColor(goodsItemDomain);
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
-        List<SkuDomain> skuDomainList = new ArrayList<SkuDomain>();//得到Sku
-        if(goodsId!=null&&skuId==null){
-            skuDomainList = skuService.getSkuByGoodsId(goodsId);
-        }else if (skuId!=null && goodsId !=null){
-            skuDomainList.clear();
-            skuDomainList.add(skuService.get(skuId));
-        }
-        Long prototypeId = goodsDomain.getPrototypeId();
-        GoodsPrototypeDomain goodsPrototype = goodsPrototypeService.get(prototypeId);//得到原型
-        /*PrototypeAttributeDomain prototypeAttribute = prototypeAttributeService.getAttributeByPrototypeId(goodsPrototype.getId());//得到原型属性
-        List  attrOptionList = prototypeAttributeOptionService.getListByAttributeId(prototypeAttribute.getId());//得到原型属性选项值
-        PrototypeSpecificationDomain prototypeSpecification = prototypeSpecificationService.getSpecificationByPrototypeId(goodsPrototype.getId());//得到原型规格
-        List specificationOptionList = prototypeSpecificationOptionService.getListBySpecificationId(prototypeSpecification.getId());//得到原型规格选项值*/
+        goodsService.withGoodsItemList(goodsDomain);
+
+        List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
+        PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+        prototypeSpecificationOptionQuery.setIds(sizeIds);
+        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
 
         ModelAndView mv = new ModelAndView("goods/details");
-       /* mv.addObject("attrOptionList",attrOptionList);
-        mv.addObject("specificationOptionList",specificationOptionList);*/
+        mv.addObject("goodsItemDomain",goodsItemDomain);
         mv.addObject("goodsDomain",goodsDomain);
-        mv.addObject("skuDomainList",skuDomainList);
+        mv.addObject("sizeList",sizeList);
         return mv;
     }
 

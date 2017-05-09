@@ -479,7 +479,7 @@ var backendApp = function () {
                 function LoginDialogConstructor(options) {
                     this.options = options || {};
                     var _obj = this;
-                    $.get("/u/passport/ajaxlogin", function (data) {
+                    $.get("/user/passport/ajaxlogin", function (data) {
                         var loginModelDialog = dialog({
                             content: data,
                             padding: 0,
@@ -499,7 +499,7 @@ var backendApp = function () {
                                 } else if (loginData.Type == 2) {
                                     $.confirm2(loginData.Msg, function () {
                                         options.callback();
-                                        window.open("/u/passport/sinaOauthLogin");
+                                        window.open("/user/passport/sinaOauthLogin");
                                     }, function () {
                                         options.callback();
                                     });
@@ -527,7 +527,7 @@ var backendApp = function () {
                 };
             })();
             $.loginExcute = function (callback) {
-                $.post("/u/passport/IsLogin", function (data) {
+                $.post("/user/passport/IsLogin", function (data) {
                     if (data.code == 4) {
                         callback();
                     } else {
@@ -811,45 +811,105 @@ var backendApp = function () {
                 });
             }
 
-            // 下拉分页
-            $.fn.scrollPage = function (options) {
-                // console.info("下拉分页方法");
-                var $pager = $(this);
+            // 异步加载Banner
+            $.fn.loadBanner = function (options) {
+                var $this = $(this);
                 var params = {
-                    content: $pager.data('content') || 'j_scroll_page',
-                    nav: $pager.data('nav') || 'j_page_nav',
-                    bottom: $pager.data('bottom') || '100',   // 距离底部位置
-                    total: $pager.data('total'),     // 总页数
+                    url: $this.data('url'),
+                    src: $this.data('src'),
+                    after: function () {
+                    }
                 };
-                // console.log(params);
                 $.extend(params, options);
-                var isLoad = false;
-                $('body').scroll(function () {
-                    var $nav = $('.' + params.nav);
-                    var current = $nav.find('a').data('current');
-                    var sTop = $(this).scrollTop();
-                    var thisHeight = $(this).height();
-                    if (current < params.total) {
-                        if (sTop + parseInt(params.bottom) > thisHeight && !isLoad) {
-                            isLoad = true;
-                            $.ajax({
-                                url: $nav.find('a').attr('href'),
-                                type: 'get',
-                                success: function (data) {
-                                    var $nextContent = $(data).find('.' + params.content);
-                                    var $nextNav = $(data).find('.' + params.nav);
-                                    // console.info("返回");
-                                    // console.log($nextContent);
-                                    // console.log($nextNav);
-                                    $pager.append($nextContent.html());
-                                    $nav.replaceWith($nextNav);
-                                    isLoad = false;
-                                }
-                            });
+                $.ajax({
+                    url: params.url,
+                    method: 'get',
+                    success: function (data) {
+                        if (data.code == 200 && data.data != null) {
+                            appendBanner($this, data.data);
+                        } else {
+                            $this.attr('src', params.src); // 默认图片
                         }
+                        params.after();
+                    },
+                    error: function () {
+                        $this.attr('src', params.src); // 默认图片
+                        params.after();
                     }
                 });
+                function appendBanner($img, banner) {
+                    // console.info('加载banner');
+                    // console.log(banner);
+                    $img.attr('src', banner.imageUrl); // 更改图片
+                    $img.attr('alt', banner.fileName); // alt
+                    if (banner.isLinkEnabled) {   // 添加链接
+                        if (banner.target == 1) {
+                            $img.wrap('<a href="' + banner.linkUrl + '"></a>');
+                        } else {
+                            $img.wrap('<a href="' + banner.linkUrl + '" target="_blank"></a>');
+                        }
+                    }
+                }
             };
+
+            // 异步加载Banner列表
+            $.fn.loadBannerList = function (options) {
+                var $this = $(this);
+                var params = {
+                    url: $this.data('url'),
+                    src: $this.data('src'),
+                    after: function () {
+                    }
+                };
+                $.extend(params, options);
+
+                $.ajax({
+                    url: params.url,
+                    method: 'get',
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.code == 200 && data.data != null && data.data.length > 0) {
+                            // console.info("加载异步banner");
+                            appendBannerList($this, data.data);
+                        }
+                        else {
+                            // console.info("加载默认banner");
+                            defaultBanner($this, params.src);
+                        }
+                        params.after();
+                    },
+                    error: function () {
+                        // console.info("加载默认banner");
+                        defaultBanner($this, params.src);
+                        params.after();
+                    }
+                });
+
+                function appendBannerList($ul, bannerList) {
+                    if (bannerList != null && bannerList.length > 0) {
+                        for (var i = 0; i < bannerList.length; i++) {
+                            var banner = bannerList[i];
+                            var $li = $('<li><a><img></a></li>');
+                            $li.find('img').attr('src', banner.imageUrl); // 更改图片
+                            $li.find('img').attr('alt', banner.fileName); // alt
+                            if (banner.isLinkEnabled) {
+                                $li.find('a').attr('href', banner.linkUrl); // 添加链接
+                                if (banner.target == 2) {
+                                    $li.find('a').attr('target', '_blank');
+                                }
+                            }
+                            $ul.append($li);
+                        }
+                    }
+                }
+
+                function defaultBanner($ul, src) {
+                    var $li = $('<li><img></li>');
+                    $li.find('img').attr('src', src);
+                    $ul.append($li);
+                }
+            };
+
 
             $(".j_loginAjaxForm").loginAjaxForm();
             $(".j_uploadImage").uploadImage();

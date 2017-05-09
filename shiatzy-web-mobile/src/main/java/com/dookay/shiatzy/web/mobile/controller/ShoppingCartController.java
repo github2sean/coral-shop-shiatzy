@@ -1,17 +1,23 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.enums.ValidEnum;
+import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.SkuQuery;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +42,8 @@ public class ShoppingCartController extends BaseController{
     private IShoppingCartService shoppingCartService;
     @Autowired
     private ISkuService skuService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
     @RequestMapping(value = "addToCart" ,method = RequestMethod.POST)
     @ResponseBody
@@ -43,7 +51,22 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         Integer shoppingCartType = addShoppingCartForm.getType();
-        SkuDomain skuDomain =  skuService.get(addShoppingCartForm.getSkuId());
+
+         /*获取SKU*/
+        Long itemId = addShoppingCartForm.getItemId();
+        Long sizeId = addShoppingCartForm.getSizeId();
+
+        SkuQuery skuQuery = new SkuQuery();
+        skuQuery.setItemId(itemId);
+        skuQuery.setIsValid(ValidEnum.YES.getValue());
+        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+        System.out.print(JsonUtils.toJSONString(skuDomainList));
+        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+        if(skuDomain == null)
+        {
+            throw new ServiceException("参数错误");
+        }
+        skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         if(shoppingCartType==2){
             ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
@@ -74,7 +97,6 @@ public class ShoppingCartController extends BaseController{
         return  successResult("删除成功");
     }
 
-
     @RequestMapping(value = "updateCart" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateCart(Long shoppingCartItemId,Integer num){
@@ -89,6 +111,7 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
+        shoppingCartService.withGoodsItem(cartList);
         ModelAndView mv = new ModelAndView("shoppingcart/list");
         mv.addObject("cartList",cartList);
         return mv;
@@ -99,6 +122,7 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
+        shoppingCartService.withGoodsItem(wishList);
         ModelAndView mv = new ModelAndView("wishlist/list");
         mv.addObject("wishList",wishList);
         return mv;

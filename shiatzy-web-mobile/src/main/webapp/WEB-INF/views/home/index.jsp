@@ -6,7 +6,7 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-div class="main-content">
+
 <div class="index-w text-center">
     <a href="" class="do-block img-cover"><img src="${ctx}/static/images/index-banner.jpg" alt=""></a>
     <div class="index-se font-16">

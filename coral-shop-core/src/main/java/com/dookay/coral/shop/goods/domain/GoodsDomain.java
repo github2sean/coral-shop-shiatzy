@@ -38,7 +38,13 @@ public class GoodsDomain implements Serializable {
 	
 	/*商品描述*/
 	private String description;
-	
+
+	/*拥有颜色*/
+	private String colorIds;
+
+	/*拥有尺寸*/
+	private String sizeIds;
+
 	/*商品详情*/
 	private String details;
 	
@@ -63,6 +69,9 @@ public class GoodsDomain implements Serializable {
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;
+
+	@Transient
+	private List<GoodsItemDomain> goodsItemList;
 
 	/*商品规格*/
 	@Transient

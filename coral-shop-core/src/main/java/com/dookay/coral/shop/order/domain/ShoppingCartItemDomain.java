@@ -1,9 +1,13 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +17,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_order_shopping_cart_item")
 public class ShoppingCartItemDomain implements Serializable {
 
@@ -30,7 +35,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	
 	/*sukId*/
 	private Long skuId;
-	
+
+	private Long itemId;
+
 	/*数量*/
 	private Integer num;
 	
@@ -45,78 +52,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	
 	/*sku规格json*/
 	private String skuSpecifications;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Integer getShoppingCartType(){
-		return shoppingCartType;
-	}
-	
-	public void setShoppingCartType(Integer shoppingCartType){
-		this.shoppingCartType = shoppingCartType;
-	}
-	
-	public Long getCustomerId(){
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId){
-		this.customerId = customerId;
-	}
-	
-	public Long getSkuId(){
-		return skuId;
-	}
-	
-	public void setSkuId(Long skuId){
-		this.skuId = skuId;
-	}
-	
-	public Integer getNum(){
-		return num;
-	}
-	
-	public void setNum(Integer num){
-		this.num = num;
-	}
-	
-	public String getGoodsName(){
-		return goodsName;
-	}
-	
-	public void setGoodsName(String goodsName){
-		this.goodsName = goodsName;
-	}
-	
-	public String getGoodsCode(){
-		return goodsCode;
-	}
-	
-	public void setGoodsCode(String goodsCode){
-		this.goodsCode = goodsCode;
-	}
-	
-	public Double getGoodsPrice(){
-		return goodsPrice;
-	}
-	
-	public void setGoodsPrice(Double goodsPrice){
-		this.goodsPrice = goodsPrice;
-	}
-	
-	public String getSkuSpecifications(){
-		return skuSpecifications;
-	}
-	
-	public void setSkuSpecifications(String skuSpecifications){
-		this.skuSpecifications = skuSpecifications;
-	}
-	
+
+	@Transient
+	private GoodsItemDomain goodsItemDomain;
+
 	
 }
