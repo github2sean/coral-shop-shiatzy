@@ -1,9 +1,11 @@
 package com.dookay.shiatzy.web.mobile.controller.user;
 
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.host.user.query.AccountQuery;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -20,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Luxor
@@ -41,10 +46,13 @@ public class AccountController extends MobileBaseController {
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
      // System.out.print(UserContext.current().getAccountDomain().getEmail());
-
-
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         ModelAndView mv = new ModelAndView("user/account/index");
-        mv.addObject("accountDomain",UserContext.current().getAccountDomain());
+        mv.addObject("accountDomain",accountDomain);
+        session.setAttribute("customerDomain",customerDomain);
         return mv;
     }
 
@@ -138,14 +146,10 @@ public class AccountController extends MobileBaseController {
 
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         System.out.print("updateEamilForm:"+ JsonUtils.toJSONString(updateEamilForm));
-        Boolean checkAccount = accountService.validateAccount(accountDomain.getEmail(),updateEamilForm.getPassword());
-        if(checkAccount){
-            Boolean isSuccess =  accountService.updateEmailOrPassword(accountDomain,updateEamilForm.getNewEmail(),updateEamilForm.getNewPassword());
-            if(!isSuccess){
-                return successResult("修改失败");
-            }
+        if(accountService.validateAccount(accountDomain.getEmail(),updateEamilForm.getPassword())){
+            accountService.updateEmailOrPassword(accountDomain,updateEamilForm.getNewEmail(),updateEamilForm.getNewPassword());
         }else{
-            return successResult("用户名和密码不匹配");
+            return errorResult("用户名和密码不匹配");
         }
 
         return successResult("修改成功");
@@ -179,12 +183,40 @@ public class AccountController extends MobileBaseController {
         return successResult("验证成功");
     }
 
+    @RequestMapping(value = "validUserName", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult validUserName(String userName){
+        AccountQuery query = new AccountQuery();
+        query.setUserName(userName);
+        if(accountService.getOne(query)!=null){
+            return errorResult("邮箱已存在");
+        }
+        return successResult("验证成功");
+    }
+
     @RequestMapping(value = "vipDetail", method = RequestMethod.GET)
     public ModelAndView vipDetail(){
         //TODO 查询会员卡号
 
         ModelAndView mv = new ModelAndView("user/account/vipDetail");
         return mv;
+    }
+
+    @RequestMapping(value = "initSubscribe", method = RequestMethod.GET)
+    public ModelAndView initSubscribe(){
+        ModelAndView mv = new ModelAndView("user/account/subscribe");
+        return mv;
+    }
+    @RequestMapping(value = "setSubscribe", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult setSubscribe(Integer subscribeType){
+        if(subscribeType==null){
+            return errorResult("参数为空");
+        }
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        customerDomain.setSubscribeType(subscribeType);
+        return successResult("操作成功");
     }
 
 }

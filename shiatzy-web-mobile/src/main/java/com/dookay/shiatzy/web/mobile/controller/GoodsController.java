@@ -79,12 +79,13 @@ public class GoodsController extends BaseController{
         query.setCategoryId(categoryId);
         List<GoodsDomain> goodsList =  goodsService.getList(query);
         goodsService.withGoodsItemList(goodsList);
-
+        System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsList));
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
+        System.out.println(" goodsCategoryDomainList:"+JsonUtils.toJSONString(goodsCategoryDomainList));
         //材质列表
         //颜色列表
         List<Long> colorIds = new ArrayList<>();
@@ -94,6 +95,7 @@ public class GoodsController extends BaseController{
         goodsColorQuery.setIds(newColorIds);
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
         modelAndView.addObject("colorList",goodsColorDomainList);
+        System.out.println(" colorList:"+JsonUtils.toJSONString(goodsColorDomainList));
         //尺寸列表
         List<Long> sizeIds = new ArrayList<>();
         goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
@@ -102,9 +104,10 @@ public class GoodsController extends BaseController{
         prototypeSpecificationOptionQuery.setIds(newSizeIds);
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         modelAndView.addObject("sizeList",sizeList);
-
+        System.out.println(" sizeList:"+JsonUtils.toJSONString(sizeList));
         PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
 
+        System.out.println(" list:"+JsonUtils.toJSONString(goodsDomainPageList));
         modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         return modelAndView;
     }

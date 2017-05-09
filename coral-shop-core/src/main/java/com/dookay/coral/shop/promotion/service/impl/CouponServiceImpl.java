@@ -29,6 +29,9 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 
 	@Override
 	public CouponDomain checkCoupon(String couponCode) {
+		if(couponCode==null||"".equals(couponCode)){
+			throw new ServiceException("请先输入优惠券码");
+		}
 		CouponQuery query = new CouponQuery();
 		query.setCode(couponCode);
 		CouponDomain couponDomain = getOne(query);

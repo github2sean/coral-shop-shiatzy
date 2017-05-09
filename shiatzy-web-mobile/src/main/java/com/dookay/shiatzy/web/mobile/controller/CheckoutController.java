@@ -1,6 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.utils.BeanValidators;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -209,7 +211,7 @@ public class CheckoutController  extends BaseController{
         mv.addObject("addressList",addressList);
         return mv;
     }
-    
+
     @RequestMapping(value = "createShipAddress",method = RequestMethod.GET)
     public  ModelAndView createShipAddress(){
         ModelAndView mv = new ModelAndView("checkout/createShipAddress");
@@ -239,24 +241,25 @@ public class CheckoutController  extends BaseController{
         customerAddressService.update(addressModel);
         return successResult("修改成功");
     }
-    
+
     @RequestMapping(value = "removeAddress",method = RequestMethod.POST)
     @ResponseBody
     public  JsonResult removeAddress(Long addressId){
         customerAddressService.delete(addressId);
         return successResult("删除成功");
     }
-    
+
 
     /**
      * 设置收货地址
      * @return
      */
     @RequestMapping(value = "setAddress", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult setShipAddress(Long addressId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        
+
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
         OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
         if(orderDomain == null)
@@ -314,6 +317,7 @@ public class CheckoutController  extends BaseController{
      * @return
      */
     @RequestMapping(value = "setPaymentMethod", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult setPaymentMethod(Integer paymentId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
@@ -328,11 +332,27 @@ public class CheckoutController  extends BaseController{
      * @return
      */
     @RequestMapping(value = "setShippingMethod", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult setShippingMethod(Integer shippingMethodId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setShippingMethod(shippingMethodId);
+        session.setAttribute(ORDER,order);
+        return successResult("操作成功");
+    }
+
+    @RequestMapping(value = "isNeedBill", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult isNeedBill(Integer isNeed,String info){
+        if(isNeed==null){
+            return errorResult("参数为空");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        order.setBillRequired(isNeed);
+        order.setBillTitle(info);
         session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
@@ -356,11 +376,33 @@ public class CheckoutController  extends BaseController{
         return successResult("操作成功");
     }
 
+    @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult deleteGoods(Long orderItemId){
+        if(orderItemId==null){
+            return errorResult("参数错误");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
+        for( int i =0;cartList!=null&&cartList.size()>0&&i<cartList.size();i++){
+            if(cartList.get(i).getId()==orderItemId){
+                shoppingCartService.delete(orderItemId);
+                cartList.remove(i);
+                break;
+            }
+        }
+        session.setAttribute(CART_LIST,cartList);
+        return successResult("操作成功");
+    }
+
+
     /**
      * 提交订单
      * @return
      */
     @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult submitOrder(){
         //从session中获取订单对象,对象至少包含商品列表、优惠券
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -418,5 +460,12 @@ public class CheckoutController  extends BaseController{
     public ModelAndView completed(String orderNo){
         ModelAndView mv  = new ModelAndView();
         return mv;
+    }
+
+
+    public BigDecimal calculateSub(Double price,Integer num){
+        BigDecimal sub = BigDecimal.ZERO;
+        sub = new BigDecimal(num).multiply(new BigDecimal(price));
+        return sub;
     }
 }

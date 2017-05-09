@@ -35,6 +35,8 @@ public class HomeController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         GoodsCategoryQuery query = new GoodsCategoryQuery();
+        query.setOrderBy("displayOrder");
+        query.setDesc(false);
         query.setLevel(1);
         List<GoodsCategoryDomain> categoryLevle1List =  goodsCategoryService.getList(query);
         query.setLevel(2);

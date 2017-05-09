@@ -9,8 +9,17 @@
 
 <div class="order">
     <p style="float: left">门市预约</p>
-    <a style="float: right;" href="我的账户.首页.html">X</a>
+    <a style="float: right;" href="/u/account/index">X</a>
 </div>
+
+<c:if test="${empty preOderItemList}">
+    <div class="content dx-wish">
+        <div id="toggleDiv2">
+            <div class="dx-collect">精品店（0）</div>
+        </div>
+    </div>
+</c:if>
+
 
 <c:forEach var="row" items="${preOderItemList}">
 <div class="order-main clearfix">
@@ -49,6 +58,7 @@
 </div>
 </c:forEach>
 <div class="explain">
+
     <div class="choose-store">
         <a href="/reservation/initChoose">选择预约门市</a>
     </div>

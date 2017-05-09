@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">邮箱及密码修改</p>
-    <a style="float: right;" href="我的账户.个人信息.html">< 返回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 <form class="updateForm" method="post" action="u/account/updateEmailOrPassword">
 <div class="mail-change">
@@ -21,13 +21,13 @@
         <p>修改邮箱：</p>
         <div class="input">
             <i>*</i>
-            <input id="newEmail" name="newEmail" type="text" value="请输入您的新登录邮箱地址" onfocus="if (value =='请输入您的新登录邮箱地址'){value =''}" onblur="if (value ==''){value='请输入您的新登录邮箱地址'}"/>
+            <input id="newEmail" name="newEmail" type="text" placeholder="请输入您的新登录邮箱地址"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newEmail2" type="text" value="请再次输入您的新登录邮箱地址" onfocus="if (value =='请再次输入您的新登录邮箱地址'){value =''}" onblur="if (value ==''){value='请再次输入您的新登录邮箱地址'}"/>
+            <input id="newEmail2" type="text" placeholder="请再次输入您的新登录邮箱地址" />
         </div>
-        <div class="erroInfo"></div>
+        <div class="erroInfo" style='color: red;'></div>
         <a  type="button" class="saveBtn">
             <span><</span>
             保存
@@ -68,15 +68,26 @@
     $(function () {
 
         $(".saveBtn").click(function () {
+
             var email = $("#newEmail").val();
             var email2 = $("#newEmail2").val();
             var erroinfo = $(".erroInfo").text();
-            if (email!="请输入您的新登录邮箱地址" && email2!="请再次输入您的新登录邮箱地址" && email!=email2 && erroinfo==""){
+            console.log(email+"  "+email2+" "+erroinfo);
+            if(email=='' && email2==''){
                 $(".erroInfo").show();
-                $(".erroInfo").append("<span style='color: red'>"+"两次输入的邮箱不一致"+"</span>");
-            }else if(email==email2){
-                $(".erroInfo").hide();
-                $(".erroInfo").text("");
+                $(".erroInfo").text("邮箱不能为空");
+                erroinfo='';
+            }else if (email!=email2){
+                $(".erroInfo").show();
+                $(".erroInfo").text("两次输入的邮箱不一致");
+            }else if( email!='' && email2!='' && email==email2){
+                $.post("/u/account/validUserName",{"userName":email},function (data) {
+                    if(data.code==200){
+                        $(".erroInfo").text("邮箱可用");
+                    }else{
+                        $(".erroInfo").text(data.message);
+                    }
+                });
             }
         });
 
@@ -97,7 +108,7 @@
                 $.post("updateEmailOrPassword",data,function (data) {
                     console.log(data);
                     console.log(data.message);
-                    if(data.message!="修改成功"){
+                    if(data.code!=200){
                         $(".erroInfo2").show();
                         $(".erroInfo2").css("color","red").text(data.message);
                     }

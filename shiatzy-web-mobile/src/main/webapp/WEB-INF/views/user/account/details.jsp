@@ -9,12 +9,13 @@
 
 <div class="order">
     <p style="float: left">我的账户</p>
-    <a style="float: right;" href="我的账户.首页.html">< 回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
         <p style="margin-right: 1.7005rem;">欢迎您</p>
-        <p>SHC</p>
+        <c:if test="${empty customerDomain}"><p>${user_context.userName}</p></c:if>
+        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}</p></c:if>
     </div>
     <div class="account-message">
         <ul>
@@ -26,8 +27,8 @@
             </li>
             <li class="deit-message">
                 <ol>
-                    <li>名字：${customerDomain.lastName}</li>
-                    <li>姓氏：${customerDomain.firstName}</li>
+                    <li>名字：${customerDomain.firstName}</li>
+                    <li>姓氏：${customerDomain.lastName}</li>
                     <li>电邮：${accountDomain.email}</li>
                     <li>电话号码：${customerDomain.phone}</li>
                     <li>地址：${customerAddressDomain.address}</li>
@@ -59,7 +60,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/u/account/initSubscribe">
                     <span>我的订阅</span>
                     <span style="float: right;">></span>
                 </a>

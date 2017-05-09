@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
-    <a style="float: right;" href="javascript:history.go(-1)">< 回上页</a>
+    <a style="float: right;" href="购物车.结算页.无优惠代码.html">< 回上页</a>
 </div>
 <div class="order-finish">
     <h3>订单总额：¥ ${order.orderTotal}</h3>
@@ -31,19 +31,18 @@
     <div class="delivery">
         <h3>2. 发票信息</h3>
         <div>
-            <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>不需要发票</label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox"></i>不需要发票</label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox"></i>需要发票</label></span>
         </div>
-        <div>
-            <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>需要发票</label></span>
-        </div>
-        <p style="margin-left: 2.7rem;font-size: 1.0821rem;margin-top: 2.7053rem;border-bottom: 2px solid #cccccc;">发票抬头*：</p>
+        <p id="showBill" style="display: none;margin-left: 2.7rem;font-size: 1.0821rem;margin-top: 2.7053rem;border-bottom: 2px solid #cccccc;">
+            发票抬头*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
     </div>
     <div class="delivery">
         <h3>3. 支付选项</h3>
         <ul>
-            <li class="active">信用卡（接受VISA，银联XXXX）</li>
-            <li>支付宝</li>
-            <li>iPayLinks</li>
+            <li class=" payMethod" data-value="1">支付宝</li>
+            <li class=" payMethod" data-value="2">信用卡（接受VISA，银联XXXX）</li>
+            <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
         <p>2件商品　v</p>
     </div>
@@ -74,6 +73,45 @@
 </jsp:include>
 <script>
     $(function(){
+
+        $("#need").click(function () {
+            $("#showBill").show();
+        });
+        $("#billTitle").blur(function () {
+            var $now = $(this);
+            $.post("/checkout/isNeedBill",{"isNeed":1,"info":$now.val()},function (data) {
+                if(data.code==200){
+                }
+                console.log(data);
+            });
+        });
+        $("#noNeed").click(function () {
+            $("#showBill").hide();
+            $.post("/checkout/isNeedBill",{"isNeed":0,"info":""},function (data) {
+                if(data.code==200){
+                }
+                console.log(data);
+            });
+        });
+        $(".payMethod").click(function () {
+            $(this).addClass("active").siblings("li").removeClass("active");
+            var  id = $(this).attr("data-value");
+            $.post("/checkout/setPaymentMethod",{"paymentId":id},function (data) {
+                if(data.code==200){
+                }
+                console.log(data);
+            });
+        });
+
+        $(".delivery-message").click(function () {
+            var id = $(this).attr("data-value");
+            $(this).css("background-color","#cccccc").siblings(".delivery-message").css("background-color","#f9f4f4");
+            $.post("/checkout/setPaymentMethod",{"addressId":id},function (data) {
+                if(data.code==200){
+                }
+                console.log(data);
+            });
+        });
 
         $(".submitBtn").click(function () {
 

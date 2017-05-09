@@ -7,27 +7,42 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">我的帐户 / 订单详情 <a href="我的账户.首页.html">回上页</a></div>
+    <div class="dx-title">我的帐户 / 订单详情  <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a></div>
     <div class="content">
         <div class="dx-reservation">我的订单</div>
-        <c:forEach var="row" items="${orderList}">
+
+        <c:if test="${empty orderList}">
+            <div class="content ">
+                <div id="toggleDiv2">
+                    <div class="dx-collect">订单（0）</div>
+                </div>
+            </div>
+        </c:if>
+       <c:forEach var="row" items="${orderList}">
         <a href="/order/details?orderId=${row.id}" class="dx-reservaList clearfix">
-            <div class="time">${row.orderTime}</div>
+            <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
             <div class="orderNumber">${row.orderNo}</div>
             <div class="status" data-value="${row.status}"></div>
         </a>
         </c:forEach>
         <div class="dx-reservation">我的退货单</div>
+        <c:if test="${empty orderList}">
+            <div class="content ">
+                <div id="toggleDiv3">
+                    <div class="dx-collect">退货单（0）</div>
+                </div>
+            </div>
+        </c:if>
         <c:forEach var="row" items="${returnList}">
             <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
-                <div class="time">${row.orderTime}</div>
+                <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
                 <div class="orderNumber">${row.orderNo}</div>
                 <%--<div class="status" data-value="${row.status}"></div>--%>
             </a>
         </c:forEach>
 
     </div>
-    <div class="check clearfix"><span>查看所有预约單</span><a href="#">></a></div>
+    <div class="check clearfix"><span>查看所有预约單</span><a href="/reservation/list">></a></div>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

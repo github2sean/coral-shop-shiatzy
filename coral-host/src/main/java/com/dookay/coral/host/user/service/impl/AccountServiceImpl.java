@@ -30,6 +30,8 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
 
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private IAccountService accountService;
 
     @Override
     public AccountDomain getAccount(long id) {
@@ -149,9 +151,6 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
         if (accountDomain == null) {
             throw new ServiceException("账户不存在");
         }
-        if (!comparePassword(accountDomain, oldPassword)) {
-            throw new ServiceException("旧密码错误");
-        }
         if (!StringUtils.isNotBlank(newPassword)) {
             throw new ServiceException("密码不能为空");
         }
@@ -177,21 +176,14 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
     public Boolean updateEmailOrPassword(AccountDomain accountDomain, String newEmail, String newPassword) {
         Boolean isSuccess = true;
         try {
-            if(comparePassword(accountDomain,accountDomain.getPassword())){
-                if(StringUtils.isNotBlank(newEmail)){
-                    changeUserName(accountDomain,newEmail);
-                }
-                if(StringUtils.isNotBlank(newPassword)){
-                    changePassword(accountDomain,accountDomain.getPassword(),newPassword);
-                }
-
-            }else{
-                isSuccess = false;
-                throw new ServiceException("登录密码错误");
+            if(StringUtils.isNotBlank(newEmail)){
+                changeUserName(accountDomain,newEmail);
+            }
+            if(StringUtils.isNotBlank(newPassword)){
+                changePassword(accountDomain,accountDomain.getPassword(),newPassword);
             }
         }catch (Exception e){
             e.printStackTrace();
-            isSuccess = false;
             throw new ServiceException("修改失败");
         }
             return isSuccess;
