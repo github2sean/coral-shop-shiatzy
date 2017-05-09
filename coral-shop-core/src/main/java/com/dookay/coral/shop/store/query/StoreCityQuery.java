@@ -17,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 public class StoreCityQuery extends Query {
 
 	private String countryId;
+	private String name;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -25,6 +26,9 @@ public class StoreCityQuery extends Query {
 
 		if(valid(countryId)){
 			criteria.andEqualTo("countryId",countryId);
+		}
+		if(valid(name)){
+			criteria.andLike("name","%"+name+"%");
 		}
 
 		//todo 写查询逻辑
