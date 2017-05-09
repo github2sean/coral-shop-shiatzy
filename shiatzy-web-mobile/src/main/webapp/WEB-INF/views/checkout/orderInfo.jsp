@@ -8,25 +8,25 @@
 </jsp:include>
 
 <div class="dx-accounts">
-    <div class="dx-title">结账 <a href="商品详情.html">回上页</a></div>
+    <div class="dx-title">结账 <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a></div>
     <div class="content">
         <c:forEach var="row" items="${sessionScope.cartList}">
         <div class="dx-GoodsDetails">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic01.jpg" alt=""></div>
+                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>黑色&nbsp;&nbsp;&nbsp;<span>M号</span></div>
-                    <div class="quantity">数量: <span>${row.num}</span></div>
-                    <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                    <div class="goods_color" data-value=${row.skuSpecifications}>${row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;<span>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
+                    <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
+                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                    <li><a href="javascript:;" class="deleteCart" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
             <div class="alter j_alter"><a href="javascript:;">修改</a></div>
@@ -43,9 +43,9 @@
     <div class="total">
         <div class="title">结算</div>
         <div class="wrap">
-            <div class="subtotal">小计 <span>&yen; 11,504</span></div>
-            <div class="express">快递 <span>&yen; 50</span></div>
-            <div class="predict">预计订单总额 <span>&yen; 10,404</span></div>
+            <div class="subtotal" >小计 <span id="js_total">&yen; 11,504</span></div>
+            <div class="express" data-value="0">快递 <span id="js_express">&yen;0.00 </span></div>
+            <div class="predict" >预计订单总额 <span id="js_predict">&yen; </span></div>
         </div>
     </div>
     <a href="/checkout/settlement" type="button" class="accounts-btn">结账</a>
@@ -88,8 +88,24 @@
 </jsp:include>
 
 <script>
+    function clsTotal() {
+        var total = 0;
+        $(".goods").find(".goods-right").each(function () {
+            var num =  ($(this).find(".quantity").attr("data-value"))*1;
+            var price  = ($(this).find(".price").attr("data-value"))*1;
+            total +=num * price;
+            $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
+
+        });
+        var fee = ($(".express").attr("data-value"))*1;
+        var final_amt = total-fee;
+        $("#js_predict").html("&yen; &nbsp;"+final_amt.toFixed(2));
+
+    }
+
     $(function(){
         commonApp.init();
+        clsTotal();
         //修改弹窗
         $(".j_alter").on("click",function () {
             layer.open({
@@ -141,23 +157,36 @@
                 $("#min").attr("disabled","disabled");
             }
         })
-
         //
         $(".couponBtn").click(function () {
            var couponCode = $(".couponCode").val();
             if(couponCode==''){
                 $('.showInfo').text("请先输入优惠券码");
+                return false;
             }
+            $('.showInfo').text("");
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
-                if(data.code=200){
-                    console.log("使用成功");
+                if(data.code==200){
+                    $('.showInfo').text("使用成功");
                 }else{
-                    console.log(data.message);
+                    $('.showInfo').text(data.message);
                 }
             });
         });
 
-        $(".goods_color").each(function () {
+        $(".deleteCart").click(function () {
+            var id = $(this).attr("data-value");
+            var $now = $(this);
+            $.post("/checkout/deleteGoods",{"orderItemId":id},function (data) {
+                if(data.code==200){
+                    $now.parents(".dx-GoodsDetails").remove();
+                    clsTotal();
+                }
+                console.log(data.message);
+            });
+        });
+
+        /*$(".goods_color").each(function () {
             var str = $(this).attr("data-value");
             if(str!=null && str!=""){
                 str.replace("，",",");
@@ -170,7 +199,7 @@
             console.log("str:"+str);
             jsonObj = jQuery.parseJSON(str);
             $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });
+        });*/
 
     });
 </script>

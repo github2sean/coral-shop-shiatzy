@@ -11,7 +11,7 @@
 <div class="dx-shopping">
     <div class="dx-title clearfix">
         <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span>购物车</div>
-        <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
+        <a href="/home/index" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 <c:if test="${cartList.size()>0}">
     <div class="content">
@@ -24,7 +24,7 @@
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">产品编号 ${row.goodsCode}</div>
-                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getLong("size")}号</span></div>
+                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
                     <div class="quantity">数量: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
                     <div class="price">单价&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
@@ -36,7 +36,7 @@
             </div>
             </c:forEach>
 
-            <div class="total">小计 <span id="js_total">&yen; &nbsp;23,008</span></div>
+            <div class="total">小计 <span id="js_total">&yen; &nbsp;</span></div>
 
         </div>
     </div>
@@ -75,10 +75,12 @@
 </jsp:include>
 <script>
     function clsTotal() {
+        var total = 0;
         $(".goods").find(".goods-right").each(function () {
-           var num =  parseInt($(this).find(".quantitys").val());
-           var price  = parseInt($(this).find(".js_price").text());
-            $("#js_total").html("&yen; &nbsp;"+num * price);
+           var num =  ($(this).find(".quantitys").val())*1;
+           var price  = ($(this).find(".js_price").text())*1;
+            total +=num * price;
+            $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
         })
     }
     $(function(){
@@ -123,7 +125,7 @@
             $(this).parents(".goodsDiv").remove();
         });
 
-        $(".goods_color").each(function () {
+        /*$(".goods_color").each(function () {
             var str = $(this).attr("data-value");
             if(str!=null && str!=""){
                 str.replace("，",",");
@@ -136,7 +138,7 @@
             console.log("str:"+str);
             jsonObj = jQuery.parseJSON(str);
             $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });
+        });*/
 
     });
 </script>

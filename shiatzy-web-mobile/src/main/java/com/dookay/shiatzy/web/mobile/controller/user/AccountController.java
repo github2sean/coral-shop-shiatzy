@@ -203,4 +203,21 @@ public class AccountController extends MobileBaseController {
         return mv;
     }
 
+    @RequestMapping(value = "initSubscribe", method = RequestMethod.GET)
+    public ModelAndView initSubscribe(){
+        ModelAndView mv = new ModelAndView("user/account/subscribe");
+        return mv;
+    }
+    @RequestMapping(value = "setSubscribe", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult setSubscribe(Integer subscribeType){
+        if(subscribeType==null){
+            return errorResult("参数为空");
+        }
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        customerDomain.setSubscribeType(subscribeType);
+        return successResult("操作成功");
+    }
+
 }

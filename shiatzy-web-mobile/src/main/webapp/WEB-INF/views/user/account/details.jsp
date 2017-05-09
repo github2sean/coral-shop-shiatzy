@@ -60,7 +60,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/u/account/initSubscribe">
                     <span>我的订阅</span>
                     <span style="float: right;">></span>
                 </a>
