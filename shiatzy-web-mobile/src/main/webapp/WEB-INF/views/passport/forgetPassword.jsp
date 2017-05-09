@@ -10,16 +10,16 @@
 <div class="dx-login dx-ForgotPassword">
     <div class="dx-title clearfix">
         <div class="member">忘记密码</div>
-        <a href="#" class="icon iconfont" type="button">&#xe67d;</a>
+        <a href="javascript:history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <div class="content">
         <div class="title">请于下方输入您的电子邮箱，以获取您的登录密码</div>
         <input type="email" placeholder="输入您的电子邮箱" class="userName" name="userName">
         <div class="dx-verify clearfix">
             <input type="text" class="verify" placeholder="输入右方验证码" name="validCode">
-            <div class="dx-verify-pic"><img src="images/verify_03.jpg" alt=""></div>
+            <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
         </div>
-        <div class="remind">验证码输入错误，请重新输入</div>
+        <div class="remind"></div>
         <button type="button" class="sendBtn">发送</button>
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
     </div>

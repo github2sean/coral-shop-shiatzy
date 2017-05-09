@@ -21,15 +21,14 @@
         <div class="remind"><a href="${ctx}/passport/toForget">忘记密码？</a></div>
         <div class="remind loginInfo"></div>
         <!--添加的a标签用来演示-->
-        <button type="button" class="loginBtn">登入</button>
+        <button type="button" class="btn loginBtn">登入</button>
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
     </div>
     </form>
-    <div class="thirdparty">
+   <%-- <div class="thirdparty">
         <div class="title">使用第三方帐号快速登入</div>
         <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
-    </div>
-
+    </div>--%>
 
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

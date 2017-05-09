@@ -33,7 +33,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 		query.setCode(couponCode);
 		CouponDomain couponDomain = getOne(query);
 		if(couponDomain==null){
-			throw new ServiceException("无此优惠券");
+			throw new ServiceException("优惠码错误");
 		}else{
 			int num = couponDomain.getLeftTimes();
 			Date startTime = couponDomain.getStartTime();

@@ -164,8 +164,8 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 				amt = amt.add(pri.multiply(num));
 			}
 			OrderDomain orderDomain = new OrderDomain();
-			Long customertId = customerDomain.getId();
-			orderDomain.setCustomerId(customertId);
+			Long customerId = customerDomain.getId();
+			orderDomain.setCustomerId(customerId);
 
 			String orderNo = "OR"+new Date().hashCode();//RandomUtils.generateNumUuid();报错
 			orderDomain.setOrderNo(orderNo);
@@ -183,7 +183,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 				OrderItemDomain orderItemDomain = new OrderItemDomain();
 				orderItemDomain.setOrderId(retOrderDomain.getId());
 				orderItemDomain.setSkuId(items.getSkuId());
-				orderItemDomain.setNum((long)items.getNum());
+				orderItemDomain.setNum(items.getNum());
 				orderItemDomain.setGoodsName(items.getGoodsName());
 				orderItemDomain.setGoodsCode(items.getGoodsCode());
 				orderItemDomain.setGoodsPrice(items.getGoodsPrice());

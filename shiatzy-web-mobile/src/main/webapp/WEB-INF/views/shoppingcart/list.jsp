@@ -82,7 +82,7 @@
         })
     }
     $(function(){
-        commonApp.init();
+
         clsTotal();
         //点击数量增加减少
         $(".add").on("click",function () {

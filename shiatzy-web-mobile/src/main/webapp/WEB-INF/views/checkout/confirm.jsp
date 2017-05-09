@@ -9,21 +9,20 @@
 
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
-    <a style="float: right;" href="购物车.结算页.无优惠代码.html">< 回上页</a>
+    <a style="float: right;" href="javascript:history.go(-1)">< 回上页</a>
 </div>
 <div class="order-finish">
-    <h3>订单总额：¥ 11,504</h3>
+    <h3>订单总额：¥ ${order.orderTotal}</h3>
     <div class="delivery content">
         <h3>1. 配送</h3>
 
-        <c:forEach var="row" items="${addressList}">
         <div class="delivery-message" style="margin-top: 2px">
             <span>快递运送</span>
             <p>${row.firstName}${row.lastName}</p>
             <p style="display: initial;">${row.address}</p>
-            <a href="购物车.结算页.物流配送.编辑.html">编辑 ></a>
+            <a href="/checkout/listAddress">编辑 ></a>
         </div>
-        </c:forEach>
+
         <div class="drugstore">
             <p>门店取货</p>
             <a href="购物车.结算页.门店取货.html">编辑 ></a>
@@ -55,16 +54,16 @@
     <div class="pay-way">
         <p>付款方式</p>
         <div class="way-img">
-            <a href="#"><img src="images/mastercard.png" alt=""></a>
-            <a href="#"><img src="images/visa.png" alt=""></a>
-            <a href="#"><img src="images/way_03.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/way_03.jpg" alt=""></a>
         </div>
     </div>
     <div class="order-safe">
         <p>安全购物</p>
         <div class="safe-img">
-            <a style="margin-right: 1.5rem;" href="#"><img src="images/way_10.jpg" alt=""></a>
-            <a href="#"><img src="images/way_07.jpg" alt=""></a>
+            <a style="margin-right: 1.5rem;" href="#"><img src="${ctx}/static/images/way_10.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/way_07.jpg" alt=""></a>
         </div>
     </div>
 </div>

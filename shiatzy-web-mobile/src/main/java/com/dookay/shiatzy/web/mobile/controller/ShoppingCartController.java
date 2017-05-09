@@ -153,7 +153,7 @@ public class ShoppingCartController extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
         OrderDomain orderDomain =  shoppingCartService.createOrder(customerDomain,cartList);
-        ModelAndView mv = new ModelAndView("checkout/settlement");
+        ModelAndView mv = new ModelAndView("checkout/confirm");
         mv.addObject("orderDomain",orderDomain);
         return mv;
     }

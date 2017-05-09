@@ -6,15 +6,17 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<style>
+    /*.dx-accounts .privilege input.has-error{border: red solid 1px;}*/
+</style>
 <div class="dx-accounts">
-    <div class="dx-title">结账 <a href="商品详情.html">回上页</a></div>
+    <div class="dx-title">结账 <a href="/cart/list">回上页</a></div>
     <div class="content">
-        <c:forEach var="row" items="${sessionScope.cartList}">
+        <c:forEach var="row" items="${cartList}">
         <div class="dx-GoodsDetails">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic01.jpg" alt=""></div>
+                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
@@ -34,20 +36,21 @@
         </c:forEach>
         <div class="privilege">
             <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
-            <form action="" class="clearfix">
-                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button>
+            <form>
+            <input type="text" placeholder="请输入优惠代码" class="text couponCode has-error"><button type="button" class="btn couponBtn">确定</button>
             </form>
         </div>
     </div>
     <div class="total">
         <div class="title">结算</div>
         <div class="wrap">
-            <div class="subtotal">小计 <span>&yen; 11,504</span></div>
-            <div class="express">快递 <span>&yen; 50</span></div>
-            <div class="predict">预计订单总额 <span>&yen; 10,404</span></div>
+            <div class="subtotal">小计 <span>&yen;<span id="subtotal">${order.goodsTotal}</span></span> </div>
+            <div class="discount">优惠 <span>&yen;<span id="discount"> 0</span></span></div>
+            <div class="express">快递 <span>&yen;<span id="express">50</span></span> </div>
+            <div class="predict">预计订单总额 <span>&yen;<span id="ordertotal"> ${order.orderTotal}</span></span></div>
         </div>
     </div>
-    <a href="/checkout/settlement" type="button" class="accounts-btn">结账</a>
+    <a href="/checkout/confirm" type="button" class="accounts-btn">结账</a>
 </div>
 
 <!-------修改弹窗开始------->
@@ -142,14 +145,14 @@
         })
 
         //
-        $(".couponBtn").click(function () {
-            console.log("使用成功");
+        $(".couponBtn").click(function (e) {
+            e.preventDefault()
            var couponCode = $(".couponCode").val();
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
-                if(data.code=200){
-                    console.log("使用成功");
+                if(data.code==200){
+                    layer.msg('使用优惠码成功');
                 }else{
-                    console.log(data.message);
+                    layer.msg(data.message, {icon: 5});
                 }
             });
         });

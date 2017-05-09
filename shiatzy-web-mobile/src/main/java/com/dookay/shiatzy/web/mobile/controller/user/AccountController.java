@@ -90,8 +90,7 @@ public class AccountController extends MobileBaseController {
         String phone = getCustomer.getPhone();
 
         Long countryId = getCustomeAddress.getCountryId();
-        Long provinceId = getCustomeAddress.getProvinceId();
-        Long cityId = getCustomeAddress.getCityId();
+
         String address = getCustomeAddress.getAddress();
 
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -108,8 +107,8 @@ public class AccountController extends MobileBaseController {
         CustomerAddressDomain updaCustomerAddress = customerAddressService.get(addressId);
         updaCustomerAddress.setTitle(title);
         updaCustomerAddress.setCountryId(countryId);
-        updaCustomerAddress.setProvinceId(provinceId);
-        updaCustomerAddress.setCityId(cityId);
+        updaCustomerAddress.setProvince(getCustomeAddress.getProvince());
+        updaCustomerAddress.setCity(getCustomeAddress.getCity());
         updaCustomerAddress.setAddress(address);
         updaCustomerAddress.setLastName(lastName);
         updaCustomerAddress.setFirstName(firstName);

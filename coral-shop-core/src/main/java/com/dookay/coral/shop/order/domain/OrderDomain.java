@@ -63,9 +63,12 @@ public class OrderDomain implements Serializable {
 	/*收货地址id*/
 	private Long shipAddressId;
 
-	/*收货人姓名*/
-	private String shipName;
-	
+	/*收货人名*/
+	private String shipFirstName;
+
+	/*收货人姓*/
+	private String shipLastName;
+
 	/*收货人称呼*/
 	private String shipTitle;
 	
@@ -110,7 +113,10 @@ public class OrderDomain implements Serializable {
 	
 	/*运费*/
 	private Double shipFee;
-	
+
+	/*商品金额*/
+	private Double goodsTotal;
+
 	/*订单应收金额*/
 	private Double orderTotal;
 

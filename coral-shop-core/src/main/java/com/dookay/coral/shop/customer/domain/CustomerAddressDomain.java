@@ -41,10 +41,10 @@ public class CustomerAddressDomain implements Serializable {
 	private Long countryId;
 	
 	/*省id*/
-	private Long provinceId;
+	private String province;
 	
 	/*城市id*/
-	private Long cityId;
+	private String city;
 	
 	/*详细地址*/
 	private String address;

@@ -5,27 +5,27 @@ import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
-import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
-import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.enums.ShippingMethodEnum;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
-import com.dookay.coral.shop.promotion.query.CouponQuery;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.store.domain.StoreDomain;
+import com.dookay.coral.shop.store.query.StoreQuery;
+import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
-import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,7 +44,7 @@ import java.util.List;
  * @version v0.0.1
  * @since 2017/5/2
  */
-@RequestMapping("checkout/")
+@RequestMapping("/checkout/")
 @Controller
 public class CheckoutController  extends BaseController{
 
@@ -69,26 +69,42 @@ public class CheckoutController  extends BaseController{
     @Autowired
     private ISkuService skuService;
 
+    @Autowired
+    private IStoreService storeService;
+
     private static String CART_LIST = "cartList";
-    private static String ODER = "order";
+    private static String ORDER = "order";
+
     /**
      * 从购物车初始化订单
      * @return
      */
     @RequestMapping(value = "initOrder",method = RequestMethod.GET)
     public String initOrder(){
-        //从购物获取商品列表
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+
         //创建订单对象
         OrderDomain order = new OrderDomain();
+        order.setShipFee(50D);//TODO 根据国家获取值
+       /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
+        order.setStatus(OrderStatusEnum.UNPAID.getValue());
+        List<OrderItemDomain> orderItemDomainList = new ArrayList<>();
+        for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
+            OrderItemDomain orderItemDomain = new OrderItemDomain();
+            orderItemDomain.setGoodsCode(shoppingCartItemDomain.getGoodsCode());
+            orderItemDomain.setGoodsName(shoppingCartItemDomain.getGoodsName());
+            orderItemDomain.setGoodsPrice(shoppingCartItemDomain.getGoodsPrice());
+            orderItemDomain.setNum(shoppingCartItemDomain.getNum());
+            orderItemDomain.setSkuId(shoppingCartItemDomain.getSkuId());
+            orderItemDomain.setSkuSpecifications(shoppingCartItemDomain.getSkuSpecifications());
+            orderItemDomainList.add(orderItemDomain);
+        }
+        order.setOrderItemDomainList(orderItemDomainList);*/
+
         //保存订单对象到session
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        session.setAttribute(CART_LIST,cartList);
-        session.setAttribute(ODER,order);
+        session.setAttribute(ORDER,order);
         //跳转到结算页面
         return "redirect:orderInfo";
     }
@@ -99,140 +115,183 @@ public class CheckoutController  extends BaseController{
      */
     @RequestMapping(value = "orderInfo",method = RequestMethod.GET)
     public ModelAndView orderInfo(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        //如果session为空，跳转到商品列表页面
-        List cartList = (List) session.getAttribute(CART_LIST);
-        if(cartList==null){
-            return new ModelAndView("redirect:home/index");
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
+        if(orderDomain==null){
+            return new ModelAndView("redirect:/home/index");
         }
+        //购物车
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        shoppingCartService.withGoodsItem(cartList);
+        if(cartList==null){
+            return new ModelAndView("redirect:/home/index");
+        }
+        //商品金额
+        calcOrderTotal(orderDomain, cartList);
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
         mv.addObject(CART_LIST,cartList);
+        mv.addObject(ORDER,orderDomain);
         return mv;
     }
 
-    @RequestMapping(value = "settlement",method = RequestMethod.GET)
-    public ModelAndView settlement(){
+    @RequestMapping(value = "confirm",method = RequestMethod.GET)
+    public ModelAndView confirm(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        //如果session为空，跳转到商品列表页面
-        List cartList = (List) session.getAttribute(CART_LIST);
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
+        if(orderDomain==null){
+            return new ModelAndView("redirect:/home/index");
+        }
+        //购物车
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        shoppingCartService.withGoodsItem(cartList);
         if(cartList==null){
-            return new ModelAndView("redirect:home/index");
+            return new ModelAndView("redirect:/home/index");
+        }
+        calcOrderTotal(orderDomain, cartList);
+        //配送方式
+        CustomerAddressQuery customerAddressQuery = new CustomerAddressQuery();
+        customerAddressQuery.setCustomerId(customerDomain.getId());
+        CustomerAddressDomain customerAddressDomain = customerAddressService.getFirst(customerAddressQuery);
+        if(customerAddressDomain !=null){
+            orderDomain.setShippingMethod(ShippingMethodEnum.EXPRESS.getValue());
+            orderDomain.setShipAddressId(customerAddressDomain.getId());
+            orderDomain.setShippingCountryId(customerAddressDomain.getCountryId());
+            orderDomain.setShipProvince(customerAddressDomain.getProvince());
+            orderDomain.setShipCity(customerAddressDomain.getCity());
+            orderDomain.setShipFirstName(customerAddressDomain.getFirstName());
+            orderDomain.setShipLastName(customerAddressDomain.getLastName());
+            orderDomain.setShipTitle(customerAddressDomain.getTitle());
+            orderDomain.setShipPhone(customerAddressDomain.getPhone());
+            orderDomain.setShipAddress(customerAddressDomain.getAddress());
+            orderDomain.setShipMemo(customerAddressDomain.getMemo());
         }
 
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        CustomerAddressQuery query = new CustomerAddressQuery();
-        query.setCustomerId(customerDomain.getId());
-        List addressList = customerAddressService.getList(query);
-
-        ModelAndView mv=  new ModelAndView("checkout/settlement");
+        ModelAndView mv=  new ModelAndView("checkout/confirm");
         mv.addObject(CART_LIST,cartList);
-        mv.addObject("addressList",addressList);
+        mv.addObject(ORDER,orderDomain);
         return mv;
+    }
+
+    private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
+        //商品金额
+        Double goodsTotal = 0D;
+        for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
+            goodsTotal  = goodsTotal+ shoppingCartItemDomain.getGoodsPrice()* shoppingCartItemDomain.getNum();
+        }
+        orderDomain.setGoodsTotal(goodsTotal);
+        Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();
+        Double memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
+        Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
+        Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount;
+        orderDomain.setOrderTotal(orderTotal);
     }
 
     /**
      * 配送地址列表页面
      * @return
      */
-    @RequestMapping(value = "listAddress",method = RequestMethod.GET)
-    public  ModelAndView listAddress(){
+    @RequestMapping(value = "listShipAddress",method = RequestMethod.GET)
+    public  ModelAndView listShipAddress(){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         CustomerAddressQuery query = new CustomerAddressQuery();
         query.setCustomerId(customerDomain.getId());
         List addressList = customerAddressService.getList(query);
-        ModelAndView mv = new ModelAndView("user/account/listAddress");
+        ModelAndView mv = new ModelAndView("checkout/listShipAddress");
         mv.addObject("addressList",addressList);
         return mv;
     }
-
-    @RequestMapping(value = "toAddAddress",method = RequestMethod.GET)
-    public  ModelAndView addAddress(){
-        ModelAndView mv = new ModelAndView("user/account/addAddress");
+    
+    @RequestMapping(value = "createShipAddress",method = RequestMethod.GET)
+    public  ModelAndView createShipAddress(){
+        ModelAndView mv = new ModelAndView("checkout/createShipAddress");
         return mv;
     }
 
-    @RequestMapping(value = "toUpdateAddress",method = RequestMethod.GET)
-    public  ModelAndView toUpdateAddress(Long addressId){
+    @RequestMapping(value = "createShipAddress", method = RequestMethod.POST)
+    public  JsonResult createShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        addressModel.setCustomerId(customerDomain.getId());
+        customerAddressService.create(addressModel);
+        return successResult("操作成功");
+    }
+
+    @RequestMapping(value = "updateShipAddress",method = RequestMethod.GET)
+    public  ModelAndView updateShipAddress(Long addressId){
         CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
-        ModelAndView mv = new ModelAndView("user/account/updateAddress");
+        ModelAndView mv = new ModelAndView("checkout/updateShipAddress");
         mv.addObject("address",customerAddressDomain);
         return mv;
     }
 
-    @RequestMapping(value = "updateAddress",method = RequestMethod.POST)
+    @RequestMapping(value = "updateShipAddress",method = RequestMethod.POST)
     @ResponseBody
-    public  JsonResult updateAddress(@ModelAttribute AddressModel addressModel,Long addressId){
-       CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
-
-        customerAddressDomain.setLastName(addressModel.getLastName());
-        customerAddressDomain.setFirstName(addressModel.getFirstName());
-        customerAddressDomain.setPhone(addressModel.getPhone());
-        customerAddressDomain.setMemo(addressModel.getMemo());
-        customerAddressDomain.setTitle(addressModel.getTitle());
-        customerAddressDomain.setCountryId(addressModel.getCountryId());
-        customerAddressDomain.setCityId(addressModel.getCityId());
-        customerAddressDomain.setProvinceId(addressModel.getProvinceId());
-        customerAddressDomain.setAddress(addressModel.getAddress());
-        customerAddressService.update(customerAddressDomain);
+    public  JsonResult updateShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
+        customerAddressService.update(addressModel);
         return successResult("修改成功");
     }
-
+    
     @RequestMapping(value = "removeAddress",method = RequestMethod.POST)
     @ResponseBody
     public  JsonResult removeAddress(Long addressId){
         customerAddressService.delete(addressId);
         return successResult("删除成功");
     }
-
-    @RequestMapping(value = "addAddress", method = RequestMethod.POST)
-    public  JsonResult addAddress(@ModelAttribute AddressModel addressModel){
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        CustomerAddressDomain customerAddressDomain = new CustomerAddressDomain();
-        customerAddressDomain.setCustomerId(customerDomain.getId());
-
-        customerAddressDomain.setLastName(addressModel.getLastName());
-        customerAddressDomain.setFirstName(addressModel.getFirstName());
-        customerAddressDomain.setPhone(addressModel.getPhone());
-        customerAddressDomain.setMemo(addressModel.getMemo());
-        customerAddressDomain.setTitle(addressModel.getTitle());
-        customerAddressDomain.setCountryId(addressModel.getCountryId());
-        customerAddressDomain.setCityId(addressModel.getCityId());
-        customerAddressDomain.setProvinceId(addressModel.getProvinceId());
-        customerAddressDomain.setAddress(addressModel.getAddress());
-        customerAddressService.create(customerAddressDomain);
-        return successResult("操作成功");
-    }
+    
 
     /**
      * 设置收货地址
      * @return
      */
     @RequestMapping(value = "setAddress", method = RequestMethod.POST)
-    public JsonResult setAddress(Long addressId){
+    public JsonResult setShipAddress(Long addressId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-
+        
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
-        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ODER);
-
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
+        if(orderDomain == null)
+        {
+            return errorResult("页面失效");
+        }
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
-        orderDomain.setShipName(customerAddressDomain.getFirstName()+customerAddressDomain.getLastName());
+        orderDomain.setShipFirstName(customerAddressDomain.getFirstName());
+        orderDomain.setShipLastName(customerAddressDomain.getLastName());
         orderDomain.setShipTitle(customerAddressDomain.getTitle());
-        orderDomain.setShipCity(customerAddressDomain.getCityId()+"");
+        orderDomain.setShipCity(customerAddressDomain.getCity());
+        orderDomain.setShippingCountryId(customerAddressDomain.getCountryId());
         orderDomain.setShipCountry(customerAddressDomain.getCountryId()+"");
-        orderDomain.setShipProvince(customerAddressDomain.getProvinceId()+"");
+        orderDomain.setShipProvince(customerAddressDomain.getProvince());
         orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
 
-        session.setAttribute(ODER,orderDomain);
+        session.setAttribute(ORDER,orderDomain);
         return successResult("操作成功");
+    }
+
+
+
+    /**
+     * 设置自提门店
+     * @return
+     */
+    @RequestMapping(value = "listStore",method = RequestMethod.GET)
+    public  ModelAndView listStore(){
+
+        //数据库暂无门店
+        List<StoreDomain> storeDomainList = storeService.getList(new StoreQuery());
+        ModelAndView modelAndView= new ModelAndView("/checkout/listStore");
+        modelAndView.addObject("storeDomainList",storeDomainList);
+        return modelAndView;
     }
 
     /**
@@ -240,10 +299,13 @@ public class CheckoutController  extends BaseController{
      * @return
      */
     @RequestMapping(value = "setStore", method = RequestMethod.POST)
-    public JsonResult setStore(){
-
-        //数据库暂无门店
-
+    public JsonResult setStore(Long storeId){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
+        order.setStoreId(storeId);
+        session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
 
@@ -255,9 +317,9 @@ public class CheckoutController  extends BaseController{
     public JsonResult setPaymentMethod(Integer paymentId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setPaymentMethod(paymentId);
-        session.setAttribute(ODER,order);
+        session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
 
@@ -269,9 +331,9 @@ public class CheckoutController  extends BaseController{
     public JsonResult setShippingMethod(Integer shippingMethodId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setShippingMethod(shippingMethodId);
-        session.setAttribute(ODER,order);
+        session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
 
@@ -281,14 +343,15 @@ public class CheckoutController  extends BaseController{
      * @return
      */
     @RequestMapping(value = "useCoupon", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult useCoupon(String couponCode){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
-            session.setAttribute(ODER,order);
+            session.setAttribute(ORDER,order);
         }
         return successResult("操作成功");
     }
@@ -302,7 +365,7 @@ public class CheckoutController  extends BaseController{
         //从session中获取订单对象,对象至少包含商品列表、优惠券
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute(ODER);
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
@@ -324,7 +387,7 @@ public class CheckoutController  extends BaseController{
                 continue;
             }
             orderItemDomain.setSkuId(items.getSkuId());
-            orderItemDomain.setNum((long)items.getNum());
+            orderItemDomain.setNum(items.getNum());
             orderItemDomain.setGoodsName(items.getGoodsName());
             orderItemDomain.setGoodsCode(items.getGoodsCode());
             orderItemDomain.setGoodsPrice(items.getGoodsPrice());
@@ -334,10 +397,8 @@ public class CheckoutController  extends BaseController{
         }
 
         //清除session
-        session.setAttribute(ODER,null);
-        session.setAttribute(CART_LIST,null);
+        session.setAttribute(ORDER,null);
         //清除购物车
-
         for(int i=0 ;cartList!=null && cartList.size()>0 && i<cartList.size();i++){
             shoppingCartService.removeFromCart(cartList.get(i).getId());
         }

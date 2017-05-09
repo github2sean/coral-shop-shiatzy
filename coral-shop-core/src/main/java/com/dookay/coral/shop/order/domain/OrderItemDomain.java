@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.order.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import java.util.Date;
  * @since : 2017年04月27日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_order_item")
 public class OrderItemDomain implements Serializable {
 
@@ -29,7 +32,7 @@ public class OrderItemDomain implements Serializable {
 	private Long skuId;
 	
 	/*数量*/
-	private Long num;
+	private Integer num;
 	
 	/*商品名称*/
 	private String goodsName;
@@ -43,69 +46,7 @@ public class OrderItemDomain implements Serializable {
 	/*sku规格json*/
 	private String skuSpecifications;
 	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Long getOrderId(){
-		return orderId;
-	}
-	
-	public void setOrderId(Long orderId){
-		this.orderId = orderId;
-	}
-	
-	public Long getSkuId(){
-		return skuId;
-	}
-	
-	public void setSkuId(Long skuId){
-		this.skuId = skuId;
-	}
-	
-	public Long getNum(){
-		return num;
-	}
-	
-	public void setNum(Long num){
-		this.num = num;
-	}
-	
-	public String getGoodsName(){
-		return goodsName;
-	}
-	
-	public void setGoodsName(String goodsName){
-		this.goodsName = goodsName;
-	}
-	
-	public String getGoodsCode(){
-		return goodsCode;
-	}
-	
-	public void setGoodsCode(String goodsCode){
-		this.goodsCode = goodsCode;
-	}
-	
-	public Double getGoodsPrice(){
-		return goodsPrice;
-	}
-	
-	public void setGoodsPrice(Double goodsPrice){
-		this.goodsPrice = goodsPrice;
-	}
-	
-	public String getSkuSpecifications(){
-		return skuSpecifications;
-	}
-	
-	public void setSkuSpecifications(String skuSpecifications){
-		this.skuSpecifications = skuSpecifications;
-	}
+
 	
 	
 }

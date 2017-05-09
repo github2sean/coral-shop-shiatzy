@@ -1,5 +1,7 @@
 package com.dookay.coral.common.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -153,6 +155,26 @@ public class RandomUtils {
             shortBuffer.append(charsNum[x % 0x3E]);
         }
         return shortBuffer.toString();
+    }
 
+    /**
+     * 生成流水号(最长20位)
+     *
+     * @return
+     */
+    public static String buildNo() {
+        Random rand = new Random();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        return format.format(new Date()) + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10) + rand.nextInt(10);
+    }
+
+    /**
+     * 生成流水号(最长16位)
+     *
+     * @return
+     */
+    public static String buildNo2() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        return format.format(new Date());
     }
 }
