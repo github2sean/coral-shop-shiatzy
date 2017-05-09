@@ -16,6 +16,8 @@ import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
 public class ReturnRequestQuery extends Query {
 
 	private Long customerId;
+	private String orderNo;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ReturnRequestDomain.class);
@@ -23,6 +25,9 @@ public class ReturnRequestQuery extends Query {
 
 		if(valid(customerId)){
 			criteria.andEqualTo("customerId",customerId);
+		}
+		if (valid(orderNo)){
+			criteria.andLike("orderNo","%"+orderNo+"%");
 		}
 
 		//todo 写查询逻辑

@@ -30,7 +30,7 @@ public class ReservationQuery extends Query {
 		}
 
 		if(valid(reservationNo)){
-			criteria.andLike("reservationNo",""+reservationNo+"");
+			criteria.andLike("reservationNo","%"+reservationNo+"%");
 		}
 
 		//todo 写查询逻辑

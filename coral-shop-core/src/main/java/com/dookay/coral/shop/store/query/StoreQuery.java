@@ -18,6 +18,7 @@ public class StoreQuery extends Query {
 
 	private String countryId;
 	private String cityId;
+	private String name;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -30,7 +31,9 @@ public class StoreQuery extends Query {
 		if (valid(countryId)){
 			criteria.andEqualTo("countryId",countryId);
 		}
-
+		if (valid(name)){
+			criteria.andLike("name","%"+name+"%");
+		}
 
 		//todo 写查询逻辑
 		return queryCriteria;

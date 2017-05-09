@@ -1,9 +1,12 @@
 package com.dookay.coral.shop.store.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +16,7 @@ import java.util.Date;
  * @since : 2017年05月03日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_store")
 public class StoreDomain implements Serializable {
 
@@ -60,118 +64,10 @@ public class StoreDomain implements Serializable {
 	
 	/*更新时间*/
 	private Date updateTime;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Integer getRank(){
-		return rank;
-	}
-	
-	public void setRank(Integer rank){
-		this.rank = rank;
-	}
-	
-	public Integer getIsValid(){
-		return isValid;
-	}
-	
-	public void setIsValid(Integer isValid){
-		this.isValid = isValid;
-	}
-	
-	public String getCountryId(){
-		return countryId;
-	}
-	
-	public void setCountryId(String countryId){
-		this.countryId = countryId;
-	}
-	
-	public String getCityId(){
-		return cityId;
-	}
-	
-	public void setCityId(String cityId){
-		this.cityId = cityId;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public String getEnTitle(){
-		return enTitle;
-	}
-	
-	public void setEnTitle(String enTitle){
-		this.enTitle = enTitle;
-	}
-	
-	public String getAddress(){
-		return address;
-	}
-	
-	public void setAddress(String address){
-		this.address = address;
-	}
-	
-	public String getEnAddress(){
-		return enAddress;
-	}
-	
-	public void setEnAddress(String enAddress){
-		this.enAddress = enAddress;
-	}
-	
-	public String getTel(){
-		return tel;
-	}
-	
-	public void setTel(String tel){
-		this.tel = tel;
-	}
-	
-	public String getTime(){
-		return time;
-	}
-	
-	public void setTime(String time){
-		this.time = time;
-	}
-	
-	public String getEnTime(){
-		return enTime;
-	}
-	
-	public void setEnTime(String enTime){
-		this.enTime = enTime;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Date getUpdateTime(){
-		return updateTime;
-	}
-	
-	public void setUpdateTime(Date updateTime){
-		this.updateTime = updateTime;
-	}
+	@Transient
+	private StoreCityDomain storeCityDomain;
+	@Transient
+	private StoreCountryDomain storeCountryDomain;
 	
 	
 }

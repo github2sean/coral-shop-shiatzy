@@ -1,9 +1,12 @@
 package com.dookay.coral.shop.store.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +16,7 @@ import java.util.Date;
  * @since : 2017年05月03日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_store_city")
 public class StoreCityDomain implements Serializable {
 
@@ -43,69 +47,8 @@ public class StoreCityDomain implements Serializable {
 	/*更新时间*/
 	private Date updateTime;
 	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Long getRank(){
-		return rank;
-	}
-	
-	public void setRank(Long rank){
-		this.rank = rank;
-	}
-	
-	public Integer getIsValid(){
-		return isValid;
-	}
-	
-	public void setIsValid(Integer isValid){
-		this.isValid = isValid;
-	}
-	
-	public String getCountryId(){
-		return countryId;
-	}
-	
-	public void setCountryId(String countryId){
-		this.countryId = countryId;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public String getEnName(){
-		return enName;
-	}
-	
-	public void setEnName(String enName){
-		this.enName = enName;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Date getUpdateTime(){
-		return updateTime;
-	}
-	
-	public void setUpdateTime(Date updateTime){
-		this.updateTime = updateTime;
-	}
+	@Transient
+	private StoreCountryDomain storeCountryDomain;
 	
 	
 }
