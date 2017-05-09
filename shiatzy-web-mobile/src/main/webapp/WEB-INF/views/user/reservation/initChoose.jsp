@@ -9,7 +9,7 @@
 
 <div class="order">
     <p class="pull-left">门市预约 / 详细</p>
-    <a class="pull-right" href="#">< 回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a>
 </div>
 <div class="order-main clearfix">
     <c:forEach var="row" items="${preOderItemList}">
@@ -48,8 +48,8 @@
             </c:if>
     </c:forEach>
 </div>
-<div class="order-price" >
-    <p>预计订单总额：¥ 10,404</p>
+<div class="order-price hide" >
+    <p>预计订单总额：¥ </p>
 </div>
 <div class="order-stores">
     <h1>选择预约门市</h1>

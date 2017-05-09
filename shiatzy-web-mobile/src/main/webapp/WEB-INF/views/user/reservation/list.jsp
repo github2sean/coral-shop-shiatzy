@@ -7,13 +7,13 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">精品店预约详情 <a href="我的账户.首页.html">返回上页</a></div>
+    <div class="dx-title">精品店预约详情 <a href="/u/account/index"></a></div>
     <div class="content">
         <div class="dx-reservation">预约订单</div>
 
         <c:forEach var="row" items="${reservationList}">
         <a href="/reservation/details?reservationId=${row.id}" class="dx-reservaList clearfix">
-            <div class="time">${row.createTime}</div>
+            <div class="time"><fmt:formatDate value="${row.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
             <div class="orderNumber">${row.reservationNo}</div>
             <div class="status">
                 <c:choose>
@@ -25,7 +25,7 @@
         </a>
         </c:forEach>
     </div>
-    <div class="check clearfix"><span>查看所有订单</span><a href="#">></a></div>
+    <div class="check clearfix"><span>查看所有订单</span><a href="/order/list">></a></div>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

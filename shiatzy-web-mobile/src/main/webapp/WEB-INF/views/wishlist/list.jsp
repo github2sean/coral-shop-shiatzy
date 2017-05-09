@@ -8,13 +8,13 @@
 </jsp:include>
 
 <div class="dx-wish clearfix">
-    <div class="dx-title">愿望清单<a href="我的账户.首页.html">回上页</a></div>
+    <div class="dx-title">愿望清单<a href="/u/account/index">回上页</a></div>
     <div class="content">
         <c:if test="${not empty wishList}">
         <div id="toggleDiv">
             <div class="dx-total">
             <div class="title">您的收藏</div>
-            <ul class="list">
+            <ul class="list hide">
                 <li>女士</li>
                 <li class="active">男士</li>
                 <li>包袋</li>
@@ -23,12 +23,11 @@
             </div>
         </div>
         </c:if>
-
-
+        <c:if test="${empty wishList}">
             <div id="toggleDiv2">
             <div class="dx-collect">愿望清单（0）</div>
             </div>
-
+        </c:if>
     </div>
         <div class="dx-GoodsDetails">
             <c:forEach var="row" items="${wishList}">
@@ -59,8 +58,8 @@
                 <li class="last"><a href="#">什么是愿望清单？</a></li>
             </ul>
         </div>
-    </div>
 </div>
+
 
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -94,7 +93,7 @@
         
         
 
-        $(".goods_color").each(function () {
+        /*$(".goods_color").each(function () {
             var str = $(this).attr("data-value");
             if(str!=null && str!=""){
                 str = str.replace("，",",");
@@ -107,6 +106,6 @@
             console.log("str:"+str);
             jsonObj = jQuery.parseJSON(str);
             $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });
+        });*/
     });
 </script>
