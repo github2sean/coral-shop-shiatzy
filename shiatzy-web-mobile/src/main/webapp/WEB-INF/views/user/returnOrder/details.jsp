@@ -16,7 +16,7 @@
     <div class="verify-message-top">
         <h2>退货单号：${returnRequestDomain.orderNo}</h2>
         <div class="return-time">
-            <p>退货申请${returnRequestDomain.createTime}，已于${returnRequestDomain.createTime}提交，总计¥ 11,504的退款申请。</p>
+            <p>退货申请，已于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />${totalAmt}</p>
         </div>
     </div>
     <div class="verify-message-middle">

@@ -19,7 +19,7 @@
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>黑色<span>M号</span></div>
+                    <div class="goods_color" data-value=${row.skuSpecifications}>黑色&nbsp;&nbsp;&nbsp;<span>M号</span></div>
                     <div class="quantity">数量: <span>${row.num}</span></div>
                     <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
@@ -38,6 +38,7 @@
                 <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button>
             </form>
         </div>
+        <div class="showInfo" style="text-align: center;color: red"></div>
     </div>
     <div class="total">
         <div class="title">结算</div>
@@ -143,8 +144,10 @@
 
         //
         $(".couponBtn").click(function () {
-            console.log("使用成功");
            var couponCode = $(".couponCode").val();
+            if(couponCode==''){
+                $('.showInfo').text("请先输入优惠券码");
+            }
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code=200){
                     console.log("使用成功");

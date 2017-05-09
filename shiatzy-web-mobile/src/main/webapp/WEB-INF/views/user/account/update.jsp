@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">我的帐户 / 个人信息</p>
-    <a style="float: right;" href="/u/account/details">< 回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 
 <div class="setting">
@@ -22,26 +22,13 @@
                 <span style="float:right;"></span>
             </li>
             <li>
-                <span>名字*<input type="text"  value="${customerDomain.lastName}" name="customerDomain.lastName"/></span>
+                <span>名字*<input type="text"  value="${customerDomain.firstName}" name="customerDomain.firstName"/></span>
                 <span style="float:right;"></span>
             </li>
-            <li>姓氏*<input type="text"  value="${customerDomain.firstName}" name="customerDomain.firstName"/></li>
+            <li>姓氏*<input type="text"  value="${customerDomain.lastName}" name="customerDomain.lastName"/></li>
             <li>
-                <span>生日</span>
-                <ul style="float:right;" class="date">
-                    <li>
-                        <span>v</span>
-                        <span>年</span>
-                    </li>
-                    <li>
-                        <span>v</span>
-                        <span>月</span>
-                    </li>
-                    <li>
-                        <span>v</span>
-                        <span>日</span>
-                    </li>
-                </ul>
+                生日
+                <input type="date"   name=""/>
             </li>
             <li>电话号码*<input type="text"  value="${customerDomain.phone}" name="customerDomain.phone"/></li>
         </ul>
@@ -106,6 +93,7 @@
             $.post("/u/account/update",data,function (data) {
                 console.log(data.message);
                 $("#showInfo").show().text(data.message);
+                location.href="/u/account/details";
             });
         });
     });

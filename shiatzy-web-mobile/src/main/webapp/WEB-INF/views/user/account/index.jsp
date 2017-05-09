@@ -8,12 +8,13 @@
 
 <div class="order">
     <p style="float: left">我的账户 </p>
-    <a style="float: right;" href="注册登录.登录.html">< 回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
         <p style="margin-right: 1.7005rem;">欢迎您</p>
-        <p>SHC</p>
+        <c:if test="${empty customerDomain}"><p>${accountDomain.userName}</p></c:if>
+        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}</p></c:if>
     </div>
     <div class="my-account-message">
         <ul>
@@ -68,6 +69,10 @@
 <script>
 
     $(function () {
+
+        console.log('${user_context}');
+
+
         $(".loginOut").click(function () {
             $.post("/passport/loginOut.do",function (data) {
                 if(data.data==1){
