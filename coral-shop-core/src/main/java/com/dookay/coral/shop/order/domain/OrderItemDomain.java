@@ -1,11 +1,13 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import lombok.Data;
 
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -30,7 +32,9 @@ public class OrderItemDomain implements Serializable {
 	
 	/*skuId*/
 	private Long skuId;
-	
+
+	private Long itemId;
+
 	/*数量*/
 	private Integer num;
 	
@@ -45,8 +49,10 @@ public class OrderItemDomain implements Serializable {
 	
 	/*sku规格json*/
 	private String skuSpecifications;
-	
 
+
+	@Transient
+	private GoodsItemDomain goodsItemDomain;
 	
 	
 }

@@ -6,6 +6,11 @@ import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.query.GoodsItemQuery;
+import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.OrderLogDomain;
@@ -21,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by admin on 2017/4/25.
@@ -42,6 +49,8 @@ public class OrderController extends BaseController {
     private IReturnRequestService returnRequestService;
     @Autowired
     private IReservationService reservationService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -72,7 +81,18 @@ public class OrderController extends BaseController {
         OrderDomain orderDomain = orderService.get(orderId);
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
-        List orderItemList  = orderItemService.getList(query);
+        List<OrderItemDomain> orderItemList  = orderItemService.getList(query);
+
+        List<Long> ids = orderItemList.stream().map(OrderItemDomain::getItemId).collect(Collectors.toList());
+        GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
+        goodsItemQuery.setIds(ids);
+        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
+        for (OrderItemDomain orderItemDomain:orderItemList){
+            GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
+                    .filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(null);
+            orderItemDomain.setGoodsItemDomain(goodsItemDomain);
+        }
+
         ModelAndView mv = new ModelAndView("user/order/details");
         mv.addObject("orderDomain",orderDomain);
         mv.addObject("orderItemList",orderItemList);

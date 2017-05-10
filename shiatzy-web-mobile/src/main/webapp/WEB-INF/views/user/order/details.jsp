@@ -32,7 +32,7 @@
         <h2>商品详情</h2>
         <c:forEach var="item" items="${orderItemList}">
         <div class="verify-main">
-            <img src="images/verify_01.png" alt="">
+            <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
             <div class="img-message">
                 <h3>${item.goodsName}</h3>
                 <h6>${item.goodsCode}</h6>
@@ -49,13 +49,12 @@
     <div class="order-details">
         <h4>帐单详情<span>v</span></h4>
         <ul>
-            <li>优惠前<span>¥ 11,504</span></li>
-            <li>优惠应用<span>¥ -50</span></li>
-            <li>Art Club会员优惠<span>¥ -10</span></li>
-            <li>关税和税收<span>¥ 100</span></li>
+            <li>优惠前<span>¥ ${orderDomain.goodsTotal}</span></li>
+            <li>优惠应用<span>¥ -0</span></li>
+            <li>Art Club会员优惠<span>¥ -0</span></li>
             <li>运费<span>¥ 50</span></li>
         </ul>
-        <p>总计<span>¥ 12,000</span></p>
+        <p>总计<span>¥ ${orderDomain.orderTotal}</span></p>
     </div>
     <div class="information">
         <h4>配送信息<span>v</span></h4>

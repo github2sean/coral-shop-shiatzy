@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.BeanValidators;
+import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -16,6 +17,7 @@ import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.enums.ShippingMethodEnum;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.service.IOrderItemService;
@@ -117,6 +119,8 @@ public class CheckoutController  extends BaseController{
      */
     @RequestMapping(value = "orderInfo",method = RequestMethod.GET)
     public ModelAndView orderInfo(){
+        UserContext userContext = UserContext.current();
+
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
@@ -129,7 +133,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
-        if(cartList==null){
+        if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
         //商品金额
@@ -154,7 +158,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
-        if(cartList==null){
+        if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
         calcOrderTotal(orderDomain, cartList);
@@ -180,6 +184,75 @@ public class CheckoutController  extends BaseController{
         mv.addObject(CART_LIST,cartList);
         mv.addObject(ORDER,orderDomain);
         return mv;
+    }
+
+    /**
+     * 提交订单
+     * @return
+     */
+    @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult submitOrder(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        //从session中获取订单对象,对象至少包含商品列表、优惠券
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        if(order== null){
+            return errorResult("订单已经失效");
+        }
+        //购物车
+        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        shoppingCartService.withGoodsItem(cartList);
+        if(cartList== null || cartList.size() ==0){
+            return errorResult("订单已经失效");
+        }
+        //持久化订单，验证优惠券码是否可用，商品库存是否足够
+        Long couponId  = order.getCouponId();
+        if(couponId!=null ){
+            CouponDomain couponDomain = couponService.get(couponId);
+            couponService.checkCoupon(couponDomain.getCode());
+        }
+        List<Long> itemIds = new ArrayList<Long>();
+        //创建订单
+        order.setOrderNo(RandomUtils.buildNo());
+        order.setCustomerId(customerDomain.getId());
+        order.setStatus(OrderStatusEnum.UNPAID.getValue());
+        orderService.create(order);
+        //创建明细
+        for(int j = 0;j<cartList.size();j++){
+            ShoppingCartItemDomain items = cartList.get(j);
+            OrderItemDomain orderItemDomain = new OrderItemDomain();
+            orderItemDomain.setOrderId(order.getId());
+            SkuDomain skuDomain = skuService.get(items.getSkuId());
+            if (skuDomain.getQuantity()<=0){
+                itemIds.add(skuDomain.getGoodsId());
+                continue;
+            }
+            orderItemDomain.setSkuId(items.getSkuId());
+            orderItemDomain.setNum(items.getNum());
+            orderItemDomain.setItemId(items.getItemId());
+            orderItemDomain.setGoodsName(items.getGoodsName());
+            orderItemDomain.setGoodsCode(items.getGoodsCode());
+            orderItemDomain.setGoodsPrice(items.getGoodsPrice());
+            orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
+            System.out.println("order:"+ JsonUtils.toJSONString(order));
+            orderItemService.create(orderItemDomain);
+        }
+
+        //清除session
+        session.setAttribute(ORDER,null);
+        //清除购物车
+        for(int i=0 ;i<cartList.size();i++){
+            shoppingCartService.removeFromCart(cartList.get(i).getId());
+        }
+
+        String orderNo = order.getOrderNo();
+        if(itemIds!=null && itemIds.size()>0){
+            return successResult("商品库存不足",itemIds);
+        }
+        return successResult("操作成功",orderNo);
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
@@ -397,60 +470,7 @@ public class CheckoutController  extends BaseController{
     }
 
 
-    /**
-     * 提交订单
-     * @return
-     */
-    @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult submitOrder(){
-        //从session中获取订单对象,对象至少包含商品列表、优惠券
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
-        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
-        //持久化订单，验证优惠券码是否可用，商品库存是否足够
-        Long couponId  = order.getCouponId();
-        if(couponId!=null ){
-            CouponDomain couponDomain = couponService.get(couponId);
-            couponService.checkCoupon(couponDomain.getCode());
-        }
-        List<Long> itemIds = new ArrayList<Long>();
-        //创建订单
-        orderService.create(order);
-        //创建明细
-        for(int j = 0;cartList!=null&&cartList.size()>0&&j<cartList.size();j++){
-            ShoppingCartItemDomain items = cartList.get(j);
-            OrderItemDomain orderItemDomain = new OrderItemDomain();
-            orderItemDomain.setOrderId(order.getId());
-            SkuDomain skuDomain = skuService.get(items.getSkuId());
-            if (skuDomain.getQuantity()<=0){
-                itemIds.add(skuDomain.getGoodsId());
-                continue;
-            }
-            orderItemDomain.setSkuId(items.getSkuId());
-            orderItemDomain.setNum(items.getNum());
-            orderItemDomain.setGoodsName(items.getGoodsName());
-            orderItemDomain.setGoodsCode(items.getGoodsCode());
-            orderItemDomain.setGoodsPrice(items.getGoodsPrice());
-            orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
-            System.out.println("order:"+ JsonUtils.toJSONString(order));
-            orderItemService.create(orderItemDomain);
-        }
 
-        //清除session
-        session.setAttribute(ORDER,null);
-        //清除购物车
-        for(int i=0 ;cartList!=null && cartList.size()>0 && i<cartList.size();i++){
-            shoppingCartService.removeFromCart(cartList.get(i).getId());
-        }
-
-        String orderNo = order.getOrderNo();
-        if(itemIds!=null && itemIds.size()>0){
-            return successResult("商品库存不足",itemIds);
-        }
-        return successResult("操作成功",orderNo);
-    }
 
     /**
      * 订单完成

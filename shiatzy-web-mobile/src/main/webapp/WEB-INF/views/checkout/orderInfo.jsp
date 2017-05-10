@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="net.sf.json.JSONObject" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -8,18 +9,18 @@
 </jsp:include>
 
 <div class="dx-accounts">
-    <div class="dx-title">结账 <a href="商品详情.html">回上页</a></div>
+    <div class="dx-title">结账 <a href="/cart/list">回上页</a></div>
     <div class="content">
-        <c:forEach var="row" items="${sessionScope.cartList}">
+        <c:forEach var="row" items="${cartList}">
         <div class="dx-GoodsDetails">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic"><img src="images/goods-pic01.jpg" alt=""></div>
+                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>黑色<span>M号</span></div>
+                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
                     <div class="quantity">数量: <span>${row.num}</span></div>
                     <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
@@ -49,7 +50,7 @@
             <div class="predict">预计订单总额 <span>&yen;<span id="ordertotal"> ${order.orderTotal}</span></span></div>
         </div>
     </div>
-    <a href="/checkout/settlement" type="button" class="accounts-btn">结账</a>
+    <a href="/checkout/confirm" type="button" class="accounts-btn">结账</a>
 </div>
 
 <!-------修改弹窗开始------->
@@ -161,7 +162,7 @@
 
         //
         $(".couponBtn").click(function () {
-            console.log("使用成功");
+
            var couponCode = $(".couponCode").val();
             if(couponCode==''){
                 $('.showInfo').text("请先输入优惠券码");
@@ -169,10 +170,10 @@
             }
             $('.showInfo').text("");
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
-                if(data.code=200){
-                    console.log("使用成功");
+                if(data.code==200){
+                    layer.msg('使用优惠码成功');
                 }else{
-                    console.log(data.message);
+                    $('.showInfo').text(data.message);
                 }
             });
         });

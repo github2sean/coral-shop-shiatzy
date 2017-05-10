@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
-    <a style="float: right;" href="购物车.结算页.无优惠代码.html">< 回上页</a>
+    <a style="float: right;" href="javascript:history.go(-1)">< 回上页</a>
 </div>
 <div class="order-finish">
     <h3>订单总额：¥ ${order.orderTotal}</h3>

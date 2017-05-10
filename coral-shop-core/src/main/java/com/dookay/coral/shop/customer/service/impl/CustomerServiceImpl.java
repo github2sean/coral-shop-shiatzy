@@ -101,7 +101,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	public CustomerDomain getAccount(Long accountId) {
 		CustomerQuery query = new CustomerQuery();
 		query.setAccountId(accountId);
-		return super.getOne(query);
+		return super.getFirst(query);
 	}
 
 	@Override

@@ -26,7 +26,7 @@
         </a>
         </c:forEach>
         <div class="dx-reservation">我的退货单</div>
-        <c:if test="${empty orderList}">
+        <c:if test="${empty returnList}">
             <div class="content ">
                 <div id="toggleDiv3">
                     <div class="dx-collect">退货单（0）</div>
@@ -37,7 +37,7 @@
             <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
                 <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
                 <div class="orderNumber">${row.orderNo}</div>
-                <%--<div class="status" data-value="${row.status}"></div>--%>
+                <div class="status" data-value="${row.status}"></div>
             </a>
         </c:forEach>
 
@@ -56,7 +56,7 @@
         $(".status").each(function () {
             var status = $(this).attr("data-value");
             if(status == '1'){
-                $(this).text("待付款");
+                $(this).text("待支付");
             }else if(status == '2'){
                 $(this).text("已支付");
             }else if(status == '3'){

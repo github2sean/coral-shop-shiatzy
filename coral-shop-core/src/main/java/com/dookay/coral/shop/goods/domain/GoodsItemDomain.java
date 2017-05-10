@@ -87,5 +87,6 @@ public class GoodsItemDomain implements Serializable {
 	/*商品颜色*/
 	@Transient
 	private GoodsColorDomain goodsColor;
+
 	
 }
