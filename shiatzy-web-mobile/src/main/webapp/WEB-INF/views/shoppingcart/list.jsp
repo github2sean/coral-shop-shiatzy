@@ -29,8 +29,8 @@
                     <div class="price">单价&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_collect" data-value="${row.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
                     <li><a href="javascript:;"  class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
@@ -117,28 +117,56 @@
         });
 
         $(".deleteBtn").on("click",function () {
+            var $self = $(this);
             var id = $(this).attr("data-value");
             console.log(id);
             $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
                 console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.reload();
+                    }
+                }
             });
-            $(this).parents(".goodsDiv").remove();
+        });
+        $(".j_collect").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/cartToWish",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入心愿单成功");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+        $(".j_appointment").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/cartToBoutique",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入精品店成功");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.reload();
+                    }
+                }
+            });
         });
 
-        /*$(".goods_color").each(function () {
-            var str = $(this).attr("data-value");
-            if(str!=null && str!=""){
-                str.replace("，",",");
-                str.replace("：",":");
-                str.replace("“","\"");
-                str.replace("”","\"");
-                str.replace("｛","{");
-                str.replace("｝","}");
-            }
-            console.log("str:"+str);
-            jsonObj = jQuery.parseJSON(str);
-            $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });*/
+
 
     });
 </script>

@@ -103,6 +103,7 @@ public class GoodsController extends BaseController{
         List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(newSizeIds);
+        System.out.println(" query:"+JsonUtils.toJSONString(prototypeSpecificationOptionQuery));
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         modelAndView.addObject("sizeList",sizeList);
         System.out.println(" sizeList:"+JsonUtils.toJSONString(sizeList));

@@ -8,13 +8,17 @@ import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import net.sf.json.JSONObject;
@@ -26,7 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by admin on 2017/4/27.
@@ -60,6 +66,7 @@ public class ShoppingCartController extends BaseController{
         SkuQuery skuQuery = new SkuQuery();
         skuQuery.setItemId(itemId);
         skuQuery.setIsValid(ValidEnum.YES.getValue());
+        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
         List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
         System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
@@ -90,11 +97,30 @@ public class ShoppingCartController extends BaseController{
     @ResponseBody
     public JsonResult removeFromWish(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
         Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        SkuDomain skuDomain =  skuService.get(addShoppingCartForm.getSkuId());
-        if(!shoppingCartService.removeFromWish(customerDomain,skuDomain)){
-            successResult("删除失败");
+        Long customerId = customerService.getAccount(accountId).getId();
+
+          /*获取SKU*/
+        Long itemId = addShoppingCartForm.getItemId();
+        Long sizeId = addShoppingCartForm.getSizeId();
+        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
+
+        SkuQuery skuQuery = new SkuQuery();
+        skuQuery.setItemId(itemId);
+        skuQuery.setIsValid(ValidEnum.YES.getValue());
+        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
+        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+        if(skuDomain == null)
+        {
+            throw new ServiceException("参数错误");
         }
+        ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+        query.setCustomerId(customerId);
+        query.setSkuId(skuDomain.getId());
+        query.setShoppingCartType(2);
+        query.setItemId(itemId);
+        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.getFirst(query);
+        shoppingCartService.removeFromCart(shoppingCartItemDomain.getId());
         return  successResult("删除成功");
     }
 
@@ -144,6 +170,27 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         shoppingCartService.wishToBoutique(customerDomain,shoppingCartItemId);
+        return  successResult("操作成功");
+    }
+
+    @RequestMapping(value = "cartToBoutique" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult cartToBoutique(Long shoppingCartItemId){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+         shoppingCartItemDomain.setShoppingCartType(3);
+         shoppingCartService.update(shoppingCartItemDomain);
+        return  successResult("操作成功");
+    }
+    @RequestMapping(value = "cartToWish" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult cartToWish(Long shoppingCartItemId){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        shoppingCartItemDomain.setShoppingCartType(2);
+        shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
     }
 

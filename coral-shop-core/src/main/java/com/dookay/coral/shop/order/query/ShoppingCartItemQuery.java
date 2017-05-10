@@ -22,6 +22,7 @@ public class ShoppingCartItemQuery extends Query {
 	private String goodsCode;
 	private Double goodsPrice;
 	private String skuSpecifications;
+	private Long itemId;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -47,6 +48,9 @@ public class ShoppingCartItemQuery extends Query {
 		}
 		if(valid(goodsCode)){
 			criteria.andEqualTo("goodsCode",goodsCode);
+		}
+		if(valid(itemId)){
+			criteria.andEqualTo("itemId",itemId);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

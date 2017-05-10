@@ -17,7 +17,7 @@
     </div>
 
     <ul class="do-pro-list">
-        <c:forEach var="goods" items="${goodsDomainPageList.list}">
+        <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num">
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
         <li>
             <a href="/goods/details/${firstItem.id}">
@@ -33,7 +33,7 @@
                 </ul>
             </a>
             <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect active" data-value="${row.id}">
+            <i class="icon-collect j_collect active" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
                 <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
@@ -48,7 +48,7 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
          <c:forEach var="item" items="${categoryList}">
-            <li><a href="${UrlUtils.setParam("categoryId",item.id)}">${item.name}</a></li>
+            <li><a href="/goods/list?categoryId=${item.id}">${item.name}</a></li>
          </c:forEach>
     </ul>
 </div>
@@ -115,17 +115,17 @@
         //console.log('${goodsList}');
 
         //var cartNum  = $(".do-num").val();
-        $(".j_collect").each(function () {
-            var skuId = $(this).attr("data-value");
-
-            $(this).click(function () {
+            $(".j_collect").click(function () {
                 var isLogin = '${sessionScope.user_context}';
                 if(isLogin==null || isLogin ==""){
                     location.href="${ctx}/passport/toLogin";
                 }
+                var selectSizeId=$(this).attr("data-ids");
+                var skuId = $(this).attr("data-value");
                 var isAdd =  $(this).find("use").attr("xlink:href");
                 console.log(isAdd);
-                var data  = {"skuId":skuId,"num":1,"type":2};
+                var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":2};
+                console.log(data);
                 var url = "";
                 if(isAdd=="#heart-red"){
                     url = "/cart/addToCart";
@@ -141,6 +141,5 @@
                 });
             });
 
-        });
     });
 </script>

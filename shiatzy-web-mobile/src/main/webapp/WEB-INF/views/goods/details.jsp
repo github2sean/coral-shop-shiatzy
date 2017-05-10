@@ -92,7 +92,7 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    var selectSizeId=${sizeList[0].id};
+    var selectSizeId='${sizeList[0].id}';
     $(function(){
         commonApp.init();
 
@@ -139,7 +139,7 @@
             }
             var skuId = ${goodsItemDomain.id};
             var url = "/boutique/addToBoutique";
-            var data = {"skuId":skuId,"num":1,"type":3};
+            var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":3};
             $.post(url,data,function (result) {
                 console.log(result);
                 if(result.code==200){
