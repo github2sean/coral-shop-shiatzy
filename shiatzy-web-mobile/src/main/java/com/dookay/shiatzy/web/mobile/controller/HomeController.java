@@ -31,22 +31,6 @@ public class HomeController extends MobileBaseController {
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView("home/index");
-        //获取session
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-        GoodsCategoryQuery query = new GoodsCategoryQuery();
-        query.setOrderBy("displayOrder");
-        query.setDesc(false);
-        query.setLevel(1);
-        List<GoodsCategoryDomain> categoryLevle1List =  goodsCategoryService.getList(query);
-        query.setLevel(2);
-        List<GoodsCategoryDomain> categoryLevle2List =  goodsCategoryService.getList(query);
-        query.setLevel(3);
-        List<GoodsCategoryDomain> categoryLevle3List =  goodsCategoryService.getList(query);
-        session.setAttribute("categoryLevle1List",categoryLevle1List);
-        session.setAttribute("categoryLevle2List",categoryLevle2List);
-        session.setAttribute("categoryLevle3List",categoryLevle3List);
-        System.out.println("categoryLevle1List:"+ JsonUtils.toJSONString(categoryLevle1List));
         return mv;
     }
 

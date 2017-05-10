@@ -233,15 +233,8 @@
             <a href=""><img src="${ctx}/static/images/search-img3.jpg" alt=""></a>
         </div>
         <ul class="guide-nav j_drop_down">
-            <%--<li>
-                <a href="javascript:;">女装</a>
-                <ul class="guide-sub-nav">
-                    <li><a href="产品列表.html">女士系列</a></li>
-                    <li><a href="产品列表.html">高跟鞋</a></li>
-                    <li><a href="产品列表.html">靴</a></li>
-                </ul>
-            </li>--%>
-            <c:forEach var="level1" items="${categoryLevle1List}">
+
+            <c:forEach var="level1" items="${web:categoryList()}">
             <li>
                 <a>${level1.name}
                     <ul class="guide-sub-nav">
