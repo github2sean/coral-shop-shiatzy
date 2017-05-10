@@ -216,6 +216,7 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerDomain.setSubscribeType(subscribeType);
+        customerService.update(customerDomain);
         return successResult("操作成功");
     }
 

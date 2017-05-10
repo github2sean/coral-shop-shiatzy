@@ -8,7 +8,7 @@
 </jsp:include>
 
 <div class="dx-registered">
-    <div class="dx-title">注册 <a href="注册登录.登录.html">返回上页</a></div>
+    <div class="dx-title">注册 <a href="/passport/toLogin">返回上页</a></div>
     <form class="registerForm" action="/passport/register.do" method="post">
     <div class="content">
         <div class="title">快速注册，享更多便捷体验</div>
