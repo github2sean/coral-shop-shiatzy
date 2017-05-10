@@ -6,6 +6,7 @@ import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.extension.GoodsExtension;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.shiatzy.web.admin.base.BaseApiController;
@@ -37,8 +38,8 @@ public class SkuController extends BaseApiController {
     
     @ApiOperation(value = "获取商品sku列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity<PageList<SkuDomain>> list(@ModelAttribute GoodsQuery goodsQuery) {
-        PageList<SkuDomain> pageList = skuService.getPageList(goodsQuery);
+    public ResponseEntity<PageList<SkuDomain>> list(@ModelAttribute SkuQuery skuQuery) {
+        PageList<SkuDomain> pageList = skuService.getPageList(skuQuery);
         goodsExtension.withGoods(pageList);
         return ResponseEntity.ok().body(pageList);
     }

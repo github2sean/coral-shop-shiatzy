@@ -55,12 +55,13 @@ public class ShoppingCartController extends BaseController{
          /*获取SKU*/
         Long itemId = addShoppingCartForm.getItemId();
         Long sizeId = addShoppingCartForm.getSizeId();
+        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
 
         SkuQuery skuQuery = new SkuQuery();
         skuQuery.setItemId(itemId);
         skuQuery.setIsValid(ValidEnum.YES.getValue());
         List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-        System.out.print(JsonUtils.toJSONString(skuDomainList));
+        System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
         if(skuDomain == null)
         {
