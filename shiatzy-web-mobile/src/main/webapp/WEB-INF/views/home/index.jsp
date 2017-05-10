@@ -18,28 +18,28 @@
         </a>
     </div>
     <div class="col-2-w clearfix">
-        <a href="产品列表.html">
+        <a href="/goods/list?categoryId=16">
             <p class="guide-link-before">女裝</p>
             <div><img src="${ctx}/static/images/index-women.jpg" alt=""></div>
         </a>
-        <a href="产品列表.html">
+        <a href="/goods/list?categoryId=26">
             <p class="guide-link-before">男裝</p>
             <div><img src="${ctx}/static/images/index-men.jpg" alt=""></div>
         </a>
     </div>
-    <a href="产品列表.html" class="do-block img-cover index-cat">
+    <a href="/goods/list?categoryId=21" class="do-block img-cover index-cat">
         <p class="guide-link-before">包袋</p>
         <img src="${ctx}/static/images/index-list1.jpg" alt="">
     </a>
-    <a href="产品列表.html" class="do-block img-cover index-cat">
+    <a href="/goods/list?categoryId=13"class="do-block img-cover index-cat">
         <p class="guide-link-before">鞋履</p>
         <img src="${ctx}/static/images/index-list2.jpg" alt="">
     </a>
-    <a href="产品列表.html" class="do-block img-cover index-cat">
+    <a href="/goods/list?categoryId=12" class="do-block img-cover index-cat">
         <p class="guide-link-before">配飾</p>
         <img src="${ctx}/static/images/index-list3.jpg" alt="">
     </a>
-    <a href="产品列表.html" class="do-block index-show">
+    <a href="/goods/list?categoryId=14" class="do-block index-show">
         <p class="guide-link-before">2017春夏巴黎时装秀</p>
         <img src="${ctx}/static/images/index-show.jpg" alt="">
     </a>

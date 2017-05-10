@@ -59,7 +59,7 @@
         <div class="title">您也许也喜欢</div>
         <div class="left">
             <div class="pic">
-                <a href=""><img src="images/bag_10_07.jpg" alt=""></a>
+                <a href=""><img src="${ctx}/static/images/bag_10_07.jpg" alt=""></a>
             </div>
             <div class="name">厚底系带楔型鞋</div>
             <div class="price">&yen; 3,090</div>
@@ -73,7 +73,7 @@
         </div>
         <div class="left" style="border-right: none">
             <div class="pic">
-                <a href=""><img src="images/bag_10_09.jpg" alt=""></a>
+                <a href=""><img src="${ctx}/static/images/bag_10_09.jpg" alt=""></a>
             </div>
             <div class="name">厚底系带楔型鞋</div>
             <div class="price">&yen; 3,090</div>
@@ -107,7 +107,6 @@
                 $(this).siblings().removeClass("active");
                 $(this).addClass("active");
                 selectSizeId = $(this).data("value");
-
             })
         })
 
@@ -129,7 +128,7 @@
                     console.log(result.message);
                     location.href="/cart/list";
                 }else{
-                    layer.msg(result.message);
+                    layer.msg("没有库存");
                 }
             });
         });
