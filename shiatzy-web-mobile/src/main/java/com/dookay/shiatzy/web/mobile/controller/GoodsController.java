@@ -82,6 +82,7 @@ public class GoodsController extends BaseController{
         System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsList));
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
+        modelAndView.addObject("categoryName",goodsCategoryDomain.getName());
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
