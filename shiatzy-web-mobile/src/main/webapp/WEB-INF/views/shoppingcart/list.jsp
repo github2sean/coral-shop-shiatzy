@@ -19,7 +19,7 @@
             <c:forEach var="row" items="${cartList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
-                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
+                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>

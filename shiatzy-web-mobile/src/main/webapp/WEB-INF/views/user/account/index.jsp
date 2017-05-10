@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li>
-                <a href="/checkout/listAddress">
+                <a href="/checkout/listShipAddress">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
                     <span>常用收件门市/地址设定</span>
                     <span style="float: right;">></span>
