@@ -19,7 +19,7 @@
             <input type="text" class="verify" placeholder="输入右方验证码" name="validCode">
             <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
         </div>
-        <div class="remind">验证码输入错误，请重新输入</div>
+        <div class="remind"></div>
         <button type="button" class="registerBtn">注 册</button>
         <div class="notice">完成注册，表示您已同意接受Shop.shiatzychen.com 的隐私政策及相关线上条例。</div>
     </div>
