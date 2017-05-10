@@ -128,6 +128,8 @@
                 if(result.code==200){
                     console.log(result.message);
                     location.href="/cart/list";
+                }else{
+                    layer.msg(result.message);
                 }
             });
         });
