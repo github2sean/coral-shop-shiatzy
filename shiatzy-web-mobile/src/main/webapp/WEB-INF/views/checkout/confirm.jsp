@@ -15,18 +15,32 @@
     <h3>订单总额：¥ ${order.orderTotal}</h3>
     <div class="delivery content">
         <h3>1. 配送</h3>
-
-        <div class="delivery-message" style="margin-top: 2px">
-            <span>快递运送</span>
-            <p>${row.firstName}${row.lastName}</p>
-            <p style="display: initial;">${row.address}</p>
-            <a href="/checkout/listAddress">编辑 ></a>
-        </div>
-
-        <div class="drugstore">
-            <p>门店取货</p>
-            <a href="购物车.结算页.门店取货.html">编辑 ></a>
-        </div>
+        <c:if test="${not empty order.storeDomain}">
+            <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
+                <span>快递运送</span>
+                <p></p>
+                <p style="display: initial;"></p>
+                <a href="/checkout/listShipAddress">选择 ></a>
+            </div>
+            <div class="delivery-message" style="height: 100px;background-color: #cccccc;">
+                <p>门店取货</p>
+                    <p>${order.storeDomain.name}</p>
+                    <p>${order.storeDomain.address}</p>
+                <a href="/checkout/listStore">选择 ></a>
+            </div>
+        </c:if>
+        <c:if test="${empty order.storeDomain}">
+            <div class="delivery-message" style="margin-top: 2px">
+                <span>快递运送</span>
+                <p>${order.shipLastName}${order.shipFirstName}</p>
+                <p style="display: initial;">${order.shipAddress}</p>
+                <a href="/checkout/listShipAddress">选择 ></a>
+            </div>
+            <div class="drugstore">
+                <p>门店取货</p>
+                <a href="/checkout/listStore">选择 ></a>
+            </div>
+        </c:if>
     </div>
     <div class="delivery">
         <h3>2. 发票信息</h3>
@@ -118,7 +132,7 @@
             $.post("/checkout/submitOrder",function (data) {
                 console.log(data);
                 if(data.code==200){
-
+                    layer.msg(data.message);
                 }
             });
         });

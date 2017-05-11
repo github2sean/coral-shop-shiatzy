@@ -12,22 +12,22 @@
     <div class="dx-title">结账 <a href="/cart/list">回上页</a></div>
     <div class="content">
         <c:forEach var="row" items="${cartList}">
-        <div class="dx-GoodsDetails">
+        <div class="dx-GoodsDetails goodsDiv">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
+                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
                     <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
-                    <div class="quantity">数量: <span>${row.num}</span></div>
-                    <div class="price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                    <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
+                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href="javascript:;" class="deleteCart" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_collect" data-value="${row.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
+                    <li><a href="javascript:;" class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
             <div class="alter j_alter"><a href="javascript:;">修改</a></div>
@@ -45,8 +45,8 @@
         <div class="title">结算</div>
         <div class="wrap">
             <div class="subtotal">小计 <span>&yen;<span id="subtotal">${order.goodsTotal}</span></span> </div>
-            <div class="discount">优惠 <span>&yen;<span id="discount"> 0</span></span></div>
-            <div class="express">快递 <span>&yen;<span id="express">50</span></span> </div>
+            <div class="discount" style="color: red">优惠 <span>&yen;<span id="discount"> 0</span></span></div>
+            <div class="express">快递 <span>&yen;<span id="express" data-value="50">50</span></span> </div>
             <div class="predict">预计订单总额 <span>&yen;<span id="ordertotal"> ${order.orderTotal}</span></span></div>
         </div>
     </div>
@@ -99,9 +99,11 @@
             $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
 
         });
-        var fee = ($(".express").attr("data-value"))*1;
-        var final_amt = total-fee;
-        $("#js_predict").html("&yen; &nbsp;"+final_amt.toFixed(2));
+        var fee = ($("#express").attr("data-value"))*1;
+        var dis = ($("#discount").text())*1;
+        var final_amt = total+fee-dis;
+        console.log(fee+" dis "+ dis+" "+final_amt);
+        $("#ordertotal").html("&nbsp;"+final_amt.toFixed(2));
 
     }
 
@@ -172,26 +174,66 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('使用优惠码成功');
+                    $("#discount").text(data.data);
+                    clsTotal();
                 }else{
                     $('.showInfo').text(data.message);
                 }
             });
         });
 
-        /*$(".goods_color").each(function () {
-            var str = $(this).attr("data-value");
-            if(str!=null && str!=""){
-                str.replace("，",",");
-                str.replace("：",":");
-                str.replace("“","\"");
-                str.replace("”","\"");
-                str.replace("｛","{");
-                str.replace("｝","}");
-            }
-            console.log("str:"+str);
-            jsonObj = jQuery.parseJSON(str);
-            $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });*/
+
+
+        $(".deleteBtn").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.href = "/cart/list";
+                    }
+                }
+            });
+        });
+        $(".j_collect").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/cartToWish",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入心愿单成功");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.href = "/cart/list";
+                    }
+                }
+            });
+        });
+        $(".j_appointment").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/cartToBoutique",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入精品店成功");
+                    if(typeof (isNull)=="undefined"){
+                        window.location.href = "/cart/list";
+                    }
+                }
+            });
+        });
+
 
     });
 </script>

@@ -25,8 +25,14 @@ import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.store.domain.StoreCityDomain;
+import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
+import com.dookay.coral.shop.store.query.StoreCityQuery;
+import com.dookay.coral.shop.store.query.StoreCountryQuery;
 import com.dookay.coral.shop.store.query.StoreQuery;
+import com.dookay.coral.shop.store.service.IStoreCityService;
+import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +81,12 @@ public class CheckoutController  extends BaseController{
 
     @Autowired
     private IStoreService storeService;
+
+    @Autowired
+    private IStoreCountryService storeCountryService;
+    @Autowired
+    private IStoreCityService storeCityService;
+
 
     private static String CART_LIST = "cartList";
     private static String ORDER = "order";
@@ -335,6 +347,8 @@ public class CheckoutController  extends BaseController{
 
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
         OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
+        orderDomain.setCustomerAddressDomain(customerAddressDomain);
+        orderDomain.setStoreDomain(null);
         if(orderDomain == null)
         {
             return errorResult("页面失效");
@@ -357,30 +371,56 @@ public class CheckoutController  extends BaseController{
 
 
     /**
-     * 设置自提门店
+     * 初始化自提门店
      * @return
      */
     @RequestMapping(value = "listStore",method = RequestMethod.GET)
     public  ModelAndView listStore(){
-
-        //数据库暂无门店
         List<StoreDomain> storeDomainList = storeService.getList(new StoreQuery());
         ModelAndView modelAndView= new ModelAndView("/checkout/listStore");
+        List<StoreCountryDomain> storeCountryList  = storeCountryService.getList(new StoreCountryQuery());
         modelAndView.addObject("storeDomainList",storeDomainList);
+        modelAndView.addObject("storeCountryList",storeCountryList);
         return modelAndView;
     }
+
+    @RequestMapping(value = "initCity" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult initCity(String countryId){
+        StoreCityQuery query = new StoreCityQuery();
+        query.setCountryId(countryId);
+        List<StoreCityDomain>  storeCityList = storeCityService.getList(query);
+        return successResult("初始化城市", JsonUtils.toJSONString(storeCityList));
+    }
+
+    @RequestMapping(value = "initStore" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult initStore(String countryId,String cityId){
+        StoreQuery query = new StoreQuery();
+        query.setCityId(cityId);
+        query.setCountryId(countryId);
+        List<StoreDomain> storeList = storeService.getList(query);
+        return successResult("初始化门店",JsonUtils.toJSONString(storeList));
+    }
+
 
     /**
      * 设置自提门店
      * @return
      */
     @RequestMapping(value = "setStore", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult setStore(Long storeId){
+        if(storeId==null){
+            return errorResult("参数为空");
+        }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
+        order.setStoreDomain(storeService.get(storeId));
+        order.setCustomerAddressDomain(null);
         session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
@@ -444,10 +484,30 @@ public class CheckoutController  extends BaseController{
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
+            order.setCouponDiscount(couponDomain.getDiscountPrice());
             session.setAttribute(ORDER,order);
         }
+        return successResult("操作成功",couponDomain.getDiscountPrice());
+    }
+
+    /**
+    * 取消使用优惠券
+    *
+     * */
+    @RequestMapping(value = "cancelUseCoupon", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult cancelUseCoupon(){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        order.setCouponId(null);
+        order.setCouponDiscount(0D);
+        session.setAttribute(ORDER,order);
         return successResult("操作成功");
     }
+
+
+
 
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)
     @ResponseBody

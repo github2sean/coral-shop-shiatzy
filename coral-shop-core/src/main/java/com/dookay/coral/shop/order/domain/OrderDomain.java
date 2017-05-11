@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
+import com.dookay.coral.shop.store.domain.StoreDomain;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -125,6 +127,10 @@ public class OrderDomain implements Serializable {
 	 */
 	@Transient
 	private List<OrderItemDomain> orderItemDomainList;
+	@Transient
+	private StoreDomain storeDomain;
+	@Transient
+	private CustomerAddressDomain customerAddressDomain;
 	
 
 }

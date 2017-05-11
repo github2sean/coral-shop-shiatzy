@@ -45,4 +45,11 @@ public class CouponDomain implements Serializable {
 	
 	/*结束时间*/
 	private Date endTime;
+
+	/*折扣额度*/
+	private  Double discount;
+
+	/*优惠价格*/
+	private Double discountPrice;
+
 }
