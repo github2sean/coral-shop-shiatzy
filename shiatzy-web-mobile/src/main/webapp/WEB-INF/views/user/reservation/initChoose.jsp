@@ -14,35 +14,35 @@
 <div class="order-main clearfix">
     <c:forEach var="row" items="${preOderItemList}">
 
-            <div class="order-main-left">
+            <div class="order-main-left goodsDiv">
                 <p class="product-num">产品编号 ${row.leftItem.goodsCode}</p>
-                <img src="images/order_01.png" alt="">
+                <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
                 <p class="product-name">${row.leftItem.goodsName}</p>
                 <div class="color-size">
-                    <p>黑色</p>
-                    <p>M号</p>
+                    <p>${row.leftItem.goodsItemDomain.name}</p>
+                    <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}号</p>
                 </div>
                 <p class="price">单价　¥ ${row.leftItem.goodsPrice}</p>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
+                    <li><a href="javascript:;" class="deleteBtn" data-value="${row.leftItem.id}"><svg><use xlink:href="#close" data-value="${row.leftItem.id}"></use></svg></a></li>
                 </ul>
             </div>
             <c:if test="${not empty row.rightItem}">
-                <div class="order-main-right">
+                <div class="order-main-right goodsDiv">
                     <p class="product-num">产品编号 ${row.rightItem.goodsCode}</p>
-                    <img src="images/order_02.png" alt="">
+                    <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
                     <p class="product-name">${row.rightItem.goodsName}</p>
                     <div class="color-size">
-                        <p>黑色</p>
-                        <p>M号</p>
+                        <p>${row.rightItem.goodsItemDomain.name}</p>
+                        <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}号</p>
                     </div>
                     <p class="price">单价　¥ ${row.rightItem.goodsPrice}</p>
                     <ul class="do-list-icon">
-                        <li><a href="javascript:;" class="j_appointment"><svg><use xlink:href="#ap-small"></use></svg></a></li>
-                        <li><a href="javascript:;" class="j_collect"><svg><use xlink:href="#heart"></use></svg></a></li>
-                        <li><a href=""><svg><use xlink:href="#close"></use></svg></a></li>
+                        <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
+                        <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
+                        <li><a href="javascript:;" class="deleteBtn" data-value="${row.leftItem.id}"><svg><use xlink:href="#close" data-value="${row.rightItem.id}"></use></svg></a></li>
                     </ul>
                 </div>
             </c:if>
@@ -54,52 +54,46 @@
 <div class="order-stores">
     <h1>选择预约门市</h1>
     <div class="model-select-box">
-        <div class="model-select-country" data-value="">
-            <span class="pl-2">请选择国家</span>
+        <div class="model-select-country" data-value="" id="countrySelect">
+            <span class="pl-2" id="chooseCountry">请选择国家</span>
             <span class="pull-right">v</span>
-            <ul class="text-center model-select-option" id="countrySelect">
+            <ul class="text-center model-select-option" style="display: none">
             <c:forEach var="row" items="${storeCountryList}">
-                <li data-option="${row.id}" value="${row.id}">${row.name}</li>
+                <li data-option="${row.id}" value="${row.id}" class="">${row.name}</li>
             </c:forEach>
             </ul>
         </div>
     </div>
-    <div class="model-select-box">
-        <div class="model-select-city" data-value="">
-            <span class="pl-2">请选择省/州</span>
+    <div class="model-select-box" >
+        <div class="model-select-city" data-value="" id="citySelect">
+            <span class="pl-2" id="chooseCity">请选择省/州</span>
             <span class="pull-right">v</span>
+            <ul class="text-center model-select-option" id="cityFather" style="display: none">
+                <c:forEach var="row" items="${storeCityList}">
+                    <li data-option="${row.id}" value="${row.id}">${row.name}</li>
+                </c:forEach>
+            </ul>
         </div>
-        <ul class="text-center model-select-option" id="citySelect">
-            <c:forEach var="row" items="${storeCityList}">
-                <li data-option="${row.id}" value="${row.id}">${row.name}</li>
+    </div>
+    <div class="model-select-box" >
+        <div class="model-select-store" data-value="" id="storeSelect">
+            <span class="pl-2" id="chooseStore">请选择门市</span>
+            <span class="pull-right">v</span>
+            <ul class="text-center model-select-option" id="storeFather" style="display: none">
+            <c:forEach var="row" items="${storeList}" varStatus="num">
+                <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${row.name}</li>
             </c:forEach>
-        </ul>
-    </div>
-    <div class="model-select-box">
-        <div class="model-select-store" data-value="">
-            <span class="pl-2">请选择门市</span>
-            <span class="pull-right">v</span>
+            </ul>
         </div>
-        <ul class="text-center model-select-option" id="storeSelect">
-        <c:forEach var="row" items="${storeList}">
-            <li data-option="${row.id}" value="${row.id}">${row.name}</li>
-        </c:forEach>
-        </ul>
-        <%--<ul class="text-center model-select-option">
-            <li data-option="2">上海國金中心精品店</li>
-            <li data-option="3">上海青浦米格天地店</li>
-            <li class="active" data-option="4">上海恒隆精品店</li>
-            <li data-option="5" class="seleced">上海奕歐來店</li>
-        </ul>--%>
     </div>
-    <div class="stores-introduce">
-        <h2>上海恒隆精品店</h2>
-        <p>上海市靜安區南京西路1266號恆隆廣場</p>
-        <p>3F321鋪</p>
-        <p>+86 21 6240 0910</p>
+    <div class="stores-introduce storeInfo">
+        <h2 id="storeName"></h2>
+        <p id="storeAddress"></p>
+        <p id="storeTime"></p>
+        <p id="storeTel"></p>
     </div>
     <div class="submit-btn">
-        <a href="#" class="sendBtn">送出预约</a>
+        <a href="#" class="sendBtn" data-value="">送出预约</a>
     </div>
 </div>
 
@@ -109,59 +103,182 @@
 </jsp:include>
 <script>
     //下拉列表
-    $(function () {
-        function selectModel() {
-            var $box = $('div.model-select-box');
-            var $option = $('ul.model-select-option', $box);
-            var $txt = $('div.model-select-store', $box);
-            var speed = 10;
-            $txt.click(function (e) {
-                $option.not($(this).siblings('ul.model-select-option')).slideUp(speed, function () {
-                    int($(this));
-                });
-                $(this).siblings('ul.model-select-option').slideToggle(speed, function () {
-                    int($(this));
-                });
-                return false;
+    function selectModel() {
+        var $box = $('div.model-select-box');
+        var $option = $('ul.model-select-option', $box);
+        var $txt = $('div.model-select-store', $box);
+        var speed = 10;
+        $txt.click(function (e) {
+            $option.not($(this).siblings('ul.model-select-option')).slideUp(speed, function () {
+                int($(this));
             });
-            $option.find('li').each(function (index, element) {
-                        if ($(this).hasClass('seleced')) {
-                            $(this).addClass('data-selected');
-                        }
-                    })
-                    .mousedown(function () {
-                        $(this).parent().siblings('div.model-select-store').text($(this).text())
-                                .attr('data-value', $(this).attr('data-option'));
-                        $option.slideUp(speed, function () {
-                            int($(this));
-                        });
-                        $(this).addClass('seleced data-selected').siblings('li').removeClass('seleced data-selected');
-                        return false;
-                    })
-                    .mouseover(function () {
-                        $(this).addClass('seleced').siblings('li').removeClass('seleced');
+            $(this).siblings('ul.model-select-option').slideToggle(speed, function () {
+                int($(this));
+            });
+            return false;
+        });
+        $option.find('li').each(function (index, element) {
+                    if ($(this).hasClass('seleced')) {
+                        $(this).addClass('data-selected');
+                    }
+                })
+                .mousedown(function () {
+                    $(this).parent().siblings('div.model-select-store').text($(this).text())
+                            .attr('data-value', $(this).attr('data-option'));
+                    $option.slideUp(speed, function () {
+                        int($(this));
                     });
-            $(document).click(function (e) {
-                $option.slideUp(speed, function () {
-                    int($(this));
+                    $(this).addClass('seleced data-selected').siblings('li').removeClass('seleced data-selected');
+                    return false;
+                })
+                .mouseover(function () {
+                    $(this).addClass('seleced').siblings('li').removeClass('seleced');
+                });
+        $(document).click(function (e) {
+            $option.slideUp(speed, function () {
+                int($(this));
+            });
+        });
+        function int(obj) {
+            obj.find('li.data-selected').addClass('seleced').siblings('li').removeClass('seleced');
+        }
+    };
+    $(function () {
+
+        $("#countrySelect").click(function () {
+            var $option =  $(this).find(".model-select-option");
+            $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
+            $option.find("li").click(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var text = $(this).text();
+                $(this).parent().siblings("#chooseCountry").text(text);
+                //初始化选择城市
+                $.post("/reservation/chooseCity",{"countryId":$(this).attr("data-option")},function (data) {
+                    var cityJson = data.data;
+                    console.log(cityJson);
+                    if(data.code==200 && cityJson!=null){
+                        $("#cityFather").children("li").each(function () {
+                            $(this).remove();
+                        });
+                       var json = eval(cityJson)
+                        for(var i=0; i<json.length; i++)
+                        {
+                            $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                        }
+                    }else{
+                        layer.msg("该国家下无门店");
+                    }
                 });
             });
-            function int(obj) {
-                obj.find('li.data-selected').addClass('seleced').siblings('li').removeClass('seleced');
-            }
-        }
-        selectModel();
+        });
 
+
+        var json = "";
+        $("#citySelect").click(function () {
+            var $option =  $(this).find(".model-select-option");
+            $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
+            $option.find("li").on("click",function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var text = $(this).text();
+                $(this).parent().siblings("#chooseCity").text(text);
+                //初始化选择城市
+                $.post("/reservation/chooseStore",{"cityId":$(this).attr("data-option")},function (data) {
+                    var storeJson = data.data;
+                    console.log(storeJson);
+                    if(data.code==200 && storeJson!=null){
+                        $("#storeFather").children("li").each(function () {
+                            $(this).remove();
+                        });
+                         json = eval(storeJson)
+                        for(var i=0; i<json.length; i++)
+                        {
+                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                        }
+                    }else{
+                        layer.msg("该城市下无门店");
+                    }
+                });
+            });
+        });
+
+        $("#storeSelect").click(function () {
+            var $option =  $(this).find(".model-select-option");
+            $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
+            $option.find("li").on("click",function () {
+                var index = $(this).attr("data-value");
+                $(this).addClass("active").siblings().removeClass("active");
+                var text = $(this).text();
+                $(this).parent().siblings("#chooseStore").text(text);
+                console.log(index);
+                $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
+                        .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
+                $(".sendBtn").attr("data-value",json[index].id);
+            });
+
+        });
 
         $(".sendBtn").click(function () {
-
-            var storeId = 1;
-
+            var storeId = $(this).attr("data-value");
+            if(storeId==''){
+                layer.msg("请选择门店");
+                return false;
+            }
             $.post("/reservation/submitPreOrder",{"storeId":storeId},function (data) {
                 if(data.code==200){
                     location.href = "/reservation/details?reservationId="+data.data;
                 }
             })
         });
+
+        $(".deleteBtn").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    if(typeof (isNull)=="undefined"){
+                        location.href = "/boutique/list";
+                    }
+                }
+            });
+        });
+        $(".j_collect").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/boutiqueToWish",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入心愿单成功");
+                    if(typeof (isNull)=="undefined"){
+                        location.href = "/boutique/list";
+                    }
+                }
+            });
+        });
+        $(".j_bag").on("click",function () {
+            var $self = $(this);
+            var id = $(this).attr("data-value");
+            console.log(id);
+            var data = {"shoppingCartItemId":id};
+            $.post("/cart/boutiqueToCart",data,function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $self.parents(".goodsDiv").remove();
+                    var  isNull= $(".goodsDiv").attr("class");
+                    layer.msg("加入购物车成功");
+                    if(typeof (isNull)=="undefined"){
+                        location.href = "/boutique/list";
+                    }
+                }
+            });
+        });
+
     })
 </script>

@@ -53,10 +53,10 @@
 </c:if>
     <c:if test="${cartList.size()==0}">
         <div class="content">
-            <p>购物袋（0）</p>
+           <p>购物袋（0）</p>
         </div>
         <div class="shopping-start">
-            <a href="/" class="shopping">前往购物</a>
+            <a href="/home/index" class="shopping">前往购物</a>
             <div class="dx-clause">
                 <ul>
                     <li><a href="#">选购女士</a></li>

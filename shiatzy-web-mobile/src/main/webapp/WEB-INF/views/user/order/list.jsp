@@ -37,7 +37,7 @@
             <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
                 <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
                 <div class="orderNumber">${row.orderNo}</div>
-                <div class="status" data-value="${row.status}"></div>
+                <div class="status" data-value=""></div>
             </a>
         </c:forEach>
 

@@ -4,6 +4,7 @@ import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.order.domain.OrderDomain;
+import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 
 import java.util.List;
@@ -45,5 +46,8 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
     void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId);
 
     void withGoodsItem(List<ShoppingCartItemDomain> shoppingCartItemDomainList);
+    void withReservationItem(List<ReservationItemDomain> reservationItemDomainList);
+
+
 
 }

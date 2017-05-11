@@ -1,6 +1,11 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -34,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,13 +100,14 @@ public class ReservationController extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //预约单查询
         ReservationDomain reservationDomain = reservationService.get(reservationId);
-
-
+        Long storeId = Long.parseLong(reservationDomain.getStoreTitle());
+        reservationDomain.setStoreDomain(storeService.get(storeId));
         ReservationItemQuery query = new ReservationItemQuery();
         query.setReservationId(reservationId);
-        List reservationList  = reservationItemService.getList(query);
+        List<ReservationItemDomain> reservationList  = reservationItemService.getList(query);
+        shoppingCartService.withReservationItem(reservationList);
+        reservationDomain.setReservationItemDomainList(reservationList);
         ModelAndView mv  =  new ModelAndView("user/reservation/details");
-        mv.addObject("reservationList",reservationList);
         mv.addObject("reservationDomain",reservationDomain);
         return mv;
     }
@@ -108,6 +116,8 @@ public class ReservationController extends BaseController{
 
     @RequestMapping(value = "initChoose" ,method = RequestMethod.GET)
     public ModelAndView initChoose(){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<StoreCountryDomain> storeCountryList  = storeCountryService.getList(new StoreCountryQuery());
@@ -116,7 +126,7 @@ public class ReservationController extends BaseController{
         query.setCustomerId(customerDomain.getId());
         query.setShoppingCartType(RESERVATION_TYPE);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.getList(query);
-
+        shoppingCartService.withGoodsItem(cartList);
         List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
         for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
             if(i!=0&&i%2!=0){
@@ -127,6 +137,7 @@ public class ReservationController extends BaseController{
         }
         mv.addObject("storeCountryList",storeCountryList);
         mv.addObject("preOderItemList",preOderItemList);
+        session.setAttribute("submitCartList",cartList);
         return mv;
     }
 
@@ -136,7 +147,7 @@ public class ReservationController extends BaseController{
         StoreCityQuery query = new StoreCityQuery();
         query.setCountryId(countryId);
         List<StoreCityDomain>  storeCityList = storeCityService.getList(query);
-        return successResult("初始化城市",storeCityList);
+        return successResult("初始化城市", JsonUtils.toJSONString(storeCityList));
     }
 
     @RequestMapping(value = "chooseStore" ,method = RequestMethod.POST)
@@ -146,7 +157,7 @@ public class ReservationController extends BaseController{
         query.setCityId(cityId);
         query.setCountryId(countryId);
         List<StoreDomain> storeList = storeService.getList(query);
-        return successResult("初始化门店",storeList);
+        return successResult("初始化门店",JsonUtils.toJSONString(storeList));
     }
 
     @RequestMapping(value = "submitPreOrder" ,method = RequestMethod.POST)
@@ -169,14 +180,17 @@ public class ReservationController extends BaseController{
         reservationDomain.setCustomerId(customerDomain.getId());
         reservationDomain.setReservationNo("NO "+new Date().toLocaleString());
         reservationDomain.setStoreTitle(storeDomain.getId()+"");
-        reservationDomain.setTel(customerDomain.getPhone());
+        reservationDomain.setTel(storeDomain.getTel());
         reservationDomain.setAddress(storeDomain.getAddress());
         reservationDomain.setTime(storeDomain.getTime());
         reservationDomain.setNote("");
         reservationDomain.setUpdateTime(new Date());
         reservationService.create(reservationDomain);
 
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),3);
+        //判断传入商品ID是否在精品店中
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
         for (ShoppingCartItemDomain line:cartList){
             ReservationItemDomain reservationItemDomain = new ReservationItemDomain();
             reservationItemDomain.setRank(1);
@@ -185,6 +199,7 @@ public class ReservationController extends BaseController{
             reservationItemDomain.setGoodsName(line.getGoodsName());
             reservationItemDomain.setSkuCode(line.getSkuId()+"");
             reservationItemDomain.setNum(line.getNum());
+            reservationItemDomain.setItemId(line.getItemId());
             reservationItemDomain.setSpecifications(line.getSkuSpecifications());
             reservationItemDomain.setCreateTime(new Date());
             reservationItemDomain.setUpdateTime(new Date());

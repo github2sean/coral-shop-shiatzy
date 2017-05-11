@@ -12,6 +12,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
+import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
@@ -57,6 +58,8 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	private IOrderItemService orderItemService;
 	@Autowired
 	private IGoodsItemService goodsItemService;
+	@Autowired
+	private  IShoppingCartService shoppingCartService;
 	@Override
 	public void removeFromCart(Long id) {
 		if(id!=null){
@@ -231,7 +234,9 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 
 	@Override
 	public void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId) {
-
+		ShoppingCartItemDomain shoppingCartItemDomain = get(shoppingCartItemId);
+		shoppingCartItemDomain.setShoppingCartType(3);
+		update(shoppingCartItemDomain);
 	}
 
 
@@ -247,4 +252,18 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			shoppingCartItemDomain.setGoodsItemDomain(goodsItemDomain);
 		}
 	}
+
+	@Override
+	public void withReservationItem(List<ReservationItemDomain> reservationItemDomainList) {
+		List<Long> ids = reservationItemDomainList.stream().map(ReservationItemDomain::getItemId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIds(ids);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for (ReservationItemDomain reservationItemDomain:reservationItemDomainList){
+			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getId(), reservationItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
+			reservationItemDomain.setGoodsItemDomain(goodsItemDomain);
+		}
+	}
+
 }

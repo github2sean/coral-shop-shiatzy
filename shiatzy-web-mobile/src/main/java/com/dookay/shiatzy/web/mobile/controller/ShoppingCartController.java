@@ -4,6 +4,7 @@ import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,6 +92,9 @@ public class ShoppingCartController extends BaseController{
     @RequestMapping(value = "removeFromCart" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult removeFromCart(Long shoppingCartItemId){
+        if(shoppingCartItemId==null){
+            return errorResult("参数为空");
+        }
         shoppingCartService.removeFromCart(shoppingCartItemId);
         return  successResult("删除成功");
     }
@@ -186,11 +192,41 @@ public class ShoppingCartController extends BaseController{
     @RequestMapping(value = "cartToWish" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult cartToWish(Long shoppingCartItemId){
+        if(shoppingCartItemId==null){
+            return errorResult("参数为空");
+        }
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
         shoppingCartItemDomain.setShoppingCartType(2);
         shoppingCartService.update(shoppingCartItemDomain);
+        return  successResult("操作成功");
+    }
+    @RequestMapping(value = "boutiqueToWish" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult boutiqueToWish(Long shoppingCartItemId){
+        if(shoppingCartItemId==null){
+            return errorResult("参数为空");
+        }
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        shoppingCartItemDomain.setShoppingCartType(2);
+        shoppingCartService.update(shoppingCartItemDomain);
+        updateBoutiqueListSession(shoppingCartItemId);
+        return  successResult("操作成功");
+    }
+
+    @RequestMapping(value = "boutiqueToCart" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult boutiqueToCart(Long shoppingCartItemId){
+        if(shoppingCartItemId==null){
+            return errorResult("参数为空");
+        }
+        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        shoppingCartItemDomain.setShoppingCartType(1);
+        shoppingCartService.update(shoppingCartItemDomain);
+        updateBoutiqueListSession(shoppingCartItemId);
         return  successResult("操作成功");
     }
 
@@ -217,5 +253,17 @@ public class ShoppingCartController extends BaseController{
         return mv;
     }
 
+    public void updateBoutiqueListSession(Long id){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
+        for(int i=0;cartList!=null&&cartList.size()>0&&i<cartList.size();i++){
+            if(cartList.get(i).getId()==id){
+                cartList.remove(i);
+                break;
+            }
+        }
+        session.setAttribute("submitCartList",cartList);
+    }
 
 }

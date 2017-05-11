@@ -1,9 +1,13 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -13,6 +17,7 @@ import java.util.Date;
  * @since : 2017年05月03日
  * @version : v0.0.1
  */
+@Data
 @Table(name = "t_order_reservation_item")
 public class ReservationItemDomain implements Serializable {
 
@@ -36,6 +41,9 @@ public class ReservationItemDomain implements Serializable {
 	
 	/*商品规格编号*/
 	private String skuCode;
+
+	/*商品项目Id*/
+	private Long itemId;
 	
 	/*数量*/
 	private Integer num;
@@ -48,86 +56,9 @@ public class ReservationItemDomain implements Serializable {
 	
 	/*更新时间*/
 	private Date updateTime;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public Integer getRank(){
-		return rank;
-	}
-	
-	public void setRank(Integer rank){
-		this.rank = rank;
-	}
-	
-	public Integer getIsVisible(){
-		return isVisible;
-	}
-	
-	public void setIsVisible(Integer isVisible){
-		this.isVisible = isVisible;
-	}
-	
-	public Long getReservationId(){
-		return reservationId;
-	}
-	
-	public void setReservationId(Long reservationId){
-		this.reservationId = reservationId;
-	}
-	
-	public String getGoodsName(){
-		return goodsName;
-	}
-	
-	public void setGoodsName(String goodsName){
-		this.goodsName = goodsName;
-	}
-	
-	public String getSkuCode(){
-		return skuCode;
-	}
-	
-	public void setSkuCode(String skuCode){
-		this.skuCode = skuCode;
-	}
-	
-	public Integer getNum(){
-		return num;
-	}
-	
-	public void setNum(Integer num){
-		this.num = num;
-	}
-	
-	public String getSpecifications(){
-		return specifications;
-	}
-	
-	public void setSpecifications(String specifications){
-		this.specifications = specifications;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Date getUpdateTime(){
-		return updateTime;
-	}
-	
-	public void setUpdateTime(Date updateTime){
-		this.updateTime = updateTime;
-	}
-	
+
+	@Transient
+	private GoodsItemDomain goodsItemDomain;
+
 	
 }

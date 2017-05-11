@@ -68,6 +68,7 @@ public class BoutiqueController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),SHOPPINGCART_TYPE);
+        shoppingCartService.withGoodsItem(cartList);
         List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
         for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
             if(i!=0&&i%2!=0){
@@ -76,6 +77,7 @@ public class BoutiqueController extends BaseController{
             PreOderItem preOderItem = i+1<cartList.size()?new PreOderItem(cartList.get(i),cartList.get(i+1)):new PreOderItem(cartList.get(i),null);
             preOderItemList.add(preOderItem);
         }
+        System.out.println("cartList:"+JsonUtils.toJSONString(cartList));
         ModelAndView mv = new ModelAndView("boutique/list");
         mv.addObject("preOderItemList",preOderItemList);
         return mv;
