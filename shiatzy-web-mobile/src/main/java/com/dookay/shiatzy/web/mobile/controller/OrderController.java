@@ -87,12 +87,17 @@ public class OrderController extends BaseController {
         GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
         goodsItemQuery.setIds(ids);
         List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
+        //退货数量等于订单的数量不可在退货
+        Integer orderNum = 0;
+        Integer returnNum = 0;
         for (OrderItemDomain orderItemDomain:orderItemList){
             GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
                     .filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(null);
             orderItemDomain.setGoodsItemDomain(goodsItemDomain);
+            orderNum += orderItemDomain.getNum();
+            returnNum += orderItemDomain.getReturnNum();
         }
-
+        orderDomain.setCanReturnNum(orderNum-returnNum);
         ModelAndView mv = new ModelAndView("user/order/details");
         mv.addObject("orderDomain",orderDomain);
         mv.addObject("orderItemList",orderItemList);

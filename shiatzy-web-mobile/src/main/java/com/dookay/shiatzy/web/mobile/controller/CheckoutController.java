@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -190,6 +191,7 @@ public class CheckoutController  extends BaseController{
             orderDomain.setShipPhone(customerAddressDomain.getPhone());
             orderDomain.setShipAddress(customerAddressDomain.getAddress());
             orderDomain.setShipMemo(customerAddressDomain.getMemo());
+            orderDomain.setOrderTime(new Date());
         }
 
         ModelAndView mv=  new ModelAndView("checkout/confirm");
@@ -249,6 +251,8 @@ public class CheckoutController  extends BaseController{
             orderItemDomain.setGoodsCode(items.getGoodsCode());
             orderItemDomain.setGoodsPrice(items.getGoodsPrice());
             orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
+            orderItemDomain.setStatus(0);
+            orderItemDomain.setReturnNum(0);
             System.out.println("order:"+ JsonUtils.toJSONString(order));
             orderItemService.create(orderItemDomain);
         }
@@ -260,11 +264,11 @@ public class CheckoutController  extends BaseController{
             shoppingCartService.removeFromCart(cartList.get(i).getId());
         }
 
-        String orderNo = order.getOrderNo();
+        Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
             return successResult("商品库存不足",itemIds);
         }
-        return successResult("操作成功",orderNo);
+        return successResult("操作成功",orderId);
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
@@ -305,6 +309,7 @@ public class CheckoutController  extends BaseController{
 
     @RequestMapping(value = "createShipAddress", method = RequestMethod.POST)
     public  JsonResult createShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
+        System.out.print("addressModel:"+JsonUtils.toJSONString(addressModel));
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         addressModel.setCustomerId(customerDomain.getId());
@@ -319,6 +324,7 @@ public class CheckoutController  extends BaseController{
         mv.addObject("address",customerAddressDomain);
         return mv;
     }
+
 
     @RequestMapping(value = "updateShipAddress",method = RequestMethod.POST)
     @ResponseBody

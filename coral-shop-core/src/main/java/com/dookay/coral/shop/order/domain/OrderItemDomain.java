@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.criteria.CriteriaBuilder;
 
 import java.util.Date;
 
@@ -49,6 +50,10 @@ public class OrderItemDomain implements Serializable {
 	
 	/*sku规格json*/
 	private String skuSpecifications;
+	/*是否退货中*/
+	private Integer status;
+	/*已退数量*/
+	private Integer returnNum;
 
 
 	@Transient

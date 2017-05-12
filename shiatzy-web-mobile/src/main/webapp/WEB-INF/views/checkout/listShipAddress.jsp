@@ -10,7 +10,7 @@
 <div class="dx-shipping">
     <div class="dx-title">送货地址设定 <a href="javascript:history.go(-1)">回上页</a></div>
     <div class="content">
-        <a href="/checkout/" class="new-address">新增地址 +</a>
+        <a href="/checkout/createShipAddress" class="new-address">新增地址 +</a>
         <c:forEach var="row" items="${addressList}" varStatus="num">
             <div class="address addressDiv" >
                 <div class="title">地址${num.count} <span data-value="${row.id}" class="icon iconfont" style="background-color: inherit;border:1px solid #333">&#xe618;</span></div>
@@ -21,8 +21,8 @@
                         <div class="tel">电话：${row.phone}</div>
                     </div>
                     <div class="text-right">
-                        <div class="compile"><a href="/checkout/toUpdateAddress?addressId=${row.id}" class="updateBtn" data-value="${row.id}">编辑 ></a></div>
-                        <div class="del "><a href="" class="delBtn" data-value="${row.id}">删除 -</a></div>
+                        <div class="compile"><a href="/checkout/updateShipAddress?addressId=${row.id}" class="updateBtn" data-value="${row.id}">编辑 ></a></div>
+                        <div class="del delBtn"><a href="#" class="delBtn" data-value="${row.id}">删除 -</a></div>
                     </div>
                 </div>
             </div>
@@ -48,6 +48,17 @@
                 console.log(data);
                 if(data.code==200){
 
+                }
+            });
+        });
+
+        $(".delBtn").click(function () {
+            var $now = $(this);
+            var id = $now.attr("data-value");
+            $.post("/checkout/removeAddress",{"addressId":id},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    $now.parents(".addressDiv").remove();
                 }
             });
         });

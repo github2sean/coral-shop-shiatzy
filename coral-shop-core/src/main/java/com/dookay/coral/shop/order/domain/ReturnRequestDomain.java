@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
 import lombok.Data;
@@ -55,8 +56,12 @@ public class ReturnRequestDomain implements Serializable {
 	
 	/*退货门店id*/
 	private Long returnShopId;
+
 	@Transient
 	private StoreDomain storeDomain;
+
+	@Transient
+	private CustomerAddressDomain customerAddressDomain;
 
 	/*客户id*/
 	private Long customerId;

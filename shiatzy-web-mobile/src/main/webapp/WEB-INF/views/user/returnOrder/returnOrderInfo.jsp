@@ -8,34 +8,43 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">预约完成</p>
-    <a style="float: right;" href="#">< 我的账户</a>
+    <p style="float: left">退货</p>
+    <a style="float: right;" href="#" onClick="javascript :history.back(-1);">< 返回</a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
-        <h3>退货详细</h3>
+        <h3>选择退货商品和理由</h3>
         <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
     </div>
     <p>订单编号：<span>${order.orderNo}</span></p>
-    <p>订单日期：<span>${order.orderTime}</span></p>
+    <p>订单日期：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <form method="post" class="goodsForm" action="/returnOrder/chooseGoodsAndReason">
     <c:forEach var="row" items="${cartList}" varStatus="num">
     <div class="return-commodity clearfix">
-        <div>
+        <div style="border-bottom: 2px #cccccc solid">
             <span class="mr-2">
-                <label class="radiobox">
+                <label class="radiobox" style="float: left;width: 30%">
                     <input type="checkbox" name="returnList[${num.count-1}].orderItemId" value="${row.id}">
-                    <i class="i-radiobox"></i>
-                    <img src="images/goods-pic01.jpg" alt="">
+                    <i class="i-radiobox" style="float: left"></i>
+                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height: 100px;float: left">
                 </label>
+                <div class="verify-main" style="float: right;width: 70%;border-bottom: none">
+                    <div class="img-message">
+                        <h3>${row.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;<span class="reasonShow">v</span></h3>
+                        <h6>${row.goodsCode}</h6>
+                        <div style="display: inline-block;" class="size">
+                            <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
+                            <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
+                        </div>
+                        <p>数量：${row.num}</p>
+                        <p>单价　¥ ${row.goodsPrice}</p>
+                    </div>
+                </div>
             </span>
-        </div>
-        <div>
-            <p>${row.goodsName}<span>v</span></p>
-            <span>${row.goodsCode}</span>
+
         </div>
     </div>
-    <div class="return-list clearfix">
+   <div class="return-list clearfix" style="display: none">
         <p>请勾选退货理由（可复选）</p>
         <ul>
             <li>尺寸</li>
@@ -141,9 +150,20 @@
 </jsp:include>
 <script>
     $(function(){
-
+        $(".reasonShow").click(function () {
+           $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
+        });
+        $(".return-list:first").show();
         $(".submitBtn").click(function () {
-            $(".goodsForm").submit();
+            $(this).css("color","#333");
+            var data = $(".goodsForm").serializeArray();
+            $.post("/returnOrder/chooseGoodsAndReason",data,function (data) {
+               if(data.code==200){
+                   location.href = "/returnOrder/returnOrderConsigneeInfo";
+               }else {
+                   layer.msg(data.message);
+               }
+            });
         });
 
 

@@ -7,7 +7,7 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">我的帐户 / 订单详情  <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a></div>
+    <div class="dx-title">我的帐户 / 订单详情  <a style="float: right;" href="/u/account/index">回上页</a></div>
     <div class="content">
         <div class="dx-reservation">我的订单</div>
 

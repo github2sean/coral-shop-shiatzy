@@ -24,7 +24,6 @@
             <c:when test="${orderDomain.status==3}">已发货</c:when>
             <c:when test="${orderDomain.status==4}">已收货</c:when>
             <c:when test="${orderDomain.status==-1}">已取消</c:when>
-
         </c:choose></p>
         <p><a href="#">查看递送状态<span style="float:right;">></span></a></p>
     </div>
@@ -34,13 +33,13 @@
         <div class="verify-main">
             <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
             <div class="img-message">
-                <h3>${item.goodsName}</h3>
+                <h3>${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;<c:if test="${item.status==1}"><font style="color: red">(退货中)</font></c:if></h3>
                 <h6>${item.goodsCode}</h6>
                 <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;"></p>
-                    <p></p>
+                    <p style="float:left;margin-right: 3.0918rem;">${item.goodsItemDomain.name}</p>
+                    <p>${JSONObject.fromObject(item.skuSpecifications).getString("size")}号</p>
                 </div>
-                <p>数量：${item.num}</p>
+                <p>数量：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;<c:if test="${item.status==1}"><span style="color: red">已退：${item.returnNum}</span></c:if></p>
                 <p>单价　¥ ${item.goodsPrice}</p>
             </div>
         </div>
@@ -50,24 +49,26 @@
         <h4>帐单详情<span>v</span></h4>
         <ul>
             <li>优惠前<span>¥ ${orderDomain.goodsTotal}</span></li>
-            <li>优惠应用<span>¥ -0</span></li>
-            <li>Art Club会员优惠<span>¥ -0</span></li>
-            <li>运费<span>¥ 50</span></li>
+            <li>优惠应用<span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">¥ -${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}</span></li>
+            <li>Art Club会员优惠<span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">¥ -${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}</span></li>
+            <li>运费<span>¥ ${orderDomain.shipFee}</span></li>
         </ul>
-        <p>总计<span>¥ ${orderDomain.orderTotal}</span></p>
+        <p>总计<span>¥ ${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}</span></p>
     </div>
     <div class="information">
         <h4>配送信息<span>v</span></h4>
-        <p>新北市五股区五权六路40号</p>
-        <p>資訊部</p>
+        <p>${orderDomain.shipAddress}</p>
+        <p>${orderDomain.shipTitle}</p>
+        <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
         <div class="clearfix">
             <span class="mr-2">
                 <label class="radiobox"><input type="checkbox">申请退货
                 <a href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}"><i class="i-radiobox returnBtn"></i></a>
                 </label>
             </span>
-            <p><a href="我的账户.退货申请.我要退货.退货理由.html">退货说明<span>></span></a></p>
+            <p><a href="#">退货说明<span>></span></a></p>
         </div>
+        </c:if>
     </div>
     <div class="privacy">
         <a href="#">

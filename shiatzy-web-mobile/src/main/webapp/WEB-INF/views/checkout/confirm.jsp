@@ -32,8 +32,8 @@
         <c:if test="${empty order.storeDomain}">
             <div class="delivery-message" style="margin-top: 2px">
                 <span>快递运送</span>
-                <p>${order.shipLastName}${order.shipFirstName}</p>
-                <p style="display: initial;">${order.shipAddress}</p>
+                <p>${order.customerAddressDomain.title}</p>
+                <p style="display: initial;">${order.customerAddressDomain.address}</p>
                 <a href="/checkout/listShipAddress">选择 ></a>
             </div>
             <div class="drugstore">
@@ -86,8 +86,19 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    $(function(){
 
+    var noNeedBill = function () {
+        $("#showBill").hide();
+        $.post("/checkout/isNeedBill",{"isNeed":0,"info":""},function (data) {
+            if(data.code==200){
+            }
+        });
+    };
+
+    $(function(){
+        noNeedBill();
+        var isCheckPayWay = false;
+        var isCheckSendWay = ${order.storeDomain==null&&order.customerAddressDomain==null}?false:true;
         $("#need").click(function () {
             $("#showBill").show();
         });
@@ -100,39 +111,34 @@
             });
         });
         $("#noNeed").click(function () {
-            $("#showBill").hide();
-            $.post("/checkout/isNeedBill",{"isNeed":0,"info":""},function (data) {
-                if(data.code==200){
-                }
-                console.log(data);
-            });
+            noNeedBill();
         });
         $(".payMethod").click(function () {
             $(this).addClass("active").siblings("li").removeClass("active");
             var  id = $(this).attr("data-value");
             $.post("/checkout/setPaymentMethod",{"paymentId":id},function (data) {
                 if(data.code==200){
-                }
-                console.log(data);
-            });
-        });
-
-        $(".delivery-message").click(function () {
-            var id = $(this).attr("data-value");
-            $(this).css("background-color","#cccccc").siblings(".delivery-message").css("background-color","#f9f4f4");
-            $.post("/checkout/setPaymentMethod",{"addressId":id},function (data) {
-                if(data.code==200){
+                    isCheckPayWay = true;
                 }
                 console.log(data);
             });
         });
 
         $(".submitBtn").click(function () {
-
+            console.log(isCheckPayWay+""+isCheckSendWay);
+            //校验 运送方式 支付方式 发票信息
+            if(!isCheckPayWay){
+                layer.msg("请选择支付方式");
+                return false;
+            }else if(!isCheckSendWay){
+                layer.msg("请选择配送方式");
+                return false;
+            }
             $.post("/checkout/submitOrder",function (data) {
                 console.log(data);
                 if(data.code==200){
                     layer.msg(data.message);
+                    //location.href="/order/details?orderId="+data.data;
                 }
             });
         });

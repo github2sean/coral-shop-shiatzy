@@ -17,6 +17,8 @@ public class OrderItemQuery extends Query {
 
 	private Long orderId;
 
+	private Integer returnNum;
+
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -24,6 +26,9 @@ public class OrderItemQuery extends Query {
 		Example.Criteria criteria = queryCriteria.createCriteria();
 		if(valid(orderId)){
 			criteria.andEqualTo("orderId",orderId);
+		}
+		if (valid(returnNum)){
+			criteria.andGreaterThan("num",returnNum);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;
