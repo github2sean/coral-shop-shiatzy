@@ -238,10 +238,8 @@
             <li>
                 <a>${level1.name}
                     <ul class="guide-sub-nav">
-                    <c:forEach var="level2" items="${categoryLevle2List}">
-                        <c:if test="${level2.parentId==level1.id}">
-                            <li><a href="/goods/list?categoryId=${level2.id}">${level2.name}</a></li>
-                        </c:if>
+                    <c:forEach var="level2" items="${level1.children}">
+                        <li><a href="/goods/list?categoryId=${level2.id}">${level2.name}</a></li>
                     </c:forEach>
                     </ul>
                 </a>

@@ -116,6 +116,12 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){
+        //未发布，跳转到404页面
+
+        //商品数据校验，没有sku，跳转到404页面
+
+        //准备商品数据
+
         GoodsItemDomain goodsItemDomain =  goodsItemService.get(itemId);
         Long goodsId = goodsItemDomain.getGoodsId();
         goodsItemService.withColor(goodsItemDomain);
@@ -131,6 +137,7 @@ public class GoodsController extends BaseController{
         mv.addObject("goodsItemDomain",goodsItemDomain);
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
+
         return mv;
     }
 
