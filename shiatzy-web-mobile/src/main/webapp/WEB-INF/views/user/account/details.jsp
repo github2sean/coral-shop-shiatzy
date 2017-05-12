@@ -80,15 +80,13 @@
         </a>
     </div>
 
-    <script>
-        $(function () {
 
-            console.log(${accountDomain});
-            console.log(${customerDomain});
-        });
-    </script>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+<script>
+    $(function () {
 
+    });
+</script>

@@ -16,9 +16,16 @@ import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.*;
+import com.dookay.coral.shop.store.domain.StoreCountryDomain;
+import com.dookay.coral.shop.store.domain.StoreDomain;
+import com.dookay.coral.shop.store.query.StoreCountryQuery;
+import com.dookay.coral.shop.store.query.StoreQuery;
+import com.dookay.coral.shop.store.service.IStoreCountryService;
+import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.ReturnInfoForm;
 import com.dookay.shiatzy.web.mobile.model.ChooseGoodsModel;
 import com.dookay.shiatzy.web.mobile.model.ReturnReasonModel;
+import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,10 +65,15 @@ public class ReturnOrderController extends BaseController {
     private IReturnRequestService returnRequestService;
     @Autowired
     private IReturnRequestItemService returnRequestItemService;
+    @Autowired
+    private IStoreService storeService;
+    @Autowired
+    private IStoreCountryService storeCountryService;
 
-    public static String CART_LIST = "cartList";
-    public static String RETURN_ORDER = "return_order";
-    public static String ORDER = "order";
+    private static String CART_LIST = "cartList";
+    private static String RETURN_ORDER = "return_order";
+    private static String ORDER = "order";
+    private static String BACK_WAY = "backWay";
     /**
      * 初始化退货页面
      * @return
@@ -72,10 +84,16 @@ public class ReturnOrderController extends BaseController {
         ReturnRequestDomain returnRequestDomain = returnRequestService.get(orderId);
         ReturnRequestItemQuery query = new ReturnRequestItemQuery();
         query.setReturnRequestId(returnRequestDomain.getId());
-        List returnOrderItemList  = returnRequestItemService.getList(query);
+        List<ReturnRequestItemDomain> returnOrderItemList  = returnRequestItemService.getList(query);
+        Double preBackMoney = 0D;
+        for(ReturnRequestItemDomain line:returnOrderItemList){
+            preBackMoney += line.getGoodsPrice()*line.getNum();
+        }
+        returnRequestItemService.withGoodsItem(returnOrderItemList);
         ModelAndView mv = new ModelAndView("user/returnOrder/details");
         mv.addObject("returnRequestDomain",returnRequestDomain);
         mv.addObject("returnOrderItemList",returnOrderItemList);
+        mv.addObject("preBackMoney",preBackMoney);
         return mv;
     }
 
@@ -90,8 +108,19 @@ public class ReturnOrderController extends BaseController {
 
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderId);
-        List<OrderItemDomain> cartList  = orderItemService.getList(query);
+        List<OrderItemDomain> orderItemList  = orderItemService.getList(query);
+        List<OrderItemDomain> cartList = new ArrayList<OrderItemDomain>();
+        for(OrderItemDomain line:orderItemList){
+            if(!(line.getStatus()==1 && line.getReturnNum()>=line.getNum())){
+                cartList.add(line);
+            }
+        }
+        if(cartList.size()==0){
+            return "redirect:order/list";
+        }
+        orderService.withGoodItme(cartList);
         OrderDomain orderDomain = orderService.get(orderId);
+        orderDomain.setOrderItemDomainList(cartList);
         //创建订单对象
         ReturnRequestDomain returnRequestDomain = new ReturnRequestDomain();
         returnRequestDomain.setCustomerId(customerDomain.getId());
@@ -135,7 +164,12 @@ public class ReturnOrderController extends BaseController {
         if(!(list!=null && list.size()>0)){
             return new ModelAndView("redirect:returnOrderInfo");
         }
+        Double preBackMoney = 0D;
+        for(OrderItemDomain line:list){
+            preBackMoney += line.getGoodsPrice()*line.getNum();
+        }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
+        mv.addObject("preBackMoney",preBackMoney);
         return mv;
     }
 
@@ -145,6 +179,11 @@ public class ReturnOrderController extends BaseController {
      *
      * @return
      */
+    @RequestMapping(value = "chooseReturnWay" ,method = RequestMethod.GET)
+    public ModelAndView chooseReturnWay(@ModelAttribute ReturnInfoForm returnInfoForm){
+        ModelAndView mv = new ModelAndView("user/returnOrder/chooseReturnWay");
+        return mv;
+    }
     @RequestMapping(value = "listAddress" ,method = RequestMethod.GET)
     public ModelAndView listAddress(@ModelAttribute ReturnInfoForm returnInfoForm){
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -158,17 +197,33 @@ public class ReturnOrderController extends BaseController {
     }
 
     /**
+     * 初始化自提门店
+     * @return
+     */
+    @RequestMapping(value = "listStoreCountry",method = RequestMethod.GET)
+    public  ModelAndView listStoreCountry(){
+        ModelAndView modelAndView= new ModelAndView("user/returnOrder/listStore");
+        List<StoreCountryDomain> storeCountryList  = storeCountryService.getList(new StoreCountryQuery());
+        modelAndView.addObject("storeCountryList",storeCountryList);
+        return modelAndView;
+    }
+
+    /**
      * 选择退货商品和退货理由
      *
      * @return
      */
 
     @RequestMapping(value = "chooseGoodsAndReason" ,method = RequestMethod.POST)
-    public String chooseGoods(@ModelAttribute ReturnInfoForm returnInfoForm){
+    @ResponseBody
+    public JsonResult chooseGoods(@ModelAttribute ReturnInfoForm returnInfoForm){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         HashMap jsonMap = new HashMap();
         List<ReturnReasonModel> reasonModels = returnInfoForm.getReturnList();
+        if(reasonModels==null||reasonModels.size()<1){
+            return errorResult("没有选择退货商品");
+        }
         List<OrderItemDomain> list = (List<OrderItemDomain>)session.getAttribute(CART_LIST);
         List<OrderItemDomain> newList = new ArrayList<OrderItemDomain>();
              for(int i=0;i<list.size();i++){
@@ -181,7 +236,7 @@ public class ReturnOrderController extends BaseController {
              }
         session.setAttribute(CART_LIST,newList);
         session.setAttribute("returnJsonReason",jsonMap);
-        return "redirect:returnOrderConsigneeInfo";
+        return successResult("选择成功");
     }
 
 
@@ -192,17 +247,26 @@ public class ReturnOrderController extends BaseController {
         HttpSession session = request.getSession();
         ReturnRequestDomain returnRequest = (ReturnRequestDomain)session.getAttribute(RETURN_ORDER);
         CustomerAddressDomain customerAddress = customerAddressService.get(addressId);
-        if(customerAddress==null){
-            return errorResult("选择失败，无此地址");
-        }
         returnRequest.setReturnShippingMethod(backWay);
         if(backWay==1){
+            if(customerAddress==null){
+                return errorResult("选择失败，无此地址");
+            }
             returnRequest.setShipAddress(customerAddress.getAddress());
+            returnRequest.setReturnShopId(null);
+            returnRequest.setCustomerAddressDomain(customerAddress);
+            returnRequest.setStoreDomain(null);
         }else if(backWay==2){
+            StoreDomain storeDomain = storeService.get(addressId);
+            if(storeDomain==null){
+                return errorResult("选择失败，无此门店");
+            }
+            returnRequest.setStoreDomain(storeDomain);
             returnRequest.setReturnShopId(addressId);
+            returnRequest.setShipAddress(null);
+            returnRequest.setCustomerAddressDomain(null);
         }
-        session.setAttribute("customerAddress",customerAddress);
-        session.setAttribute("backWay",backWay);
+        session.setAttribute(BACK_WAY,backWay);
         session.setAttribute(RETURN_ORDER,returnRequest);
         return successResult("操作成功");
     }
@@ -227,8 +291,8 @@ public class ReturnOrderController extends BaseController {
         }
         //查询订单状态是否是已收货
         Integer status =  orderDomain.getStatus();
-        if(status!=4){
-            return errorResult("不能跨步操作订单");
+        if(status==1||status==-1){
+            return errorResult("该订单不能退货");
         }
         //查寻session是为空
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -253,8 +317,25 @@ public class ReturnOrderController extends BaseController {
             returnRequestItemDomain.setCreateTime(new Date());
             returnRequestItemDomain.setStatus(1);
             returnRequestItemDomain.setReturnReason(map.get(line.getId()+"")+"");
+            returnRequestItemDomain.setGoodsName(line.getGoodsName());
+            returnRequestItemDomain.setGoodsCode(line.getGoodsCode());
+            returnRequestItemDomain.setGoodsPrice(line.getGoodsPrice());
+            returnRequestItemDomain.setSkuSpecifications(line.getSkuSpecifications());
+            returnRequestItemDomain.setSkuId(line.getSkuId());
+            returnRequestItemDomain.setItemId(line.getItemId());
             returnRequestItemService.create(returnRequestItemDomain);
+            //修改订单商品状态和退货数量
+            OrderItemDomain orderItemDomain = orderItemService.get(Long.parseLong(returnRequestItemDomain.getOrderItemId()));
+            orderItemDomain.setStatus(1);
+            orderItemDomain.setReturnNum(returnRequestItemDomain.getNum());
+            orderItemService.update(orderItemDomain);
         }
+
+        //清空session
+        session.setAttribute(ORDER,null);
+        session.setAttribute(RETURN_ORDER,null);
+        session.setAttribute(CART_LIST,null);
+        session.setAttribute(BACK_WAY, null);
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
@@ -270,6 +351,18 @@ public class ReturnOrderController extends BaseController {
 
 
 
+
+    @RequestMapping(value = "returnReasonIntroduce" ,method = RequestMethod.GET)
+    public ModelAndView returnReasonIntroduce(){
+        ModelAndView mv = new ModelAndView("user/returnOrder/returnReasonIntroduce");
+        return mv;
+    }
+
+    @RequestMapping(value = "toCreateAddress" ,method = RequestMethod.GET)
+    public ModelAndView toCreateAddress(){
+        ModelAndView mv = new ModelAndView("user/returnOrder/createAddress");
+        return mv;
+    }
 
 
 }

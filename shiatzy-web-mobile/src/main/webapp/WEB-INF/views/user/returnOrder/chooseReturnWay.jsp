@@ -15,27 +15,54 @@
         <h3>选择退货方式</h3>
         <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
     </div>
-    <p>订单编号：<span>12345AABBCC</span></p>
-    <p>订单日期：<span>2017-1-15</span></p>
+    <p>订单编号：<span>${order.orderNo}</span></p>
+    <p>订单日期：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <div class="order-finish">
         <div class="delivery">
-            <div class="delivery-message" style="position: relative;">
+            <%--<div class="delivery-message" style="position: relative;margin-top: 2px">
                 <span>快递取件</span>
                 <div style="position: absolute;top: 1.5rem;right: 0">
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i></label></span>
                 </div>
-                <p>資訊部</p>
-                <p style="display: initial;">新北市五股区五权六路40号</p>
-                <a href="购物车.结算页.物流配送.编辑.html">编辑 ></a>
+                <p>联系人：</p>
+                <p style="display: initial;">地址：</p>
+                <a href="/returnOrder/listAddress">编辑 ></a>
             </div>
             <div class="drugstore">
                 <p>退回门店</p>
-                <a href="我的账户.门市预约.列表.html">编辑 ></a>
-            </div>
+                <a href="/returnOrder/listStoreCountry">编辑 ></a>
+            </div>--%>
+
+                <c:if test="${not empty return_order.storeDomain}">
+                    <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
+                        <span>快递运送</span>
+                        <p></p>
+                        <p style="display: initial;"></p>
+                        <a href="/returnOrder/listAddress">选择 ></a>
+                    </div>
+                    <div class="delivery-message" style="height: 100px;background-color: #cccccc;">
+                        <p>门店退货</p>
+                        <p>${return_order.storeDomain.name}</p>
+                        <p>${return_order.storeDomain.address}</p>
+                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                    </div>
+                </c:if>
+                <c:if test="${empty return_order.storeDomain}">
+                    <div class="delivery-message" style="margin-top: 2px">
+                        <span>快递运送</span>
+                        <p>${return_order.customerAddressDomain.title}</p>
+                        <p style="display: initial;">${return_order.customerAddressDomain.address}</p>
+                        <a href="/returnOrder/listAddress">选择 ></a>
+                    </div>
+                    <div class="drugstore">
+                        <p>门店退货</p>
+                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                    </div>
+                </c:if>
+
         </div>
     </div>
     <div class="return-btn">
-        <a href="我的账户.退货申请.我要退货.申请成功.html">< 確認</a>
+        <a href="#" class="sureBtn">< 確認</a>
     </div>
     <div class="privacy">
         <a href="#">
@@ -57,6 +84,14 @@
 
 <script>
     $(function () {
+
+        $(".sureBtn").click(function () {
+            if(${return_order.customerAddressDomain==null&&return_order.storeDomain==null}){
+             alert("请先选择地址和退货方式");
+             return false;
+             }
+            location.href="/returnOrder/returnOrderConsigneeInfo";
+        });
 
 
     });

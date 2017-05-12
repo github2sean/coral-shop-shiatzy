@@ -131,6 +131,8 @@ public class OrderDomain implements Serializable {
 	private StoreDomain storeDomain;
 	@Transient
 	private CustomerAddressDomain customerAddressDomain;
+	@Transient
+	private Integer canReturnNum;
 	
 
 }

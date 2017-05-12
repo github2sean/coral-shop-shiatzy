@@ -10,21 +10,22 @@
 <form class="addressForm" method="post" action="/checkout/addAddress">
     <div class="dx-EditAddress">
         <div class="content">
-            <div class="title">編輯地址 <a href="购物车.结算页.物流配送.选择.html">回上一步</a></div>
+            <div class="title">編輯地址 <a href="javascript:" onclick="self.location=document.referrer;">回上一步</a></div>
             <div class="recipients">
+                <input type="hidden" value="${address.id}" name="id">
                 <div class="title">收件人*</div>
-                <div class="name" >姓* <input type="text" value="${address.firstName}" name="addressModel.firstName"></div>
-                <div class="name" >名* <input type="text" value="${address.lastName}" name="addressModel.lastName"></div>
-                <div class="appellation j_appelPopup">称谓* <input type="text" value="${address.title}" name="addressModel.title"> <span> ></span></div>
-                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="addressModel.phone"></div>
+                <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName"></div>
+                <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName"></div>
+                <div class="appellation j_appelPopup">称谓* <input type="text" value="${address.title}" name="title"> <span> ></span></div>
+                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone"></div>
             </div>
             <div class="address">
                 <div class="title">地址*</div>
-                <div class="country">国别 / 区域* <input type="text" value="${address.countryId}" name="addressModel.countryId"> <span> ></span></div>
-                <div class="province">省/州* <input type="text" value="${address.provinceId}" name="addressModel.provinceId"> <span> ></span></div>
-                <div class="city">城区* <input type="text" value="${address.cityId}" name="addressModel.cityId"> <span> ></span></div>
-                <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="addressModel.address"></div>
-                <div class="more">地址更多信息 <input type="text" value="${address.memo}" name="addressModel.memo"></div>
+                <div class="country">国别 / 区域* <input type="text" value="${address.countryId}" name="countryId"> <span> ></span></div>
+                <div class="province">省/州* <input type="text" value="${address.province}" name="provinceId"> <span> ></span></div>
+                <div class="city">城区* <input type="text" value="${address.city}" name="cityId"> <span> ></span></div>
+                <div class="detailedAddress">详细地址: <input type="text" value="${address.address}" name="address"></div>
+                <div class="more">地址更多信息: <input type="text" value="${address.memo}" name="memo"></div>
             </div>
             <a href="#"  class="btn completeBtn">完成</a>
         </div>
@@ -68,11 +69,11 @@
 
             var $form = $(".addressForm");
             var data = $form.serializeArray();
-            $.post("/checkout/updateAddress",data,function (data) {
+            $.post("/checkout/updateShipAddress",data,function (data) {
                 if(data.code==200){
-                    location.href = "/checkout/listAddress";
+                    layer.msg(data.message);
                 }else{
-                    alert(data.message)
+                    layer.msg(data.message);
                 }
             });
         });

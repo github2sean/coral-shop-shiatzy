@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -50,7 +51,24 @@ public class ReturnRequestItemDomain implements Serializable {
 	
 	/*管理员备注*/
 	private String adminMemo;
-	
+
+	/*商品名称*/
+	private String goodsName;
+
+	/*商品编号*/
+	private String goodsCode;
+
+	/*商品价格*/
+	private Double goodsPrice;
+
+	/*sku规格json*/
+	private String skuSpecifications;
+
+	private Long skuId;
+
+	private Long itemId;
+	@Transient
+	private GoodsItemDomain goodsItemDomain;
 
 	
 	

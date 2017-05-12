@@ -9,14 +9,16 @@
 
 
 <div class="order">
-    <p style="float: left">预约完成</p>
-    <a style="float: right;" href="#">< 我的账户</a>
+    <p style="float: left">退货详情</p>
+    <a style="float: right;" href="/order/list">< 上一页</a>
 </div>
 <div class="verify-message">
     <div class="verify-message-top">
         <h2>退货单号：${returnRequestDomain.orderNo}</h2>
         <div class="return-time">
-            <p>退货申请，已于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />${totalAmt}</p>
+            <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
+            提交，总计¥${preBackMoney}的退款申请。
+            </p>
         </div>
     </div>
     <div class="verify-message-middle">
@@ -24,16 +26,16 @@
 
         <c:forEach var="row" items="${returnOrderItemList}">
         <div style="padding-left: 3rem;" class="verify-main">
-            <img src="images/verify_01.png" alt="">
+            <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
             <div style="margin-left: 6rem;" class="img-message">
-                <h3>name暂无</h3>
-                <h6>code暂无</h6>
+                <h3>${row.goodsName}</h3>
+                <h6>${row.goodsCode}</h6>
                 <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;">黑色</p>
-                    <p>M号</p>
+                    <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
+                    <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
                 </div>
                 <p>数量：${row.num}</p>
-                <p>单价　¥ 暂无</p>
+                <p>单价　¥ ${row.goodsPrice}</p>
             </div>
         </div>
         <p style="padding-left: 3rem;" class="order-state">状态：
@@ -59,7 +61,7 @@
         </c:forEach>
     </div>
     <div style="margin-bottom: 7rem;" class="verify-message-bottom">
-        <h2 style="text-align: right;padding-right: 1.5rem;">退回总额：¥ 12,000</h2>
+        <h2 style="text-align: right;padding-right: 1.5rem;">退回总额：¥ ${preBackMoney}</h2>
     </div>
     <div class="privacy">
         <a href="#">
