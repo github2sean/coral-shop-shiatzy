@@ -38,37 +38,24 @@
         <ul>
             <li>
                 <span>国别 / 区域*</span>
-                <span style="float:right;">
-                    <select name="customerAddressDomain.countryId">
+                <label  style="float: right;border: 1px;">
+                    <select name="customerAddressDomain.countryId" style="border: 1px;margin-bottom: 5px;">
                         <option value="-1">请选择</option>
                         <option value="1">中国</option>
                         <option value="2">美国</option>
                     </select>
-                </span>
+                </label>
             </li>
             <li>
                 <span>省/州*</span>
-                <span style="float:right;">
-                    <select name="customerAddressDomain.provinceId">
-                        <option value="-1">请选择</option>
-                        <option value="1">中国</option>
-                        <option value="2">美国</option>
-                    </select>
-                </span>
+                <input type="text" name="customerAddressDomain.province">
             </li>
             <li>
                 <span>城区*</span>
-                <span style="float:right;">
-                    <select name="customerAddressDomain.cityId">
-                        <option value="-1">请选择</option>
-                        <option value="1">中国</option>
-                        <option value="2">美国</option>
-
-                    </select>
-                </span>
+                <input type="text" name="customerAddressDomain.city">
             </li>
             <li>详细地址<input type="text"  value="${customerAddressDomain.address}" name="customerAddressDomain.address"/></li>
-            <li>郵編<input type="text"  /><input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
+            <li>邮编<input type="text"  /><input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
         </ul>
     </div>
     <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
