@@ -27,9 +27,7 @@ public class DefaultTags {
 		query.setOrderBy("displayOrder");
 		query.setDesc(false);
 		query.setLevel(1);
-		return   goodsCategoryService.getList(query);
+		return   goodsCategoryService.listCategory(query);
 	}
-	
 
-	
 }

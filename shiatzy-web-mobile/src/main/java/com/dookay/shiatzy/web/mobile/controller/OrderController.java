@@ -130,7 +130,6 @@ public class OrderController extends BaseController {
         return successResult("已收货");
     }
 
-
     @RequestMapping(value = "cancel" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult cancel(Long orderId){

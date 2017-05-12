@@ -64,11 +64,8 @@
                 </ul>
             </div>
         </div>
-
     </c:if>
-
 </div>
-
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
@@ -127,6 +124,8 @@
                     var  isNull= $(".goodsDiv").attr("class");
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
+                    }else{
+                        clsTotal();
                     }
                 }
             });
@@ -144,6 +143,8 @@
                     layer.msg("加入心愿单成功");
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
+                    }else{
+                        clsTotal();
                     }
                 }
             });
@@ -161,6 +162,8 @@
                     layer.msg("加入精品店成功");
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
+                    }else{
+                        clsTotal();
                     }
                 }
             });

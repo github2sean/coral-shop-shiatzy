@@ -1,4 +1,4 @@
-package com.dookay.shiatzy.web.mobile.controller.user;
+package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.HttpContext;
@@ -11,12 +11,9 @@ import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
-import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
-import com.dookay.shiatzy.web.mobile.controller.PassportController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEamilForm;
-import com.jfinal.json.Json;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

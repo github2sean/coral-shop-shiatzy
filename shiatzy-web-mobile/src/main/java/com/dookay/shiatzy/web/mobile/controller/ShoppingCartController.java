@@ -189,6 +189,7 @@ public class ShoppingCartController extends BaseController{
          shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
     }
+
     @RequestMapping(value = "cartToWish" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult cartToWish(Long shoppingCartItemId){
@@ -202,6 +203,7 @@ public class ShoppingCartController extends BaseController{
         shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
     }
+
     @RequestMapping(value = "boutiqueToWish" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult boutiqueToWish(Long shoppingCartItemId){
@@ -230,7 +232,6 @@ public class ShoppingCartController extends BaseController{
         return  successResult("操作成功");
     }
 
-
     @RequestMapping(value = "createOrder" ,method = RequestMethod.GET)
     public ModelAndView createOrder(){
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -241,7 +242,6 @@ public class ShoppingCartController extends BaseController{
         mv.addObject("orderDomain",orderDomain);
         return mv;
     }
-
 
     @RequestMapping(value = "details" ,method = RequestMethod.GET)
     public ModelAndView settlement(){
@@ -265,5 +265,4 @@ public class ShoppingCartController extends BaseController{
         }
         session.setAttribute("submitCartList",cartList);
     }
-
 }

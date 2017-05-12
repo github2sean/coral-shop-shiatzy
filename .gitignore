@@ -46,3 +46,13 @@ build/
 
 
 shiatzy-web-admin/src/main/webapp/uploads/
+coral-adapter/src/main/java/com/dookay/coral/adapter/payment/
+coral-adapter/src/main/java/com/dookay/coral/adapter/sms/
+coral-adapter/src/test/
+coral-common/src/main/java/com/dookay/coral/common/security/shiro/
+coral-common/src/main/java/com/dookay/coral/common/web/model/
+coral-host/src/test/
+coral-security/src/test/
+coral-shop-generator/src/main/java/
+coral-shop-generator/src/test/
+shiatzy-web-admin/src/main/java/com/dookay/shiatzy/web/admin/form/

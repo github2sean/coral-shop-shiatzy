@@ -80,19 +80,27 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			throw new ServiceException(ShoppingCartTypeEnum.valueOf(shoppingCartType).getDescription()+"商品数量不能超过8个");
 		}
 
-		GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
-		GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
-		ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
-		shoppingCartItemDomain.setCustomerId(customerDomain.getId());
-		shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
-		shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
-		shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
-		shoppingCartItemDomain.setSkuId(skuDomain.getId());
-		shoppingCartItemDomain.setItemId(skuDomain.getItemId());
-		shoppingCartItemDomain.setShoppingCartType(shoppingCartType);
-		shoppingCartItemDomain.setNum(num);
-		shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
-		super.create(shoppingCartItemDomain);
+		ShoppingCartItemDomain existShoppingCartItem =
+				shoppingCartItemDomainList.stream().filter(x-> Objects.equals(x.getSkuId(), skuDomain.getId())).findFirst().orElse(null);
+		//如果购物车中已经存在，则更新购物车
+		if(existShoppingCartItem != null){
+			this.updateShoppingCartItem(customerDomain,existShoppingCartItem.getItemId(),num);
+		}else{
+			GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
+			GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
+			ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
+			shoppingCartItemDomain.setCustomerId(customerDomain.getId());
+			shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+			shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
+			shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+			shoppingCartItemDomain.setSkuId(skuDomain.getId());
+			shoppingCartItemDomain.setItemId(skuDomain.getItemId());
+			shoppingCartItemDomain.setShoppingCartType(shoppingCartType);
+			shoppingCartItemDomain.setNum(num);
+			shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
+			super.create(shoppingCartItemDomain);
+		}
+
 	}
 
 	@Override
