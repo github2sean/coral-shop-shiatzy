@@ -6,7 +6,9 @@ import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.utils.CookieUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.GoodsColorQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
@@ -14,6 +16,7 @@ import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.*;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
+import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import net.sf.json.util.JSONUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +134,9 @@ public class GoodsController extends BaseController{
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
         goodsService.withGoodsItemList(goodsDomain);
 
+        HistoryUtil.setHistory(goodsId);
+        List<GoodsDomain> historyList = HistoryUtil.getHistory();
+
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(sizeIds);
@@ -137,7 +146,7 @@ public class GoodsController extends BaseController{
         mv.addObject("goodsItemDomain",goodsItemDomain);
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
-
+        mv.addObject("historyList",historyList);
         return mv;
     }
 

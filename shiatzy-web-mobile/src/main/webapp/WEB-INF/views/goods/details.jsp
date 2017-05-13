@@ -61,7 +61,7 @@
             <div class="pic">
                 <a href=""><img src="${ctx}/static/images/bag_10_07.jpg" alt=""></a>
             </div>
-            <div class="name">厚底系带楔型鞋</div>
+            <div class="name" id="tles">厚底系带楔型鞋</div>
             <div class="price">&yen; 3,090</div>
             <ul class="color clearfix">
                 <li style="background-color: #000"></li>
