@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by Chao on 2017/5/13.
@@ -24,13 +25,13 @@ public class HistoryUtil {
     public static void setHistory(Long goodsId){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpServletResponse response = HttpContext.current().getResponse();
-        List<Long> goodsList =(List<Long>) JSON.parse(CookieUtils.getCookie(request,HISTORY));
+        List<Long> goodsList = JSON.parseArray(CookieUtils.getCookie(request,HISTORY),Long.class);
         if(goodsList  == null){
             goodsList = new ArrayList<>();
             goodsList.add(goodsId);
             CookieUtils.setCookie(response,HISTORY,JSON.toJSONString(goodsList));
         }else{
-            if(goodsList.stream().noneMatch(n-> Objects.equals(n, goodsId))){
+            if(goodsList.stream().noneMatch( n -> Objects.equals(n, goodsId))){
                 goodsList.add(goodsId);
                 CookieUtils.setCookie(response,HISTORY,JSON.toJSONString(goodsList));
             }
@@ -40,7 +41,7 @@ public class HistoryUtil {
     public static List<GoodsDomain> getHistory(){
         HttpServletRequest request = HttpContext.current().getRequest();
         IGoodsService goodsService = SpringContextHolder.getBean("goodsService");
-        List<Long> goodsList =(List<Long>) JSON.parse(CookieUtils.getCookie(request,HISTORY));
+        List<Long> goodsList =JSON.parseArray(CookieUtils.getCookie(request,HISTORY),Long.class);
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIds(goodsList);
         return goodsService.getList(goodsQuery);

@@ -134,8 +134,11 @@ public class GoodsController extends BaseController{
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
         goodsService.withGoodsItemList(goodsDomain);
 
+        //调用工具类，把浏览记录存入Cookie
         HistoryUtil.setHistory(goodsId);
+        //把获取的记录存到List集合
         List<GoodsDomain> historyList = HistoryUtil.getHistory();
+        goodsService.withGoodsItemList(historyList);
 
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
@@ -147,6 +150,7 @@ public class GoodsController extends BaseController{
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
         mv.addObject("historyList",historyList);
+
         return mv;
     }
 

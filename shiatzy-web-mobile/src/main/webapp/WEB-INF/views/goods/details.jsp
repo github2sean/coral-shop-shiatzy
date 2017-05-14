@@ -57,34 +57,21 @@
     </div>
     <div class="maybeLike clearfix">
         <div class="title">您也许也喜欢</div>
-        <div class="left">
-            <div class="pic">
-                <a href=""><img src="${ctx}/static/images/bag_10_07.jpg" alt=""></a>
-            </div>
-            <div class="name" id="tles">厚底系带楔型鞋</div>
-            <div class="price">&yen; 3,090</div>
-            <ul class="color clearfix">
-                <li style="background-color: #000"></li>
-                <li style="background-color: #b5272d"></li>
-                <li style="background-color: #1b1464"></li>
-                <li style="background-color: #662d85"></li>
-                <li style="background-color: #fff"></li>
-            </ul>
-        </div>
-        <div class="left" style="border-right: none">
-            <div class="pic">
-                <a href=""><img src="${ctx}/static/images/bag_10_09.jpg" alt=""></a>
-            </div>
-            <div class="name">厚底系带楔型鞋</div>
-            <div class="price">&yen; 3,090</div>
-            <ul class="color clearfix">
-                <li style="background-color: #000"></li>
-                <li style="background-color: #b5272d"></li>
-                <li style="background-color: #1b1464"></li>
-                <li style="background-color: #662d85"></li>
-                <li style="background-color: #fff"></li>
-            </ul>
-        </div>
+         <c:forEach var="goods" items="${historyList}">
+             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+             <div class="left">
+                 <div class="pic">
+                     <a href=""><img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;"></a>
+                 </div>
+                 <div class="name">${goods.name}</div>
+                 <div class="price">${firstItem.price}</div>
+                     <ul class="color clearfix">
+                         <c:forEach var="goodsItem" items="${goods.goodsItemList}">
+                         <li style="background: ${goodsItem.colorValue}"></li>
+                         </c:forEach>
+                     </ul>
+             </div>
+         </c:forEach>
     </div>
 </div>
 

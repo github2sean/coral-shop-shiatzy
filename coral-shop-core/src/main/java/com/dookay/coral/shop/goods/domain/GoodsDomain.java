@@ -66,6 +66,8 @@ public class GoodsDomain implements Serializable {
 	/*缩略图*/
 	private String thumb;
 
+	/*商品价格*/
+	private Double price;
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;
