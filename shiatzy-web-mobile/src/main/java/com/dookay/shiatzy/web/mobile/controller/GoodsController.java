@@ -63,16 +63,28 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
+        //查询页面进入模糊查询，主页面进入根据商品所有信息匹配查询
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
         query.setPrototypeId(queryGoodsForm.getPrototypeId());
         PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        PageList<SkuDomain> goodsSku = skuService.getPageList(query);
-        System.out.print("goodsSku:"+JsonUtils.toJSONString(goodsSku));
-        ModelAndView modelAndView = new ModelAndView("goods/list");
-        modelAndView.addObject("goodsList",goodsList);
-        modelAndView.addObject("goodsSku",goodsSku);
+        List<GoodsDomain> goodsNameList =  goodsService.getList(query);
+        ModelAndView modelAndView;
+        if(query.getCategoryId()==null && query.getPrototypeId()==null) {
+            modelAndView = new ModelAndView("goods/namelist");
+            goodsService.withGoodsItemList(goodsNameList);
+            System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsNameList));
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsNameList,query.getPageIndex(),query.getPageSize(),goodsNameList.size());
+            System.out.println(" list:"+JsonUtils.toJSONString(goodsDomainPageList));
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        } else {
+            PageList<SkuDomain> goodsSku = skuService.getPageList(query);
+            System.out.print("goodsSku:" + JsonUtils.toJSONString(goodsSku));
+            modelAndView = new ModelAndView("goods/list");
+            modelAndView.addObject("goodsList", goodsList);
+            modelAndView.addObject("goodsSku", goodsSku);
+        }
         return modelAndView;
     }
 
@@ -119,7 +131,6 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         return modelAndView;
     }
-
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){
         //未发布，跳转到404页面
@@ -150,10 +161,6 @@ public class GoodsController extends BaseController{
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
         mv.addObject("historyList",historyList);
-
         return mv;
     }
-
-
-
 }

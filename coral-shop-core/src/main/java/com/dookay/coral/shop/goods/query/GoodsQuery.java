@@ -21,8 +21,7 @@ public class GoodsQuery extends Query {
 	private  String name;
 	private  Long categoryId;
 	private  Long prototypeId;
-
-	private List<Long> ids;
+	private  List<Long> ids;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);

@@ -54,7 +54,7 @@
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
-    <form action="">
+    <form action="/goods/screen">
         <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
@@ -140,6 +140,5 @@
                     }
                 });
             });
-
     });
 </script>
