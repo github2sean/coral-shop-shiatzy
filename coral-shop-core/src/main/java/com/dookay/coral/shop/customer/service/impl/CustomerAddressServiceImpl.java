@@ -1,5 +1,7 @@
 package com.dookay.coral.shop.customer.service.impl;
 
+import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.customer.mapper.CustomerAddressMapper;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 客户地址的业务实现类
@@ -30,5 +33,15 @@ public class CustomerAddressServiceImpl extends BaseServiceImpl<CustomerAddressD
 		query.setCustomerId(customerId);
 		return super.getFirst(query);
 
+	}
+
+	@Override
+	@Transactional("transactionManager")
+	public void createByCustomer(CustomerDomain customerDomain, CustomerAddressDomain addressModel) {
+		if (customerDomain.getId()==null){
+			throw new ServiceException("用户Id为空");
+		}
+		addressModel.setCustomerId(customerDomain.getId());
+		create(addressModel);
 	}
 }

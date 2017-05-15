@@ -7,8 +7,8 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">预约完成</p>
-    <a style="float: right;" href="#">< 我的账户</a>
+    <p style="float: left">选择退货方式</p>
+    <a style="float: right;" href="/returnOrder/returnOrderConsigneeInfo">< 上一页</a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">

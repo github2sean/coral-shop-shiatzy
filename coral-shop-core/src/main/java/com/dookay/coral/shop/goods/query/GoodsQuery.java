@@ -21,8 +21,13 @@ public class GoodsQuery extends Query {
 	private  String name;
 	private  Long categoryId;
 	private  Long prototypeId;
+	private  Integer priceWay;//价格排序 0：高-低，1：低-高
+	private  List<Long> ids;
+	private  List<Long> colorIds;//颜色
+	private  List<Long> sizeIds;//尺寸
 
-	private List<Long> ids;
+
+	private final static String PRICE_FIELD = "price";
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
@@ -41,6 +46,12 @@ public class GoodsQuery extends Query {
 		}
 		if(valid(ids)){
 			criteria.andIn("id",ids);
+		}
+		if (valid(priceWay)){
+			setOrderBy(PRICE_FIELD);
+			if (priceWay==1){
+				setDesc(false);
+			}
 		}
 
 		return queryCriteria;

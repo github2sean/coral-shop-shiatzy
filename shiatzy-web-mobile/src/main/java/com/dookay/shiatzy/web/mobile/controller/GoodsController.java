@@ -10,10 +10,7 @@ import com.dookay.coral.common.utils.CookieUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.shop.goods.domain.*;
-import com.dookay.coral.shop.goods.query.GoodsColorQuery;
-import com.dookay.coral.shop.goods.query.GoodsQuery;
-import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
-import com.dookay.coral.shop.goods.query.SkuQuery;
+import com.dookay.coral.shop.goods.query.*;
 import com.dookay.coral.shop.goods.service.*;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
@@ -31,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -61,18 +59,20 @@ public class GoodsController extends BaseController{
     @Autowired
     private IGoodsItemService goodsItemService;
 
+    private static Integer COLOR_FILTER = 1;
+    private static Integer SIZE_FILTER = 0;
+    private static Integer COLOR_AND_SIZE_FILTER = 3;
+
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
         query.setPrototypeId(queryGoodsForm.getPrototypeId());
-        PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        PageList<SkuDomain> goodsSku = skuService.getPageList(query);
-        System.out.print("goodsSku:"+JsonUtils.toJSONString(goodsSku));
+        List<GoodsDomain> goodsList =  goodsService.getList(query);
+        goodsService.withGoodsItemList(goodsList);
         ModelAndView modelAndView = new ModelAndView("goods/list");
         modelAndView.addObject("goodsList",goodsList);
-        modelAndView.addObject("goodsSku",goodsSku);
         return modelAndView;
     }
 
@@ -83,17 +83,36 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("categoryId",categoryId);
         //商品列表
         query.setCategoryId(categoryId);
+        query.setPriceWay(query.getPriceWay());
+
         List<GoodsDomain> goodsList =  goodsService.getList(query);
         goodsService.withGoodsItemList(goodsList);
-        System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsList));
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
         modelAndView.addObject("categoryName",goodsCategoryDomain.getName());
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
-        System.out.println(" goodsCategoryDomainList:"+JsonUtils.toJSONString(goodsCategoryDomainList));
+
         //材质列表
+        //获得原型Ids
+        List<Long> prototypeIds = new ArrayList<Long>();
+        goodsList.forEach(x->prototypeIds.addAll(JsonUtils.toLongArray("["+x.getPrototypeId()+"]")));
+        List<Long> newPrototypeIds = prototypeIds.stream().distinct().collect(Collectors.toList());
+        //获得原型属性
+        PrototypeAttributeQuery prototypeAttributeQuery = new PrototypeAttributeQuery();
+        prototypeAttributeQuery.setPrototypeIds(newPrototypeIds);
+        List<PrototypeAttributeDomain> prototypeAttributeDomainList = prototypeAttributeService.getList(prototypeAttributeQuery);
+        //获得原型属性选项
+        List<Long> prototypeAttributeIds = new ArrayList<>();
+        prototypeAttributeDomainList.forEach(x->prototypeAttributeIds.addAll(JsonUtils.toLongArray(x.getId()+"")));
+        List<Long> newPrototypeAttributeIds = prototypeAttributeIds.stream().distinct().collect(Collectors.toList());
+        PrototypeAttributeOptionQuery prototypeAttributeOptionQuery = new PrototypeAttributeOptionQuery();
+        prototypeAttributeOptionQuery.setPrototypeAttributeIds(newPrototypeAttributeIds);
+        List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
+        modelAndView.addObject("attributeList",prototypeAttributeOptionDomainList);
+        System.out.println("attributeList:"+JsonUtils.toJSONString(prototypeAttributeOptionDomainList));
+
         //颜色列表
         List<Long> colorIds = new ArrayList<>();
         goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
@@ -102,20 +121,34 @@ public class GoodsController extends BaseController{
         goodsColorQuery.setIds(newColorIds);
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
         modelAndView.addObject("colorList",goodsColorDomainList);
-        System.out.println(" colorList:"+JsonUtils.toJSONString(goodsColorDomainList));
         //尺寸列表
         List<Long> sizeIds = new ArrayList<>();
         goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
         List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(newSizeIds);
-        System.out.println(" query:"+JsonUtils.toJSONString(prototypeSpecificationOptionQuery));
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         modelAndView.addObject("sizeList",sizeList);
-        System.out.println(" sizeList:"+JsonUtils.toJSONString(sizeList));
-        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
 
-        System.out.println(" list:"+JsonUtils.toJSONString(goodsDomainPageList));
+        //颜色尺寸材质过滤
+        List<Long> queryColorIds= query.getColorIds();
+        List<Long> querySizeIds = query.getSizeIds();
+        System.out.println("colorIds:"+queryColorIds);
+        System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
+
+        // 过滤goodsList
+        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;
+        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;
+        if(colorBoolean && !sizeBoolean){
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+        }else if(!colorBoolean && sizeBoolean){
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }else if(colorBoolean && colorBoolean){
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }
+
+        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
         modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         return modelAndView;
     }
@@ -155,5 +188,22 @@ public class GoodsController extends BaseController{
     }
 
 
+
+    public  List<GoodsDomain> filterGoods(List<GoodsDomain> goodsList,Integer type,List<Long> data){
+        List<GoodsDomain> returnList  = new ArrayList<GoodsDomain>();
+        for (GoodsDomain goodsDomain : goodsList){
+            List<Long> allSizeIds = SIZE_FILTER.equals(type)?JsonUtils.toLongArray(goodsDomain.getSizeIds()):JsonUtils.toLongArray(goodsDomain.getColorIds());
+            System.out.println("allSizeIds:"+JsonUtils.toJSONString(allSizeIds));
+            for (Long filterSizeIds:data){
+                for(Long nowSizeIds:allSizeIds){
+                    if(nowSizeIds == filterSizeIds){
+                        returnList.add(goodsDomain);
+                        System.out.println("nowGoodsDomain:"+JsonUtils.toJSONString(goodsDomain));
+                    }
+                }
+            }
+        }
+        return returnList;
+    }
 
 }

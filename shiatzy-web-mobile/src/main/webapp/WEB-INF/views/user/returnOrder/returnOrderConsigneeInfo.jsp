@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">确认退货</p>
-    <a style="float: right;" href="/order/list" >< 取消退货</a>
+    <a style="float: right;" href="/returnOrder/returnOrderInfo?orderId=${order.id}" >< 上一页</a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
@@ -44,10 +44,10 @@
         <a href="/returnOrder/chooseReturnWay"><h4>选择退貨方式*<span style="float: right;">></span></h4></a>
         <p>退貨方式：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
-            <c:when test="${sessionScope.backWay==1}">
+            <c:when test="${return_order.customerAddressDomain.address!=null}">
                 快递退货
             </c:when>
-            <c:when test="${sessionScope.backWay==2}">
+            <c:when test="${return_order.storeDomain.address!=null}">
                 门店退货
             </c:when>
         </c:choose>

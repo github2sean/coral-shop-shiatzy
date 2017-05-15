@@ -54,55 +54,45 @@
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
-    <form action="">
+    <form action="" class="filterForm">
         <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
             <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
-                <input type="checkbox" name="colorId" id="color${item.id}" value="${item.id}">
+                <input type="checkbox" name="colorIds" id="color${item.id}" value="${item.id}">
                 <label for="color${item.id}">${item.name}(10)</label>
             </div>
             </c:forEach>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">材质</div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="material1">
-                <label for="material1">全部（23）</label>
-            </div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="material2">
-                <label for="material2">天然皮革(10)</label>
-            </div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="material3">
-                <label for="material3">人造皮革(5)</label>
-            </div>
-            <div class="do-sort-group">
-                <input type="checkbox" id="material4">
-                <label for="material4">刺繡(8)</label>
-            </div>
+            <c:forEach var="item" items="${attributeList}">
+                <div class="do-sort-group">
+                    <input type="checkbox" name="attributeIds" id="color${item.id}" value="${item.id}">
+                    <label for="color${item.id}">${item.value}(10)</label>
+                </div>
+            </c:forEach>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">尺寸</div>
             <c:forEach var="item" items="${sizeList}">
                 <div class="do-sort-group">
-                    <input type="checkbox" name="sizeId" id="size${item.id}" value="${item.id}">
+                    <input type="checkbox" name="sizeIds" id="size${item.id}" value="${item.id}">
                     <label for="size${item.id}">${item.name}(10)</label>
                 </div>
             </c:forEach>
         </div>
-        <div class="text-center"><button type="submit" class="btn-submit">应用</button></div>
+        <div class="text-center"><button type="button" class="btn-submit">应用</button></div>
     </form>
 </div>
 <div id="j_panel_sort" class="pro-filter-panel">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <div class="do-sort">排序</div>
     <ul class="do-sort-list">
-        <li><a href="">售价（高-低）</a></li>
-        <li><a href="">售价（低-高）</a></li>
+        <li><a href="/goods/list?categoryId=${categoryId}&priceWay=0">售价（高-低）</a></li>
+        <li><a href="/goods/list?categoryId=${categoryId}&priceWay=1">售价（低-高）</a></li>
     </ul>
 </div>
 
@@ -140,6 +130,14 @@
                     }
                 });
             });
+
+        $(".btn-submit").click(function () {
+
+            var data = $(".filterForm").serializeArray();
+            console.log(data)
+            $(".filterForm").submit();
+        });
+
 
     });
 </script>

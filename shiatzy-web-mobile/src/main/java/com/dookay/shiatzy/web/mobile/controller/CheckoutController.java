@@ -55,7 +55,7 @@ import java.util.List;
  * @version v0.0.1
  * @since 2017/5/2
  */
-@RequestMapping("/checkout/")
+@RequestMapping("checkout/")
 @Controller
 public class CheckoutController  extends BaseController{
 
@@ -158,7 +158,7 @@ public class CheckoutController  extends BaseController{
     }
 
     @RequestMapping(value = "confirm",method = RequestMethod.GET)
-    public ModelAndView confirm(){
+    public ModelAndView confirm(String page){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
@@ -197,6 +197,7 @@ public class CheckoutController  extends BaseController{
         ModelAndView mv=  new ModelAndView("checkout/confirm");
         mv.addObject(CART_LIST,cartList);
         mv.addObject(ORDER,orderDomain);
+        session.setAttribute("referrerPage",page);
         return mv;
     }
 
@@ -308,12 +309,12 @@ public class CheckoutController  extends BaseController{
     }
 
     @RequestMapping(value = "createShipAddress", method = RequestMethod.POST)
+    @ResponseBody
     public  JsonResult createShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
         System.out.print("addressModel:"+JsonUtils.toJSONString(addressModel));
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
-        addressModel.setCustomerId(customerDomain.getId());
-        customerAddressService.create(addressModel);
+        customerAddressService.createByCustomer(customerDomain,addressModel);
         return successResult("操作成功");
     }
 

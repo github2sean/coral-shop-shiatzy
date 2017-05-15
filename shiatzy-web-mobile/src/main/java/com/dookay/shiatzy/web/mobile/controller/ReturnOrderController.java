@@ -156,7 +156,7 @@ public class ReturnOrderController extends BaseController {
     }
 
     @RequestMapping(value = "returnOrderConsigneeInfo" ,method = RequestMethod.GET)
-    public ModelAndView returnOrderConsigneeInfo(){
+    public ModelAndView returnOrderConsigneeInfo(String page){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         //判断是否选择有退货商品
@@ -170,6 +170,7 @@ public class ReturnOrderController extends BaseController {
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
         mv.addObject("preBackMoney",preBackMoney);
+        session.setAttribute("referrerPage",page);
         return mv;
     }
 

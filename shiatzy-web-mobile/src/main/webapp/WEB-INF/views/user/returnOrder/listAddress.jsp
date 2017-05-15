@@ -8,7 +8,7 @@
 </jsp:include>
 
 <div class="dx-shipping">
-    <div class="dx-title">送货地址设定 <a href="javascript:history.go(-1)">回上页</a></div>
+    <div class="dx-title">送货地址设定 <a href="/returnOrder/chooseReturnWay">回上页</a></div>
     <div class="content">
         <a href="/checkout/createShipAddress" class="new-address">新增地址 +</a>
         <c:forEach var="row" items="${addressList}" varStatus="num">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="text-right">
                         <div class="compile"><a href="/checkout/updateShipAddress?addressId=${row.id}" class="updateBtn" data-value="${row.id}">编辑 ></a></div>
-                        <div class="del delBtn"><a href="" class="delBtn" data-value="${row.id}">删除 -</a></div>
+                        <div class="del delBtn" data-value="${row.id}"><a href="#"  >删除 -</a></div>
                     </div>
                 </div>
             </div>

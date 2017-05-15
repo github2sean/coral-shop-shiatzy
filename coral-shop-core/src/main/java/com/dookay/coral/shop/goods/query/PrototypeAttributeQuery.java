@@ -6,6 +6,8 @@ import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.PrototypeAttributeDomain;
 
+import java.util.List;
+
 /**
  * 原型属性的Query
  * @author : luxor
@@ -17,6 +19,8 @@ public class PrototypeAttributeQuery extends Query {
 
 	private Long prototypeId;
 
+	private List<Long> prototypeIds;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(PrototypeAttributeDomain.class);
@@ -26,6 +30,9 @@ public class PrototypeAttributeQuery extends Query {
 			criteria.andEqualTo("prototypeId",prototypeId);
 		}
 
+		if(valid(prototypeIds)){
+			criteria.andIn("prototypeId",prototypeIds);
+		}
 		//todo 写查询逻辑
 		return queryCriteria;
 	}

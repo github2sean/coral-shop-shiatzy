@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">退货</p>
-    <a style="float: right;" href="#" onClick="javascript :history.back(-1);">< 返回</a>
+    <a style="float: right;" href="/order/details?orderId=${order.id}">< 返回</a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
@@ -159,7 +159,7 @@
             var data = $(".goodsForm").serializeArray();
             $.post("/returnOrder/chooseGoodsAndReason",data,function (data) {
                if(data.code==200){
-                   location.href = "/returnOrder/returnOrderConsigneeInfo";
+                   location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder?orderId=${order.id}";
                }else {
                    layer.msg(data.message);
                }

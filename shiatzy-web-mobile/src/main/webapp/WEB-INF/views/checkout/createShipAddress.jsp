@@ -64,16 +64,16 @@
             layer.close(layer.index);
         });
 
+        //校验暂未做
         $(".completeBtn").click(function () {
             var $form = $(".addressForm");
-            var data = $form.serializeArray();
+            var data = $form.serialize();
             $.post("/checkout/createShipAddress",data,function (data) {
-                console.log(data)
+                console.log(data);
                 if(data.code==200){
                     layer.msg("添加成功");
-                    self.location=document.referrer;
                 }
-            });
+            },"json");
         });
 
     });
