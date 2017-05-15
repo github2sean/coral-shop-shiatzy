@@ -22,7 +22,6 @@ public class GoodsQuery extends Query {
 	private  Long categoryId;
 	private  Long prototypeId;
 	private  Integer priceWay;//价格排序 0：高-低，1：低-高
-	private  List<Long> ids;
 	private  List<Long> colorIds;//颜色
 	private  List<Long> sizeIds;//尺寸
 
