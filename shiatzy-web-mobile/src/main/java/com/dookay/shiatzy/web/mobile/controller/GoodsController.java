@@ -10,7 +10,10 @@ import com.dookay.coral.common.utils.CookieUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.shop.goods.domain.*;
-import com.dookay.coral.shop.goods.query.*;
+import com.dookay.coral.shop.goods.query.GoodsColorQuery;
+import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.*;
 import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
@@ -28,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -65,14 +67,28 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
+        //查询页面进入模糊查询，主页面进入根据商品所有信息匹配查询
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
         query.setPrototypeId(queryGoodsForm.getPrototypeId());
-        List<GoodsDomain> goodsList =  goodsService.getList(query);
-        goodsService.withGoodsItemList(goodsList);
-        ModelAndView modelAndView = new ModelAndView("goods/list");
-        modelAndView.addObject("goodsList",goodsList);
+        PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
+        List<GoodsDomain> goodsNameList =  goodsService.getList(query);
+        ModelAndView modelAndView;
+        if(query.getCategoryId()==null && query.getPrototypeId()==null) {
+            modelAndView = new ModelAndView("goods/namelist");
+            goodsService.withGoodsItemList(goodsNameList);
+            System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsNameList));
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsNameList,query.getPageIndex(),query.getPageSize(),goodsNameList.size());
+            System.out.println(" list:"+JsonUtils.toJSONString(goodsDomainPageList));
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        } else {
+            PageList<SkuDomain> goodsSku = skuService.getPageList(query);
+            System.out.print("goodsSku:" + JsonUtils.toJSONString(goodsSku));
+            modelAndView = new ModelAndView("goods/list");
+            modelAndView.addObject("goodsList", goodsList);
+            modelAndView.addObject("goodsSku", goodsSku);
+        }
         return modelAndView;
     }
 
@@ -152,7 +168,6 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         return modelAndView;
     }
-
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){
         //未发布，跳转到404页面
@@ -183,7 +198,6 @@ public class GoodsController extends BaseController{
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
         mv.addObject("historyList",historyList);
-
         return mv;
     }
 

@@ -28,6 +28,7 @@ public class GoodsQuery extends Query {
 
 
 	private final static String PRICE_FIELD = "price";
+	private  List<Long> ids;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
