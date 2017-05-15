@@ -513,9 +513,6 @@ public class CheckoutController  extends BaseController{
         return successResult("操作成功");
     }
 
-
-
-
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult deleteGoods(Long orderItemId){
@@ -536,9 +533,6 @@ public class CheckoutController  extends BaseController{
         return successResult("操作成功");
     }
 
-
-
-
     /**
      * 订单完成
      * @param orderNo
@@ -548,7 +542,6 @@ public class CheckoutController  extends BaseController{
         ModelAndView mv  = new ModelAndView();
         return mv;
     }
-
 
     public BigDecimal calculateSub(Double price,Integer num){
         BigDecimal sub = BigDecimal.ZERO;

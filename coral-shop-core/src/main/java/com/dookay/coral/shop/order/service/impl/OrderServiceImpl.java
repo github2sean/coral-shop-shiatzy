@@ -5,6 +5,7 @@ import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.query.OrderQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,12 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 					.filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			orderItemDomain.setGoodsItemDomain(goodsItemDomain);
 		}
+	}
+
+	@Override
+	public OrderDomain getOrder(String orderNo) {
+		OrderQuery orderQuery = new OrderQuery();
+		orderQuery.setOrderNo(orderNo);
+		return super.getOne(orderQuery);
 	}
 }
