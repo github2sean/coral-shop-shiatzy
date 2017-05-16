@@ -206,7 +206,7 @@
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><img src="${ctx}/static/images/logo.png" alt=""></span>
     <ul class="top-right-nav">
-        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">3</span></a></li>
+        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">${cartNumber==null?0:cartNumber}</span></a></li>
         <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>

@@ -18,19 +18,19 @@ import org.springframework.context.annotation.Configuration;
 public class AlipayConfig {
 
 	// 合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-	private   String partner = "";
+	private  String partner = "2088221294543871";
 	
 	// 收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
 	private  String seller_id = partner;
 
 	// MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-	private  String key = "";
+	private  String key = "odloe0g55bakkzvnooundk95klqwr0fq";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private  String notify_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/notify_url.jsp";
+	private  String notify_url = "http://shiatzy-w.doolab.cn/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/notify_url.jsp";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private  String return_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/return_url.jsp";
+	private  String return_url = "http://shiatzy-w.doolab.cn/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/return_url.jsp";
 
 	// 签名方式
 	private  String sign_type = "MD5";
@@ -39,7 +39,7 @@ public class AlipayConfig {
 	private  String log_path = "D:\\";
 		
 	// 字符编码格式 目前支持utf-8
-	private  String input_charset = "utf-8";
+	private   String input_charset = "utf-8";
 		
 	// 支付类型 ，无需修改
 	private  String payment_type = "1";

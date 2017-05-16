@@ -1,6 +1,7 @@
 package com.dookay.coral.adapter.payment.alipay.util.httpClient;
 
 import com.dookay.coral.adapter.payment.alipay.config.AlipayConfig;
+import com.dookay.coral.common.web.utils.SpringContextHolder;
 import org.apache.commons.httpclient.Header;
 import java.io.UnsupportedEncodingException;
 
@@ -55,11 +56,12 @@ public class HttpResponse {
     }
 
     public String getStringResult() throws UnsupportedEncodingException {
+        AlipayConfig alipayConfig = SpringContextHolder.getBean("alipayConfig");
         if (stringResult != null) {
             return stringResult;
         }
         if (byteResult != null) {
-            return new String(byteResult, AlipayConfig.input_charset);
+            return new String(byteResult, alipayConfig.getInput_charset());
         }
         return null;
     }

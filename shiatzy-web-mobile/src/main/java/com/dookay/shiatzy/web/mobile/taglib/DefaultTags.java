@@ -1,9 +1,15 @@
 package com.dookay.shiatzy.web.mobile.taglib;
 
 import com.dookay.coral.common.web.utils.SpringContextHolder;
+import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
+import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
+import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
+import com.dookay.coral.shop.order.service.IShoppingCartService;
 
 import java.util.List;
 

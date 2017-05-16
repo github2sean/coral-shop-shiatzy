@@ -46,7 +46,7 @@
         <div class="wrap">
             <div class="subtotal">小计 <span>&yen;<span id="subtotal">${order.goodsTotal}</span></span> </div>
             <div class="discount" style="color: red">优惠 <span>&yen;<span id="discount"> 0</span></span></div>
-            <div class="express">快递 <span>&yen;<span id="express" data-value="50">50</span></span> </div>
+            <div class="express">快递 <span>&yen;<span id="express" data-value="${order.shipFee==null?0:order.shipFee}">${order.shipFee==null?0:order.shipFee}</span></span> </div>
             <div class="predict">预计订单总额 <span>&yen;<span id="ordertotal"> ${order.orderTotal}</span></span></div>
         </div>
     </div>

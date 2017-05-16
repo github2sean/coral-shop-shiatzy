@@ -1,12 +1,18 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.jcaptcha.JCaptcha;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
+import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
+import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
+import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
@@ -14,6 +20,7 @@ import com.dookay.shiatzy.web.mobile.form.RegisterForm;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.StringUtil;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -36,6 +44,10 @@ public class PassportController extends MobileBaseController{
     private IAccountService accountService;
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private IShoppingCartService shoppingCartService;
+
+    public static String CRAT_NUM = "cartNumber";
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
@@ -62,7 +74,16 @@ public class PassportController extends MobileBaseController{
        if(checkAccount) {
            AccountDomain accountDomain = accountService.getAccount(userName);
            UserContext.signIn(accountDomain);
+           CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+           ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+           query.setCustomerId(customerDomain.getId());
+           query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+           HttpServletRequest request = HttpContext.current().getRequest();
+           HttpSession session = request.getSession();
+           int cartNum = shoppingCartService.count(query);
+           session.setAttribute(CRAT_NUM,cartNum);
        }
+
         return successResult("登录成功");
     }
 
