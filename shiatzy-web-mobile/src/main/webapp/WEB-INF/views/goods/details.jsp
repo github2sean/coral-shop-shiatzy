@@ -61,7 +61,7 @@
              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
              <div class="left">
                  <div class="pic">
-                     <a href=""><img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;"></a>
+                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;">
                  </div>
                  <div class="name">${goods.name}</div>
                  <div class="price">${firstItem.price}</div>

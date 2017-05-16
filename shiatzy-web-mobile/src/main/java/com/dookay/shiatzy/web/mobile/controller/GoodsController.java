@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +61,7 @@ public class GoodsController extends BaseController{
 
     private static Integer COLOR_FILTER = 1;
     private static Integer SIZE_FILTER = 0;
+    private static Integer ATTR_FILTER = 2;
     private static Integer COLOR_AND_SIZE_FILTER = 3;
 
     @RequestMapping(value = "search", method = RequestMethod.POST)
@@ -92,12 +94,11 @@ public class GoodsController extends BaseController{
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list(GoodsQuery query){
         ModelAndView modelAndView = new ModelAndView("goods/list");
-        Long categoryId = query.getCategoryId();
+        Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
         //商品列表
         query.setCategoryId(categoryId);
         query.setPriceWay(query.getPriceWay());
-
         List<GoodsDomain> goodsList =  goodsService.getList(query);
         goodsService.withGoodsItemList(goodsList);
         //商品分类
@@ -146,19 +147,41 @@ public class GoodsController extends BaseController{
         //颜色尺寸材质过滤
         List<Long> queryColorIds= query.getColorIds();
         List<Long> querySizeIds = query.getSizeIds();
+        List<Long> queryAttributeIds=query.getAttributeIds();
         System.out.println("colorIds:"+queryColorIds);
         System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
+        System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
 
         // 过滤goodsList
-        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;
-        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;
-        if(colorBoolean && !sizeBoolean){
+        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
+        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
+        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
+        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-        }else if(!colorBoolean && sizeBoolean){
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(colorBoolean && colorBoolean){
+            System.out.println("1");
+        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//颜色不为空，尺寸不为空，材质为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
             goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            System.out.println("2");
+        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = filterGoods(goodsList,ATTR_FILTER,queryAttributeIds);
+            System.out.println("3");
+        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            System.out.println("4");
+        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = filterGoods(goodsList,ATTR_FILTER,queryAttributeIds);
+            System.out.println("5");
+        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
+            goodsList = filterGoods(goodsList,ATTR_FILTER,queryAttributeIds);
+            System.out.println("6");
+        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸不为空，其他都为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList = filterGoods(goodsList,ATTR_FILTER,queryAttributeIds);
+            System.out.println("7");
         }
 
         PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
@@ -207,7 +230,7 @@ public class GoodsController extends BaseController{
             System.out.println("allSizeIds:"+JsonUtils.toJSONString(allSizeIds));
             for (Long filterSizeIds:data){
                 for(Long nowSizeIds:allSizeIds){
-                    if(nowSizeIds == filterSizeIds){
+                    if(Objects.equals(nowSizeIds, filterSizeIds)){
                         returnList.add(goodsDomain);
                         System.out.println("nowGoodsDomain:"+JsonUtils.toJSONString(goodsDomain));
                     }

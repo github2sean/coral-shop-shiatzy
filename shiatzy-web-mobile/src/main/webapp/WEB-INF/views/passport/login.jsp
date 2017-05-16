@@ -16,8 +16,8 @@
     <div class="content">
         <div class="login">登入</div>
         <div class="title">请于下方输入您的电子邮箱与密码登入</div>
-        <input type="email" placeholder="输入您的电子邮箱" name="userName">
-        <input type="password" placeholder="输入您的密码" name="password">
+        <input type="email" placeholder="输入您的电子邮箱" name="userName" id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
+        <input type="password" placeholder="输入您的密码" name="password" id="userPwd"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的密码'">
         <div class="remind"><a href="${ctx}/passport/toForget">忘记密码？</a></div>
         <div class="remind loginInfo"></div>
         <!--添加的a标签用来演示-->
@@ -35,8 +35,31 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    $(function () {
+    //邮箱验证
+    function userName(){
+        var userName =$("#userName").val();
+        var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if(userName=='') {
+            $(".loginInfo").show().css("color","red").text("邮箱不能为空！");
+            return false;
+        }else if(!reg.test(userName))
+        {
+            $(".loginInfo").show().css("color","red").text("邮箱格式不对，请重新输入！");
+            return false;
+        }
         $(".loginInfo").hide();
+
+        return true;
+
+    };
+    $(function () {
+        $('#userName').focus(function(){
+            $(".loginInfo").hide();
+        }).blur(userName);
+
+
+        $(".loginInfo").hide();
+
         $(".loginBtn").click(function () {
             var $form = $(".loginForm");
             var data  = $form.serializeArray();

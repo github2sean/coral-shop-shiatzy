@@ -24,7 +24,7 @@ public class GoodsQuery extends Query {
 	private  Integer priceWay;//价格排序 0：高-低，1：低-高
 	private  List<Long> colorIds;//颜色
 	private  List<Long> sizeIds;//尺寸
-
+    private  List<Long> attributeIds;//材质
 
 	private final static String PRICE_FIELD = "price";
 	private  List<Long> ids;
@@ -49,7 +49,7 @@ public class GoodsQuery extends Query {
 		}
 		if (valid(priceWay)){
 			setOrderBy(PRICE_FIELD);
-			if (priceWay==1){
+			if (priceWay == 1){
 				setDesc(false);
 			}
 		}

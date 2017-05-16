@@ -13,19 +13,20 @@
             <div class="title">新增地址 <a href="javascript:" onclick="self.location=document.referrer;">回上一步</a></div>
             <div class="recipients">
                 <div class="title">收件人*</div>
-                <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName"></div>
-                <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName"></div>
-                <div class="appellation j_appelPopup">称谓* <input type="text" value="${address.title}" name="title"> <span> ></span></div>
-                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone"></div>
+                <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName" id="firstName"></div>
+                <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName" id="lastName"></div>
+                <div class="appellation j_appelPopup">称谓* <input type="text" value="${address.title}" name="title" id="title"> <span> ></span></div>
+                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone" id="phone"></div>
             </div>
             <div class="address">
                 <div class="title">地址*</div>
-                <div class="country">国别 / 区域* <input type="text" value="${address.countryId}" name="countryId"> <span> ></span></div>
-                <div class="province">省/州* <input type="text" value="${address.province}" name="province"> <span> ></span></div>
-                <div class="city">城区* <input type="text" value="${address.city}" name="city"> <span> ></span></div>
+                <div class="country">国别 / 区域* <input type="text" value="${address.countryId}" name="countryId" id="countryId"> <span> ></span></div>
+                <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> <span> ></span></div>
+                <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> <span> ></span></div>
                 <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="address"></div>
                 <div class="more">地址更多信息 <input type="text" value="${address.memo}" name="memo"></div>
             </div>
+            <div class="remind"></div>
             <a href="#"  class="btn completeBtn">完成</a>
         </div>
     </div>
@@ -45,7 +46,120 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    //姓氏验证
+    function firstName()
+    {
+        var firstName=$('#firstName').val();
+        if(firstName == '')
+        {
+            $(".remind").show().css("color","red").text("姓氏不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //名字验证
+    function lastName()
+    {
+        var lastName=$('#lastName').val();
+        if(lastName == '')
+        {
+            $(".remind").show().css("color","red").text("名字不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //称谓验证
+    function title()
+    {
+        var title=$('#title').val();
+        if(title == '')
+        {
+            $(".remind").show().css("color","red").text("称谓不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //电话验证
+    function phone()
+    {
+        var phone=$('#phone').val();
+        if(phone == '')
+        {
+            $(".remind").show().css("color","red").text("电话不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //国家验证
+    function countryId()
+    {
+        var countryId=$('#countryId').val();
+        if(countryId == '')
+        {
+            $(".remind").show().css("color","red").text("国家/区域不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //省州验证
+    function province()
+    {
+        var province=$('#province').val();
+        if(province == '')
+        {
+            $(".remind").show().css("color","red").text("省州不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+    //地区验证
+    function city()
+    {
+        var city=$('#city').val();
+        if(city == '')
+        {
+            $(".remind").show().css("color","red").text("地区不能为空！");
+            return false;
+        }
+        $(".remind").hide();
+        return true;
+    }
+
     $(function(){
+        $('#firstName').focus(function(){
+
+        }).blur(firstName);
+        $('#lastName').focus(function(){
+
+        }).blur(lastName);
+        $('#title').focus(function(){
+
+        }).blur(title);
+        $('#countryId').focus(function(){
+
+        }).blur(countryId);
+        $('#province').focus(function(){
+
+        }).blur(province);
+        $('#city').focus(function(){
+
+        }).blur(city);
+        $('#phone').focus(function(){
+
+        }).blur(phone);
+
+        $('.appellation-popup').children("li").click(function (){
+            var li=$(this).text();
+            $('#title').val(li);
+            layer.close(layer.index);
+        });
+
         commonApp.init();
 
         //点击称谓弹窗
