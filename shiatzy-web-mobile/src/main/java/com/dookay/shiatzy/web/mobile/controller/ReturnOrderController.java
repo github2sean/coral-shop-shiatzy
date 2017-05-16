@@ -290,7 +290,7 @@ public class ReturnOrderController extends BaseController {
         if(customerDomain.getId()!=customerId){
             return errorResult("无权操作此订单");
         }
-        //查询订单状态是否是已收货
+        //查询订单状态是否付款是否取消
         Integer status =  orderDomain.getStatus();
         if(status==1||status==-1){
             return errorResult("该订单不能退货");

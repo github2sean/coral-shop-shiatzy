@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class ReturnReasonTypeModel {
+    private String name;
     private String reason1;
     private String reason2;
     private String reason3;

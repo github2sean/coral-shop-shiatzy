@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.dookay.coral.adapter.payment.alipay.config.AlipayConfig;
 import com.dookay.coral.adapter.payment.alipay.util.AlipayNotify;
 import com.dookay.coral.adapter.payment.alipay.util.AlipaySubmit;
@@ -7,6 +8,9 @@ import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +27,9 @@ import java.util.Map;
  * @version v0.0.1
  * @since 2017/5/2
  */
+@SuppressWarnings(value = "all")
+@Controller
+@RequestMapping("payment/")
 public class PaymentContoller {
 
     @Autowired
@@ -37,8 +44,11 @@ public class PaymentContoller {
      * @param orderNo
      * @return
      */
+    @RequestMapping(value = "buildPayment",method = RequestMethod.GET)
     public ModelAndView buildPayment(Integer paymentMethod,String orderNo){
-        ModelAndView mv = new ModelAndView();
+
+
+        ModelAndView mv = new ModelAndView("payment/buildPayment");
         OrderDomain orderDomain = orderService.getOrder(orderNo);
         //获取第三方支付配置
         Map<String, String> sParaTemp = new HashMap<String, String>();
@@ -52,6 +62,7 @@ public class PaymentContoller {
         sParaTemp.put("out_trade_no", orderNo);//商户订单号，商户网站订单系统中唯一订单号，必填
         sParaTemp.put("subject", orderDomain.getOrderNo());//订单名称，必填
         sParaTemp.put("total_fee", String.format("%.2f", orderDomain.getOrderTotal())); //付款金额，必填
+        //sParaTemp.put("total_fee", String.format("%.2f", 0.01d));
         sParaTemp.put("show_url", "");//收银台页面上，商品展示的超链接，必填
         //sParaTemp.put("app_pay","Y");//启用此参数可唤起钱包APP支付。
         sParaTemp.put("body", ""); //商品描述，可空
@@ -60,6 +71,7 @@ public class PaymentContoller {
         //建立请求
         String form = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
         mv.addObject("form",form);
+        System.out.println(form);
         return mv;
     }
 
@@ -67,6 +79,7 @@ public class PaymentContoller {
      * 第三方支付异步回调
      * @return
      */
+    @RequestMapping(value = "asynReturnUrl",method = RequestMethod.POST)
     @ResponseBody
     public String asynReturnUrl(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String,String> params = new HashMap<String,String>();
@@ -98,7 +111,6 @@ public class PaymentContoller {
         //商户
         String seller_id = new String(request.getParameter("seller_id").getBytes("ISO-8859-1"),"UTF-8");
         //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
-
         if(AlipayNotify.verify(params)){//验证成功
             //////////////////////////////////////////////////////////////////////////////////////////
             //请在这里加上商户的业务逻辑程序代码
@@ -119,7 +131,7 @@ public class PaymentContoller {
                 //请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
                 //如果有做过处理，不执行商户的业务程序
                 OrderDomain orderDomain = orderService.getOrder(out_trade_no);
-                if(orderDomain.getStatus() != OrderStatusEnum.UNPAID.getValue() &&
+                if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                         total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
                         seller_id.equals(alipayConfig.getSeller_id())){
                     orderDomain.setPaidTime(new Date());
@@ -147,6 +159,7 @@ public class PaymentContoller {
      * 第三方支付同步回调页面
      * @return
      */
+    @RequestMapping(value = "returnUrl",method = RequestMethod.GET)
     public ModelAndView returnUrl(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();
@@ -178,9 +191,10 @@ public class PaymentContoller {
         String total_fee = new String(request.getParameter("total_fee").getBytes("ISO-8859-1"),"UTF-8");
         //商户
         String seller_id = new String(request.getParameter("seller_id").getBytes("ISO-8859-1"),"UTF-8");
+
         //计算得出通知验证结果
         boolean verify_result = AlipayNotify.verify(params);
-
+        OrderDomain orderDomain = orderService.getOrder(out_trade_no);
         String message="";
         if(verify_result){//验证成功
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -190,8 +204,7 @@ public class PaymentContoller {
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
-                OrderDomain orderDomain = orderService.getOrder(out_trade_no);
-                if(orderDomain.getStatus() != OrderStatusEnum.UNPAID.getValue() &&
+                if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                         total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
                         seller_id.equals(alipayConfig.getSeller_id())){
                     orderDomain.setPaidTime(new Date());
@@ -205,8 +218,9 @@ public class PaymentContoller {
             //该页面可做页面美工编辑
             message = "验证失败";
         }
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView("payment/returnUrl");
         mv.addObject("message",message);
+        mv.addObject("order",orderDomain);
         return mv;
     }
 }

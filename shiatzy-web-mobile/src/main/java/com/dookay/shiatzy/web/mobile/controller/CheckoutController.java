@@ -101,7 +101,7 @@ public class CheckoutController  extends BaseController{
 
         //创建订单对象
         OrderDomain order = new OrderDomain();
-        order.setShipFee(50D);//TODO 根据国家获取值
+        order.setShipFee(0D);//TODO 根据国家获取值
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
@@ -269,7 +269,7 @@ public class CheckoutController  extends BaseController{
         if(itemIds!=null && itemIds.size()>0){
             return successResult("商品库存不足",itemIds);
         }
-        return successResult("操作成功",orderId);
+        return successResult("操作成功",order);
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
@@ -471,6 +471,9 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        if(order==null){
+            return errorResult("订单已过期");
+        }
         order.setBillRequired(isNeed);
         order.setBillTitle(info);
         session.setAttribute(ORDER,order);

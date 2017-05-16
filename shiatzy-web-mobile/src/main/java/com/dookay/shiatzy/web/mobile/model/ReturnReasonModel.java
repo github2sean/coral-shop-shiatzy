@@ -15,4 +15,5 @@ public class ReturnReasonModel {
     private ReturnReasonTypeModel type1;
     private ReturnReasonTypeModel type2;
     private ReturnReasonTypeModel type3;
+
 }

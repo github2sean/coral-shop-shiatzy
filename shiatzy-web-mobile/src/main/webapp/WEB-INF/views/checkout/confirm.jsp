@@ -138,7 +138,10 @@
                 console.log(data);
                 if(data.code==200){
                     layer.msg(data.message);
-                    //location.href="/order/details?orderId="+data.data;
+                    var orderNo  = data.data.orderNo;
+                    var payMethod = data.data.paymentMethod;
+                    console.log(orderNo+" "+payMethod)
+                    location.href="/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
                 }
             });
         });

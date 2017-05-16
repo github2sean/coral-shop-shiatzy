@@ -6,7 +6,6 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
 <div class="dx-login">
     <div class="dx-title clearfix">
         <div class="member"><span><img src="${ctx}/static/images/icon-member.png" alt=""></span>会员</div>
@@ -25,11 +24,6 @@
         <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
     </div>
     </form>
-   <%-- <div class="thirdparty">
-        <div class="title">使用第三方帐号快速登入</div>
-        <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
-    </div>--%>
-
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

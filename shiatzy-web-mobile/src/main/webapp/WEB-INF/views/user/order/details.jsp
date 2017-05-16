@@ -19,7 +19,9 @@
     <div class="order-date">
         <p>订单日期：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
         <p>订单状态：<c:choose>
-            <c:when test="${orderDomain.status==1}">待支付</c:when>
+            <c:when test="${orderDomain.status==1}">待支付&nbsp;
+                <a href="#" id="payBtn" style="background-color: #4CAF50; border: none;color: white;padding: 5px 8px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 5px">支付</a>
+            </c:when>
             <c:when test="${orderDomain.status==2}">已支付</c:when>
             <c:when test="${orderDomain.status==3}">已发货</c:when>
             <c:when test="${orderDomain.status==4}">已收货</c:when>
@@ -91,6 +93,10 @@
 
     $(function () {
 
+        $("#payBtn").click(function () {
+
+
+        });
 
     });
 

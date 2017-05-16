@@ -42,7 +42,7 @@ public class OrderQuery extends Query {
 		}
 
 		if(valid(orderNo)){
-			criteria.andLike("orderNo",""+orderNo+"");
+			criteria.andEqualTo("orderNo",orderNo);
 		}
 
 		//todo 写查询逻辑

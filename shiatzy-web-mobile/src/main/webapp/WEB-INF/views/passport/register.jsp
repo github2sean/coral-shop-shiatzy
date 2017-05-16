@@ -24,12 +24,6 @@
         <div class="notice">完成注册，表示您已同意接受Shop.shiatzychen.com 的隐私政策及相关线上条例。</div>
     </div>
     </form>
-    <div class="thirdparty">
-        <div class="title">使用第三方帐号快速登入</div>
-        <div class="thirdparty-login"><a href=""></a><a href=""></a><a href=""></a><a href=""></a></div>
-        <div class="dx-instructions"><a href="#">使用说明</a></div>
-        <div class="dx-privacy"><a href="#">隐私权政策</a></div>
-    </div>
 
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
