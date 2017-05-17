@@ -119,7 +119,7 @@ public class GoodsController extends BaseController{
         List<PrototypeAttributeDomain> prototypeAttributeDomainList = prototypeAttributeService.getList(prototypeAttributeQuery);
         //获得原型属性选项
         List<Long> prototypeAttributeIds = new ArrayList<>();
-        prototypeAttributeDomainList.forEach(x->prototypeAttributeIds.addAll(JsonUtils.toLongArray(x.getId()+"")));
+        prototypeAttributeDomainList.forEach(x->prototypeAttributeIds.addAll(JsonUtils.toLongArray("["+x.getId()+"]")));
         List<Long> newPrototypeAttributeIds = prototypeAttributeIds.stream().distinct().collect(Collectors.toList());
         PrototypeAttributeOptionQuery prototypeAttributeOptionQuery = new PrototypeAttributeOptionQuery();
         prototypeAttributeOptionQuery.setPrototypeAttributeIds(newPrototypeAttributeIds);
