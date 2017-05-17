@@ -22,7 +22,7 @@
         <p>订阅最新动态资讯</p>
         <div class="do-subscribe-from">
             <form action="">
-                <input type="text" placeholder="请输入电子邮件地址" class="do-fill-email">
+                <input type="text" placeholder="请输入电子邮件地址" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
                 <button class="do-btn-subscribe">订阅</button>
             </form>
         </div>

@@ -41,7 +41,7 @@
     </ul>
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before">向下自动载入</span>
-        <!--<span>-已到底部-</span>-->
+        <span style="display: none">-已到底部-</span>
     </div>
 </div>
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
@@ -100,7 +100,31 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    var hght=0;//初始化滚动条总长
+    var top=0;//初始化滚动条的当前位置
+    $(document).ready(function(){//DOM的onload事件
+        $(".link-down-before").load("list.jsp");//页面内容被加载到link-down-before元素
 
+        $(".link-down-before").scroll( function() {//定义滚动条位置改变时触发的事件。
+            hght=this.scrollHeight;//得到滚动条总长，赋给hght变量
+            top=this.scrollTop;//得到滚动条当前值，赋给top变量
+        });
+    });
+
+    setInterval("cando();",2000);//每隔2秒钟调用一次cando函数来判断当前滚动条位置。
+
+    function cando(){
+        if(top>parseInt(hght/3)*2)//判断滚动条当前位置是否超过总长的2/3，parseInt为取整函数
+            show();//如果是，调用show函数加载内容。
+    }
+
+    function show(){
+        $.get("list.jsp", function(data){//利用jquery的get方法得到list.jsp内容
+            $(".link-down-before").append(data);//用append方法追加内容到link-down-before元素。
+            hght=0;//恢复滚动条总长，因为$(”#mypage”).scroll事件一触发，又会得到新值，不恢复的话可能会造成判断错误而再次加载……
+            top=0;//原因同上。
+        });
+    }
     $(function () {
         //console.log('${goodsList}');
 

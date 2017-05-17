@@ -251,17 +251,11 @@ public class GoodsController extends BaseController{
         List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
         for (GoodsDomain goodsDomain : goodsList){
             GoodsAttributeValueDomain goodsAttributeValueDomain =goodsAttributeValueService.get(goodsDomain.getId());//获取材质的id
-            if(type == ATTR_FILTER )
-            {
-                for (Long attribute:data){
-                    for(Long newAttributeIds:goodsDomain.getAttributeIds()){
-                        if(Objects.equals(newAttributeIds, attribute)){
-                            {
-                                if(goodsAttributeValueDomain.getPrototypeAttributeOptionId() == goodsDomain.getId())
-                                    list.add(goodsDomain);
-                                System.out.println("nowGoodsDomain:" + JsonUtils.toJSONString(goodsDomain));
-                            }
-                        }
+            for (Long attribute:data) {
+                if (type == ATTR_FILTER) {
+                    if (goodsAttributeValueDomain.getPrototypeAttributeOptionId()== Integer.parseInt(attribute.toString())) {
+                        list.add(goodsDomain);
+                        System.out.println("nowGoodsDomain:" + JsonUtils.toJSONString(goodsDomain));
                     }
                 }
             }
