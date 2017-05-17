@@ -21,13 +21,13 @@
         <p>修改邮箱：</p>
         <div class="input">
             <i>*</i>
-            <input id="newEmail" name="newEmail" type="text" placeholder="请输入您的新登录邮箱地址"/>
+            <input id="newEmail" name="newEmail" type="text" placeholder="请输入您的新登录邮箱地址" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的新登录邮箱地址'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newEmail2" type="text" placeholder="请再次输入您的新登录邮箱地址" />
+            <input id="newEmail2" type="text" placeholder="请再次输入您的新登录邮箱地址" onfocus="this.placeholder=''" onblur="this.placeholder='请再次输入您的新登录邮箱地址'" />
         </div>
-        <div class="erroInfo" style='color: red;'></div>
+        <div class="emailInfo"></div>
         <a  type="button" class="saveBtn">
             <span><</span>
             保存
@@ -39,17 +39,17 @@
         <p style="margin-bottom: 2rem;">修改密码</p>
         <div class="input">
             <i>*</i>
-            <input class="oldPassword" name="password" type="password" placeholder="请输入您原始登录密码"/>
+            <input class="oldPassword" name="password" type="password" placeholder="请输入您原始登录密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您原始登录密码'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newPassword" name="newPassword" type="password" placeholder="请输入新密码"/>
+            <input id="newPassword" name="newPassword" type="password" placeholder="请输入新密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入新密码'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newPassword2" type="password" placeholder="请再次输入新密码" />
+            <input id="newPassword2" type="password" placeholder="请再次输入新密码"  onfocus="this.placeholder=''" onblur="this.placeholder='请再次输入新密码'">
         </div>
-        <div class="erroInfo2"></div>
+        <div class="emailInfo2"></div>
         <a type="button" class="updateBtn">
             <span><</span>
             确认
@@ -64,8 +64,104 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    //邮箱验证
+    function newEmail(){
+        var newEmail =$("#newEmail").val();
+        var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if(newEmail=='') {
+            $(".emailInfo").show().css("color","red").text("邮箱不能为空！");
+            return false;
+        }else if(!reg.test(newEmail))
+        {
+            $(".emailInfo").show().css("color","red").text("邮箱格式不对，请重新输入！");
+            return false;
+        }
+        $(".emailInfo").hide();
 
+        return true;
+
+    };
+    function newEmail2(){
+        var newEmail2 =$("#newEmail2").val();
+        var newEmail =$("#newEmail").val();
+        if(newEmail2=='') {
+            $(".emailInfo").show().css("color","red").text("邮箱不能为空！");
+            return false;
+        }else if(newEmail2 != newEmail)
+        {
+            $(".emailInfo").show().css("color","red").text("两次邮箱输入不一样，请重新输入！");
+            return false;
+        }
+        $(".emailInfo").hide();
+
+        return true;
+
+    };
+    //密码验证
+    function oldPassword()
+    {
+        var oldPassword=$('.oldPassword').val();
+        var reg=/^[a-zA-Z]\w{5,17}$/;
+        if(oldPassword=='') {
+            $(".emailInfo2").show().css("color","red").text("密码不能为空！");
+            return false;
+        }else if(!reg.test(oldPassword))
+        {
+            $(".emailInfo2").show().css("color","red").text("密码格式不对，请重新输入！");
+            return false;
+        }
+        $(".emailInfo2").hide();
+
+        return true;
+    };
+    function newPassword()
+    {
+        var newPassword=$('#newPassword').val();
+        var reg=/^[a-zA-Z]\w{5,17}$/;
+        if(newPassword=='') {
+            $(".emailInfo2").show().css("color","red").text("密码不能为空！");
+            return false;
+        }else if(!reg.test(newPassword))
+        {
+            $(".emailInfo2").show().css("color","red").text("密码格式不对，请重新输入！");
+            return false;
+        }
+        $(".emailInfo2").hide();
+
+        return true;
+    };
+    function newPassword2()
+    {
+        var newPassword2=$('#newPassword2').val();
+        var newPassword=$('#newPassword').val();
+        if(newPassword2=='') {
+            $(".emailInfo2").show().css("color","red").text("密码不能为空！");
+            return false;
+        }else if(newPassword2 !=newPassword)
+        {
+            $(".emailInfo2").show().css("color","red").text("两次密码不一样，请重新输入！");
+            return false;
+        }
+        $(".emailInfo2").hide();
+
+        return true;
+    };
     $(function () {
+        $('#newEmail').focus(function(){
+            $(".emailInfo").show().css("color","red").text("请输入新的登陆邮箱！");
+        }).blur(newEmail);
+        $('#newEmail2').focus(function(){
+            $(".emailInfo").show().css("color","red").text("请再次输入新的登陆邮箱！");
+        }).blur(newEmail2);
+        $('.oldPassword').focus(function(){
+            $(".emailInfo2").show().css("color","red").text("请输入您原始登录密码！");
+        }).blur(oldPassword);
+        $('#newPassword').focus(function(){
+            $(".emailInfo2").show().css("color","red").text("请输入新的登录密码！");
+        }).blur(newPassword);
+        $('#newPassword2').focus(function(){
+            $(".emailInfo2").show().css("color","red").text("请再次输入新的登录密码！");
+        }).blur(newPassword2);
 
         $(".saveBtn").click(function () {
 

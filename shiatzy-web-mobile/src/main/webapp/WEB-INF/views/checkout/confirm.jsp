@@ -48,7 +48,7 @@
             <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox"></i>不需要发票</label></span>
             <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox"></i>需要发票</label></span>
         </div>
-        <p id="showBill" style="display: none;margin-left: 2.7rem;font-size: 1.0821rem;margin-top: 2.7053rem;border-bottom: 2px solid #cccccc;">
+        <p id="showBill" style="display: none;margin-left: 2.3rem;font-size: 1.0821rem;margin-top: 2.7rem;border-bottom: 2px solid #cccccc;">
             发票抬头*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
     </div>
     <div class="delivery">

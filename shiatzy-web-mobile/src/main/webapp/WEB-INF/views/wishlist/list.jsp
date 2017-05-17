@@ -9,7 +9,7 @@
 </jsp:include>
 
 <div class="dx-wish clearfix">
-    <div class="dx-title">愿望清单<a href="/u/account/index">回上页</a></div>
+    <div class="dx-title">我的账户/愿望清单<a href="/u/account/index">回上页</a></div>
     <div class="content">
         <c:if test="${not empty wishList}">
         <div id="toggleDiv">

@@ -219,7 +219,7 @@
     <div class="do-nav-cnt">
         <div class="do-search">
             <form action="/goods/search" method="post" id="contentForm">
-                <input type="text" placeholder="请输入搜索内容" class="j_search" name="goodsName"/>
+                <input type="text" placeholder="请输入搜索内容" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='请输入搜索内容'"/>
                 <input type="hidden" value="1"  name="pageIndex">
                 <input type="hidden" value="10"  name="pageSize">
                 <input type="hidden" value="0"  name="offset">
