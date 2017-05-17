@@ -144,5 +144,25 @@
         </dependency>
 
         <!-- jfinal-weixin end -->
+
+        <!-- 银联依赖包 start -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>1.45</version>
+        </dependency>
+
+        <!-- 银联依赖包 end -->
+
     </dependencies>
 </project>

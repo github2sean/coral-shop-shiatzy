@@ -226,7 +226,14 @@ public class GoodsController extends BaseController{
     public  List<GoodsDomain> filterGoods(List<GoodsDomain> goodsList,Integer type,List<Long> data){
         List<GoodsDomain> returnList  = new ArrayList<GoodsDomain>();
         for (GoodsDomain goodsDomain : goodsList){
-            List<Long> allSizeIds = SIZE_FILTER.equals(type)?JsonUtils.toLongArray(goodsDomain.getSizeIds()):JsonUtils.toLongArray(goodsDomain.getColorIds());
+            List<Long> allSizeIds = null;
+            if(type==SIZE_FILTER){
+                allSizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
+            }else if(type==COLOR_FILTER){
+                allSizeIds = JsonUtils.toLongArray(goodsDomain.getColorIds());
+            }else if(type==ATTR_FILTER){
+                allSizeIds = JsonUtils.toLongArray(goodsDomain.getAttributes()+"");
+            }
             System.out.println("allSizeIds:"+JsonUtils.toJSONString(allSizeIds));
             for (Long filterSizeIds:data){
                 for(Long nowSizeIds:allSizeIds){
