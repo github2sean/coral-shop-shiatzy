@@ -51,17 +51,17 @@ public class PassportController extends MobileBaseController{
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
-        return "/passport/register";
+        return "passport/register";
     }
 
     @RequestMapping(value = "toLogin", method = RequestMethod.GET)
     public String toLogin(){
-        return "/passport/login";
+        return "passport/login";
     }
 
     @RequestMapping(value = "toForget", method = RequestMethod.GET)
     public String toForget(){
-        return "/passport/forgetPassword";
+        return "passport/forgetPassword";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)

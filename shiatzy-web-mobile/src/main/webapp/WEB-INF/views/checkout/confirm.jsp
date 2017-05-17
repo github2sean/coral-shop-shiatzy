@@ -141,7 +141,14 @@
                     var orderNo  = data.data.orderNo;
                     var payMethod = data.data.paymentMethod;
                     console.log(orderNo+" "+payMethod)
-                    location.href="/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
+                    if(payMethod=='1'){
+                        location.href="/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
+                    }else if(payMethod=='2'){
+                        location.href="/payment/initUnionPay?orderNo="+orderNo;
+                    }else if(payMethod=='3'){
+
+                    }
+
                 }
             });
         });
