@@ -9,7 +9,7 @@
 
 <div class="back-up clearfix">
     <a href="我的账户.个人信息.html">
-        <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><h3>< 回上页</h3></a>
+        <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><h3>< 回上一页</h3></a>
     </a>
 </div>
 <div class="club-card">

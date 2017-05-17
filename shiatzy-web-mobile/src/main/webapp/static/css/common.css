@@ -275,9 +275,9 @@ label{display:inline-block;max-width:100%;font-weight:400;zoom:1;}
 .do-list-lang{border-top: 1px solid #666;margin: 0 .7rem;padding-top: 1rem}
 .col-2-w>a, .col-2-w>div{float: left;width: 50%}
 .col-2-w img{width: 100%}
-.index-se{border: 2px solid #999;margin: 2.7rem 2rem;padding: 2rem 0 1.7rem}
+.index-se{border: 6px solid #e6e6e6;margin: 2.7rem 2rem;padding: 2rem 0 1.7rem}
 .index-se .bd-btm{letter-spacing: 3px;padding-bottom: .6rem;font-size: 2rem;border-bottom: 2px solid #999;display: inline-block;padding-left: 1rem;padding-right: 1rem;margin-bottom: 1.1rem}
-.index-se .bd-ard{border: 1px solid #999;display: inline-block;margin: .5rem 0 0;padding: .6rem .5rem .2rem;letter-spacing: 3px}
+.index-se .bd-ard{border:3px solid #e6e6e6;display: inline-block;margin: .5rem 0 0;padding: .6rem .5rem .2rem;letter-spacing: 3px}
 .index-se .text-bold{letter-spacing: 10px;margin: 1rem 0 1.8rem;font-size: 3.8rem;padding-left: 10px}
 .para-discount{line-height: 2.4rem;letter-spacing: 2px}
 .guide-link-before:before{content: ">";margin-right: 1.2rem;position: relative;top:-1px}

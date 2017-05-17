@@ -820,8 +820,9 @@ i{
     width: 100%;
     height: 2rem;
     background-color: #e6e6e6;
-    border: .2rem solid #d2d2d2;
+    border: .1rem solid #d2d2d2;
     text-align: right;
+    padding-top: .2rem;
     padding-right: 1.4rem;
     font-size: 1rem;
 }
@@ -860,7 +861,7 @@ i{
     line-height: 1.5rem;
     background-color: #fff;
     border: none;
-    border: .2rem solid #ccc;
+    border: .1rem solid #ccc;
     float: right;
     margin-top: .5rem;
 }
@@ -879,7 +880,7 @@ i{
 }
 .dx-accounts .total .wrap div{
     height: 2rem;
-    border-bottom: .2rem solid #d2d2d2;
+    border-bottom: .1rem solid #d2d2d2;
     font-size: 1rem;
     margin-top: .8rem;
     padding-left: 1.3rem;
@@ -889,7 +890,7 @@ i{
     margin-right: 1.3rem;
 }
 .dx-accounts .total .wrap .predict{
-    border-top: .2rem solid #d2d2d2;
+    border-top: .1rem solid #d2d2d2;
     margin-top: 1.3rem;
     line-height: 3.4rem;
     height: 3.4rem;

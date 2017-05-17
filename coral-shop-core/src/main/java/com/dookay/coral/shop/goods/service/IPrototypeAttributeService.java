@@ -3,6 +3,8 @@ package com.dookay.coral.shop.goods.service;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.goods.domain.PrototypeAttributeDomain;
 
+import java.util.List;
+
 /**
  * 原型属性的业务层接口
  * @author : luxor
@@ -11,6 +13,6 @@ import com.dookay.coral.shop.goods.domain.PrototypeAttributeDomain;
  */
 public interface IPrototypeAttributeService extends IBaseService<PrototypeAttributeDomain> {
 
-    PrototypeAttributeDomain getAttributeByPrototypeId(Long id);
+    List getAttributeByPrototypeId(Long id);
 
 }

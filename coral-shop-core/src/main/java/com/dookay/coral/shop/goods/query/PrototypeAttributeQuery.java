@@ -17,9 +17,9 @@ import java.util.List;
 @Data
 public class PrototypeAttributeQuery extends Query {
 
-	private Long prototypeId;
+	private Long prototypeId;//获取单个原型id
 
-	private List<Long> prototypeIds;
+	private List<Long> prototypeIds;//获取多个原型id
 
 	@Override
 	public QueryCriteria toCriteria() {

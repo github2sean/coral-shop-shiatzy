@@ -83,6 +83,7 @@ public class GoodsDomain implements Serializable {
 	@Transient
 	private List<PrototypeAttributeDomain> attributeDomains;
 
+	/*商品材质*/
 	@Transient
-	private List<Long> attributes;
+	private List<Long> attributeIds;
 }

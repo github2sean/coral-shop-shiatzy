@@ -7,12 +7,12 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">我的订阅 </p>
+    <p style="float: left">我的账户/我的订阅 </p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 <div class="my-account">
     <div class="contact">
-        <h3>我同意Shop.shiatzychen.com 通过以下方式与我联系</h3>
+        <h3>我同意 夏资陈 通过以下方式与我联系</h3>
         <div>
             <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="1"><i class="i-radiobox"></i>快递及邮件</label></span>
         </div>
@@ -28,7 +28,7 @@
     </div>
     <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>
     <div class="finish">
-        <a href="#" id="saveBtn">保存</a>
+        <a href="#" id="saveBtn">完成</a>
     </div>
     <div class="privacy">
         <a href="#">

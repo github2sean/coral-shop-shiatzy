@@ -10,6 +10,8 @@ import com.dookay.coral.shop.goods.mapper.PrototypeAttributeMapper;
 import com.dookay.coral.shop.goods.domain.PrototypeAttributeDomain;
 import com.dookay.coral.shop.goods.service.IPrototypeAttributeService;
 
+import java.util.List;
+
 /**
  * 原型属性的业务实现类
  * @author : luxor
@@ -24,10 +26,10 @@ public class PrototypeAttributeServiceImpl extends BaseServiceImpl<PrototypeAttr
 	private PrototypeAttributeMapper prototypeAttributeMapper;
 
 	@Override
-	public PrototypeAttributeDomain getAttributeByPrototypeId(Long id) {
+	public List getAttributeByPrototypeId(Long id) {
 
 		PrototypeAttributeQuery query = new PrototypeAttributeQuery() ;
 		query.setPrototypeId(id);
-		return getOne(query);
+		return getList(query);
 	}
 }

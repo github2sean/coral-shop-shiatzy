@@ -84,7 +84,7 @@
                 </div>
             </c:forEach>
         </div>
-        <div class="text-center"><button type="button" class="btn-submit">应用</button></div>
+        <div class="text-center"><button type="button" class="btn-submit">完成</button></div>
     </form>
 </div>
 <div id="j_panel_sort" class="pro-filter-panel">
