@@ -55,7 +55,10 @@
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <form action="" class="filterForm">
-        <input type="hidden" name="categoryId" value="${categoryId}">
+        <input type="hidden" name="categoryId" value="${categoryId}" id="category">
+        <input type="hidden" name="colorId" value="${colorId}" id="color">
+        <input type="hidden" name="sizeId" vaule="${sizeId}" id="size">
+        <input type="hidden" name="attributeId" vaule="${attributeId}" id="attr">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
@@ -91,8 +94,10 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <div class="do-sort">排序</div>
     <ul class="do-sort-list">
-        <li><a href="/goods/list?categoryId=${categoryId}&priceWay=0">售价（高-低）</a></li>
-        <li><a href="/goods/list?categoryId=${categoryId}&priceWay=1">售价（低-高）</a></li>
+        <%--<li id="priceWay0"><a href="/goods/list?categoryId=${categoryId}&priceWay=0" >售价（高-低）</a></li>
+        <li id="priceWay1"><a href=" /goods/list?categoryId=${categoryId}&priceWay=1" >售价（低-高）</a></li>--%>
+            <li id="priceWay0">售价（高-低)</li>
+            <li id="priceWay1">售价（低-高)</li>
     </ul>
 </div>
 
@@ -100,31 +105,11 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    var hght=0;//初始化滚动条总长
-    var top=0;//初始化滚动条的当前位置
-    $(document).ready(function(){//DOM的onload事件
-        $(".link-down-before").load("list.jsp");//页面内容被加载到link-down-before元素
-
-        $(".link-down-before").scroll( function() {//定义滚动条位置改变时触发的事件。
-            hght=this.scrollHeight;//得到滚动条总长，赋给hght变量
-            top=this.scrollTop;//得到滚动条当前值，赋给top变量
-        });
-    });
-
-    setInterval("cando();",2000);//每隔2秒钟调用一次cando函数来判断当前滚动条位置。
-
-    function cando(){
-        if(top>parseInt(hght/3)*2)//判断滚动条当前位置是否超过总长的2/3，parseInt为取整函数
-            show();//如果是，调用show函数加载内容。
-    }
-
-    function show(){
-        $.get("list.jsp", function(data){//利用jquery的get方法得到list.jsp内容
-            $(".link-down-before").append(data);//用append方法追加内容到link-down-before元素。
-            hght=0;//恢复滚动条总长，因为$(”#mypage”).scroll事件一触发，又会得到新值，不恢复的话可能会造成判断错误而再次加载……
-            top=0;//原因同上。
-        });
-    }
+    var category =$("#category").value;
+    var color=$("#color").value;
+    var size =$("#size").value;
+    var attr=$("#attr").value;
+    var price=$("#price").value;
     $(function () {
         //console.log('${goodsList}');
 
@@ -161,7 +146,11 @@
             console.log(data)
             $(".filterForm").submit();
         });
-
-
+        $("#priceWay0").click(function(){
+            window.location="/goods/list?categoryId= '"+category+"'&colorIds='"+color+"'&sizeIds='"+size+"'&attributeIds='"+attr+"'&priceWay=0";
+        });
+        $("#priceWay1").click(function(){
+            window.location="/goods/list?categoryId= '"+category+"'&colorIds='"+color+"'&sizeIds='"+size+"'&attributeIds='"+attr+"'&priceWay=1";
+        });
     });
 </script>
