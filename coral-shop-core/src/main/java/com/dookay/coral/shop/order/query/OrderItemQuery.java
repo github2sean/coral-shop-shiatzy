@@ -19,6 +19,8 @@ public class OrderItemQuery extends Query {
 
 	private Integer returnNum;
 
+	private String orderNo;
+
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -29,6 +31,9 @@ public class OrderItemQuery extends Query {
 		}
 		if (valid(returnNum)){
 			criteria.andGreaterThan("num",returnNum);
+		}
+		if (valid(orderNo)){
+			criteria.andEqualTo("orderNo",orderNo);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

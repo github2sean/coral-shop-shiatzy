@@ -89,8 +89,8 @@
         <property name="merId" value="777290058146843" />
         <property name="backUrl" value="http://test41.coralcodes.com/payment/backRcvResponse"/>
         <property name="frontUrl" value="http://test41.coralcodes.com/payment/frontRcvResponse"/>
-        <!--<property name="backUrl" value="http://222.222.222.222:8080/ACPSample_B2C/BackRcvResponse"/>
-        <property name="frontUrl" value="http://127.0.0.1:8080/ACPSample_B2C/frontRcvResponse"/>-->
+        <!--<property name="backUrl" value="http://shiatzy-w.doolab.cn/payment/backRcvResponse"/>
+        <property name="frontUrl" value="http://shiatzy-w.doolab.cn/payment/frontRcvResponse"/>-->
         <property name="accessType" value="0"/>
         <property name="bizType" value="000201"/>
         <property name="channelType" value="07"/>
@@ -102,4 +102,21 @@
         <property name="txnType" value="01"/>
         <property name="version" value="5.0.0"/>
     </bean>
+
+    <bean class="com.dookay.coral.adapter.payment.ipaylinks.config.IpayLinksConfig" name="ipayLinksConfig">
+        <property name="version" value="1.0"/>
+        <property name="siteId" value="http://test41.coralcodes.com"/>
+        <property name="tradeType" value="1000"/>
+        <property name="currencyCode" value="CNY"/>
+        <property name="settlementCurrencyCode" value="CNY"/>
+        <property name="borrowingMarked" value="0"/>
+        <property name="noticeUrl" value="http://test41.coralcodes.com/payment/noticeUrl"/>
+        <property name="partnerId" value="142444554"/>
+        <property name="payMode" value="10"/>
+        <property name="charset" value="UTF-8"/>
+        <property name="signType" value="MD4"/>
+
+
+    </bean>
+
 </beans>

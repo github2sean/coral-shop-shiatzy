@@ -2,8 +2,11 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.dookay.coral.adapter.payment.alipay.config.AlipayConfig;
+import com.dookay.coral.adapter.payment.alipay.sign.MD5;
 import com.dookay.coral.adapter.payment.alipay.util.AlipayNotify;
 import com.dookay.coral.adapter.payment.alipay.util.AlipaySubmit;
+import com.dookay.coral.adapter.payment.ipaylinks.base.IpayLinksStatics;
+import com.dookay.coral.adapter.payment.ipaylinks.config.IpayLinksConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.config.UnionConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.demo.DemoBase;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.AcpService;
@@ -11,19 +14,31 @@ import com.dookay.coral.adapter.payment.unionpay.acp.sdk.LogUtil;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConstants;
 import com.dookay.coral.common.exception.BaseException;
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
+import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
+import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
+import com.dookay.coral.shop.order.query.OrderItemQuery;
+import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
+import com.dookay.shiatzy.web.mobile.xml.IpayLinksReturnXml;
 import lombok.Data;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +46,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -51,7 +68,16 @@ public class PaymentContoller extends BaseController{
     private UnionConfig unionConfig;
 
     @Autowired
+    private IpayLinksConfig ipayLinksConfig;
+
+    @Autowired
     private IOrderService orderService;
+
+    @Autowired
+    private IOrderItemService orderItemService;
+
+    @Autowired
+    private ICustomerService customerService;
 
     /**
      * 第三方支付提交页面
@@ -421,6 +447,92 @@ public class PaymentContoller extends BaseController{
     }
 
 
+    /**
+     * 构建ipaylinks 表单
+     */
+    @RequestMapping(value = "buildIpayLinks",method = RequestMethod.GET)
+    public ModelAndView buildIpayLinks(HttpServletRequest req,String orderNo,String ipAddress) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(StringUtils.isBlank(orderNo)){
+            throw  new ServiceException("订单号为空");
+        }
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+        OrderDomain orderDomain = orderService.getOrder(orderNo);
+        OrderItemQuery query = new OrderItemQuery();
+        query.setOrderId(orderDomain.getId());
+        List<OrderItemDomain> list = orderItemService.getList(query);
+        Map<String, String> requestData = new HashMap<String, String>();
+        requestData.put(IpayLinksStatics.VERSION,ipayLinksConfig.getVersion());
+        requestData.put(IpayLinksStatics.ORDER_ID,orderNo);
+        requestData.put(IpayLinksStatics.GOODS_NAME,list==null||list.size()<1?"无商品":list.get(0).getGoodsName());
+        requestData.put(IpayLinksStatics.GOODS_DESC,list==null||list.size()<1?"无商品":list.get(0).getSkuSpecifications());
+        requestData.put(IpayLinksStatics.SUBMIT_TIME,simpleDateFormat.format(orderDomain.getOrderTime()));
+        requestData.put(IpayLinksStatics.CUSTOMER_IP,ipAddress);
+        requestData.put(IpayLinksStatics.SITE_ID,ipayLinksConfig.getSiteId());
+        requestData.put(IpayLinksStatics.ORDER_AMOUNT,orderDomain.getOrderTotal().toString());
+        requestData.put(IpayLinksStatics.TRADE_TYPE,ipayLinksConfig.getTradeType());
+        requestData.put(IpayLinksStatics.CURRENCY_CODE,ipayLinksConfig.getCurrencyCode());
+        requestData.put(IpayLinksStatics.SETTLEMENT_CURRENCY_CODE,ipayLinksConfig.getSettlementCurrencyCode());//选填
+        requestData.put(IpayLinksStatics.BORROWING_MARKED,ipayLinksConfig.getBorrowingMarked());
+        requestData.put(IpayLinksStatics.NOTICE_URL,ipayLinksConfig.getNoticeUrl());
+        requestData.put(IpayLinksStatics.PARTNER_ID,ipayLinksConfig.getPartnerId());
+
+        //账单信息
+        requestData.put(IpayLinksStatics.BILL_NAME,orderDomain.getShipFirstName()+orderDomain.getShipLastName());
+        requestData.put(IpayLinksStatics.BILL_ADDRESS,orderDomain.getShipAddress());
+        requestData.put(IpayLinksStatics.BILL_CITY,orderDomain.getShipCity());
+        requestData.put(IpayLinksStatics.BILL_POSTAL_CODE,"00100");//邮编暂无
+        requestData.put(IpayLinksStatics.BILL_EMAIL,accountDomain.getEmail());
+        requestData.put(IpayLinksStatics.BILL_STATE,orderDomain.getShipProvince());
+        requestData.put(IpayLinksStatics.BILL_COUNTRY_CODE,orderDomain.getShipCountry());
+        requestData.put(IpayLinksStatics.BILL_PHONE_NUMBER,orderDomain.getShipPhone());
+
+        //收货信息
+        requestData.put(IpayLinksStatics.SHIPPING_NAME,orderDomain.getShipFirstName()+orderDomain.getShipLastName());
+        requestData.put(IpayLinksStatics.SHIPPING_ADDRESS,orderDomain.getShipAddress());
+        requestData.put(IpayLinksStatics.SHIPPING_CITY,orderDomain.getShipCity());
+        requestData.put(IpayLinksStatics.SHIPPING_POSTAL_CODE,"00100");//邮编暂无
+        requestData.put(IpayLinksStatics.SHIPPING_MAIL,accountDomain.getEmail());
+        requestData.put(IpayLinksStatics.SHIPPING_STATE,orderDomain.getShipProvince());
+        requestData.put(IpayLinksStatics.SHIPPING_COUNTRY_CODE,orderDomain.getShipCountry());
+        requestData.put(IpayLinksStatics.SHIPPING_PHONE_NUMBER,orderDomain.getShipPhone());
+
+        //支付信息
+        requestData.put(IpayLinksStatics.PAY_MODE,ipayLinksConfig.getPayMode());
+        requestData.put(IpayLinksStatics.CARD_HOLDER_NUMBER,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_EMAIL,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_FIRST_NAME,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_LAST_NAME,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_PHONE_NUMBER,"");// 选填 页面提交
+        requestData.put(IpayLinksStatics.SECURITY_CODE,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_EXPIRATION_MONTH,"");//页面提交
+        requestData.put(IpayLinksStatics.CARD_EXPIRATION_YEAR,"");//页面提交
+
+        //安全信息
+        requestData.put(IpayLinksStatics.REMARK,"");//选填
+        requestData.put(IpayLinksStatics.DEVICE_FINGERPRINT_ID,orderNo);//指纹
+        requestData.put(IpayLinksStatics.CHARSET,ipayLinksConfig.getCharset());
+
+        requestData.put(IpayLinksStatics.SIGN_TYPE,ipayLinksConfig.getSignType());
+        requestData.put(IpayLinksStatics.SIGN_MSG,content2MD5(requestData));
+
+        String postUrl = "http://zhangj-gw.ipaylinks.com:8057/webgate/ipayapi.htm";//  https://api.ipaylinks.com/webgate/ipayapi.htm
+
+        String html = AcpService.createAutoFormHtml(postUrl,requestData,ipayLinksConfig.getCharset());
+        System.out.println("html:"+html);
+        ModelAndView mv = new ModelAndView("payment/initUnionPay");
+        mv.addObject("html",html);
+        return mv;
+    }
+
+    @RequestMapping(value = "noticeUrl",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult noticeUrl(@ModelAttribute IpayLinksReturnXml ipayLinksReturnXml){
+
+
+
+        return successResult("验证成功");
+    }
 
 
     /**
@@ -447,7 +559,6 @@ public class PaymentContoller extends BaseController{
         return res;
     }
 
-
     public void updateOrderStatus(OrderDomain orderDomain){
         orderDomain.setPaidTime(new Date());
         orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
@@ -458,8 +569,47 @@ public class PaymentContoller extends BaseController{
         String returnAmt = "0";
         if(amt!=null){
             returnAmt = amt.toString();
-            returnAmt = returnAmt.replace(".","");
+            if(!returnAmt.contains(".")){
+                returnAmt = returnAmt+"00";
+            }else{
+                String[] str = returnAmt.split("\\.");
+                if(str[1].length()>0&&str[1].length()==1){
+                    returnAmt = str[0]+str[1]+"0";
+                }else if(str[1].length()>0&&str[1].length()>=2){
+                    returnAmt = str[0]+str[1].substring(0,2);
+                }
+            }
         }
         return  returnAmt;
+    }
+
+    public String content2MD5(Map<String,String> map) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        String returnStr = "";
+
+        Collection<String> keyset= map.keySet();
+        List<String> list = new ArrayList<String>(keyset);
+        //对key键值按字典升序排序
+        Collections.sort(list);
+        for (int i = 0; i < list.size(); i++) {
+            //选填字段为空不生成
+            if(!isMustKey(list.get(i)) && ("".equals(map.get(list.get(i)))|| map.get(list.get(i))==null) ){
+                continue;
+            }
+            returnStr += list.get(i).trim()+"=${"+list.get(i).trim()+"}&";
+        }
+        returnStr = returnStr+"pkey=${pkey}";
+        System.out.println("returnStr:"+returnStr);
+        returnStr = DigestUtils.md5Hex(returnStr);
+        return returnStr;
+    }
+
+    public Boolean isMustKey(String key){
+        Boolean result = true;
+        if(IpayLinksStatics.REMARK.equals(key)
+                || IpayLinksStatics.CARD_HOLDER_PHONE_NUMBER.equals(key)
+                || IpayLinksStatics.SETTLEMENT_CURRENCY_CODE.equals(key)){
+            result = false;
+        }
+        return result;
     }
 }

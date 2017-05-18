@@ -6,7 +6,7 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
     <a style="float: right;" href="${referrerPage}">< 回上页</a>
@@ -146,7 +146,9 @@
                     }else if(payMethod=='2'){
                         location.href="/payment/initUnionPay?orderNo="+orderNo;
                     }else if(payMethod=='3'){
-
+                        document.write(returnCitySN["cip"]+','+returnCitySN["cname"]);
+                        var ip = returnCitySN["cip"];
+                        location.href="/payment/buildIpayLinks?orderNo="+orderNo+"&ipAddress="+ip;
                     }
 
                 }
