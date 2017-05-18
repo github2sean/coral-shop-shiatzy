@@ -97,7 +97,22 @@ public class GoodsController extends BaseController{
     public ModelAndView list(GoodsQuery query){
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
+        List<Long> color =query.getColorIds();
+        List<Long> size=query.getSizeIds();
+        List<Long> attr=query.getAttributeIds();
         modelAndView.addObject("categoryId",categoryId);
+        if(query.getColorIds()!=null)
+        {
+            modelAndView.addObject("colorId",color);
+        }
+        if(query.getSizeIds() !=null)
+        {
+            modelAndView.addObject("sizeId",size);
+        }
+        if(query.getAttributeIds()!=null)
+        {
+            modelAndView.addObject("attributeId",attr);
+        }
         //商品列表
         query.setCategoryId(categoryId);
         query.setPriceWay(query.getPriceWay());
@@ -163,11 +178,14 @@ public class GoodsController extends BaseController{
         Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
         if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
         }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
         }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
             goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
         }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
@@ -179,6 +197,7 @@ public class GoodsController extends BaseController{
             goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
         }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
 
         }
