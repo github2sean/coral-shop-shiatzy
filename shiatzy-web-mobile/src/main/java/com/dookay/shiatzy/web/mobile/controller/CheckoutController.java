@@ -234,6 +234,8 @@ public class CheckoutController  extends BaseController{
         order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
+        CustomerAddressDomain customerAddressDomain = customerAddressService.get(order.getShipAddressId());
+        order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
         orderService.create(order);
         //创建明细
         for(int j = 0;j<cartList.size();j++){
@@ -370,6 +372,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipProvince(customerAddressDomain.getProvince());
         orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
+        orderDomain.setShipAddressId(customerAddressDomain.getId());
 
         session.setAttribute(ORDER,orderDomain);
         return successResult("操作成功");

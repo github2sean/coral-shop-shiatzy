@@ -193,7 +193,7 @@ public class AcpService {
 		StringBuffer sf = new StringBuffer();
 		sf.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset="+encoding+"\"/></head><body>");
 		sf.append("<form id = \"pay_form\" action=\"" + reqUrl
-				+ "\" method=\"post\">");
+				+ "\" method=\"post\" "+" accept-charset=\"utf-8\" onsubmit=\"document.charset=\'utf-8\';\" "+">");
 		if (null != hiddens && 0 != hiddens.size()) {
 			Set<Entry<String, String>> set = hiddens.entrySet();
 			Iterator<Entry<String, String>> it = set.iterator();
@@ -201,8 +201,14 @@ public class AcpService {
 				Entry<String, String> ey = it.next();
 				String key = ey.getKey();
 				String value = ey.getValue();
-				sf.append("<input type=\"hidden\" name=\"" + key + "\" id=\""
-						+ key + "\" value=\"" + value + "\"/>");
+				if(value.contains("\"")){
+					sf.append("<input type=\"hidden\" name=\"" + key + "\" id=\""
+							+ key + "\" value=\'" + value + "\'/>");
+				}else {
+					sf.append("<input type=\"hidden\" name=\"" + key + "\" id=\""
+							+ key + "\" value=\"" + value + "\"/>");
+				}
+
 			}
 		}
 		sf.append("</form>");

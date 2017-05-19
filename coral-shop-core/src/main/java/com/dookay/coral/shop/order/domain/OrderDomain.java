@@ -85,7 +85,10 @@ public class 	OrderDomain implements Serializable {
 	
 	/*收货人城市*/
 	private String shipCity;
-	
+
+	/*收货人地址*/
+	private String shipPostalCode;
+
 	/*收货人地址*/
 	private String shipAddress;
 	

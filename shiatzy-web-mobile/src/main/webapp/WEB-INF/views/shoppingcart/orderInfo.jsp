@@ -141,20 +141,13 @@
             }
         })
 
-        $(".goods_color").each(function () {
+        /*$(".goods_color").each(function () {
             var str = $(this).attr("data-value");
-            if(str!=null && str!=""){
-                str.replace("，",",");
-                str.replace("：",":");
-                str.replace("“","\"");
-                str.replace("”","\"");
-                str.replace("｛","{");
-                str.replace("｝","}");
-            }
+
             console.log("str:"+str);
             jsonObj = jQuery.parseJSON(str);
             $(this).text(jsonObj.color).css("font-size",".7rem").append("<span class='goods_size' style='margin-left: 40px'></span>").find(".goods_size").text(jsonObj.size);
-        });
+        });*/
 
     });
 </script>

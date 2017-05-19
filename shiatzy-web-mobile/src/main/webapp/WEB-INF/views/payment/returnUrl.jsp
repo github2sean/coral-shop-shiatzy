@@ -21,3 +21,12 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
+<script>
+    $(function () {
+        var order = '${order}';
+        if(order==''){
+            $("h4").hide().siblings("p").hide();
+        }
+    });
+
+</script>
