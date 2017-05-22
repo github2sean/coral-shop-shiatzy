@@ -16,15 +16,15 @@ import java.util.List;
  */
 @Data
 public class GoodsAttributeValueQuery extends Query {
-    private Long  id;
+    private Long  goodsId;
 
     private List<Long> ids;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsAttributeValueDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
-		if(valid(id)){
-			criteria.andEqualTo("id",id);
+		if(valid(goodsId)){
+			criteria.andEqualTo("goodsId",goodsId);
 		}
 		if(valid(ids)){
 			criteria.andIn("id",ids);

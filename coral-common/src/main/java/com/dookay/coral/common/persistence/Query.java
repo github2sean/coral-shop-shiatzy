@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class Query {
 
     private Integer pageIndex = 1;//当前页码
-    private Integer pageSize = 20; //页面大小，默认20
+    private Integer pageSize = 4; //页面大小，默认20
     private Integer offset = 0; // 行偏移
     private Integer limit;    //获取最大数量
     private String orderBy;// 排序字段

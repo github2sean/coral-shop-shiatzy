@@ -1,32 +1,21 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 
-        import com.alibaba.fastjson.JSONArray;
         import com.dookay.coral.common.json.JsonUtils;
-        import com.dookay.coral.common.persistence.Query;
-        import com.dookay.coral.common.persistence.criteria.QueryCriteria;
         import com.dookay.coral.common.persistence.pager.PageList;
-        import com.dookay.coral.common.utils.CookieUtils;
         import com.dookay.coral.common.web.BaseController;
-        import com.dookay.coral.common.web.HttpContext;
+        import com.dookay.coral.common.web.JsonResult;
         import com.dookay.coral.shop.goods.domain.*;
         import com.dookay.coral.shop.goods.query.*;
         import com.dookay.coral.shop.goods.service.*;
         import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
         import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
-        import net.sf.json.util.JSONUtils;
-        import org.apache.commons.lang.StringUtils;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
-        import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
         import org.springframework.web.servlet.ModelAndView;
 
-        import javax.servlet.http.Cookie;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
         import java.util.ArrayList;
-        import java.util.HashMap;
         import java.util.List;
         import java.util.Objects;
         import java.util.stream.Collectors;
@@ -94,36 +83,31 @@ public class GoodsController extends BaseController{
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ModelAndView list(GoodsQuery query){
+    public ModelAndView list(GoodsQuery query,Integer priceWay){
         ModelAndView modelAndView = new ModelAndView("goods/list");
+       /* if(priceWay == null||priceWay == 0){
+            query.setOrderBy("price");
+            query.setDesc(Boolean.TRUE);
+        }else{
+            query.setOrderBy("price");
+            query.setDesc(Boolean.FALSE);
+        }*/
         Long categoryId = query.getCategoryId();//商品分类
-        List<Long> color =query.getColorIds();
-        List<Long> size=query.getSizeIds();
-        List<Long> attr=query.getAttributeIds();
+        /*PageList<GoodsDomain> goodsDomainPageList = goodsService.getPageList(query);
+        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);*/
         modelAndView.addObject("categoryId",categoryId);
-        if(query.getColorIds()!=null)
-        {
-            modelAndView.addObject("colorId",color);
-        }
-        if(query.getSizeIds() !=null)
-        {
-            modelAndView.addObject("sizeId",size);
-        }
-        if(query.getAttributeIds()!=null)
-        {
-            modelAndView.addObject("attributeId",attr);
-        }
         //商品列表
         query.setCategoryId(categoryId);
-        query.setPriceWay(query.getPriceWay());
         List<GoodsDomain> goodsList =  goodsService.getList(query);
         goodsService.withGoodsItemList(goodsList);
+        modelAndView.addObject("query",query);
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
         modelAndView.addObject("categoryName",goodsCategoryDomain.getName());
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
+
 
         //材质列表
         //获得原型Ids
@@ -269,7 +253,7 @@ public class GoodsController extends BaseController{
     public  List<GoodsDomain> attribute(List<GoodsDomain> goodsList,Integer type,List<Long> data){
         List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
         for (GoodsDomain goodsDomain : goodsList){
-            GoodsAttributeValueDomain goodsAttributeValueDomain =goodsAttributeValueService.get(goodsDomain.getId());//获取材质的id
+            GoodsAttributeValueDomain goodsAttributeValueDomain =goodsAttributeValueService.goodsAttributeValueDomain(goodsDomain.getId());//获取材质的id
             for (Long attribute:data) {
                 if (type == ATTR_FILTER) {
                     if (goodsAttributeValueDomain.getPrototypeAttributeOptionId()== Integer.parseInt(attribute.toString())) {
