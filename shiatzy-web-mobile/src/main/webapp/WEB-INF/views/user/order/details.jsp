@@ -6,7 +6,7 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">我的帐户 / 订单详情</p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
@@ -18,16 +18,27 @@
     </div>
     <div class="order-date">
         <p>订单日期：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
-        <p>订单状态：<c:choose>
-            <c:when test="${orderDomain.status==1}">待支付&nbsp;
-                <a href="#" id="payBtn" style="background-color: #4CAF50; border: none;color: white;padding: 5px 8px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 5px">支付</a>
-            </c:when>
-            <c:when test="${orderDomain.status==2}">已支付</c:when>
-            <c:when test="${orderDomain.status==3}">已发货</c:when>
-            <c:when test="${orderDomain.status==4}">已收货</c:when>
-            <c:when test="${orderDomain.status==-1}">已取消</c:when>
-        </c:choose></p>
-        <p><a href="#">查看递送状态<span style="float:right;">></span></a></p>
+        <p>订单状态：
+            <c:choose>
+                <c:when test="${orderDomain.status==1}">待支付&nbsp;
+                    <a href="" id="cancelBtn" class="btn btn-primary" style="background-color: #2b2b2b;color: white">取消</a>
+                </c:when>
+                <c:when test="${orderDomain.status==2}">已支付</c:when>
+                <c:when test="${orderDomain.status==3}">已发货</c:when>
+                <c:when test="${orderDomain.status==4}">已收货</c:when>
+                <c:when test="${orderDomain.status==-1}">已取消</c:when>
+            </c:choose>
+        </p>
+        <c:if test="${orderDomain.status==1}">
+            <p>选择支付方式:
+                <label style=""><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/>支付宝</label>
+                <label style=""><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/>银联</label>
+                <label style=""><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/>ipaylinks</label>
+                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="margin-left:20px;background-color: #2b2b2b;color: white">支付</a></p>
+        </c:if>
+        <c:if test="${orderDomain.status!=1 && orderDomain.status!=-1}">
+            <p><a href="#">查看递送状态<span style="float:right;">></span></a></p>
+        </c:if>
     </div>
     <div class="verify-message-middle">
         <h2>商品详情</h2>
@@ -92,9 +103,43 @@
 <script>
 
     $(function () {
+        var payMethod = 1;
+        var orderNo = '${orderDomain.orderNo}';
+        var url = "/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
 
-        $("#payBtn").click(function () {
+        //检查地址的正确性不然会报错
+        $.post("/checkout/checkAddress",{"addressId":"${orderDomain.shipAddressId}"},function (data) {
+            if(data.code==200){
+                $("input[name = 'payMethod']").click(function () {
+                    payMethod = $(this).attr("data-value");
+                    console.log(payMethod);
+                    if(payMethod == 1){
+                        url = "/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
+                    }else if(payMethod == 2){
+                        url = "/payment/initUnionPay?orderNo="+orderNo;
+                    } else if(payMethod == 3){
+                        var ip = returnCitySN["cip"];
+                        url = "/payment/buildIpayLinks?orderNo="+orderNo+"&ipAddress="+ip;
+                    }
+                    console.log(url);
+                    $("#payBtn").attr("href",url);
+                });
+            }else {
+                $("#payBtn").attr('disabled',"true").removeAttr("href").click(function () {
+                    layer.msg("地址信息不全");
+                });
+            }
+        });
 
+        $("#cancelBtn").click(function () {
+            console.log(1);
+            var id = '${orderDomain.id}';
+            $.post("/order/cancel",{"orderId":id},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    location.reload();
+                }
+            })
 
         });
 

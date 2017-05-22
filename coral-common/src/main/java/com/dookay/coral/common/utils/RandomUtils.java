@@ -143,7 +143,7 @@ public class RandomUtils {
 
     /**
      * 生成唯一随机码（数字与大写字母）
-     * @param number 位数
+     * @param number 位数 最长8位
      * @return
      */
     public static String generateNumUuid(int number) {
