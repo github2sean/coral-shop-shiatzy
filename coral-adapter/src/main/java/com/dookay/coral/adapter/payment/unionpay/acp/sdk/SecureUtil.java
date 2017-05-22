@@ -215,8 +215,6 @@ public class SecureUtil {
 	 *            签名数据
 	 * @param srcData
 	 *            摘要
-	 * @param validateMethod
-	 *            签名方法.
 	 * @return
 	 * @throws Exception
 	 */

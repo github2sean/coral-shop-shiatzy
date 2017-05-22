@@ -2,8 +2,11 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.dookay.coral.adapter.payment.alipay.config.AlipayConfig;
+import com.dookay.coral.adapter.payment.alipay.sign.MD5;
 import com.dookay.coral.adapter.payment.alipay.util.AlipayNotify;
 import com.dookay.coral.adapter.payment.alipay.util.AlipaySubmit;
+import com.dookay.coral.adapter.payment.ipaylinks.base.IpayLinksStatics;
+import com.dookay.coral.adapter.payment.ipaylinks.config.IpayLinksConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.config.UnionConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.demo.DemoBase;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.AcpService;
@@ -11,19 +14,33 @@ import com.dookay.coral.adapter.payment.unionpay.acp.sdk.LogUtil;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConstants;
 import com.dookay.coral.common.exception.BaseException;
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
+import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
+import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
+import com.dookay.coral.shop.order.query.OrderItemQuery;
+import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
+import com.dookay.coral.shop.promotion.domain.CouponDomain;
+import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.shiatzy.web.mobile.xml.IpayLinksReturnXml;
 import lombok.Data;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +48,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -51,7 +71,19 @@ public class PaymentContoller extends BaseController{
     private UnionConfig unionConfig;
 
     @Autowired
+    private IpayLinksConfig ipayLinksConfig;
+
+    @Autowired
     private IOrderService orderService;
+
+    @Autowired
+    private IOrderItemService orderItemService;
+
+    @Autowired
+    private ICustomerService customerService;
+
+    @Autowired
+    private ICouponService couponService;
 
     /**
      * 第三方支付提交页面
@@ -334,7 +366,7 @@ public class PaymentContoller extends BaseController{
         if (!AcpService.validate(valideData, encoding)) {
             LogUtil.writeLog("验证签名结果[失败].");
             //验签失败，需解决验签问题
-
+            return successResult("支付失败");
         } else {
             LogUtil.writeLog("验证签名结果[成功].");
             //【注：为了安全验签成功才应该写商户的成功处理逻辑】交易成功，更新商户订单状态
@@ -348,7 +380,7 @@ public class PaymentContoller extends BaseController{
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 updateOrderStatus(orderDomain);
             }else{
-                return errorResult("验证失败");
+                return errorResult("订单异常");
             }
 
         }
@@ -362,17 +394,16 @@ public class PaymentContoller extends BaseController{
     @RequestMapping(value = "frontRcvResponse",method = RequestMethod.POST)
     public ModelAndView frontRcvResponse(HttpServletRequest req)throws ServletException, IOException {
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回开始");
-
         String encoding = req.getParameter(SDKConstants.param_encoding);
         LogUtil.writeLog("返回报文中encoding=[" + encoding + "]");
         String pageResult = "";
         if (DemoBase.encoding_UTF8.equalsIgnoreCase(encoding)) {
-            pageResult = "payment/utf8_result";
+            pageResult = "payment/returnUrl";
         } else {
             pageResult = "payment/gbk_result";
         }
         Map<String, String> respParam = getAllRequestParam(req);
-
+        ModelAndView mv = new ModelAndView(pageResult);
         // 打印请求报文
         LogUtil.printRequestLog(respParam);
 
@@ -409,19 +440,179 @@ public class PaymentContoller extends BaseController{
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 updateOrderStatus(orderDomain);
             }
-
+            mv.addObject("order",orderDomain);
         }
-
-        ModelAndView mv = new ModelAndView(pageResult);
         mv.addObject("result",page);//req.setAttribute("result", page.toString());
         //req.getRequestDispatcher(pageResult).forward(req, resp);
+        mv.addObject("message","支付成功");
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回结束");
-
         return mv;
     }
 
 
+    /**
+     * 构建ipaylinks 表单
+     */
+    @RequestMapping(value = "buildIpayLinks",method = RequestMethod.GET)
+    public ModelAndView buildIpayLinks(HttpServletRequest req,String orderNo,String ipAddress) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(StringUtils.isBlank(orderNo)){
+            throw  new ServiceException("订单号为空");
+        }
+        req.setCharacterEncoding("UTF-8");
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+        OrderDomain orderDomain = orderService.getOrder(orderNo);
+        OrderItemQuery query = new OrderItemQuery();
+        query.setOrderId(orderDomain.getId());
+        List<OrderItemDomain> list = orderItemService.getList(query);
+        Map<String, String> requestData = new HashMap<String, String>();
+        requestData.put(IpayLinksStatics.VERSION,ipayLinksConfig.getVersion());
+        requestData.put(IpayLinksStatics.ORDER_ID,orderNo);
+        requestData.put(IpayLinksStatics.GOODS_NAME,!(list!=null&&list.size()>0)?"无商品":list.get(0).getGoodsName());
+        requestData.put(IpayLinksStatics.GOODS_DESC,!(list!=null&&list.size()>0)?"无商品":list.get(0).getSkuSpecifications());
+        requestData.put(IpayLinksStatics.SUBMIT_TIME,simpleDateFormat.format(orderDomain.getOrderTime()));
+        requestData.put(IpayLinksStatics.CUSTOMER_IP,ipAddress);
+        requestData.put(IpayLinksStatics.SITE_ID,ipayLinksConfig.getSiteId());
+        requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
+        requestData.put(IpayLinksStatics.TRADE_TYPE,ipayLinksConfig.getTradeType());
+        requestData.put(IpayLinksStatics.PAY_TYPE,ipayLinksConfig.getPayType());
+        requestData.put(IpayLinksStatics.CURRENCY_CODE,ipayLinksConfig.getCurrencyCode());
+        if(StringUtils.isNotBlank(ipayLinksConfig.getSettlementCurrencyCode())){
+            requestData.put(IpayLinksStatics.SETTLEMENT_CURRENCY_CODE,ipayLinksConfig.getSettlementCurrencyCode());//选填
+        }
+        requestData.put(IpayLinksStatics.DIRECT_FLAG,ipayLinksConfig.getDirectFlag());
+        requestData.put(IpayLinksStatics.RETURN_URL,ipayLinksConfig.getReturnUrl());
+        requestData.put(IpayLinksStatics.NOTICE_URL,ipayLinksConfig.getNoticeUrl());
+        requestData.put(IpayLinksStatics.BORROWING_MARKED,ipayLinksConfig.getBorrowingMarked());
+        requestData.put(IpayLinksStatics.PARTNER_ID,ipayLinksConfig.getPartnerId());
+        requestData.put(IpayLinksStatics.MCC,ipayLinksConfig.getMcc());
+        requestData.put(IpayLinksStatics.LANGUAGE,ipayLinksConfig.getLanguage());
+        requestData.put(IpayLinksStatics.ORDER_TERMINAL,ipayLinksConfig.getOrderTerminal());
+        if(StringUtils.isNotBlank(ipayLinksConfig.getCardLimit())){
+            requestData.put(IpayLinksStatics.CARD_LIMIT,ipayLinksConfig.getCardLimit());
+        }
 
+        //账单信息
+        requestData.put(IpayLinksStatics.BILL_FIRST_NAME,orderDomain.getShipFirstName());
+        requestData.put(IpayLinksStatics.BILL_LAST_NAME,orderDomain.getShipLastName());
+        //requestData.put(IpayLinksStatics.BILL_NAME,);
+        requestData.put(IpayLinksStatics.BILL_ADDRESS,orderDomain.getShipAddress());
+        requestData.put(IpayLinksStatics.BILL_EMAIL,accountDomain.getEmail());
+        requestData.put(IpayLinksStatics.BILL_PHONE_NUMBER,orderDomain.getShipPhone());
+        requestData.put(IpayLinksStatics.BILL_POSTAL_CODE,orderDomain.getShipPostalCode());//邮编暂无
+        requestData.put(IpayLinksStatics.BILL_CITY,orderDomain.getShipCity());
+        requestData.put(IpayLinksStatics.BILL_STATE,orderDomain.getShipProvince());
+        requestData.put(IpayLinksStatics.BILL_COUNTRY_CODE,"CHN");//orderDomain.getShipCountry() 这里需要新建表存储国家代码
+
+
+        //收货信息
+        requestData.put(IpayLinksStatics.SHIPPING_FIRST_NAME,orderDomain.getShipFirstName());
+        requestData.put(IpayLinksStatics.SHIPPING_LAST_NAME,orderDomain.getShipLastName());
+        //requestData.put(IpayLinksStatics.SHIPPING_NAME,orderDomain.getShipFirstName()+orderDomain.getShipLastName());
+        requestData.put(IpayLinksStatics.SHIPPING_ADDRESS,orderDomain.getShipAddress());
+        requestData.put(IpayLinksStatics.SHIPPING_CITY,orderDomain.getShipCity());
+        requestData.put(IpayLinksStatics.SHIPPING_POSTAL_CODE,orderDomain.getShipPostalCode());//邮编暂无
+        requestData.put(IpayLinksStatics.SHIPPING_MAIL,accountDomain.getEmail());
+        requestData.put(IpayLinksStatics.SHIPPING_STATE,orderDomain.getShipProvince());
+        requestData.put(IpayLinksStatics.SHIPPING_COUNTRY_CODE,"CHN");
+        requestData.put(IpayLinksStatics.SHIPPING_PHONE_NUMBER,orderDomain.getShipPhone());
+
+        /* //支付信息
+        requestData.put(IpayLinksStatics.PAY_MODE,ipayLinksConfig.getPayMode());
+        requestData.put(IpayLinksStatics.CARD_HOLDER_NUMBER,"4111119987834534");//页面提交  4111119987834534
+        requestData.put(IpayLinksStatics.CARD_HOLDER_EMAIL,accountDomain.getEmail());//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_FIRST_NAME,"Ting");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_LAST_NAME,"jack");//页面提交
+        requestData.put(IpayLinksStatics.CARD_HOLDER_PHONE_NUMBER,accountDomain.getCellphone());// 选填 页面提交
+        requestData.put(IpayLinksStatics.SECURITY_CODE,"869");//页面提交
+        requestData.put(IpayLinksStatics.CARD_EXPIRATION_MONTH,"11");//页面提交
+        requestData.put(IpayLinksStatics.CARD_EXPIRATION_YEAR,"24");//页面提交*/
+        //安全信息
+        if(StringUtils.isNotBlank(ipayLinksConfig.getRemark())){
+            requestData.put(IpayLinksStatics.REMARK,ipayLinksConfig.getRemark());//选填
+        }
+        //requestData.put(IpayLinksStatics.DEVICE_FINGERPRINT_ID,orderNo);//指纹
+        requestData.put(IpayLinksStatics.CHARSET,ipayLinksConfig.getCharset());
+        requestData.put(IpayLinksStatics.SIGN_TYPE,ipayLinksConfig.getSignType());
+        //校验码
+        requestData.put(IpayLinksStatics.SIGN_MSG,content2MD5(requestData));
+
+        String postUrl = ipayLinksConfig.getPostUrl();//  https://api.ipaylinks.com/webgate/ipayapi.htm
+
+        String html = AcpService.createAutoFormHtml(postUrl,requestData,"UTF-8");
+        System.out.println("html:"+html);
+        ModelAndView mv = new ModelAndView("payment/initUnionPay");
+        mv.addObject("html",html);
+        return mv;
+    }
+
+    @RequestMapping(value = "noticeUrl",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult noticeUrl(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        String orderId =  request.getParameter(IpayLinksStatics.ORDER_ID);
+        String resultCode =  request.getParameter("resultCode");
+        String resultMsg =  request.getParameter("resultMsg");
+        String orderAmount =  request.getParameter("orderAmount");
+        Double amt = Double.parseDouble(orderAmount);
+        String signMsg =  request.getParameter("signMsg");//验证证书 需要加密验证
+        System.out.println("signMsg:"+signMsg);
+        Map<String,String> map = getAllRequestParam(request);
+        String safe  =  content2MD5(map);
+        System.out.println("异步 map:"+map +"\n safe:"+safe);
+        if("0000".equals(resultCode) && safe.equals(signMsg)){
+            //验证成功
+            OrderDomain orderDomain = orderService.getOrder(orderId);
+            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
+                    amt.equals(orderDomain.getOrderTotal()) ){
+                updateOrderStatus(orderDomain);
+            }else{
+                return errorResult("订单异常");
+            }
+        }else{
+            //验证失败
+            return errorResult("验证失败");
+        }
+        return successResult("验证成功");
+    }
+
+    @RequestMapping(value = "ipayLinkReturnUrl",method = RequestMethod.POST)
+    public ModelAndView ipayLinkReturnUrl(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        ModelAndView mv = new ModelAndView("payment/returnUrl");
+
+        String message = "支付成功";
+        String orderId =  request.getParameter(IpayLinksStatics.ORDER_ID);
+        OrderDomain orderDomain = orderService.getOrder(orderId);
+        String resultCode =  request.getParameter("resultCode");
+        String resultMsg =  request.getParameter("resultMsg");
+        String orderAmount =  request.getParameter("orderAmount");
+        Double amt = Double.parseDouble(orderAmount);
+        String signMsg =  request.getParameter("signMsg");//验证证书 需要加密验证
+        System.out.println("signMsg:"+signMsg);
+        Map<String,String> map = getAllRequestParam(request);
+        String safe  =  content2MD5(map);
+        System.out.println("同步 map:"+map +"\n safe:"+safe);
+        System.out.println("amt:"+amt +"\n getOrderTotal():"+orderDomain.getOrderTotal());
+        if("0000".equals(resultCode) && safe.equals(signMsg)){
+            //验证成功
+            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
+                    amt.equals(orderDomain.getOrderTotal()) ){
+                updateOrderStatus(orderDomain);
+
+            }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&
+                    amt.equals(orderDomain.getOrderTotal())){
+                message= "订单已支付";
+            }else{
+                message= "订单异常";
+            }
+        }else{
+            //验证失败
+            message= "验证失败";
+        }
+        mv.addObject("message",message);
+        mv.addObject("order",orderDomain);
+        return mv;
+    }
 
     /**
      * 获取请求参数中所有的信息
@@ -435,6 +626,9 @@ public class PaymentContoller extends BaseController{
         if (null != temp) {
             while (temp.hasMoreElements()) {
                 String en = (String) temp.nextElement();
+                if("signMsg".equals(en)){
+                    continue;
+                }
                 String value = request.getParameter(en);
                 res.put(en, value);
                 // 在报文上送时，如果字段的值为空，则不上送<下面的处理为在获取所有参数数据时，判断若值为空，则删除这个字段>
@@ -447,10 +641,17 @@ public class PaymentContoller extends BaseController{
         return res;
     }
 
-
     public void updateOrderStatus(OrderDomain orderDomain){
         orderDomain.setPaidTime(new Date());
         orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
+        //优惠券次数减少
+        if(orderDomain.getCouponId()!=null){
+            CouponDomain couponDomain = couponService.get(orderDomain.getCouponId());
+            Integer limitNum = couponDomain.getLimitTimes();
+            couponService.checkCoupon(couponDomain.getCode());
+            couponDomain.setLimitTimes(limitNum-1);
+            couponService.update(couponDomain);
+        }
         orderService.update(orderDomain);
     }
 
@@ -458,8 +659,52 @@ public class PaymentContoller extends BaseController{
         String returnAmt = "0";
         if(amt!=null){
             returnAmt = amt.toString();
-            returnAmt = returnAmt.replace(".","");
+            if(!returnAmt.contains(".")){
+                returnAmt = returnAmt+"00";
+            }else{
+                String[] str = returnAmt.split("\\.");
+                if(str[1].length()>0&&str[1].length()==1){
+                    returnAmt = str[0]+str[1]+"0";
+                }else if(str[1].length()>0&&str[1].length()>=2){
+                    returnAmt = str[0]+str[1].substring(0,2);
+                }
+            }
         }
         return  returnAmt;
+    }
+
+    public String content2MD5(Map<String,String> map) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        String returnStr = "";
+
+        Collection<String> keyset= map.keySet();
+        List<String> list = new ArrayList<String>(keyset);
+        //对key键值按字典升序排序
+        Collections.sort(list);
+        for (int i = 0; i < list.size(); i++) {
+            //选填字段为空不生成
+            if(!isMustKey(list.get(i)) && ("".equals(map.get(list.get(i)))|| map.get(list.get(i))==null) ){
+                continue;
+            }
+            returnStr += list.get(i).trim()+"="+map.get(list.get(i)).trim()+"&";
+        }
+        returnStr = returnStr+"pkey="+ipayLinksConfig.getPkey();
+        System.out.println("returnStr:"+returnStr);
+        returnStr = DigestUtils.md5Hex(returnStr);
+        System.out.println("returnStrMD5:"+returnStr);
+        return returnStr;
+    }
+
+    public Boolean isMustKey(String key){
+        Boolean result = true;
+        if("signMsg".equals(key) || IpayLinksStatics.REMARK.equals(key)
+                || IpayLinksStatics.CARD_HOLDER_PHONE_NUMBER.equals(key)
+                || IpayLinksStatics.SETTLEMENT_CURRENCY_CODE.equals(key)){
+            result = false;
+        }
+        return result;
+    }
+
+    public String formatUTF8(String str) throws UnsupportedEncodingException {
+        return new String(str.getBytes("gb2312"),"utf-8");
     }
 }

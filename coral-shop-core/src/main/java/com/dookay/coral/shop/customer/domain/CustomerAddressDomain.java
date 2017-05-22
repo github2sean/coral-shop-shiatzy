@@ -55,4 +55,7 @@ public class CustomerAddressDomain implements Serializable {
 	/*客户id*/
 	private Long customerId;
 
+	/*邮编*/
+	private String postalCode;
+
 }

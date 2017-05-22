@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Data
 @Table(name = "t_order")
-public class OrderDomain implements Serializable {
+public class 	OrderDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -85,7 +85,10 @@ public class OrderDomain implements Serializable {
 	
 	/*收货人城市*/
 	private String shipCity;
-	
+
+	/*收货人地址*/
+	private String shipPostalCode;
+
 	/*收货人地址*/
 	private String shipAddress;
 	

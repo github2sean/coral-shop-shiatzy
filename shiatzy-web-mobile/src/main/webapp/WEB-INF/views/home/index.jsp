@@ -10,11 +10,17 @@
 <div class="index-w text-center">
     <a href="" class="do-block img-cover"><img src="${ctx}/static/images/index-banner.jpg" alt=""></a>
     <div class="index-se font-16">
-        <a href="产品列表.html">
-            <p class="text-bold">冬日禮讚</p>
-            <div><p class="bd-btm">WINTER SALES</p></div>
-            <p class="para-discount">結算頁面輸入代碼<br/>享冬季首單九折</p>
-            <div><p class="bd-ard">代碼：FRIST90</p></div>
+        <a href="/home/index">
+            <c:if test="${ not empty coupon}">
+                <p class="text-bold">${coupon.title}</p>
+                <div><p class="bd-btm">${coupon.enTitle}</p></div>
+                <p class="para-discount">${coupon.name}<br/></p>
+                <div><p class="bd-ard">代碼：${coupon.code}</p></div>
+            </c:if>
+            <c:if test="${empty coupon}">
+                <p class="text-bold" style="font-size: 20px">暂无优惠活动</p>
+                <div><p class="bd-btm" style="font-size: 10px">敬请期待...</p></div>
+            </c:if>
         </a>
     </div>
     <div class="col-2-w clearfix">

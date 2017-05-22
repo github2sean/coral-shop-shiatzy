@@ -8,9 +8,9 @@
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
 
-<div class="dx-wish clearfix">
-    <div class="dx-title">我的账户/愿望清单<a href="/u/account/index">回上页</a></div>
-    <div class="content">
+<div class="dx-wish clearfix dx-shopping">
+    <div class="dx-title" style="background-color: #999999">我的账户/愿望清单<a href="/u/account/index">回上页</a></div>
+    <div class="content ">
         <c:if test="${not empty wishList}">
         <div id="toggleDiv">
             <div class="dx-total">
@@ -26,7 +26,7 @@
         </c:if>
         <c:if test="${empty wishList}">
             <div id="toggleDiv2">
-            <div class="dx-collect">愿望清单（0）</div>
+            <div class=""><p>愿望清单（0）</p></div>
             </div>
         </c:if>
     </div>

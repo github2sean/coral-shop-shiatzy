@@ -17,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 public class CouponQuery extends Query {
 
 	private String code;
+	private Integer indexShow;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -25,6 +26,9 @@ public class CouponQuery extends Query {
 
 		if(valid(code)){
 			criteria.andEqualTo("code",code);
+		}
+		if(valid(indexShow)){
+			criteria.andEqualTo("indexShow",indexShow);
 		}
 
 		//todo 写查询逻辑
