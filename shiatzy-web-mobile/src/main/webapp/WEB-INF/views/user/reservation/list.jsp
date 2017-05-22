@@ -11,6 +11,13 @@
     <div class="content">
         <div class="dx-reservation">预约订单</div>
 
+        <c:if test="${empty reservationList}">
+            <div class="content ">
+                <div id="toggleDiv3">
+                    <div class="dx-collect">预约单（0）</div>
+                </div>
+            </div>
+        </c:if>
         <c:forEach var="row" items="${reservationList}">
         <a href="/reservation/details?reservationId=${row.id}" class="dx-reservaList clearfix">
             <div class="time"><fmt:formatDate value="${row.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>

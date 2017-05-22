@@ -42,7 +42,7 @@
         </c:forEach>
 
     </div>
-    <div class="check clearfix"><span>查看所有预约單</span><a href="/reservation/list">></a></div>
+    <div class="check clearfix"> <span>查看所有预约單</span><a href="/reservation/list"> ></a></div>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
