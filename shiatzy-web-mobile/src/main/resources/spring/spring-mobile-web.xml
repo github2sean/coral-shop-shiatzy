@@ -78,10 +78,10 @@
         <property name="input_charset" value="utf-8" />
         <property name="payment_type" value="1" />
         <property name="log_path" value="/var/log" />
-        <!--<property name="notify_url" value="http://test-ip-41.coralcodes.com/payment/asynReturnUrl" />
-        <property name="return_url" value="http://test-ip-41.coralcodes.com/payment/returnUrl" />-->
-        <property name="notify_url" value="http://shiatzy-w.doolab.cn/payment/asynReturnUrl" />
-        <property name="return_url" value="http://shiatzy-w.doolab.cn/payment/returnUrl" />
+        <property name="notify_url" value="http://test-ip-41.coralcodes.com/payment/asynReturnUrl" />
+        <property name="return_url" value="http://test-ip-41.coralcodes.com/payment/returnUrl" />
+       <!-- <property name="notify_url" value="http://shiatzy-w.doolab.cn/payment/asynReturnUrl" />
+        <property name="return_url" value="http://shiatzy-w.doolab.cn/payment/returnUrl" />-->
         <property name="service" value="alipay.wap.create.direct.pay.by.user" />
         <property name="sign_type" value="MD5" />
     </bean>
@@ -110,7 +110,10 @@
         <property name="currencyCode" value="CNY"/>
         <property name="settlementCurrencyCode" value="CNY"/>
         <property name="borrowingMarked" value="0"/>
+        <!--<property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>-->
         <property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>
         <property name="partnerId" value="10000007526"/>
         <property name="payMode" value="10"/>
         <property name="payType" value="EDC"/>
@@ -122,7 +125,6 @@
         <property name="language" value="cn"/>
         <property name="mcc" value="4000"/>
         <property name="orderTerminal" value="01"/>
-        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>
         <property name="pkey" value="30820122300d06092a864886f70d01010105000382010f003082010a02820101008cdefa747cd7c21207b551259ed4669179b160cdc133d517896277a40fff39bfd2bb761cb9c8f46948f5abce6cf76aa989f0f6ef157e4d5d92e6f9766eb9b922c32034fa4e8b88c99ac2a4ed3e8aebd1022b25f1674ea6bc7a80a8ca50a741cf26b1f5f3e509e949effb7f8fa4f8ee4a4716cd1c20b956274a35cb36d7aaed6b5f270199513d0ffe792b21a0fda3614788270cb3e4854b0117ba2da34a4c3008f303c4fd83a4836410c81f4b4dec1b36c387537a4ef8cd8dd3c3538ba6e5a6d14a1ee102d66377f61a01d2f044e078cde9ff0a19816132eb2834d6c6595eb4a383386e70ccc1d5b535a2aa6151a138031de7ca8e4ddd26a5e5f364fd19bb68350203010001"/>
 
     </bean>

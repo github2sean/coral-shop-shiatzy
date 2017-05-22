@@ -9,7 +9,7 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">我的帐户 / 订单详情</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
+    <a style="float: right;" href="/order/list" >< 回上页</a>
 </div>
 <div class="unfinished">
     <div class="order-num clearfix">
