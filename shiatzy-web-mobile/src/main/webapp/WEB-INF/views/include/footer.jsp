@@ -1,41 +1,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<a href="javascript:;" id="j_back_top" class="back-top">返回顶部</a>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<a href="javascript:;" id="j_back_top" class="back-top"><spring:message code="toTop"/></a>
 <footer class="footer font-12">
     <ul class="do-list-btm j_drop_down">
-        <li><a href="/u/account/index">我的账户</a></li>
-        <li><a href="/content/faq">常见问题</a></li>
-        <li><a href="">特别服务</a></li>
+        <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
+        <li><a href="/content/faq"><spring:message code="commonQuestion"/></a></li>
+        <li><a href=""><spring:message code="specialService"/></a></li>
         <li>
-            <a href="javascript:;">关于我们</a>
+            <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">
-                <li><a href="">官方网站</a></li>
-                <li><a href="">联系我们</a></li>
-                <li><a href="">隐私声明</a></li>
+                <li><a href=""><spring:message code="officialSite"/></a></li>
+                <li><a href=""><spring:message code="contactUs"/></a></li>
+                <li><a href=""><spring:message code="privacyPolicy"/></a></li>
             </ul>
         </li>
     </ul>
-    <ul class="do-list-lang">
-        <li><a href="/home/listShippingCountry">选择其他国家或地区</a></li>
-        <li><a href="">选择語言</a></li>
+    <ul class="do-list-lang do-list-btm j_drop_down">
+        <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
+        <li><a href="#"><spring:message code="selectLanguage"/></a>
+            <ul class="do-sub-list-btm">
+                <li><a href="?lang=zh_CN" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                <li><a href="?lang=en_US" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+            </ul>
+        </li>
     </ul>
     <div class="do-subscribe-w">
-        <p>订阅最新动态资讯</p>
+        <p><spring:message code="subscribeForUpdate"/></p>
         <div class="do-subscribe-from">
             <form action="">
-                <input type="text" placeholder="请输入电子邮件地址" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
-                <button class="do-btn-subscribe">订阅</button>
+                <input type="text" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
+                <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
         </div>
     </div>
     <div class="do-online-service">
-        <p class="do-online-t">在线客户服务</p>
-        <p>中文电话 4008 213 760</p>
-        <p>(仅限中国大陆地区)</p>
-        <p>周一至周五 北京时间上午9点至晚间6点</p>
-        <p class="mt-1">中/英文电子邮件 customercare@shiatzychen.com</p>
-        <p>(支持所有区域问询)</p>
+        <p class="do-online-t"><spring:message code="customerServiceLine"/></p>
+        <p><spring:message code="chinaPhone"/> 4008 213 760</p>
+        <p>(<spring:message code="chinaOnly"/>)</p>
+        <p><spring:message code="onlineTime"/></p>
+        <p class="mt-1"><spring:message code="onlineEmail"/></p>
+        <p>(<spring:message code="allRegions"/>)</p>
     </div>
-    <div class="text-center do-copy">沪ICP备16022295号-1 创姿服饰（上海）有限公司</div>
+    <div class="text-center do-copy"><spring:message code="ending"/></div>
 </footer>
 </div>
 </div>

@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <title><%=request.getParameter("pageTitle")%>-夏姿陈</title>
+    <title><%=request.getParameter("pageTitle")%>-<spring:message code="shiatzhChen"/></title>
     <!-- 核心样式 开始 -->
     <link rel="stylesheet" href="${ctx}/static/iconfont/iconfont.css">
     <link rel="stylesheet" href="${ctx}/static/css/bootstrap.css">
@@ -219,7 +219,7 @@
     <div class="do-nav-cnt">
         <div class="do-search">
             <form action="/goods/search" method="post" id="contentForm">
-                <input type="text" placeholder="请输入搜索内容" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='请输入搜索内容'"/>
+                <input type="text" placeholder="<spring:message code="searchKey"/>" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="searchKey"/>'"/>
                 <input type="hidden" value="1"  name="pageIndex">
                 <input type="hidden" value="10"  name="pageSize">
                 <input type="hidden" value="0"  name="offset">
@@ -246,19 +246,25 @@
             </li>
             </c:forEach>
         </ul>
-        <ul class="do-list-lang">
-            <li><a href="/u/account/index">我的账户</a></li>
-            <li class="do-login"><a href="/passport/toLogin">登录</a> | <a href="/passport/toRegister">注册</a></li>
-            <li><a href="">选择其他国家或地区</a></li>
-            <li><a href="">选择語言</a></li>
+        <ul class="do-list-lang do-list-btm j_drop_down">
+            <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
+            <li class="do-login"><a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
+            <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
+            <li class="">
+                <a href="#"><spring:message code="selectLanguage"/>
+                    <ul class="do-sub-list-btm">
+                        <li><a href="?lang=zh_CN" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                        <li><a href="?lang=en_US" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+                    </ul>
+                </a></li>
         </ul>
         <div class="do-online-service">
-            <p class="do-online-t">在线客户服务</p>
-            <p>中文电话 4008 213 760</p>
-            <p>(仅限中国大陆地区)</p>
-            <p>周一至周五 北京时间上午9点至晚间6点</p>
-            <p class="mt-1">中/英文电子邮件 customercare@shiatzychen.com</p>
-            <p>(支持所有区域问询)</p>
+            <p class="do-online-t"><spring:message code="customerServiceLine"/></p>
+            <p><spring:message code="chinaPhone"/>4008 213 760</p>
+            <p>(<spring:message code="chinaOnly"/>)</p>
+            <p><spring:message code="onlineTime"/></p>
+            <p class="mt-1"><spring:message code="onlineEmail"/></p>
+            <p>(<spring:message code="allRegions"/>)</p>
         </div>
     </div>
 
