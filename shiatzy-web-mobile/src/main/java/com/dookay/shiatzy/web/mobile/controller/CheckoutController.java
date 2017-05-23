@@ -25,6 +25,8 @@ import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
@@ -35,6 +37,7 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -87,6 +90,8 @@ public class CheckoutController  extends BaseController{
     private IStoreCountryService storeCountryService;
     @Autowired
     private IStoreCityService storeCityService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
 
 
     private static String CART_LIST = "cartList";
@@ -98,10 +103,17 @@ public class CheckoutController  extends BaseController{
      */
     @RequestMapping(value = "initOrder",method = RequestMethod.GET)
     public String initOrder(){
-
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
         //创建订单对象
         OrderDomain order = new OrderDomain();
-        order.setShipFee(0D);//TODO 根据国家获取值
+        String countryId = session.getAttribute(HomeController.SHIPPING_COUNTRY_ID)+"";
+        ShippingCountryDomain shippingCountryDomain = null;
+        if(StringUtils.isNotBlank(countryId)){
+            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+        }
+        //根据国家获取值
+        order.setShipFee(shippingCountryDomain==null?0D:shippingCountryDomain.getShippingCost());
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
@@ -119,8 +131,7 @@ public class CheckoutController  extends BaseController{
         order.setOrderItemDomainList(orderItemDomainList);*/
 
         //保存订单对象到session
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
+
         session.setAttribute(ORDER,order);
         //跳转到结算页面
         return "redirect:orderInfo";

@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="shopping-start">
-        <a href="/checkout/initOrder" class="shopping">查看购物袋 / 结帐</a>
+        <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping">查看购物袋 / 结帐</a>
         <div class="dx-clause">
             <ul>
                 <li><a href="#">购物说明</a></li>
