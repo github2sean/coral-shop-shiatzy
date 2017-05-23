@@ -229,13 +229,16 @@ public class ReturnOrderController extends BaseController {
         List<OrderItemDomain> newList = new ArrayList<OrderItemDomain>();
              for(int i=0;i<list.size();i++){
                  for(ReturnReasonModel line:reasonModels){
-                     if(list.get(i).getId()==line.getOrderItemId()){
+                     if(list.get(i).getId().equals(line.getOrderItemId())){
                          newList.add(list.get(i));
                          jsonMap.put(line.getOrderItemId()+"",JsonUtils.toJSONString(line));
                      }
                  }
              }
         session.setAttribute(CART_LIST,newList);
+        if(!(newList!=null && newList.size()>0)){
+            return errorResult("没有选择退货商品");
+        }
         session.setAttribute("returnJsonReason",jsonMap);
         return successResult("选择成功");
     }
