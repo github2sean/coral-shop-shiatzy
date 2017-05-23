@@ -1,0 +1,42 @@
+package com.dookay.coral.shop.content.enums;
+
+import com.dookay.coral.common.enums.IEnum;
+
+/**
+ * @author Luxor
+ * @version v0.0.1
+ * @since 2017/5/3
+ */
+public enum ContentCategoryLevel implements IEnum {
+
+    LEVEL1(1, "一级分类"),
+    LEVEL2(2, "二级分类");
+
+    private int value;
+    private String description;
+
+    ContentCategoryLevel(int value, String description) {
+        this.value = value;
+        this.description = description;
+    }
+
+    @Override
+    public int getValue() {
+        return value;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    public static ContentCategoryLevel valueOf(Integer value) {
+        ContentCategoryLevel[] values = ContentCategoryLevel.values();
+        for (ContentCategoryLevel item : values) {
+            if (item.value == value) {
+                return item;
+            }
+        }
+        return null;
+    }
+}

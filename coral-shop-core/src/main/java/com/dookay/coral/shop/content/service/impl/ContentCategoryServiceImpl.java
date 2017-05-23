@@ -1,13 +1,12 @@
 package com.dookay.coral.shop.content.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
-import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.shop.content.enums.ContentCategoryLevel;
 import com.dookay.coral.shop.content.query.ContentCategoryQuery;
-import org.apache.commons.lang.StringUtils;
+import com.dookay.coral.shop.content.service.IContentItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.content.mapper.ContentCategoryMapper;
 import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
@@ -28,60 +27,43 @@ public class ContentCategoryServiceImpl extends BaseServiceImpl<ContentCategoryD
 	@Autowired
 	private ContentCategoryMapper contentCategoryMapper;
 
+
 	@Override
-	public ContentCategoryDomain getContentCategory(Long id) {
-		return super.get(id);
+	public List<ContentCategoryDomain> listCategory(ContentCategoryQuery contentCategoryQuery) {
+
+		List<ContentCategoryDomain> contentCategoryDomainList = super.getList(contentCategoryQuery);//获取对象集合
+
+		for (ContentCategoryDomain contentCategoryDomain :contentCategoryDomainList){
+
+			List<ContentCategoryDomain> childrenCategoryList = this.listCategoryByParentId(contentCategoryDomain.getId());
+
+			contentCategoryDomain.setChildren(childrenCategoryList);
+
+			if(contentCategoryDomain.getParentId() != null && contentCategoryDomain.getParentId()>0){
+
+				ContentCategoryDomain parent = this.get(contentCategoryDomain.getParentId());
+
+				contentCategoryDomain.setParent(parent);
+			}
+		}
+		return contentCategoryDomainList;
 	}
 
 	@Override
-	public ContentCategoryDomain getContentCategory(ContentCategoryQuery contentCategoryQuery) {
+	public List<ContentCategoryDomain> listCategoryByParentId(Long parentId) {
 
-		return super.getFirst(contentCategoryQuery);
-	}
+		ContentCategoryQuery contentCategoryQuery = new ContentCategoryQuery();
 
-	@Override
-	public List<ContentCategoryDomain> getContentCategoryList(ContentCategoryQuery contentCategoryQuery) {
+		contentCategoryQuery.setParentId(parentId);
+
 		return super.getList(contentCategoryQuery);
 	}
 
 	@Override
-	public PageList<ContentCategoryDomain> getContentCategoryPageList(ContentCategoryQuery contentCategoryQuery) {
-		return super.getPageList(contentCategoryQuery);
-	}
-
-	@Override
-	public void registerContentCategory(ContentCategoryDomain contentCategoryDomain) {
-		if(!StringUtils.isNotBlank(contentCategoryDomain.getTitle()))
-		{
-			throw new ServiceException("标题不能为空");
-		}
-		if(contentCategoryDomain.getParentId()==null || contentCategoryDomain.getParentId()==0)
-		{
-			throw new ServiceException("父类不能为空");
-		}
-		super.create(contentCategoryDomain);
-	}
-
-	@Override
-	public ContentCategoryDomain createContentCategory(ContentCategoryDomain contentCategoryDomain) {
-		if(!StringUtils.isNotBlank(contentCategoryDomain.getTitle()))
-		{
-			throw new ServiceException("标题不能为空");
-		}
-		if(contentCategoryDomain.getParentId()==null || contentCategoryDomain.getParentId()==0)
-		{
-			throw new ServiceException("父类不能为空");
-		}
-		return super.create(contentCategoryDomain);
-	}
-
-	@Override
-	public void updateContentCategory(ContentCategoryDomain contentCategoryDomain) {
-		super.update(contentCategoryDomain);
-	}
-
-	@Override
-	public void deleteContentCategory(ContentCategoryDomain contentCategoryDomain) {
-		super.delete(contentCategoryDomain.getId());
+	public ContentCategoryDomain getCategory(Long categoryId) {
+		ContentCategoryDomain contentCategoryDomain = super.get(categoryId);
+		List<ContentCategoryDomain> childrenCategoryList = this.listCategoryByParentId(contentCategoryDomain.getId());
+		contentCategoryDomain.setChildren(childrenCategoryList);
+		return  contentCategoryDomain;
 	}
 }

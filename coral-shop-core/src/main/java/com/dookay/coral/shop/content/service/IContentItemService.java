@@ -15,20 +15,13 @@ import java.util.List;
  * @version : v0.0.1
  */
 public interface IContentItemService extends IBaseService<ContentItemDomain> {
-    ContentItemDomain  getContent(Long id); //根据Id查询多想
-
-    ContentItemDomain  getContent(ContentItemQuery contentItemQuery);//根据条件查询
-
-    List<ContentItemDomain> getContentList(ContentItemQuery contentItemQuery);//List
-
-    PageList<ContentItemDomain> getContentPageList(ContentItemQuery contentItemQuery);//查询所有内容并分页
-
-    void  registerContent(ContentItemDomain contentItemDomain);
-
-    ContentItemDomain createContent(ContentItemDomain contentItemDomain);//添加
-
-    void updateContent(ContentItemDomain contentItemDomain);//修改
-
-    void deleteContent(ContentItemDomain contentItemDomain);//删除
-
+    void withContent(PageList<ContentItemDomain> contentItemDomainList);
+    void withContent(List<ContentItemDomain> contentItemDomainList);
+    void withContent(ContentItemDomain contentItemDomain);
+    /**
+     * 统计分类下商品数量
+     * @param categoryId
+     * @return
+     */
+    int countContentByCategoryId(Long categoryId);
 }

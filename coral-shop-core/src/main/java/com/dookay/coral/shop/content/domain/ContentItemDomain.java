@@ -1,11 +1,15 @@
 package com.dookay.coral.shop.content.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 内容的domain
@@ -14,6 +18,7 @@ import java.util.Date;
  * @version : v0.0.1
  */
 @Table(name = "t_content_item")
+@Data
 public class ContentItemDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,70 +47,7 @@ public class ContentItemDomain implements Serializable {
 	
 	/*排序*/
 	private Long displayOrder;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public String getTitle(){
-		return title;
-	}
-	
-	public void setTitle(String title){
-		this.title = title;
-	}
-	
-	public String getThumb(){
-		return thumb;
-	}
-	
-	public void setThumb(String thumb){
-		this.thumb = thumb;
-	}
-	
-	public Long getCategoryId(){
-		return categoryId;
-	}
-	
-	public void setCategoryId(Long categoryId){
-		this.categoryId = categoryId;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	public Long getCreatorId(){
-		return creatorId;
-	}
-	
-	public void setCreatorId(Long creatorId){
-		this.creatorId = creatorId;
-	}
-	
-	public String getContent(){
-		return content;
-	}
-	
-	public void setContent(String content){
-		this.content = content;
-	}
-	
-	public Long getDisplayOrder(){
-		return displayOrder;
-	}
-	
-	public void setDisplayOrder(Long displayOrder){
-		this.displayOrder = displayOrder;
-	}
-	
-	
+
+	@Transient
+	private ContentCategoryDomain category;
 }

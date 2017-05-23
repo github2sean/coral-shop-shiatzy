@@ -27,22 +27,27 @@ public class ContentController extends BaseApiController {
     @Autowired
     private IContentItemService contentItemService;
 
-
     @ApiOperation(value = "获取内容列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<PageList<ContentItemDomain>> list(@ModelAttribute ContentItemQuery contentItemQuery) {
         PageList<ContentItemDomain> contentItemDomainPageList = contentItemService.getPageList(contentItemQuery);
+        contentItemService.withContent(contentItemDomainPageList);
         return ResponseEntity.ok().body(contentItemDomainPageList);
     }
 
-    @ApiOperation(value = "创建内容",httpMethod = "POST")
+    @ApiOperation(value = "添加内容",httpMethod = "POST")
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity create(ContentItemDomain domain) {
         domain.setCreateTime(new Date());
         contentItemService.create(domain);
         return successResponse("创建成功");
     }
-
+    @ApiOperation(value = "获取内容", httpMethod = "GET", response = ContentItemDomain.class)
+    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity<ContentItemDomain> get(@RequestParam("id") Long id) {
+        ContentItemDomain domain = contentItemService.get(id);
+        return ResponseEntity.ok().body(domain);
+    }
     @ApiOperation(value = "修改内容", httpMethod = "POST")
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity update(ContentItemDomain domain) {

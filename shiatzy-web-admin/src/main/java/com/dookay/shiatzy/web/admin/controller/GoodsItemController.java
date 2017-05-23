@@ -44,7 +44,6 @@ public class GoodsItemController extends BaseApiController {
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity<GoodsItemDomain> get(@RequestParam("id") Long id) {
         GoodsItemDomain domain = goodsItemService.get(id);
-
         return ResponseEntity.ok().body(domain);
     }
 
