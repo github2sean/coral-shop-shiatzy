@@ -15,7 +15,7 @@
         </li>
     </ul>
     <ul class="do-list-lang">
-        <li><a href="">选择其他国家或地区</a></li>
+        <li><a href="/home/listShippingCountry">选择其他国家或地区</a></li>
         <li><a href="">选择語言</a></li>
     </ul>
     <div class="do-subscribe-w">

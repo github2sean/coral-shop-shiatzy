@@ -28,7 +28,7 @@
             <li>姓氏*<input type="text"  value="${customerDomain.lastName}" name="customerDomain.lastName" id="firstName"/></li>
             <li>
                 生日
-                <input type="date"   name=""/>
+                <input type="date"   name="customerDomain.birthday" value="${customerDomain.birthday}"/>
             </li>
             <li>电话号码*<input type="text"  value="${customerDomain.phone}" name="customerDomain.phone" id="phone"/></li>
         </ul>
@@ -48,14 +48,15 @@
             </li>
             <li>
                 <span>省/州*</span>
-                <input type="text" name="customerAddressDomain.province" id="province">
+                <input type="text" name="customerAddressDomain.province" id="province" value="${customerAddressDomain.province}">
             </li>
             <li>
                 <span>城区*</span>
-                <input type="text" name="customerAddressDomain.city" id="city">
+                <input type="text" name="customerAddressDomain.city" id="city" value="${customerAddressDomain.city}">
             </li>
             <li>详细地址<input type="text"  value="${customerAddressDomain.address}" name="customerAddressDomain.address"/></li>
-            <li>邮编<input type="text"  /><input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
+            <li>邮编<input type="text"  value="${customerAddressDomain.postalCode}"/>
+                <input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
         </ul>
     </div>
     <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>

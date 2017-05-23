@@ -54,6 +54,9 @@ public class CustomerDomain implements Serializable {
 	
 	/*订阅类型*/
 	private Integer subscribeType;
+
+	/*生日*/
+	private Date birthday;
 	
 	/*对应帐号 */
 	@Transient

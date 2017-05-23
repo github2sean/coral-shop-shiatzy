@@ -2,17 +2,29 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.HttpContext;
+import com.dookay.coral.common.web.JsonResult;
+import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.host.user.service.IAccountService;
+import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.service.ICustomerAddressService;
+import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.query.CouponQuery;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +44,14 @@ public class HomeController extends MobileBaseController {
     private IGoodsCategoryService goodsCategoryService;
     @Autowired
     private ICouponService couponService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
+    @Autowired
+    private ICustomerAddressService customerAddressService;
+    @Autowired
+    private ICustomerService customerService;
+
+    public final static String SHIPPING_COUNTRY_ID="shippingCountryId";
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -45,5 +65,26 @@ public class HomeController extends MobileBaseController {
         return mv;
     }
 
+
+    @RequestMapping(value = "chooseShippingCountry", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult chooseShippingCountry(Long shippingCountryId){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute(SHIPPING_COUNTRY_ID,shippingCountryId);
+        return successResult("选择成功");
+    }
+
+    @RequestMapping(value = "listShippingCountry", method = RequestMethod.GET)
+    public ModelAndView listShippingCountry(){
+        ModelAndView mv = new ModelAndView("home/listShippingCountry");
+        //查询出配送国家
+        ShippingCountryQuery query = new ShippingCountryQuery();
+        query.setDesc(false);
+        query.setOrderBy("rank");
+        List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(query);
+        mv.addObject("countryList",shippingCountryDomainList);
+        return mv;
+    }
 
 }

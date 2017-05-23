@@ -11,6 +11,9 @@ import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEamilForm;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author Luxor
@@ -39,6 +43,8 @@ public class AccountController extends MobileBaseController {
     private ICustomerService customerService;
     @Autowired
     private ICustomerAddressService customerAddressService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -77,6 +83,10 @@ public class AccountController extends MobileBaseController {
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
         mv.addObject("customerAddressDomain",customerAddressDomain);
+
+        //查询出配送国家
+        List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(new ShippingCountryQuery());
+        mv.addObject("countryList",shippingCountryDomainList);
         return mv;
     }
 
@@ -107,6 +117,7 @@ public class AccountController extends MobileBaseController {
         updateCustomer.setFirstName(firstName);
         updateCustomer.setLastName(lastName);
         updateCustomer.setPhone(phone);
+        updateCustomer.setBirthday(getCustomer.getBirthday());
 
         Long addressId = updateAccountForm.getAddressId();
         CustomerAddressDomain updaCustomerAddress = customerAddressService.get(addressId);
@@ -118,6 +129,7 @@ public class AccountController extends MobileBaseController {
         updaCustomerAddress.setLastName(lastName);
         updaCustomerAddress.setFirstName(firstName);
         updaCustomerAddress.setPhone(phone);
+        updaCustomerAddress.setPostalCode(getCustomeAddress.getPostalCode());
 
         System.out.print("updaCustomerAddress:"+ JsonUtils.toJSONString(updaCustomerAddress) +"\n updateCustomer:"+JsonUtils.toJSONString(updateCustomer)+"\n updateAccount:"+updateAccount);
 
