@@ -19,7 +19,9 @@ import java.util.List;
 public class ContentCategoryQuery extends Query {
 	private Long id;
 	private String  title;
-	private List<Long> parentId;
+	private Long parentId;
+	private List<Long> ids;
+	private Integer level;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ContentCategoryDomain.class);
@@ -35,7 +37,14 @@ public class ContentCategoryQuery extends Query {
 		}
 		if(valid(parentId))
 		{
-			criteria.andIn("parentId",parentId);
+			criteria.andEqualTo("parentId",parentId);
+		}
+		if(valid(ids))
+		{
+			criteria.andIn("id",ids);
+		}
+		if(valid(level)){
+			criteria.andEqualTo("level",level);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

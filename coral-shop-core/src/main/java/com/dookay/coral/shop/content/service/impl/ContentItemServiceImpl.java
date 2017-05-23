@@ -1,12 +1,12 @@
 package com.dookay.coral.shop.content.service.impl;
 
-import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
+import com.dookay.coral.shop.content.query.ContentCategoryQuery;
 import com.dookay.coral.shop.content.query.ContentItemQuery;
-import org.apache.commons.lang.StringUtils;
+import com.dookay.coral.shop.content.service.IContentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.content.mapper.ContentItemMapper;
@@ -14,6 +14,8 @@ import com.dookay.coral.shop.content.domain.ContentItemDomain;
 import com.dookay.coral.shop.content.service.IContentItemService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 内容的业务实现类
@@ -27,71 +29,42 @@ public class ContentItemServiceImpl extends BaseServiceImpl<ContentItemDomain> i
 	
 	@Autowired
 	private ContentItemMapper contentItemMapper;
-
+    @Autowired
+	private IContentItemService contentItemService;
+    @Autowired
+	private IContentCategoryService contentCategoryService;
 	@Override
-	public ContentItemDomain getContent(Long id) {
-		ContentItemQuery query=new ContentItemQuery();
-		query.setContentId(id);
-		return getOne(query);
+	public void withContent(PageList<ContentItemDomain> contentItemDomainList) {
+		this.withContent(contentItemDomainList.getList());
 	}
 
 	@Override
-	public ContentItemDomain getContent(ContentItemQuery contentItemQuery) {
-		return super.getFirst(contentItemQuery);
-	}
+	public void withContent(List<ContentItemDomain> contentItemDomainList) {
+		List<Long> ids = contentItemDomainList.stream().map(ContentItemDomain::getCategoryId).collect(Collectors.toList()); //先获取数据库中所有的分类ID
 
-	@Override
-	public List<ContentItemDomain> getContentList(ContentItemQuery contentItemQuery) {
-		return  super.getList(contentItemQuery);
-	}
+		ContentCategoryQuery query = new ContentCategoryQuery();
+		query.setIds(ids);//存入query
 
-	@Override
-	public PageList<ContentItemDomain> getContentPageList(ContentItemQuery contentItemQuery) {
-		return super.getPageList(contentItemQuery);
-	}
+		List<ContentCategoryDomain> contentCategoryDomainList = contentCategoryService.getList(query); //获取分类对象
 
-	@Override
-	public void registerContent(ContentItemDomain contentItemDomain) {
-		if(contentItemDomain.getCreatorId()==null ||contentItemDomain.getCreatorId()==0)
-		{
-			throw new ServiceException("分类不能为空");
+		for (ContentItemDomain contentItemDomain:contentItemDomainList){
+             //获取分类对象的第一个数据
+			ContentCategoryDomain contentCategoryDomain = contentCategoryDomainList.stream().filter(x-> Objects.equals(x.getId(), contentItemDomain.getCategoryId())).findFirst().orElse(null);
+			//赋给ContentItemDomainC里的ContentCategoryDomain对象
+			contentItemDomain.setCategory(contentCategoryDomain);
 		}
-		if(contentItemDomain.getCreatorId() ==null ||contentItemDomain.getCreatorId()==0)
-		{
-			throw new ServiceException("创建人不能为空");
-		}
-		if(!StringUtils.isNotBlank(contentItemDomain.getThumb()))
-		{
-			throw new ServiceException("图片不能为空");
-		}
-		super.create(contentItemDomain);
 	}
 
 	@Override
-	public ContentItemDomain createContent(ContentItemDomain contentItemDomain) {
-		if(contentItemDomain.getCreatorId()==null ||contentItemDomain.getCreatorId()==0)
-		{
-			throw new ServiceException("分类不能为空");
-		}
-		if(contentItemDomain.getCreatorId() ==null ||contentItemDomain.getCreatorId()==0)
-		{
-			throw new ServiceException("创建人不能为空");
-		}
-		if(!StringUtils.isNotBlank(contentItemDomain.getThumb()))
-		{
-			throw new ServiceException("图片不能为空");
-		}
-		super.create(contentItemDomain);
-		return contentItemDomain;
+	public void withContent(ContentItemDomain contentItemDomain) {
+		ContentCategoryDomain contentCategoryDomain=contentCategoryService.get(contentItemDomain.getCategoryId());
+		contentItemDomain.setCategory(contentCategoryDomain);
 	}
 
 	@Override
-	public void updateContent(ContentItemDomain contentItemDomain) {
-      super.update(contentItemDomain);
-	}
-
-	@Override
-	public void deleteContent(ContentItemDomain contentItemDomain) {
-		super.delete(contentItemDomain.getId());
+	public int countContentByCategoryId(Long categoryId) {
+		ContentItemQuery query = new ContentItemQuery();
+		query.setContentId(categoryId);
+		return count(query);
 	}
 }
