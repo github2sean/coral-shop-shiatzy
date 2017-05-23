@@ -344,6 +344,18 @@ public class CheckoutController  extends BaseController{
     }
 
 
+    @RequestMapping(value = "checkAddress",method = RequestMethod.POST)
+    @ResponseBody
+    public  JsonResult checkAddress(Long addressId){
+        CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
+        if(customerAddressDomain.getCountryId()==null || customerAddressDomain.getCity()==null || customerAddressDomain.getPostalCode()==null
+                || customerAddressDomain.getProvince()==null
+                ){
+            return errorResult("地址信息不全");
+        }
+        return successResult("地址可用");
+    }
+
     /**
      * 设置收货地址
      * @return

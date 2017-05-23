@@ -159,7 +159,7 @@
             var data = $(".goodsForm").serializeArray();
             $.post("/returnOrder/chooseGoodsAndReason",data,function (data) {
                if(data.code==200){
-                   location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder?orderId=${order.id}";
+                   location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
                }else {
                    layer.msg(data.message);
                }
