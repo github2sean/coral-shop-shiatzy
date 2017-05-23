@@ -10,11 +10,19 @@
 
 <div class="unfinished">
     <div class="order-num clearfix">
-        <h3>${message}</h3>
-        <h4>￥ ${order.orderTotal}</h4>
-        <p>订单编号<span>${order.orderNo}</span></p>
+
+        <p style="margin-top: 20px">订单编号：<span>${order.orderNo}</span> <br/></p>
+
+        <div style="width: 100%;text-align: center">
+            <img src="/static/images/oxp-check.png" style="width: 60px;height: 60px;margin: 0 auto">
+        </div>
+        <h3 style="color: #4cae4c;font-size: 30px;text-align: center;margin-top: 10px">${message}</h3>
+        <h6 style="color: #4cae4c;font-size: 25px;text-align: center;margin-top: 15px">￥ ${order.orderTotal}</h6>
+        <div style="width: 100%;text-align: center;margin-top: 45px;">
+            <a style="width: 100%;background-color: black;color: whitesmoke;" href="/order/details?orderId=${order.id}" class="btn btn-default">查看订单详情</a>
+        </div>
     </div>
-    <a href="/order/details?orderId=${order.id}" class="btn btn-success">查看订单详情</a>
+
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

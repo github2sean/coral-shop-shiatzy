@@ -52,4 +52,11 @@ public class CouponDomain implements Serializable {
 	/*优惠价格*/
 	private Double discountPrice;
 
+	/*首页显示*/
+	private Integer indexShow;
+
+	private String title;
+
+	private String enTitle;
+
 }

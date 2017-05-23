@@ -37,7 +37,7 @@
             <div class="title j_choose">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
             <ul class="hide" id="js_size">
                 <c:forEach var="item" items="${sizeList}" varStatus="status" >
-                <li class="<c:if test="${status.first}">active</c:if>" data-value="${item.id}"><a href="#" >${item.name}<span></span></a> </li>
+                <li class="<c:if test="${status.first}">active</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}<span></span></a> </li>
                 </c:forEach>
             </ul>
         </div>
@@ -100,6 +100,33 @@
         $(".j_choose").on("click",function () {
             $(this).siblings().toggleClass("hide");
         })
+
+        $(".j_collect").click(function () {
+            var url ="";
+            var isAdd =  $(this).find("use").attr("xlink:href");
+            var sizeId ='';
+
+           $(".sizeIds").each(function () {
+              if($(this).hasClass("active")){
+                  sizeId = $(this).attr("data-value");
+              }
+           });
+            var data = {"itemId":'${goodsItemDomain.id}',"num":1,"sizeId":sizeId,"type":2};
+            console.log(data);
+            var url = "";
+            if(isAdd=="#heart-red"){
+                url = "/cart/addToCart";
+            }else if(isAdd=="#heart"){
+                url = "/cart/removeFromWish";
+            }
+            console.log(url);
+            $.post(url,data,function (result) {
+                console.log(result);
+                if(result.code==200){
+                    console.log(result.message);
+                }
+            });
+        });
 
         $(".addToCart").click(function () {
             var isLogin = '${user_context}';

@@ -6,8 +6,10 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 内容分类的domain
@@ -16,6 +18,7 @@ import java.util.Date;
  * @version : v0.0.1
  */
 @Table(name = "t_content_category")
+@Data
 public class ContentCategoryDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,46 +38,14 @@ public class ContentCategoryDomain implements Serializable {
 	
 	/*创建时间*/
 	private Date createTime;
-	
-	public Long getId(){
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	public String getTitle(){
-		return title;
-	}
-	
-	public void setTitle(String title){
-		this.title = title;
-	}
-	
-	public String getSlug(){
-		return slug;
-	}
-	
-	public void setSlug(String slug){
-		this.slug = slug;
-	}
-	
-	public Long getParentId(){
-		return parentId;
-	}
-	
-	public void setParentId(Long parentId){
-		this.parentId = parentId;
-	}
-	
-	public Date getCreateTime(){
-		return createTime;
-	}
-	
-	public void setCreateTime(Date createTime){
-		this.createTime = createTime;
-	}
-	
-	
+
+	/*分类等级*/
+	private Integer level;
+	/*子分类*/
+	@Transient
+	private List<ContentCategoryDomain> children;
+
+	/*父分类*/
+	@Transient
+	private ContentCategoryDomain parent;
 }

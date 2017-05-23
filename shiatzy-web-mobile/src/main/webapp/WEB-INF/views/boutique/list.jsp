@@ -13,9 +13,9 @@
 </div>
 
 <c:if test="${empty preOderItemList}">
-    <div class="content dx-wish">
+    <div class="content dx-wish dx-shopping">
         <div id="toggleDiv2">
-          <a href="/home/index"> <div class="dx-collect">精品店（0）</div></a>
+          <a href="/home/index"> <div class=" content"><p>预约单（0）</p></div></a>
         </div>
     </div>
 </c:if>
@@ -59,9 +59,16 @@
 </c:forEach>
 <div class="explain">
 
+    <c:if test="${empty preOderItemList}">
+        <div class="choose-store">
+            <a href="/home/index">选择商品</a>
+        </div>
+    </c:if>
+    <c:if test="${not empty preOderItemList}">
     <div class="choose-store">
         <a href="/reservation/initChoose">选择预约门市</a>
     </div>
+    </c:if>
     <ul>
         <li><a href="#">购物说明<span>></span></a></li>
         <li><a href="#">使用条款<span>></span></a></li>

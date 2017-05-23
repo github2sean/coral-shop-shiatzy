@@ -4,6 +4,7 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -154,8 +155,8 @@ public class ReservationController extends BaseController{
     @ResponseBody
     public JsonResult chooseStore(String countryId,String cityId){
         StoreQuery query = new StoreQuery();
-        query.setCityId(cityId);
         query.setCountryId(countryId);
+        query.setCityId(cityId);
         List<StoreDomain> storeList = storeService.getList(query);
         return successResult("初始化门店",JsonUtils.toJSONString(storeList));
     }
@@ -178,7 +179,7 @@ public class ReservationController extends BaseController{
         reservationDomain.setIsVisible(0);
         reservationDomain.setStatus(0);
         reservationDomain.setCustomerId(customerDomain.getId());
-        reservationDomain.setReservationNo("NO "+new Date().toLocaleString());
+        reservationDomain.setReservationNo(RandomUtils.buildNo());
         reservationDomain.setStoreTitle(storeDomain.getId()+"");
         reservationDomain.setTel(storeDomain.getTel());
         reservationDomain.setAddress(storeDomain.getAddress());

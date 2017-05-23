@@ -1,7 +1,14 @@
+<%--suppress ALL --%>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="com.dookay.coral.common.web.HttpContext" %>
+<%@ page import="com.dookay.coral.shop.goods.domain.GoodsColorDomain" %>
+<%@ page import="com.dookay.coral.shop.goods.domain.GoodsDomain" %>
+<%@ page import="com.dookay.coral.shop.goods.domain.GoodsItemDomain" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
+<jsp:useBean id="query" scope="request" type="com.dookay.coral.shop.goods.query.GoodsQuery"/>
+<jsp:useBean id="colorList" scope="request" type="java.util.List<com.dookay.coral.shop.goods.domain.GoodsColorDomain>"/>
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
@@ -16,8 +23,8 @@
         </div>
     </div>
 
-    <ul class="do-pro-list">
-        <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num">
+    <ul class="do-pro-list j_scroll_list">
+        <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num" begin="0" end="3" step="1">
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
         <li>
             <a href="/goods/details/${firstItem.id}">
@@ -38,6 +45,28 @@
             </i>
         </li>
         </c:forEach>
+        <%--<%for (GoodsDomain goods:goodsDomainPageList) {%>
+            <li>
+                <a href="/goods/details/<%=goods.getGoodsItemList().get(0).getId()%>">
+                    <div class="do-img">
+                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
+                    </div>
+                    <p class="do-pro-t ellipsis-2l" name="goodsName"><%=goods.getName()%></p>
+                    <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
+                    <ul class="do-list-color" name="skuId" data-value="">
+                        <%for (GoodsItemDomain goodsitemList:goods.getGoodsItemList()) {%>
+                        &lt;%&ndash;<c:forEach var="goods" items="${goods.goodsItemList}">&ndash;%&gt;
+                            <li style="background: <%=goodsitemList.getColorValue()%>"></li>
+                        &lt;%&ndash;  </c:forEach>&ndash;%&gt;
+                        <%}%>
+                    </ul>
+                </a>
+                <!--Todo:收藏按钮-->
+                <i class="icon-collect j_collect active" data-value="<%=goods.getGoodsItemList().get(0).getId()%>" data-ids="${sizeList[num.count-1].id}">
+                    <svg class="do-heart"><use xlink:href="#heart"></use></svg>
+                </i>
+            </li>
+        <%}%>--%>
     </ul>
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before">向下自动载入</span>
@@ -47,18 +76,19 @@
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
-         <c:forEach var="item" items="${categoryList}">
+        <%--<%for (GoodsColorDomain item:colorList){%>--%>
+        <c:forEach var="item" items="${categoryList}">
             <li><a href="/goods/list?categoryId=${item.id}">${item.name}</a></li>
-         </c:forEach>
+        </c:forEach>
+        <%--<%}%>--%>
+
     </ul>
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <form action="" class="filterForm">
-        <input type="hidden" name="categoryId" value="${categoryId}" id="category">
-        <input type="hidden" name="colorId" value="${colorId}" id="color">
-        <input type="hidden" name="sizeId" vaule="${sizeId}" id="size">
-        <input type="hidden" name="attributeId" vaule="${attributeId}" id="attr">
+        <%--<input type="hidden" name="priceWay">--%>
+            <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
@@ -68,6 +98,14 @@
                 <label for="color${item.id}">${item.name}(10)</label>
             </div>
             </c:forEach>
+
+           <%-- <%for (GoodsColorDomain item:colorList){%>
+            <div class="do-sort-group">
+                <input type="checkbox" name="colorIds" id="color<%=item.getId()%>" value="<%=item.getId()%>" <%=query.getColorIds().contains(item.getId())?"checked":""%>>
+                <label for="color<%=item.getId()%>"><%=item.getName()%>(10)</label>
+            </div>
+            <%}%>--%>
+
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">材质</div>
@@ -94,10 +132,8 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <div class="do-sort">排序</div>
     <ul class="do-sort-list">
-        <%--<li id="priceWay0"><a href="/goods/list?categoryId=${categoryId}&priceWay=0" >售价（高-低）</a></li>
-        <li id="priceWay1"><a href=" /goods/list?categoryId=${categoryId}&priceWay=1" >售价（低-高）</a></li>--%>
-            <li id="priceWay0">售价（高-低)</li>
-            <li id="priceWay1">售价（低-高)</li>
+            <li class="j_price_order" data-order="0">售价（高-低)</li>
+            <li class="j_price_order" data-order="1">售价（低-高)</li>
     </ul>
 </div>
 
@@ -105,11 +141,6 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    var category =$("#category").value;
-    var color=$("#color").value;
-    var size =$("#size").value;
-    var attr=$("#attr").value;
-    var price=$("#price").value;
     $(function () {
         //console.log('${goodsList}');
 
@@ -146,11 +177,37 @@
             console.log(data)
             $(".filterForm").submit();
         });
-        $("#priceWay0").click(function(){
-            window.location="/goods/list?categoryId= '"+category+"'&colorIds='"+color+"'&sizeIds='"+size+"'&attributeIds='"+attr+"'&priceWay=0";
+       /* //价格点击事件
+        $('.j_price_order').click(function () {
+           var $this = $(this);
+           var priceorder = $this.attr('data-order');
+           $('input[name=priceWay]').val(priceorder);
+           $('form').trigger('submit');
         });
-        $("#priceWay1").click(function(){
-            window.location="/goods/list?categoryId= '"+category+"'&colorIds='"+color+"'&sizeIds='"+size+"'&attributeIds='"+attr+"'&priceWay=1";
-        });
+
+        var page = 1;
+        var flag = 1;
+        $('.j_scroll_body').scroll(function () {
+            var $this = $(this);
+            var scrollTop = $this[0].scrollTop;
+            var scrollHeight = $this[0].scrollHeight;
+            var height = $this.height();
+            if (scrollTop + height >= scrollHeight+600) {
+                if (flag == 1) {
+                    flag = 0;
+                    $.get('/goods/list?<%=HttpContext.current().getRequest().getQueryString()%>', { pageIndex: page }, function (html) {
+                        var $html = $(html);
+                        var $li = $html.find('.j_scroll_list li');
+                        if ($li.length > 0) {
+                            $('.j_scroll_list').append($li);
+                            page = page + 1;
+                            flag = 1;
+                        } else {
+                            //todo
+                        }
+                    });
+                }
+            }
+        });*/
     });
 </script>

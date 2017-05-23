@@ -394,17 +394,16 @@ public class PaymentContoller extends BaseController{
     @RequestMapping(value = "frontRcvResponse",method = RequestMethod.POST)
     public ModelAndView frontRcvResponse(HttpServletRequest req)throws ServletException, IOException {
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回开始");
-
         String encoding = req.getParameter(SDKConstants.param_encoding);
         LogUtil.writeLog("返回报文中encoding=[" + encoding + "]");
         String pageResult = "";
         if (DemoBase.encoding_UTF8.equalsIgnoreCase(encoding)) {
-            pageResult = "payment/utf8_result";
+            pageResult = "payment/returnUrl";
         } else {
             pageResult = "payment/gbk_result";
         }
         Map<String, String> respParam = getAllRequestParam(req);
-
+        ModelAndView mv = new ModelAndView(pageResult);
         // 打印请求报文
         LogUtil.printRequestLog(respParam);
 
@@ -441,14 +440,12 @@ public class PaymentContoller extends BaseController{
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 updateOrderStatus(orderDomain);
             }
-
+            mv.addObject("order",orderDomain);
         }
-
-        ModelAndView mv = new ModelAndView(pageResult);
         mv.addObject("result",page);//req.setAttribute("result", page.toString());
         //req.getRequestDispatcher(pageResult).forward(req, resp);
+        mv.addObject("message","支付成功");
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回结束");
-
         return mv;
     }
 
@@ -562,7 +559,7 @@ public class PaymentContoller extends BaseController{
         System.out.println("signMsg:"+signMsg);
         Map<String,String> map = getAllRequestParam(request);
         String safe  =  content2MD5(map);
-        System.out.println("同步 map:"+map +"\n safe:"+safe);
+        System.out.println("异步 map:"+map +"\n safe:"+safe);
         if("0000".equals(resultCode) && safe.equals(signMsg)){
             //验证成功
             OrderDomain orderDomain = orderService.getOrder(orderId);
@@ -602,6 +599,9 @@ public class PaymentContoller extends BaseController{
                     amt.equals(orderDomain.getOrderTotal()) ){
                 updateOrderStatus(orderDomain);
 
+            }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&
+                    amt.equals(orderDomain.getOrderTotal())){
+                message= "订单已支付";
             }else{
                 message= "订单异常";
             }
@@ -610,7 +610,7 @@ public class PaymentContoller extends BaseController{
             message= "验证失败";
         }
         mv.addObject("message",message);
-        mv.addObject("orderDomain",orderDomain);
+        mv.addObject("order",orderDomain);
         return mv;
     }
 
@@ -646,7 +646,7 @@ public class PaymentContoller extends BaseController{
         orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
         //优惠券次数减少
         if(orderDomain.getCouponId()!=null){
-            CouponDomain couponDomain = couponService.get(orderDomain.getId());
+            CouponDomain couponDomain = couponService.get(orderDomain.getCouponId());
             Integer limitNum = couponDomain.getLimitTimes();
             couponService.checkCoupon(couponDomain.getCode());
             couponDomain.setLimitTimes(limitNum-1);

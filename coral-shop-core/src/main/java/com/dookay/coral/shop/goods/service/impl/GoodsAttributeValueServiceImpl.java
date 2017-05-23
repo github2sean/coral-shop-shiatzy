@@ -28,7 +28,7 @@ public class GoodsAttributeValueServiceImpl extends BaseServiceImpl<GoodsAttribu
 	@Override
 	public GoodsAttributeValueDomain goodsAttributeValueDomain(Long id) {
 		GoodsAttributeValueQuery  query =new GoodsAttributeValueQuery();
-		query.setId(id);
+		query.setGoodsId(id);
 		return getOne(query);
 	}
 }
