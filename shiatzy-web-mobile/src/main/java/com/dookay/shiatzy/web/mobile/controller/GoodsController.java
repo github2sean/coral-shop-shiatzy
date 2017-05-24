@@ -85,16 +85,7 @@ public class GoodsController extends BaseController{
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list(GoodsQuery query,Integer priceWay){
         ModelAndView modelAndView = new ModelAndView("goods/list");
-       /* if(priceWay == null||priceWay == 0){
-            query.setOrderBy("price");
-            query.setDesc(Boolean.TRUE);
-        }else{
-            query.setOrderBy("price");
-            query.setDesc(Boolean.FALSE);
-        }*/
         Long categoryId = query.getCategoryId();//商品分类
-        /*PageList<GoodsDomain> goodsDomainPageList = goodsService.getPageList(query);
-        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);*/
         modelAndView.addObject("categoryId",categoryId);
         //商品列表
         query.setCategoryId(categoryId);
@@ -107,8 +98,6 @@ public class GoodsController extends BaseController{
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
-
-
         //材质列表
         //获得原型Ids
         List<Long> prototypeIds = new ArrayList<Long>();
@@ -183,11 +172,17 @@ public class GoodsController extends BaseController{
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
             goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
-
         }
-
-        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
-        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        if(priceWay == null ){
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        }else if(priceWay ==0 || priceWay ==1)
+        {
+            goodsList=price(goodsList,priceWay);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        }
         return modelAndView;
     }
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
@@ -263,6 +258,28 @@ public class GoodsController extends BaseController{
                 }
             }
 
+        }
+        return list;
+    }
+    //价格筛选
+    public  List<GoodsDomain> price(List<GoodsDomain> goodsList,Integer type){
+        List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
+        GoodsQuery query =new GoodsQuery();
+        if(type == null||type == 0){
+            query.setOrderBy("price");
+            query.setDesc(Boolean.TRUE);
+        }else{
+            query.setOrderBy("price");
+            query.setDesc(Boolean.FALSE);
+        }
+        List<GoodsDomain> newList=goodsService.getList(query);
+        for (GoodsDomain goodsDomain : goodsList){
+            for (GoodsDomain goods:newList) {
+                    if (goods.getId()== goodsDomain.getId()) {
+                        list.add(goodsDomain);
+                        System.out.println("nowGoodsDomain:" + JsonUtils.toJSONString(goodsDomain));
+                    }
+            }
         }
         return list;
     }
