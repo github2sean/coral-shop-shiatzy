@@ -83,7 +83,7 @@ public class GoodsController extends BaseController{
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ModelAndView list(GoodsQuery query){
+    public ModelAndView list(GoodsQuery query,Integer priceWay){
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
@@ -98,8 +98,6 @@ public class GoodsController extends BaseController{
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
-
-
         //材质列表
         //获得原型Ids
         List<Long> prototypeIds = new ArrayList<Long>();
@@ -174,28 +172,16 @@ public class GoodsController extends BaseController{
             goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
             goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
-
         }
-        if(query.getPriceWay() == null ){
+        if(priceWay == null ){
             PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
-        }else if(query.getPriceWay() ==0 || query.getPriceWay()==1)
+        }else if(priceWay ==0 || priceWay ==1)
         {
-            goodsList=price(goodsList,query.getPriceWay());
+            goodsList=price(goodsList,priceWay);
             goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
-        }
-        if(query.getColorIds()!=null)
-        {
-            modelAndView.addObject("color",query.getColorIds());
-        }
-        if(query.getSizeIds()!=null)
-        {
-            modelAndView.addObject("size",query.getSizeIds());
-        }if(query.getAttributeIds()!=null)
-        {
-            modelAndView.addObject("attr",query.getAttributeIds());
         }
         return modelAndView;
     }
@@ -279,7 +265,13 @@ public class GoodsController extends BaseController{
     public  List<GoodsDomain> price(List<GoodsDomain> goodsList,Integer type){
         List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
         GoodsQuery query =new GoodsQuery();
-        query.setPriceWay(type);
+        if(type == null||type == 0){
+            query.setOrderBy("price");
+            query.setDesc(Boolean.TRUE);
+        }else{
+            query.setOrderBy("price");
+            query.setDesc(Boolean.FALSE);
+        }
         List<GoodsDomain> newList=goodsService.getList(query);
         for (GoodsDomain goodsDomain : goodsList){
             for (GoodsDomain goods:newList) {

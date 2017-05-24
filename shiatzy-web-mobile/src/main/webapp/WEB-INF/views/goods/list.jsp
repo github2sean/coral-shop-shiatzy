@@ -61,11 +61,7 @@
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
-    <input type="hidden" name="color"value="${color}">
-    <input type="hidden" name="size" value="${size}">
-    <input type="hidden" name="attr" value="${attr}">
     <form action="" class="filterForm">
-        <input type="hidden" name="priceWay">
         <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
@@ -142,54 +138,18 @@
             });
 
         $(".btn-submit").click(function () {
-
             var data = $(".filterForm").serializeArray();
             console.log(data)
             $(".filterForm").submit();
         });
-        var color="";
-        var size="";
-        var attr="";
-            $("input[name=color]").each(function (index, domEle) {
-                var aa = [];
-                var color = domEle.value;
-                var str2 = color.substring(color.indexOf("[") + 1, color.indexOf("]"));
-                aa = str2.split(",");
-                for (var i = 0; aa.length; i++) {
-                    color+="&colorIds="+aa[i];
-                }
-            });
-
-            $("input[name=size]").each(function (index, domEle) {
-                var size = domEle.value;
-                var str2 = size.substring(size.indexOf("[") + 1, size.indexOf("]"));
-                aa = str2.split(",");
-                for (var i = 0; aa.length; i++) {
-                    size="&sizeIds="+aa[i];
-                }
-            });
-
-
-            $("input[name=attr]").each(function (index, domEle) {
-                var attr = domEle.value;
-                var str2 = attr.substring(attr.indexOf("[") + 1, attr.indexOf("]"));
-                aa = str2.split(",");
-                for (var i = 0; aa.length; i++) {
-                    attr="&attributeIds="+aa[i];
-                }
-            });
         //价格点击事件
         $('.j_price_order').click(function () {
             var $this = $(this);
             var priceorder = $this.attr('data-order');
-            $('input[name=priceWay]').val(priceorder);
-            var data = $(".filterForm").serializeArray();
-            console.log(data)
-            $(".filterForm").submit();
-          /*  var price=priceorder;
-            window.location.href="/goods/list?"+color+size+attr+"&priceWay="+price;*/
+            var href = window.location.href;
+            var priceWay="priceWay";
+            setQueryString(priceWay,priceorder,href);
         });
-
 
     });
 </script>
