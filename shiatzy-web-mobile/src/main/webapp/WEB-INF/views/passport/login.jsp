@@ -8,20 +8,20 @@
 </jsp:include>
 <div class="dx-login">
     <div class="dx-title clearfix">
-        <div class="member"><span><img src="${ctx}/static/images/icon-member.png" alt=""></span>会员</div>
+        <div class="member"><span><img src="${ctx}/static/images/icon-member.png" alt=""></span><spring:message code="vip"/></div>
         <a href="" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <form class="loginForm" method="post" action="/passport/login">
     <div class="content">
-        <div class="login">登入</div>
-        <div class="title">请于下方输入您的电子邮箱与密码登入</div>
-        <input type="email" placeholder="输入您的电子邮箱" name="userName" id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
-        <input type="password" placeholder="输入您的密码" name="password" id="userPwd"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的密码'">
-        <div class="remind"><a href="${ctx}/passport/toForget">忘记密码？</a></div>
+        <div class="login"><spring:message code="login"/></div>
+        <div class="title"><spring:message code="login.tips"/></div>
+        <input type="email" placeholder='<spring:message code="login.holderAccount"/>' name="userName" id="userName"onfocus="this.placeholder=''"    onblur="this.placeholder='<spring:message code="login.holderAccount"/>'">
+        <input type="password" placeholder='<spring:message code="login.holderPassword"/>' name="password" id="userPwd"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="login.holderPassword"/>'">
+        <div class="remind"><a href="${ctx}/passport/toForget"><spring:message code="login.forgotPassword"/>？</a></div>
         <div class="remind loginInfo"></div>
         <!--添加的a标签用来演示-->
-        <button type="button" class="btn loginBtn">登入</button>
-        <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
+        <button type="button" class="btn loginBtn"><spring:message code="login"/></button>
+        <div class="register"><spring:message code="login.noneAccount"/>？ <a href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
     </div>
     </form>
 </div>
@@ -34,11 +34,11 @@
         var userName =$("#userName").val();
         var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if(userName=='') {
-            $(".loginInfo").show().css("color","red").text("邮箱不能为空！");
+            $(".loginInfo").show().css("color","red").text("<spring:message code="login.validAccount"/>！");
             return false;
         }else if(!reg.test(userName))
         {
-            $(".loginInfo").show().css("color","red").text("邮箱格式不对，请重新输入！");
+            $(".loginInfo").show().css("color","red").text("<spring:message code="login.validAccountStyle"/>！");
             return false;
         }
         $(".loginInfo").hide();

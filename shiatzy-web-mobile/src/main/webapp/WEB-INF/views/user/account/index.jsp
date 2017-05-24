@@ -7,12 +7,12 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">我的账户 </p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
+    <p style="float: left"><spring:message code="myAccount"/> </p>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< <spring:message code="goBack"/></a>
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
-        <p style="margin-right: 1.7005rem;">欢迎您</p>
+        <p style="margin-right: 1.7005rem;"><spring:message code="account.welcome"/></p>
         <c:if test="${empty customerDomain}"><p>${accountDomain.userName}</p></c:if>
         <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}</p></c:if>
     </div>
@@ -21,42 +21,42 @@
             <li>
                 <a href="/u/account/details">
                     <span><svg><use xlink:href="#ac-info"></use></svg></span>
-                    <span>个人信息</span>
+                    <span><spring:message code="account.information"/></span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
                 <a href="/order/list">
                     <span><svg><use xlink:href="#ac-order"></use></svg></span>
-                    <span>订单详情</span>
+                    <span><spring:message code="account.order"/></span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
                 <a href="/boutique/list">
                     <span><svg><use xlink:href="#ap-small"></use></svg></span>
-                    <span>精品店预约详情</span>
+                    <span><spring:message code="account.reservation"/></span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
                 <a href="/cart/wishlist">
                     <span><svg><use xlink:href="#heart"></use></svg></span>
-                    <span>愿望清单</span>
+                    <span><spring:message code="account.wish"/></span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
                 <a href="/checkout/listShipAddress">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
-                    <span>常用收件门市/地址设定</span>
+                    <span><spring:message code="account.address"/></span>
                     <span style="float: right;">></span>
                 </a>
             </li>
         </ul>
     </div>
     <div class="outline">
-        <a type="button" class="loginOut" >登出</a>
+        <a type="button" class="loginOut" ><spring:message code="account.out"/></a>
     </div>
 
 

@@ -9,12 +9,12 @@
 </jsp:include>
 
 <div class="dx-wish clearfix dx-shopping">
-    <div class="dx-title" style="background-color: #999999">我的账户/愿望清单<a href="/u/account/index">回上页</a></div>
+    <div class="dx-title" style="background-color: #999999"><spring:message code="myAccount"/> / <spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
     <div class="content ">
         <c:if test="${not empty wishList}">
         <div id="toggleDiv">
             <div class="dx-total">
-            <div class="title">您的收藏</div>
+            <div class="title"><spring:message code="wish.save"/></div>
             <ul class="list hide">
                 <li>女士</li>
                 <li class="active">男士</li>
@@ -26,7 +26,7 @@
         </c:if>
         <c:if test="${empty wishList}">
             <div id="toggleDiv2">
-            <div class=""><p>愿望清单（0）</p></div>
+            <div class=""><p><spring:message code="shoppingCart.null"/></p></div>
             </div>
         </c:if>
     </div>
@@ -36,14 +36,14 @@
                 <div class="goods-left">
                     <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;"></div>
                 </div>
-                <div class="goods-right">
-                    <div class="name">${row.goodsName}</div>
-                    <div class="number">${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>${row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                        ${JSONObject.fromObject(row.skuSpecifications).getString("size")}号
+                <div class="goods-right" style="width: 200px;word-break: break-all">
+                    <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
+                    <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                       <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
                     </span></div>
-                    <div class="preferential-price">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
-                    <div class="price">优惠价&nbsp; &yen; <span>0</span></div>
+                    <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                    <div class="price"><spring:message code="wish.discountPrice"/>&nbsp; &yen; <span>0</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
@@ -56,9 +56,9 @@
         </div>
         <div class="dx-clause">
             <ul>
-                <li><a href="#">选购女士</a></li>
-                <li><a href="#">选购男士</a></li>
-                <li class="last"><a href="#">什么是愿望清单？</a></li>
+                <li><a href="#"><spring:message code="shoppingCart.selectWoman"/></a></li>
+                <li><a href="#"><spring:message code="shoppingCart.selectMan"/></a></li>
+                <li class="last"><a href="#"><spring:message code="wish.whatWish"/>?</a></li>
             </ul>
         </div>
 </div>

@@ -92,6 +92,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			shoppingCartItemDomain.setCustomerId(customerDomain.getId());
 			shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
 			shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
+			shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
 			shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
 			shoppingCartItemDomain.setSkuId(skuDomain.getId());
 			shoppingCartItemDomain.setItemId(skuDomain.getItemId());

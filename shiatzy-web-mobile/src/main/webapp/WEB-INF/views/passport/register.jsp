@@ -8,20 +8,20 @@
 </jsp:include>
 
 <div class="dx-registered">
-    <div class="dx-title">注册 <a href="/passport/toLogin">返回上页</a></div>
+    <div class="dx-title"><spring:message code="register"/> <a href="/passport/toLogin"><spring:message code="goBack"/></a></div>
     <form class="registerForm" action="/passport/register.do" method="post">
     <div class="content">
-        <div class="title">快速注册，享更多便捷体验</div>
-        <input type="email" placeholder="电子邮箱" name="email"  id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='电子邮箱'">
-        <input type="password" placeholder="创建密码" name="password" id="userPwd"onfocus="this.placeholder=''" onblur="this.placeholder='创建密码'">
-        <input type="password" placeholder="再次输入密码" name="confirm_password" id="confirm_password" onfocus="this.placeholder=''" onblur="this.placeholder='再次输入密码'">
+        <div class="title"><spring:message code="register.titleInfo"/></div>
+        <input type="email" placeholder='<spring:message code="register.holderEmail"/>' name="email"  id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="register.holderEmail"/>'">
+        <input type="password" placeholder='<spring:message code="register.holderPass"/>' name="password" id="userPwd"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="register.holderPass"/>'">
+        <input type="password" placeholder='<spring:message code="register.holderRePass"/>' name="confirm_password" id="confirm_password" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="register.holderRePass"/>'">
         <div class="dx-verify clearfix">
-            <input type="text" class="verify" placeholder="输入右方验证码" name="validCode" id="validCode" onfocus="this.placeholder=''" onblur="this.placeholder='输入右方验证码'">
+            <input type="text" class="verify" placeholder='<spring:message code="register.holderValidCode"/>' name="validCode" id="validCode" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'">
             <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
         </div>
         <div class="remind"></div>
-        <button type="button" class="registerBtn">注 册</button>
-        <div class="notice">完成注册，表示您已同意接受Shop.shiatzychen.com 的隐私政策及相关线上条例。</div>
+        <button type="button" class="registerBtn"><spring:message code="register"/></button>
+        <div class="notice"><spring:message code="register.endInfo"/></div>
     </div>
     </form>
 
@@ -35,11 +35,11 @@
         var userName =$("#userName").val();
         var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if(userName=='') {
-            $(".remind").show().css("color","red").text("邮箱不能为空！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validNull"/>');
             return false;
         }else if(!reg.test(userName))
         {
-            $(".remind").show().css("color","red").text("邮箱格式不对，请重新输入！");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validEmail"/>");
             return false;
         }
         $(".remind").hide();
@@ -53,11 +53,11 @@
         var userPwd=$('#userPwd').val();
         var reg=/^[a-zA-Z]\w{5,17}$/;
         if(userPwd=='') {
-            $(".remind").show().css("color","red").text("密码不能为空！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validNull"/>');
             return false;
         }else if(!reg.test(userPwd))
         {
-            $(".remind").show().css("color","red").text("密码格式不对，请重新输入！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validPassStyle"/>');
             return false;
         }
         $(".remind").hide();
@@ -70,11 +70,11 @@
         var userPwd = $('#userPwd').val();
         var confirm_password = $('#confirm_password').val();
         if(confirm_password =='') {
-            $(".remind").show().css("color","red").text("密码不能为空！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validNull"/>');
             return false;
         }else if(confirm_password !=userPwd)
         {
-            $(".remind").show().css("color","red").text("两次密码不一样，请重新输入！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validPass"/>');
             return false;
         }
         $(".remind").hide();
@@ -86,7 +86,7 @@
     {
         var validCode = $('#validCode').val();
         if(validCode =='') {
-            $(".remind").show().css("color","red").text("验证码不能为空！");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validNull"/>');
             return false;
         }
         $(".remind").hide();
@@ -95,16 +95,16 @@
     }
     $(function () {
         $('#userName').focus(function(){
-            $(".remind").show().css("color","red").text("邮箱的格式为：xxx@xxx.com或cn或cnt");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validEmail"/>");
         }).blur(userName);
         $('#userPwd').focus(function(){
-            $(".remind").show().css("color","red").text("以字母开头，长度在6~18之间，只能包含字符、数字和下划线");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validPassStyle"/>');
         }).blur(userPwd);
         $('#confirm_password').focus(function(){
-            $(".remind").show().css("color","red").text("两次密码必须相同");
+            $(".remind").show().css("color","red").text('<spring:message code="register.validPass"/>');
         }).blur(confirm_password);
         $('#validCode').focus(function(){
-            $(".remind").show().css("color","red").text("请输入验证码");
+            $(".remind").show().css("color","red").text('<spring:message code="register.holderValidCode"/>');
         }).blur(validCode);
 
         $(".registerBtn").click(function () {

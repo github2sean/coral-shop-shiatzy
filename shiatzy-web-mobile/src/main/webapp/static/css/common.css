@@ -281,7 +281,7 @@ label{display:inline-block;max-width:100%;font-weight:400;zoom:1;}
 .index-se .text-bold{letter-spacing: 10px;margin: 1rem 0 1.8rem;font-size: 3.8rem;padding-left: 10px}
 .para-discount{line-height: 2.4rem;letter-spacing: 2px}
 .guide-link-before:before{content: ">";margin-right: 1.2rem;position: relative;top:-1px}
-.guide-link-before{margin-bottom: .8rem;font-size: 1.4rem}
+.guide-link-before{margin-bottom: .8rem;font-size: 1.0rem}
 .index-cat{padding-top: 3.3rem;margin-bottom: 1.3rem;}
 .index-show .guide-link-before{margin-bottom: 3rem}
 .back-top:after{content: ">";transform: rotate(-90deg);display: inline-block;margin-left: 8px;position: relative;top:-2px}

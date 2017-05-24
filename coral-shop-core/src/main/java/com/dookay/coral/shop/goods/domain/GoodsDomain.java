@@ -29,6 +29,9 @@ public class GoodsDomain implements Serializable {
 	
 	/*商品名称*/
 	private String name;
+
+	/*商品名称*/
+	private String enName;
 	
 	/*简单标题*/
 	private String brief;

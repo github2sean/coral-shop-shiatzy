@@ -10,7 +10,7 @@
 
 <div class="dx-shopping">
     <div class="dx-title clearfix">
-        <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span>购物车</div>
+        <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="shoppingCart"/></div>
         <a href="/home/index" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 <c:if test="${cartList.size()>0}">
@@ -21,12 +21,12 @@
                 <div class="goods-left">
                     <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
                 </div>
-                <div class="goods-right">
-                    <div class="name">${row.goodsName}</div>
-                    <div class="number">产品编号 ${row.goodsCode}</div>
-                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
-                    <div class="quantity">数量: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
-                    <div class="price">单价&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
+                <div class="goods-right" style="width: 200px;word-break: break-all">
+                    <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
+                    <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${JSONObject.fromObject(row.skuSpecifications).getString("size")}</span></div>
+                    <div class="quantity"><spring:message code="shoppingCart.number"/>: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
+                    <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -36,31 +36,31 @@
             </div>
             </c:forEach>
 
-            <div class="total">小计 <span id="js_total">&yen; &nbsp;</span></div>
+            <div class="total"><spring:message code="shoppingCart.sub"/> <span id="js_total">&yen; &nbsp;</span></div>
 
         </div>
     </div>
     <div class="shopping-start">
-        <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping">查看购物袋 / 结帐</a>
+        <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping"><spring:message code="shoppingCart.checkout"/></a>
         <div class="dx-clause">
             <ul>
-                <li><a href="#">购物说明</a></li>
-                <li><a href="#">使用条款</a></li>
-                <li class="last"><a href="#">配送规则</a></li>
+                <li><a href="#"><spring:message code="shoppingCart.shoppingInfo"/></a></li>
+                <li><a href="#"><spring:message code="shoppingCart.term"/></a></li>
+                <li class="last"><a href="#"><spring:message code="shoppingCart.rule"/></a></li>
             </ul>
         </div>
     </div>
 </c:if>
     <c:if test="${cartList.size()==0}">
         <div class="content">
-           <p>您的购物车目前是空的</p>
+           <p><spring:message code="shoppingCart.null"/></p>
         </div>
         <div class="shopping-start">
-            <a href="/home/index" class="shopping">开始购物</a>
+            <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
             <div class="dx-clause">
                 <ul>
-                    <li><a href="#">选购女士</a></li>
-                    <li><a href="#">选购男士</a></li>
+                    <li><a href="#"><spring:message code="shoppingCart.selectWoman"/></a></li>
+                    <li><a href="#"><spring:message code="shoppingCart.selectMan"/></a></li>
                 </ul>
             </div>
         </div>

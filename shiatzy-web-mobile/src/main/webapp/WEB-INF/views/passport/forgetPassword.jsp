@@ -9,19 +9,19 @@
 
 <div class="dx-login dx-ForgotPassword">
     <div class="dx-title clearfix">
-        <div class="member">忘记密码</div>
-        <a href="javascript:history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
+        <div class="member"><spring:message code="forgetPassword"/></div>
+        <a href="/passport/toLogin" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <div class="content">
-        <div class="title">请于下方输入您的电子邮箱，以获取您的登录密码</div>
-        <input type="email" placeholder="输入您的电子邮箱" class="userName" name="userName" id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
+        <div class="title" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
+        <input type="email" placeholder="<spring:message code="login.holderAccount"/>" class="userName" name="userName" id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="login.holderAccount"/>'">
         <div class="dx-verify clearfix">
-            <input type="text" class="verify" placeholder="输入右方验证码" name="validCode">
+            <input type="text" class="verify" placeholder="<spring:message code="register.holderValidCode"/>" name="validCode">
             <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
         </div>
         <div class="remind"></div>
-        <button type="button" class="sendBtn">发送</button>
-        <div class="register">尚未拥有帐号？ <a href="${ctx}/passport/toRegister">注册</a></div>
+        <button type="button" class="sendBtn"><spring:message code="send"/></button>
+        <div class="register"><spring:message code="login.noneAccount"/>？ <a href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -33,11 +33,11 @@
         var userName =$("#userName").val();
         var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if(userName=='') {
-            $(".remind").show().css("color","red").text("邮箱不能为空！");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
             return false;
         }else if(!reg.test(userName))
         {
-            $(".remind").show().css("color","red").text("邮箱格式不对，请重新输入！");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
             return false;
         }
         $(".remind").hide();
@@ -50,7 +50,7 @@
     {
         var validCode = $('.verify').val();
         if(validCode =='') {
-            $(".remind").show().css("color","red").text("验证码不能为空！");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
             return false;
         }
         $(".remind").hide();
@@ -59,10 +59,10 @@
     }
     $(function () {
         $('#userName').focus(function(){
-            $(".remind").show().css("color","red").text("邮箱的格式为：xxx@xxx.com或cn或cnt");
+            $(".remind").show().css("color","red").text("<spring:message code="register.validEmail"/>");
         }).blur(userName);
         $('.verify').focus(function(){
-            $(".remind").show().css("color","red").text("请输入验证码");
+            $(".remind").show().css("color","red").text("<spring:message code="register.holderValidCode"/>");
         }).blur(validCode);
 
         $(".sendBtn").click(function () {

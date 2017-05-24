@@ -52,7 +52,6 @@ public class HomeController extends MobileBaseController {
     private ICustomerService customerService;
 
     public final static String SHIPPING_COUNTRY_ID="shippingCountryId";
-
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView("home/index");
@@ -85,6 +84,22 @@ public class HomeController extends MobileBaseController {
         List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(query);
         mv.addObject("countryList",shippingCountryDomainList);
         return mv;
+    }
+
+    @RequestMapping(value = "selectLanguage", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult selectLanguage(String nowLanguage){
+        //判断当前语言环境
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        if("zh_CN".equals(nowLanguage)){
+            session.setAttribute("language",nowLanguage);
+        }else if("en_US".equals(nowLanguage)){
+            session.setAttribute("language",nowLanguage);
+        }else{
+            return errorResult("参数有错");
+        }
+        return successResult("选择成功");
     }
 
 }

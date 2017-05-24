@@ -96,7 +96,7 @@
         <property name="log_path" value="/var/log" />
         <property name="notify_url" value="http://test-ip-41.coralcodes.com/payment/asynReturnUrl" />
         <property name="return_url" value="http://test-ip-41.coralcodes.com/payment/returnUrl" />
-       <!-- <property name="notify_url" value="http://shiatzy-w.doolab.cn/payment/asynReturnUrl" />
+        <!--<property name="notify_url" value="http://shiatzy-w.doolab.cn/payment/asynReturnUrl" />
         <property name="return_url" value="http://shiatzy-w.doolab.cn/payment/returnUrl" />-->
         <property name="service" value="alipay.wap.create.direct.pay.by.user" />
         <property name="sign_type" value="MD5" />

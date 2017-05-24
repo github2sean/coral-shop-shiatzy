@@ -43,6 +43,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	
 	/*商品名称*/
 	private String goodsName;
+
+	/*商品名称*/
+	private String goodsEnName;
 	
 	/*商品编号*/
 	private String goodsCode;

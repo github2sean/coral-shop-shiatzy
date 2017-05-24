@@ -8,14 +8,14 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">门市预约</p>
+    <p style="float: left"><spring:message code="reservation"/></p>
     <a style="float: right;" href="/u/account/index">X</a>
 </div>
 
 <c:if test="${empty preOderItemList}">
     <div class="content dx-wish dx-shopping">
         <div id="toggleDiv2">
-          <a href="/home/index"> <div class=" content"><p>预约单（0）</p></div></a>
+          <a href="/home/index"> <div class=" content"><p><spring:message code="shoppingCart.null"/></p></div></a>
         </div>
     </div>
 </c:if>
@@ -24,14 +24,14 @@
 <c:forEach var="row" items="${preOderItemList}">
 <div class="order-main clearfix">
     <div class="order-main-left goodsDiv">
-        <p class="product-num">产品编号 ${row.leftItem.goodsCode}</p>
+        <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.leftItem.goodsCode}</p>
         <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
-        <p class="product-name">${row.leftItem.goodsName}</p>
+        <p class="product-name">${sessionScope.language=='en_US'?row.leftItem.goodsEnName:row.leftItem.goodsName}</p>
         <div class="color-size">
-            <p>${row.leftItem.goodsItemDomain.name}</p>
-            <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}号</p>
+            <p>${sessionScope.language=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
+            <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
         </div>
-        <p class="price">单价　¥ ${row.leftItem.goodsPrice}</p>
+        <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.leftItem.goodsPrice}</p>
         <ul class="do-list-icon">
             <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
             <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -40,14 +40,14 @@
     </div>
     <c:if test="${not empty row.rightItem}">
     <div class="order-main-right goodsDiv">
-        <p class="product-num">产品编号 ${row.rightItem.goodsCode}</p>
+        <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.rightItem.goodsCode}</p>
         <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
-        <p class="product-name">${row.rightItem.goodsName}</p>
+        <p class="product-name">${sessionScope.language=='en_US'?row.rightItem.goodsEnName:row.rightItem.goodsName}</p>
         <div class="color-size">
-            <p>${row.rightItem.goodsItemDomain.name}</p>
-            <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}号</p>
+            <p>${sessionScope.language=='en_US'?row.rightItem.goodsItemDomain.enName:row.rightItem.goodsItemDomain.name}</p>
+            <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
         </div>
-        <p class="price">单价　¥ ${row.rightItem.goodsPrice}</p>
+        <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.rightItem.goodsPrice}</p>
         <ul class="do-list-icon">
             <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
             <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -61,18 +61,18 @@
 
     <c:if test="${empty preOderItemList}">
         <div class="choose-store">
-            <a href="/home/index">选择商品</a>
+            <a href="/home/index"><spring:message code="shoppingCart.selectGoods"/></a>
         </div>
     </c:if>
     <c:if test="${not empty preOderItemList}">
     <div class="choose-store">
-        <a href="/reservation/initChoose">选择预约门市</a>
+        <a href="/reservation/initChoose"><spring:message code="reservation.findstore"/></a>
     </div>
     </c:if>
     <ul>
-        <li><a href="#">购物说明<span>></span></a></li>
-        <li><a href="#">使用条款<span>></span></a></li>
-        <li><a href="#">配送规则<span>></span></a></li>
+        <li><a href="#"><spring:message code="shoppingCart.shoppingInfo"/><span>></span></a></li>
+        <li><a href="#"><spring:message code="shoppingCart.term"/><span>></span></a></li>
+        <li><a href="#"><spring:message code="shoppingCart.rule"/><span>></span></a></li>
     </ul>
 </div>
 

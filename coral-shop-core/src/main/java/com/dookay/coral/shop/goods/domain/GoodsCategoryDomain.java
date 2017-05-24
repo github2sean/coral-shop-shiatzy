@@ -35,9 +35,15 @@ public class GoodsCategoryDomain implements Serializable {
 	
 	/*分类名称*/
 	private String name;
+
+	/*英文分类名称*/
+	private String enName;
 	
 	/*描述*/
 	private String description;
+
+	/*英文描述*/
+	private String enDescription;
 	
 	/*slug*/
 	private String slug;

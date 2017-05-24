@@ -236,10 +236,10 @@
 
             <c:forEach var="level1" items="${web:categoryList()}">
             <li>
-                <a>${level1.name}
+                <a>${sessionScope.language=='en_US'?level1.enName:level1.name}
                     <ul class="guide-sub-nav">
                     <c:forEach var="level2" items="${level1.children}">
-                        <li><a href="/goods/list?categoryId=${level2.id}">${level2.name}</a></li>
+                        <li><a href="/goods/list?categoryId=${level2.id}">${sessionScope.language=='en_US'?level2.enName:level2.name}</a></li>
                     </c:forEach>
                     </ul>
                 </a>
@@ -253,8 +253,8 @@
             <li class="">
                 <a href="#"><spring:message code="selectLanguage"/>
                     <ul class="do-sub-list-btm">
-                        <li><a href="?lang=zh_CN" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
-                        <li><a href="?lang=en_US" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+                        <li><a class="language" data-value="zh_CN" href="#" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                        <li><a class="language" data-value="en_US" href="#" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
                     </ul>
                 </a></li>
         </ul>

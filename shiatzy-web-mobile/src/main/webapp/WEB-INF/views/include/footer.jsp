@@ -17,10 +17,10 @@
     </ul>
     <ul class="do-list-lang do-list-btm j_drop_down">
         <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
-        <li><a href="#"><spring:message code="selectLanguage"/></a>
+        <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
-                <li><a href="?lang=zh_CN" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
-                <li><a href="?lang=en_US" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+                <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                <li><a class="language" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
             </ul>
         </li>
     </ul>
@@ -66,6 +66,30 @@
     $(function () {
         $("#searchBtn").click(function () {
             $("#contentForm").submit();
+        });
+        console.log('${sessionScope.language}');
+        $(".language").click(function () {
+            var language = $(this).attr("data-value");
+            $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    var old = location.search;
+
+                    console.log("old:"+old +" "+old.indexOf("?lang="))
+                    if(old==''){
+                        old = old  +"?lang="+language;
+                    }else if(old.indexOf("?lang=")!=-1){
+                       old = "?lang="+language;
+                        console.log(old);
+                    }else if(old.indexOf("&lang=")!=-1){
+                        old = old.substr(0,old.indexOf("&lang="));
+                        old = old+"&lang="+language;
+                    }else{
+                        old = old+"&lang="+language;
+                    }
+                    location.href = old;
+                }
+            });
         });
     });
 
