@@ -21,7 +21,7 @@ public class GoodsQuery extends Query {
 	private  String name;
 	private  Long categoryId;
 	private  Long prototypeId;
-//	private  Integer priceWay;//价格排序 0：高-低，1：低-高
+	private  Integer priceWay;//价格排序 0：高-低，1：低-高
 	private  List<Long> colorIds;//颜色
 	private  List<Long> sizeIds;//尺寸
     private  List<Long> attributeIds;//材质
@@ -32,26 +32,6 @@ public class GoodsQuery extends Query {
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
-
-/*		if (valid(colorIds)) {
-			for (Long colorId:colorIds){
-				String likeStr = "%"+colorId+"%";
-				criteria.andLike("colorIds",likeStr);
-			}
-		}
-
-		if(valid(attributeIds)){
-			for (Long attributeId:attributeIds){
-				String likeStr=  "%"+attributeId+"%";
-				criteria.andLike("attributeIds",likeStr);
-			}
-		}
-		if(valid(sizeIds)){
-			for (Long sizeId:sizeIds){
-				String likeStr=  "%"+sizeId+"%";
-				criteria.andLike("sizeIds",likeStr);
-			}
-		}*/
 		if (valid(name)){
 			criteria.andLike("name","%"+name+"%");
 		}
@@ -66,13 +46,12 @@ public class GoodsQuery extends Query {
 		if(valid(ids)){
 			criteria.andIn("id",ids);
 		}
-		/*if (valid(priceWay)){
+		if (valid(priceWay)){
 			setOrderBy(PRICE_FIELD);
 			if (priceWay == 1){
 				setDesc(false);
 			}
-		}*/
-
+		}
 		return queryCriteria;
 	}
 

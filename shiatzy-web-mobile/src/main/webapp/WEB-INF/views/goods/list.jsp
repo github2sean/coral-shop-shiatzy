@@ -45,28 +45,6 @@
             </i>
         </li>
         </c:forEach>
-        <%--<%for (GoodsDomain goods:goodsDomainPageList) {%>
-            <li>
-                <a href="/goods/details/<%=goods.getGoodsItemList().get(0).getId()%>">
-                    <div class="do-img">
-                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
-                    </div>
-                    <p class="do-pro-t ellipsis-2l" name="goodsName"><%=goods.getName()%></p>
-                    <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
-                    <ul class="do-list-color" name="skuId" data-value="">
-                        <%for (GoodsItemDomain goodsitemList:goods.getGoodsItemList()) {%>
-                        &lt;%&ndash;<c:forEach var="goods" items="${goods.goodsItemList}">&ndash;%&gt;
-                            <li style="background: <%=goodsitemList.getColorValue()%>"></li>
-                        &lt;%&ndash;  </c:forEach>&ndash;%&gt;
-                        <%}%>
-                    </ul>
-                </a>
-                <!--Todo:收藏按钮-->
-                <i class="icon-collect j_collect active" data-value="<%=goods.getGoodsItemList().get(0).getId()%>" data-ids="${sizeList[num.count-1].id}">
-                    <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-                </i>
-            </li>
-        <%}%>--%>
     </ul>
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before">向下自动载入</span>
@@ -76,19 +54,19 @@
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
-        <%--<%for (GoodsColorDomain item:colorList){%>--%>
         <c:forEach var="item" items="${categoryList}">
             <li><a href="/goods/list?categoryId=${item.id}">${item.name}</a></li>
         </c:forEach>
-        <%--<%}%>--%>
-
     </ul>
 </div>
 <div id="j_panel_filter" class="pro-filter-panel panel-filter">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
+    <input type="hidden" name="color"value="${color}">
+    <input type="hidden" name="size" value="${size}">
+    <input type="hidden" name="attr" value="${attr}">
     <form action="" class="filterForm">
-        <%--<input type="hidden" name="priceWay">--%>
-            <input type="hidden" name="categoryId" value="${categoryId}">
+        <input type="hidden" name="priceWay">
+        <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
@@ -98,14 +76,6 @@
                 <label for="color${item.id}">${item.name}(10)</label>
             </div>
             </c:forEach>
-
-           <%-- <%for (GoodsColorDomain item:colorList){%>
-            <div class="do-sort-group">
-                <input type="checkbox" name="colorIds" id="color<%=item.getId()%>" value="<%=item.getId()%>" <%=query.getColorIds().contains(item.getId())?"checked":""%>>
-                <label for="color<%=item.getId()%>"><%=item.getName()%>(10)</label>
-            </div>
-            <%}%>--%>
-
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">材质</div>
@@ -177,37 +147,49 @@
             console.log(data)
             $(".filterForm").submit();
         });
-       /* //价格点击事件
+        var color="";
+        var size="";
+        var attr="";
+            $("input[name=color]").each(function (index, domEle) {
+                var aa = [];
+                var color = domEle.value;
+                var str2 = color.substring(color.indexOf("[") + 1, color.indexOf("]"));
+                aa = str2.split(",");
+                for (var i = 0; aa.length; i++) {
+                    color+="&colorIds="+aa[i];
+                }
+            });
+
+            $("input[name=size]").each(function (index, domEle) {
+                var size = domEle.value;
+                var str2 = size.substring(size.indexOf("[") + 1, size.indexOf("]"));
+                aa = str2.split(",");
+                for (var i = 0; aa.length; i++) {
+                    size="&sizeIds="+aa[i];
+                }
+            });
+
+
+            $("input[name=attr]").each(function (index, domEle) {
+                var attr = domEle.value;
+                var str2 = attr.substring(attr.indexOf("[") + 1, attr.indexOf("]"));
+                aa = str2.split(",");
+                for (var i = 0; aa.length; i++) {
+                    attr="&attributeIds="+aa[i];
+                }
+            });
+        //价格点击事件
         $('.j_price_order').click(function () {
-           var $this = $(this);
-           var priceorder = $this.attr('data-order');
-           $('input[name=priceWay]').val(priceorder);
-           $('form').trigger('submit');
+            var $this = $(this);
+            var priceorder = $this.attr('data-order');
+            $('input[name=priceWay]').val(priceorder);
+            var data = $(".filterForm").serializeArray();
+            console.log(data)
+            $(".filterForm").submit();
+          /*  var price=priceorder;
+            window.location.href="/goods/list?"+color+size+attr+"&priceWay="+price;*/
         });
 
-        var page = 1;
-        var flag = 1;
-        $('.j_scroll_body').scroll(function () {
-            var $this = $(this);
-            var scrollTop = $this[0].scrollTop;
-            var scrollHeight = $this[0].scrollHeight;
-            var height = $this.height();
-            if (scrollTop + height >= scrollHeight+600) {
-                if (flag == 1) {
-                    flag = 0;
-                    $.get('/goods/list?<%=HttpContext.current().getRequest().getQueryString()%>', { pageIndex: page }, function (html) {
-                        var $html = $(html);
-                        var $li = $html.find('.j_scroll_list li');
-                        if ($li.length > 0) {
-                            $('.j_scroll_list').append($li);
-                            page = page + 1;
-                            flag = 1;
-                        } else {
-                            //todo
-                        }
-                    });
-                }
-            }
-        });*/
+
     });
 </script>

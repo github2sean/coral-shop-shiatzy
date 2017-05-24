@@ -83,18 +83,9 @@ public class GoodsController extends BaseController{
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ModelAndView list(GoodsQuery query,Integer priceWay){
+    public ModelAndView list(GoodsQuery query){
         ModelAndView modelAndView = new ModelAndView("goods/list");
-       /* if(priceWay == null||priceWay == 0){
-            query.setOrderBy("price");
-            query.setDesc(Boolean.TRUE);
-        }else{
-            query.setOrderBy("price");
-            query.setDesc(Boolean.FALSE);
-        }*/
         Long categoryId = query.getCategoryId();//商品分类
-        /*PageList<GoodsDomain> goodsDomainPageList = goodsService.getPageList(query);
-        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);*/
         modelAndView.addObject("categoryId",categoryId);
         //商品列表
         query.setCategoryId(categoryId);
@@ -185,9 +176,27 @@ public class GoodsController extends BaseController{
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
 
         }
-
-        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
-        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        if(query.getPriceWay() == null ){
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        }else if(query.getPriceWay() ==0 || query.getPriceWay()==1)
+        {
+            goodsList=price(goodsList,query.getPriceWay());
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
+        }
+        if(query.getColorIds()!=null)
+        {
+            modelAndView.addObject("color",query.getColorIds());
+        }
+        if(query.getSizeIds()!=null)
+        {
+            modelAndView.addObject("size",query.getSizeIds());
+        }if(query.getAttributeIds()!=null)
+        {
+            modelAndView.addObject("attr",query.getAttributeIds());
+        }
         return modelAndView;
     }
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
@@ -263,6 +272,22 @@ public class GoodsController extends BaseController{
                 }
             }
 
+        }
+        return list;
+    }
+    //价格筛选
+    public  List<GoodsDomain> price(List<GoodsDomain> goodsList,Integer type){
+        List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
+        GoodsQuery query =new GoodsQuery();
+        query.setPriceWay(type);
+        List<GoodsDomain> newList=goodsService.getList(query);
+        for (GoodsDomain goodsDomain : goodsList){
+            for (GoodsDomain goods:newList) {
+                    if (goods.getId()== goodsDomain.getId()) {
+                        list.add(goodsDomain);
+                        System.out.println("nowGoodsDomain:" + JsonUtils.toJSONString(goodsDomain));
+                    }
+            }
         }
         return list;
     }
