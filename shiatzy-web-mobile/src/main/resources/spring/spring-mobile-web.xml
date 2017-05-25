@@ -86,7 +86,7 @@
         </bean>
     </mvc:interceptors>
 
-
+    <!--zfb配置 -->
     <bean class="com.dookay.coral.adapter.payment.alipay.config.AlipayConfig" name="alipayConfig">
         <property name="partner" value="2088221294543871" />
         <property name="seller_id" value="2088221294543871"/>
@@ -101,6 +101,7 @@
         <property name="service" value="alipay.wap.create.direct.pay.by.user" />
         <property name="sign_type" value="MD5" />
     </bean>
+    <!--unionPay配置 -->
     <bean class="com.dookay.coral.adapter.payment.unionpay.acp.config.UnionConfig" name="unionConfig">
         <property name="merId" value="777290058146843" />
         <property name="backUrl" value="http://test-ip-41.coralcodes.com/payment/backRcvResponse"/>
@@ -118,7 +119,7 @@
         <property name="txnType" value="01"/>
         <property name="version" value="5.0.0"/>
     </bean>
-
+    <!--ipaylinks配置 -->
     <bean class="com.dookay.coral.adapter.payment.ipaylinks.config.IpayLinksConfig" name="ipayLinksConfig">
         <property name="version" value="1.1"/>
         <property name="siteId" value="shop.shiatzychen.com"/>
@@ -145,4 +146,19 @@
 
     </bean>
 
+
+    <!--快递鸟配置 -->
+    <bean name="kdniaoSubscribeAPI" class="com.dookay.coral.adapter.express.KdniaoSubscribeAPI">
+        <!--测试数据 -->
+        <property name="kdnAppKey" value="91c848d6-d568-4e34-84d3-9ce0d73486e4"/>
+        <property name="kdnEBusinessID" value="1289803"/>
+        <property name="kdnReqURL" value="http://api.kdniao.cc/api/dist"/>
+        <property name="dataType" value="2"/>
+        <property name="requestType" value="1002"/>
+
+        <!--正式数据 -->
+        <!--<property name="kdnAppKey" value="91c848d6-d568-4e34-84d3-9ce0d73486e4"/>
+        <property name="kdnEBusinessID" value="1289803"/>
+        <property name="kdnReqURL" value="http://api.kdniao.cc/api/dist"/>-->
+    </bean>
 </beans>

@@ -36,8 +36,11 @@
                 <label style=""><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/>ipaylinks</label>
                 <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="margin-left:20px;background-color: #2b2b2b;color: white">支付</a></p>
         </c:if>
-        <c:if test="${orderDomain.status!=1 && orderDomain.status!=-1}">
-            <p><a href="#">查看递送状态<span style="float:right;">></span></a></p>
+        <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
+            <p><a id="queryExpress" href="javascript:void(0);">查看递送状态<span style="float:right;" class="rotateicon">></span></a></p>
+            <div class="logisticInfo" style="display: none;width: 100%;overflow: hidden;background-color: #F1F1F1">
+                <div></div>
+            </div>
         </c:if>
     </div>
     <div class="verify-message-middle">
@@ -141,6 +144,36 @@
                 }
             })
 
+        });
+
+        var num = 1;
+        $("#queryExpress").click(function () {
+            num++;
+            $(this).css("color","#333");
+            var id = '${orderDomain.id}';
+            var $childDiv = $(".logisticInfo").children("div");
+            if(num%2==0){
+                //loading层
+                var index = layer.load(2, {
+                    shade: [0.4,'#fff'] //0.1透明度的白色背景
+                });
+            }
+            $childDiv.each(function () {
+                $(this).remove();
+            });
+            $.post("/order/queryExpress",{"orderId":id},function (data) {
+                if(data.code==200){
+                    var trace =JSON.parse(data.data).Traces;
+                    if(trace.length>0){
+                        for(var i=0;i<trace.length;i++){
+                            $(".logisticInfo").append("<div style='float: right;width: 90%;overflow: hidden;border-bottom: #cccccc dashed 1px;margin-top: 1rem' >"+trace[i].AcceptTime+"<br/>"+ trace[i].AcceptStation+"</div>");
+                        }
+
+                    }
+                    layer.closeAll('loading');
+                }
+            })
+            $(".logisticInfo").slideToggle();
         });
 
     });

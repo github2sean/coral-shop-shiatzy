@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="account.information"/></p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a>
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">

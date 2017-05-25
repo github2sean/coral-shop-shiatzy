@@ -6,62 +6,72 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
+<style>
+    select,input{
+        border: none;
+        margin-left: 10px;
+    }
+</style>
 
 <div class="order">
-    <p style="float: left">我的帐户 / 个人信息</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上衣页</a>
+    <p style="float: left"><spring:message code="myAccount"/> / <spring:message code="account.personal.update.enter"/></p>
+    <a style="float: right;" href="/u/account/details" >< <spring:message code="goBack"/></a>
 </div>
 
 <div class="setting">
     <form class="updateAccountForm" method="post" action="/u/account/update">
     <div class="data-setting">
-        <h3>资料设定</h3>
+        <h3><spring:message code="account.personal.update.info"/></h3>
         <ul>
             <li>
-                <span>称谓*<input type="text"  value="${customerAddressDomain.title}" name="customerAddressDomain.title" id="title"/></span>
+                <span><spring:message code="account.personal.update.title"/>*<input type="text"  value="${customerAddressDomain.title}" name="customerAddressDomain.title" id="title"/></span>
                 <span style="float:right;"></span>
             </li>
             <li>
-                <span>名字*<input type="text"  value="${customerDomain.firstName}" name="customerDomain.firstName" id="lastName"/></span>
+                <span><spring:message code="account.personal.firstName"/>*<input type="text"  value="${customerDomain.firstName}" name="customerDomain.firstName" id="lastName"/></span>
                 <span style="float:right;"></span>
             </li>
-            <li>姓氏*<input type="text"  value="${customerDomain.lastName}" name="customerDomain.lastName" id="firstName"/></li>
+            <li><spring:message code="account.personal.lastName"/>*<input type="text"  value="${customerDomain.lastName}" name="customerDomain.lastName" id="firstName"/></li>
             <li>
-                生日
-                <input type="date"   name="customerDomain.birthday" value="${customerDomain.birthday}"/>
+                <spring:message code="account.personal.update.birthday"/>
+                <input type="date"   name="customerDomain.birthday" value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"/>
             </li>
-            <li>电话号码*<input type="text"  value="${customerDomain.phone}" name="customerDomain.phone" id="phone"/></li>
+            <li><spring:message code="account.personal.phoneNum"/>*<input type="text"  value="${customerDomain.phone}" name="customerDomain.phone" id="phone"/></li>
         </ul>
     </div>
     <div class="data-setting">
-        <h3>地址设定</h3>
+        <h3><spring:message code="account.personal.update.shipAddress"/></h3>
         <ul>
             <li>
-                <span>国别 / 区域*</span>
-                <label  style="float: right;border: 1px;">
+                <span><spring:message code="account.personal.update.country"/>*</span>
+                <label  style="margin-left: 10px;border: 1px;">
                     <select name="customerAddressDomain.countryId" style="border: 1px;margin-bottom: 5px;" id="countryId">
-                        <option value="-1">请选择</option>
-                        <option value="1">中国</option>
-                        <option value="2">美国</option>
+                        <option value="-1"><spring:message code="account.personal.update.select"/></option>
+                        <c:forEach items="${countryList}" var="row">
+                            <option value="${row.id}" <c:if test="${customerAddressDomain.countryId==row.id}">selected="selected"</c:if> >${sessionScope.language=='en_US'?row.enName: row.name}</option>
+                        </c:forEach>
                     </select>
                 </label>
             </li>
             <li>
-                <span>省/州*</span>
+                <span><spring:message code="account.personal.update.state"/>*</span>
                 <input type="text" name="customerAddressDomain.province" id="province" value="${customerAddressDomain.province}">
             </li>
             <li>
-                <span>城区*</span>
+                <span><spring:message code="account.personal.update.city"/>*</span>
                 <input type="text" name="customerAddressDomain.city" id="city" value="${customerAddressDomain.city}">
             </li>
-            <li>详细地址<input type="text"  value="${customerAddressDomain.address}" name="customerAddressDomain.address"/></li>
-            <li>邮编<input type="text"  value="${customerAddressDomain.postalCode}"/>
+            <li><span style="margin-top: 0"><spring:message code="account.personal.address"/></span>
+                <input style="width: 70%;" type="text" name="customerAddressDomain.address" value="${customerAddressDomain.address}">
+                </input>
+            </li>
+            <li><spring:message code="account.personal.update.postalCode"/><input type="text"  value="${customerAddressDomain.postalCode}"/>
                 <input type="hidden"  value="${customerAddressDomain.id}" name="addressId"/></li>
         </ul>
     </div>
     <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
     <div class="complete">
-        <a type="button" class="updateBtn">完成</a>
+        <a type="button" class="updateBtn"><spring:message code="account.personal.update.enter"/></a>
     </div>
 </form>
 
@@ -178,8 +188,6 @@
 
         }).blur(phone);
 
-        $("input").css({"border":"0px","margin-left":"10px"});
-        $("select").css({"border":"0px","margin-right":"10px"});
         $(".updateBtn").click(function () {
             var  $updateAccountForm = $(".updateAccountForm");
             var  data = $updateAccountForm.serializeArray();

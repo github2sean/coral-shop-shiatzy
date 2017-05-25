@@ -6,53 +6,59 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
+<style>
+    i{
+        line-height: 5.942rem;
+        left: -10px;
+    }
+</style>
 
 <div class="order">
-    <p style="float: left">邮箱及密码修改</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
+    <p style="float: left"><spring:message code="account.personal.updateEmailOrPass"/></p>
+    <a style="float: right;" href="/u/account/details" >< <spring:message code="goBack"/></a>
 </div>
 <form class="updateForm" method="post" action="u/account/updateEmailOrPassword">
 <div class="mail-change">
-    <h4>您可在此处修改您的电子邮箱或密码。</h4>
-    <h4>* 必填栏位</h4>
+    <h4><spring:message code="account.personal.updateEmailOrPass.tips"/></h4>
+    <h4>* <spring:message code="account.personal.updateEmailOrPass.must"/></h4>
     <div class="register-mail">
-        <p>当前邮箱：</p>
+        <p><spring:message code="account.personal.updateEmailOrPass.nowEmail"/>：</p>
         <p style="margin-bottom: 2rem;">${accountDomain.email}</p>
-        <p>修改邮箱：</p>
+        <p><spring:message code="account.personal.updateEmailOrPass.email"/>：</p>
         <div class="input">
             <i>*</i>
-            <input id="newEmail" name="newEmail" type="text" placeholder="请输入您的新登录邮箱地址" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的新登录邮箱地址'"/>
+            <input id="newEmail" name="newEmail" type="text" placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewEmail"/>" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="account.personal.updateEmailOrPass.holderNewEmail"/>'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newEmail2" type="text" placeholder="请再次输入您的新登录邮箱地址" onfocus="this.placeholder=''" onblur="this.placeholder='请再次输入您的新登录邮箱地址'" />
+            <input id="newEmail2" type="text" placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewEmail"/>" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="account.personal.updateEmailOrPass.holderReNewEmail"/>'" />
         </div>
         <div class="emailInfo"></div>
         <a  type="button" class="saveBtn">
             <span><</span>
-            保存
+            <spring:message code="account.personal.updateEmailOrPass.validEmail"/>
         </a>
     </div>
 </div>
 <div class="password-change">
     <div class="register-mail">
-        <p style="margin-bottom: 2rem;">修改密码</p>
+        <p style="margin-bottom: 2rem;"><spring:message code="account.personal.updateEmailOrPass.password"/></p>
         <div class="input">
             <i>*</i>
-            <input class="oldPassword" name="password" type="password" placeholder="请输入您原始登录密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您原始登录密码'"/>
+            <input class="oldPassword" name="password" type="password" placeholder="<spring:message code="account.personal.updateEmailOrPass.holderPassword"/>" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="account.personal.updateEmailOrPass.holderPassword"/>'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newPassword" name="newPassword" type="password" placeholder="请输入新密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入新密码'"/>
+            <input id="newPassword" name="newPassword" type="password" placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewPassword"/>" onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="account.personal.updateEmailOrPass.holderNewPassword"/>'"/>
         </div>
         <div class="input">
             <i>*</i>
-            <input id="newPassword2" type="password" placeholder="请再次输入新密码"  onfocus="this.placeholder=''" onblur="this.placeholder='请再次输入新密码'">
+            <input id="newPassword2" type="password" placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewPassword"/>"  onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="account.personal.updateEmailOrPass.holderReNewPassword"/>'">
         </div>
         <div class="emailInfo2"></div>
         <a type="button" class="updateBtn">
             <span><</span>
-            确认
+            <spring:message code="account.personal.update.enter"/>
         </a>
     </div>
 

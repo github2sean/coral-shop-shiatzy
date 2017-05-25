@@ -18,7 +18,7 @@
             <div style="margin: auto;width: 20%;height: 5px;background-color: black;margin-top: 20px">
             </div>
             <div class="model-select-box">
-                    <div style="text-align: center;font-size: 14px;margin-top: 20px;" id="chooseCountry">最终订单配送地区<span class="pull-right">v</span></div>
+                    <div style="margin: auto;height: 2rem;line-height:2rem;border: #cccccc solid 1px;width:50%;text-align: center;font-size: 14px;margin-top: 20px;margin-bottom: 5px" id="chooseCountry">最终订单配送地区<span class="pull-right">v</span></div>
                     <ul class="text-center model-select-option" style="display: none;">
                         <c:forEach var="row" items="${countryList}">
                             <li data-option="${row.id}" value="${row.id}" class="option <c:if test="${row.id==1}">active</c:if>">${row.name}</li>

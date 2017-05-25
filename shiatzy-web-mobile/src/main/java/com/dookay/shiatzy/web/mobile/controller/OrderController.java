@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.adapter.express.KdniaoSubscribeAPI;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -24,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +50,8 @@ public class OrderController extends BaseController {
     private IReservationService reservationService;
     @Autowired
     private IGoodsItemService goodsItemService;
+    @Autowired
+    private KdniaoSubscribeAPI kdniaoSubscribeAPI;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -163,6 +164,25 @@ public class OrderController extends BaseController {
         orderLogDomain.setIsSuccessed(1);
         orderLogService.create(orderLogDomain);
         return successResult("已取消");
+    }
+
+
+    /***
+     * 查看快递状态
+     */
+    @RequestMapping(value = "queryExpress",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult queryExpress(Long orderId) throws Exception {
+
+        OrderDomain orderDomain = orderService.get(orderId);
+        OrderItemQuery query = new OrderItemQuery();
+        query.setOrderId(orderDomain.getId());
+        List<OrderItemDomain> list = orderItemService.getList(query);
+
+        String requestData="{'ShipperCode':'"+orderDomain.getShipperCompany()+"'," +
+                "'LogisticCode':'"+orderDomain.getTrackingNumber()+"'}";
+        String returnStr =  kdniaoSubscribeAPI.orderTracesSubByJson(requestData);
+        return successResult("查询成功",returnStr);
     }
 
 }
