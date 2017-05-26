@@ -43,4 +43,10 @@ public class ContentController extends BaseController {
         modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
+
+    @RequestMapping(value = "specialService", method = RequestMethod.GET)
+    public ModelAndView specialService(){
+        ModelAndView modelAndView = new ModelAndView("/content/specialService");
+        return modelAndView;
+    }
 }

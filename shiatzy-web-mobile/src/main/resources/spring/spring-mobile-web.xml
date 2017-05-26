@@ -155,10 +155,5 @@
         <property name="kdnReqURL" value="http://api.kdniao.cc/api/dist"/>
         <property name="dataType" value="2"/>
         <property name="requestType" value="1002"/>
-
-        <!--正式数据 -->
-        <!--<property name="kdnAppKey" value="91c848d6-d568-4e34-84d3-9ce0d73486e4"/>
-        <property name="kdnEBusinessID" value="1289803"/>
-        <property name="kdnReqURL" value="http://api.kdniao.cc/api/dist"/>-->
     </bean>
 </beans>

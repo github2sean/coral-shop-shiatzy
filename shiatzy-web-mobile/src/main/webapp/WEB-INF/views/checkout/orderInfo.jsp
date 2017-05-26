@@ -36,7 +36,7 @@
         <div class="privilege">
             <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button>
+                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button><button type="button" class="btn cancelCouponBtn hide">移除</button>
             </form>
         </div>
         <div class="showInfo" style="text-align: center;color: red"></div>
@@ -175,6 +175,21 @@
                 if(data.code==200){
                     layer.msg('使用优惠码成功');
                     $("#discount").text(data.data);
+                    $(".couponBtn").addClass("hide").siblings(".cancelCouponBtn").removeClass("hide");
+                    clsTotal();
+                }else{
+                    $('.showInfo').text(data.message);
+                }
+            });
+        });
+
+        $(".cancelCouponBtn").click(function () {
+
+            $.post("/checkout/cancelUseCoupon",function (data) {
+                if(data.code==200){
+                    layer.msg('取消优惠码成功');
+                    $(".cancelCouponBtn").addClass("hide").siblings(".couponCode").val("").siblings(".couponBtn").removeClass("hide");
+                    $("#discount").text(0);
                     clsTotal();
                 }else{
                     $('.showInfo').text(data.message);
@@ -183,16 +198,14 @@
         });
 
 
-
         $(".deleteBtn").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
-                console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";
                     }
@@ -202,14 +215,13 @@
         $(".j_collect").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             var data = {"shoppingCartItemId":id};
             $.post("/cart/cartToWish",data,function (data) {
-                console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
                     layer.msg("加入心愿单成功");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";
                     }
@@ -219,14 +231,13 @@
         $(".j_appointment").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             var data = {"shoppingCartItemId":id};
             $.post("/cart/cartToBoutique",data,function (data) {
-                console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
                     layer.msg("加入精品店成功");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";
                     }

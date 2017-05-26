@@ -204,9 +204,9 @@
 </div>
 <header class="top-bar">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
-    <span class="do-logo-w"><img src="${ctx}/static/images/logo.png" alt=""></span>
+    <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">
-        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num">${cartNumber==null?0:cartNumber}</span></a></li>
+        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num">${cartNumber==null?0:cartNumber}</span></a></li>
         <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
@@ -214,12 +214,12 @@
 <div class="do-nav-panel" id="j_nav_panel">
     <div class="do-nav-head">
         <a class="btn-left iconfont" id="j_close_nav" href="#">&#xe67d;</a>
-        <span class="do-logo-w"><img src="${ctx}/static/images/logo.png" alt=""></span>
+        <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     </div>
     <div class="do-nav-cnt">
         <div class="do-search">
             <form action="/goods/search" method="post" id="contentForm">
-                <input type="text" placeholder="<spring:message code="searchKey"/>" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="searchKey"/>'"/>
+                <input type="text" id="searchKey" placeholder="<spring:message code="searchKey"/>" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="searchKey"/>'"/>
                 <input type="hidden" value="1"  name="pageIndex">
                 <input type="hidden" value="10"  name="pageSize">
                 <input type="hidden" value="0"  name="offset">
@@ -227,14 +227,13 @@
                 <button class="iconfont" id="searchBtn">&#xe610;</button>
             </form>
         </div>
-        <div class="search-rec-img">
+        <div class="search-rec-img active">
             <a href=""><img src="${ctx}/static/images/search-img1.jpg" alt=""></a>
             <a href=""><img src="${ctx}/static/images/search-img2.jpg" alt=""></a>
             <a href=""><img src="${ctx}/static/images/search-img3.jpg" alt=""></a>
         </div>
         <ul class="guide-nav j_drop_down">
-
-            <c:forEach var="level1" items="${web:categoryList()}">
+            <c:forEach var="level1" items="${web:categoryList()}" begin="1">
             <li>
                 <a>${sessionScope.language=='en_US'?level1.enName:level1.name}
                     <ul class="guide-sub-nav">
@@ -245,18 +244,20 @@
                 </a>
             </li>
             </c:forEach>
+            <li><a href="/goods/onSale">SALE</a></li>
         </ul>
-        <ul class="do-list-lang do-list-btm j_drop_down">
+        <ul class="do-list-lang do-list-btm">
             <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
             <li class="do-login"><a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
             <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
-            <li class="">
-                <a href="#"><spring:message code="selectLanguage"/>
-                    <ul class="do-sub-list-btm">
-                        <li><a class="language" data-value="zh_CN" href="#" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
-                        <li><a class="language" data-value="en_US" href="#" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
-                    </ul>
-                </a></li>
+        </ul>
+        <ul class="do-list-lang do-list-btm j_drop_down">
+            <li class=""><a href="javascript:void(0);"><spring:message code="selectLanguage"/>
+                <ul class="do-sub-list-btm">
+                    <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                    <li><a class="language" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+                </ul>
+            </li>
         </ul>
         <div class="do-online-service">
             <p class="do-online-t"><spring:message code="customerServiceLine"/></p>

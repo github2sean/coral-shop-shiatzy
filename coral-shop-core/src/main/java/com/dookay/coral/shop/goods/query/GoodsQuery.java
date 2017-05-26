@@ -26,6 +26,7 @@ public class GoodsQuery extends Query {
     private  List<Long> attributeIds;//材质
 	private final static String PRICE_FIELD = "price";
 	private  List<Long> ids;
+	private  Integer isSale;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
@@ -43,6 +44,9 @@ public class GoodsQuery extends Query {
 		}
 		if(valid(ids)) {
 			criteria.andIn("id", ids);
+		}
+		if(valid(isSale)){
+			criteria.andEqualTo("isSale",isSale);
 		}
 		return queryCriteria;
 	}

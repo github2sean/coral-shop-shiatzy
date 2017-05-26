@@ -110,6 +110,20 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	}
 
 	@Override
+	public void withGoodsItemList(List<GoodsDomain> goodsDomainList,Integer onsale) {
+		List<Long> ids = goodsDomainList.stream().map(GoodsDomain::getId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setGoodsIds(ids);
+		query.setIsSale(onsale);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for (GoodsDomain goodsDomain:goodsDomainList){
+			List<GoodsItemDomain> goodsItemDomainList1 = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getGoodsId(), goodsDomain.getId())).collect(Collectors.toList());
+			goodsDomain.setGoodsItemList(goodsItemDomainList1);
+		}
+	}
+
+	@Override
 	public void withGoodsItemList(GoodsDomain goodsDomain) {
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsId(goodsDomain.getId());

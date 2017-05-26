@@ -7,8 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
-<jsp:useBean id="query" scope="request" type="com.dookay.coral.shop.goods.query.GoodsQuery"/>
-<jsp:useBean id="colorList" scope="request" type="java.util.List<com.dookay.coral.shop.goods.domain.GoodsColorDomain>"/>
+
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
@@ -25,32 +24,35 @@
 
     <ul class="do-pro-list j_scroll_list">
         <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num" begin="0" end="3" step="1">
+
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-        <li>
-            <a href="/goods/details/${firstItem.id}">
-                <div class="do-img">
-                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
-                </div>
-                <p class="do-pro-t ellipsis-2l" name="goodsName">${goods.name}</p>
-                <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
-                <ul class="do-list-color" name="skuId" data-value="">
-                <c:forEach var="goods" items="${goods.goodsItemList}">
-                    <li style="background: ${goods.colorValue}"></li>
-                </c:forEach>
-                </ul>
-            </a>
-            <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect active" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
-                <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-            </i>
-        </li>
+            <c:if test="${not empty firstItem}">
+                <li>
+                    <a href="/goods/details/${firstItem.id}">
+                        <div class="do-img">
+                            <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
+                        </div>
+                        <p class="do-pro-t ellipsis-2l" name="goodsName">${goods.name}</p>
+                        <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
+                        <ul class="do-list-color" name="skuId" data-value="">
+                        <c:forEach var="goods" items="${goods.goodsItemList}">
+                            <li style="background: ${goods.colorValue}"></li>
+                        </c:forEach>
+                        </ul>
+                    </a>
+                    <!--Todo:收藏按钮-->
+                    <i class="icon-collect j_collect active" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
+                        <svg class="do-heart"><use xlink:href="#heart"></use></svg>
+                    </i>
+                </li>
+            </c:if>
         </c:forEach>
-        <c:if test="${ empty goodsDomainPageList.list}" >
+        <c:if test="${ empty goodsDomainPageList.list[0].goodsItemList}" >
             <h4 style="margin-top: 2rem;text-align: center">没有商品信息</h4>
         </c:if>
 
     </ul>
-    <c:if test="${not empty goodsDomainPageList.list}" >
+    <c:if test="${not empty goodsDomainPageList.list[0]}" >
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before">向下自动载入</span>
         <span style="display: none">-已到底部-</span>
@@ -59,7 +61,7 @@
 </div>
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
-    <ul class="do-sort-list">
+    <ul class="do-sort-list hide">
         <c:forEach var="item" items="${categoryList}">
             <li><a href="/goods/list?categoryId=${item.id}">${item.name}</a></li>
         </c:forEach>
@@ -154,7 +156,7 @@
             var priceorder = $this.attr('data-order');
             var href = window.location.href;
             var priceWay="priceWay";
-            window.location.href=this.setQueryString(priceWay,priceorder,href);
+            setQueryString(priceWay,priceorder,href);
         });
 
     });

@@ -129,6 +129,7 @@
         });
 
         $(".addToCart").click(function () {
+            setCartNum("add");
             var isLogin = '${user_context}';
             if(isLogin==''){
                 location.href="/passport/toLogin";

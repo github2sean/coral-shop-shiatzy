@@ -20,6 +20,7 @@ public class GoodsItemQuery extends Query {
 	private List<Long> goodsIds;
 	private Integer isValid;
 	private List<Long> ids;
+	private Integer isSale;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsItemDomain.class);
@@ -36,6 +37,9 @@ public class GoodsItemQuery extends Query {
 		}
 		if(valid(goodsIds)){
 			criteria.andIn("goodsId",goodsIds);
+		}
+		if(valid(isSale)){
+			criteria.andEqualTo("isSale",isSale);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

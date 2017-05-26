@@ -71,6 +71,10 @@ public class GoodsDomain implements Serializable {
 
 	/*商品价格*/
 	private Double price;
+
+	/*是否打折*/
+	private Integer isSale;
+
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;
