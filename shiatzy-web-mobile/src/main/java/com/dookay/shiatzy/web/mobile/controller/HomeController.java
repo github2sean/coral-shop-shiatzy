@@ -6,6 +6,9 @@ import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
+import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
+import com.dookay.coral.shop.content.query.ContentCategoryQuery;
+import com.dookay.coral.shop.content.service.IContentCategoryService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
@@ -50,17 +53,23 @@ public class HomeController extends MobileBaseController {
     private ICustomerAddressService customerAddressService;
     @Autowired
     private ICustomerService customerService;
-
+    @Autowired
+    private IContentCategoryService contentCategoryService;
     public final static String SHIPPING_COUNTRY_ID="shippingCountryId";
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
+
         ModelAndView mv = new ModelAndView("home/index");
         CouponQuery query = new CouponQuery();
         query.setIndexShow(1);
         CouponDomain couponDomain = couponService.getFirst(query);
+        ContentCategoryQuery querys=new ContentCategoryQuery();
+        querys.setLevel(1);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(querys);
         if(couponService.checkCoupon(couponDomain.getCode())!=null){
             mv.addObject("coupon",couponDomain);
         }
+        mv.addObject("domainList",domainList);
         return mv;
     }
 

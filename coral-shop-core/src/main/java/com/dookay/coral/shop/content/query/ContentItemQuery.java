@@ -22,7 +22,7 @@ public class ContentItemQuery extends Query {
 
 	private Date createTime;
 
-	private List<Long> categoryId;
+	private Long categoryId;
 
 	private List<Long> creatorId;
 
@@ -39,7 +39,7 @@ public class ContentItemQuery extends Query {
 		}
         if(valid(categoryId))
 		{
-			criteria.andIn("categoryId",categoryId);
+			criteria.andEqualTo("categoryId",categoryId);
 		}
 		if(valid(creatorId))
 		{

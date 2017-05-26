@@ -148,7 +148,7 @@
             var priceorder = $this.attr('data-order');
             var href = window.location.href;
             var priceWay="priceWay";
-            setQueryString(priceWay,priceorder,href);
+            window.location.href=this.setQueryString(priceWay,priceorder,href);
         });
 
     });
