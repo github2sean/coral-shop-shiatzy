@@ -19,6 +19,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
@@ -232,6 +233,31 @@ public class ShoppingCartController extends BaseController{
         return  successResult("操作成功");
     }
 
+    @RequestMapping(value = "freshCartNum" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult freshCartNum(Integer num){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("cartNumber",num);
+        System.out.println("cartNumber"+num);
+        return  successResult("操作成功");
+    }
+    @RequestMapping(value = "getCartNum" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult getCartNum(){
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+        query.setCustomerId(customerDomain.getId());
+        query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        Integer num = shoppingCartService.count(query);
+        session.setAttribute("cartNumber",num);
+        System.out.println("cartNumber"+num);
+        return  successResult("查询成功",num);
+    }
+
     @RequestMapping(value = "createOrder" ,method = RequestMethod.GET)
     public ModelAndView createOrder(){
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -265,4 +291,5 @@ public class ShoppingCartController extends BaseController{
         }
         session.setAttribute("submitCartList",cartList);
     }
+
 }

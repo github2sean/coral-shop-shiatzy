@@ -177,8 +177,6 @@ public class OrderController extends BaseController {
         OrderDomain orderDomain = orderService.get(orderId);
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
-        List<OrderItemDomain> list = orderItemService.getList(query);
-
         String requestData="{'ShipperCode':'"+orderDomain.getShipperCompany()+"'," +
                 "'LogisticCode':'"+orderDomain.getTrackingNumber()+"'}";
         String returnStr =  kdniaoSubscribeAPI.orderTracesSubByJson(requestData);

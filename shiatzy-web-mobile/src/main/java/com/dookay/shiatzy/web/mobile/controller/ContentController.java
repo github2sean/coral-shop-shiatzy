@@ -22,4 +22,10 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("/content/faq");
         return modelAndView;
     }
+
+    @RequestMapping(value = "specialService", method = RequestMethod.GET)
+    public ModelAndView specialService(){
+        ModelAndView modelAndView = new ModelAndView("/content/specialService");
+        return modelAndView;
+    }
 }

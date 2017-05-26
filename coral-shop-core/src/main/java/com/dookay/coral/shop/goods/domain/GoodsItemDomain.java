@@ -79,7 +79,10 @@ public class GoodsItemDomain implements Serializable {
 	
 	/*更新时间*/
 	private Date updateTime;
-	
+
+	/*是否SALE*/
+	private Integer isSale;
+
 	/*商品*/
 	@Transient
 	private GoodsDomain goods;

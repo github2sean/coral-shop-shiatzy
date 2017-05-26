@@ -30,6 +30,9 @@
                 </i>
             </li>
         </c:forEach>
+    <c:if test="${ empty goodsDomainPageList.list}" >
+        <h4 style="margin: auto;text-align: center;margin-top: 5rem">没有商品信息</h4>
+    </c:if>
     </ul>
 </div>
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">

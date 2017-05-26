@@ -44,16 +44,16 @@
         <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping"><spring:message code="shoppingCart.checkout"/></a>
         <div class="dx-clause">
             <ul>
-                <li><a href="#"><spring:message code="shoppingCart.shoppingInfo"/></a></li>
-                <li><a href="#"><spring:message code="shoppingCart.term"/></a></li>
-                <li class="last"><a href="#"><spring:message code="shoppingCart.rule"/></a></li>
+                <li><a href="#"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
+                <li><a href="#"><spring:message code="shoppingCart.deliveryTime"/></a></li>
+                <li class="last hide"><a href="#"><spring:message code="shoppingCart.rule"/></a></li>
             </ul>
         </div>
     </div>
 </c:if>
     <c:if test="${cartList.size()==0}">
         <div class="content">
-           <p><spring:message code="shoppingCart.null"/></p>
+           <p><spring:message code="shoppingCart.bagNull"/>&nbsp;(0)</p>
         </div>
         <div class="shopping-start">
             <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
@@ -81,7 +81,9 @@
         })
     }
     $(function(){
-
+        //初始化购物车数量
+        var cartNum = '${cartList.size()}'*1;
+        $(".cart_num").text(cartNum);
         clsTotal();
         //点击数量增加减少
         $(".add").on("click",function () {
@@ -122,6 +124,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }else{
@@ -133,7 +136,6 @@
         $(".j_collect").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             var data = {"shoppingCartItemId":id};
             $.post("/cart/cartToWish",data,function (data) {
                 console.log(data);
@@ -141,6 +143,7 @@
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
                     layer.msg("加入心愿单成功");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }else{
@@ -150,9 +153,9 @@
             });
         });
         $(".j_appointment").on("click",function () {
+            setCartNum('sub');
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             var data = {"shoppingCartItemId":id};
             $.post("/cart/cartToBoutique",data,function (data) {
                 console.log(data);
@@ -160,6 +163,7 @@
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
                     layer.msg("加入精品店成功");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }else{
@@ -168,8 +172,5 @@
                 }
             });
         });
-
-
-
     });
 </script>

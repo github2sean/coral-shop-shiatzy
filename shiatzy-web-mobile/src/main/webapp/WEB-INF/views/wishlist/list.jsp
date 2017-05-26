@@ -114,14 +114,13 @@
         $(".j_bag").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
-            console.log(id);
             var data = {"shoppingCartItemId":id};
             $.post("/cart/boutiqueToCart",data,function (data) {
-                console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
                     layer.msg("加入购物车成功");
+                    setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }

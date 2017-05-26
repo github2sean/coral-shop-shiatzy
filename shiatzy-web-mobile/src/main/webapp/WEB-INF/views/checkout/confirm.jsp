@@ -58,7 +58,29 @@
             <li class=" payMethod" data-value="2">信用卡（接受VISA，银联XXXX）</li>
             <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
-        <p>2件商品　v</p>
+        <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>
+        <div class="dx-wish clearfix dx-shopping moreGoods" style="display:none;">
+            <div class="dx-GoodsDetails">
+                <c:forEach var="row" items="${cartList}">
+                    <div class="goods clearfix goodsDiv">
+                        <div class="goods-left">
+                            <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;"></div>
+                        </div>
+                        <div class="goods-right" style="word-break: break-all">
+                            <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                            <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
+                            <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                            <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
+                             </span>
+                            </div>
+                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+
+
     </div>
     <div class="order-pay">
         <a href="#" class="submitBtn">订购付款</a>
@@ -97,6 +119,11 @@
 
     $(function(){
         noNeedBill();
+
+        $(".moreBtn").click(function () {
+            $(".moreGoods").slideToggle();
+        });
+
         var isCheckPayWay = false;
         var isCheckSendWay = ${order.storeDomain==null&&order.customerAddressDomain==null}?false:true;
         $("#need").click(function () {

@@ -5,11 +5,11 @@
     <ul class="do-list-btm j_drop_down">
         <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
         <li><a href="/content/faq"><spring:message code="commonQuestion"/></a></li>
-        <li><a href=""><spring:message code="specialService"/></a></li>
+        <li><a href="/content/specialService"><spring:message code="specialService"/></a></li>
         <li>
             <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">
-                <li><a href=""><spring:message code="officialSite"/></a></li>
+                <li><a href="http://brand.shiatzychen.com/"><spring:message code="officialSite"/></a></li>
                 <li><a href=""><spring:message code="contactUs"/></a></li>
                 <li><a href=""><spring:message code="privacyPolicy"/></a></li>
             </ul>
@@ -63,8 +63,35 @@
     });
 </script>
 <script>
+    function setCartNum() {
+        var nowNum =0;
+        var cartNum;
+
+        //判断是否登录
+        $.post("/cart/getCartNum",function (data) {
+            if (data.code==200){
+                cartNum = data.data;
+                $(".cart_num").text(cartNum);
+            }else{
+               // layer.msg('更新购物车数量失败');
+            }
+        });
+        /*$.post("/cart/freshCartNum",{"num":nowNum},function (data) {
+            if (data.code!=200){
+                layer.msg('更新购物车数量失败');
+            }
+        });*/
+    }
     $(function () {
+        setCartNum();
+
         $("#searchBtn").click(function () {
+
+           var key = $("#searchKey").val();
+            if(key==''){
+                layer.msg("请输入搜索关键字");
+                return false;
+            }
             $("#contentForm").submit();
         });
         console.log('${sessionScope.language}');
