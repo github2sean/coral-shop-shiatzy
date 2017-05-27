@@ -57,7 +57,15 @@ public class ShoppingCartItemDomain implements Serializable {
 	private String skuSpecifications;
 
 	@Transient
+	/*库存数量*/
+	private Integer quantity;
+
+	@Transient
 	private GoodsItemDomain goodsItemDomain;
+
+	/*尺寸*/
+	@Transient
+	private String size;
 
 	
 }

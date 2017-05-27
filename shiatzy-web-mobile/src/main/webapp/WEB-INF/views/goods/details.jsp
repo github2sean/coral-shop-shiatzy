@@ -33,6 +33,7 @@
             </ul>
             </c:if>
         </div>
+
         <div class="size">
             <div class="title j_choose">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
             <ul class="hide" id="js_size">
@@ -59,9 +60,10 @@
         <div class="title">您也许也喜欢</div>
          <c:forEach var="goods" items="${historyList}">
              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+             <a href="/goods/details/${firstItem.id}">
              <div class="left">
                  <div class="pic">
-                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;">
+                   <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;">
                  </div>
                  <div class="name">${goods.name}</div>
                  <div class="price">${firstItem.price}</div>
@@ -71,6 +73,7 @@
                          </c:forEach>
                      </ul>
              </div>
+             </a>
          </c:forEach>
     </div>
 </div>

@@ -146,6 +146,7 @@ public class ShoppingCartController extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
         shoppingCartService.withGoodsItem(cartList);
+        shoppingCartService.withSku(cartList);
         ModelAndView mv = new ModelAndView("shoppingcart/list");
         mv.addObject("cartList",cartList);
         return mv;

@@ -118,6 +118,21 @@
                 }
             });
         });
+
+        $(".do-btn-subscribe").click(function () {
+
+            var email = $(".do-fill-email").val();
+            var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            if(email==''){
+                layer.msg("请输入邮件地址");
+                return false;
+            }else if(!reg.test(email)){
+                layer.msg("请输入正确的邮件地址");
+                return false;
+            }
+
+        });
+
     });
 
 </script>

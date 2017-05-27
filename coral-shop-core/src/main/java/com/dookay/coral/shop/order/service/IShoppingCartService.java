@@ -49,4 +49,6 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
     void withReservationItem(List<ReservationItemDomain> reservationItemDomainList);
 
 
+    void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList);
+
 }

@@ -7,6 +7,7 @@ import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
@@ -60,6 +61,9 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	private IGoodsItemService goodsItemService;
 	@Autowired
 	private  IShoppingCartService shoppingCartService;
+
+	@Autowired
+	private ISkuService skuService;
 	@Override
 	public void removeFromCart(Long id) {
 		if(id!=null){
@@ -273,6 +277,15 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 					.filter(x-> Objects.equals(x.getId(), reservationItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			reservationItemDomain.setGoodsItemDomain(goodsItemDomain);
 		}
+	}
+
+	@Override
+	public void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList) {
+	for(ShoppingCartItemDomain line:shoppingCartItemDomainList){
+		SkuQuery query = new SkuQuery();
+		SkuDomain skuDomain = 	skuService.get(line.getSkuId());
+		line.setQuantity(skuDomain.getQuantity());
+	}
 	}
 
 

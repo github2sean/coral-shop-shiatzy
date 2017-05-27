@@ -4,19 +4,22 @@ package com.dookay.shiatzy.web.mobile.controller;
         import com.dookay.coral.common.json.JsonUtils;
         import com.dookay.coral.common.persistence.pager.PageList;
         import com.dookay.coral.common.web.BaseController;
+        import com.dookay.coral.common.web.HttpContext;
+        import com.dookay.coral.common.web.JsonResult;
         import com.dookay.coral.shop.goods.domain.*;
         import com.dookay.coral.shop.goods.query.*;
         import com.dookay.coral.shop.goods.service.*;
         import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
         import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
+        import org.apache.shiro.session.Session;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.web.bind.annotation.*;
         import org.springframework.web.servlet.ModelAndView;
 
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.Objects;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpSession;
+        import java.util.*;
         import java.util.stream.Collectors;
 
 /**
@@ -53,6 +56,11 @@ public class GoodsController extends BaseController{
     private static Integer SIZE_FILTER = 0;
     private static Integer ATTR_FILTER = 2;
     private static Integer COLOR_AND_SIZE_FILTER = 3;
+    private static String COLOR_IDS = "colorIds";
+    private static String SIZE_IDS = "sizeIds";
+    private static String ATTR_IDS = "attrIds";
+    private static Integer HIGN_TO_LOW = 1;
+    private static Integer LOW_TO_HIGN= 0;
 
     @RequestMapping(value = "search", method = RequestMethod.POST)
     public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
@@ -83,18 +91,24 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list(GoodsQuery query,Integer priceWay){
+
+        query.setOrderBy("price");
+        query.setDesc(false);
+        query.setPageSize(4);
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
         //商品列表
         query.setCategoryId(categoryId);
         System.out.println("query:"+query);
-        List<GoodsDomain> goodsList =  goodsService.getList(query);
+        List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
+
         goodsService.withGoodsItemList(goodsList);
+        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         modelAndView.addObject("query",query);
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
-        modelAndView.addObject("categoryName",goodsCategoryDomain.getName());
+        modelAndView.addObject("goodsCategoryDomain",goodsCategoryDomain);
         //分类列表
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
@@ -138,6 +152,16 @@ public class GoodsController extends BaseController{
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         modelAndView.addObject("sizeList",sizeList);
 
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+
+
+
+        //清空session中筛选条件
+        session.setAttribute(COLOR_IDS,null);
+        session.setAttribute(ATTR_IDS,null);
+        session.setAttribute(SIZE_IDS,null);
+        session.setAttribute("priceWay",priceWay);
         //颜色尺寸材质过滤
         List<Long> queryColorIds= query.getColorIds();
         List<Long> querySizeIds = query.getSizeIds();
@@ -145,6 +169,17 @@ public class GoodsController extends BaseController{
         System.out.println("colorIds:"+queryColorIds);
         System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
         System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
+        //当前的筛选条件存入session中
+        if(queryColorIds!=null&&queryColorIds.size()>0){
+            session.setAttribute(COLOR_IDS,queryColorIds);
+        }
+        if(queryAttributeIds!=null&&queryAttributeIds.size()>0){
+            session.setAttribute(ATTR_IDS,queryAttributeIds);
+        }
+        if(querySizeIds!=null&&querySizeIds.size()>0){
+            session.setAttribute(SIZE_IDS,querySizeIds);
+        }
+
 
         // 过滤goodsList
         Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
@@ -175,16 +210,84 @@ public class GoodsController extends BaseController{
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
         }
         if(priceWay == null ){
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),query.getPageSize());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         }else if(priceWay ==0 || priceWay ==1)
         {
-            goodsList=price(goodsList,priceWay);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),query.getPageSize());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         }
         return modelAndView;
+    }
+
+
+    @RequestMapping(value = "listMore", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult listMore(Long categoryId,Integer priceWay,Integer offset,Integer nowPage){
+
+        GoodsQuery query = new GoodsQuery();
+        //query.setOffset(offset);
+       // query.setLimit(2);
+        query.setPageIndex(nowPage);
+        query.setPageSize(4);
+        System.out.println("offset:"+offset);
+        //商品列表
+        query.setCategoryId(categoryId);
+        System.out.println("query:"+query);
+        List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();
+        goodsService.withGoodsItemList(goodsList);
+        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
+
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        //颜色尺寸材质过滤
+        List<Long> queryColorIds= (List<Long>)session.getAttribute(COLOR_IDS);
+        List<Long> querySizeIds = (List<Long>)session.getAttribute(SIZE_IDS);
+        List<Long> queryAttributeIds= (List<Long>)session.getAttribute(ATTR_IDS);
+        System.out.println("colorIds:"+queryColorIds);
+        System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
+        System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
+        // 过滤goodsList
+        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
+        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
+        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
+        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
+        }
+        PageList<GoodsDomain> goodsDomainPageList = null;
+        if(priceWay == null ){
+             goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
+
+        }else if(priceWay ==0 || priceWay ==1){
+            goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),goodsList.size());
+        }
+
+        for(GoodsDomain line : goodsDomainPageList.getList()){
+
+            System.out.println("lien:"+JsonUtils.toJSONString(line));
+        }
+        return successResult("操作成功",goodsDomainPageList);
     }
 
     @RequestMapping(value = "onSale" ,method = RequestMethod.GET)
@@ -357,6 +460,28 @@ public class GoodsController extends BaseController{
                     }
             }
         }
+        return list;
+    }
+
+    //价格排序 是跟页面一致用第一个商品的价格排序
+    public List<GoodsDomain> sortByPrice(List<GoodsDomain> goodsDomainList,Integer sortType){
+        List<GoodsDomain> list  = goodsDomainList;
+
+        Comparator comparator = new Comparator<GoodsDomain>() {
+            @Override
+            public int compare(GoodsDomain good, GoodsDomain good2) {
+                Double price1 = good.getGoodsItemList().get(0).getPrice();
+                Double price2 = good2.getGoodsItemList().get(0).getPrice();
+                if(price1>price2){
+                    return sortType==HIGN_TO_LOW?1:-1;
+                }
+                if(price1==price2){
+                    return 0;
+                }
+                return sortType==HIGN_TO_LOW?-1:1;
+            }
+        };
+        list.sort(comparator);
         return list;
     }
 }

@@ -25,7 +25,7 @@
                     <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${JSONObject.fromObject(row.skuSpecifications).getString("size")}</span></div>
-                    <div class="quantity"><spring:message code="shoppingCart.number"/>: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-value="${row.id}">+</a></div>
+                    <div class="quantity"><spring:message code="shoppingCart.number"/>: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.quantity}" data-value="${row.id}">+</a></div>
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
@@ -88,7 +88,8 @@
         //点击数量增加减少
         $(".add").on("click",function () {
             var t = $(this).parent().find(".quantitys");
-            var num = parseInt(t.val())+1;
+            var quantity = $(this).attr("data-num");
+            var num = parseInt(t.val())+1>quantity?quantity:parseInt(t.val())+1;
             var id = $(this).attr("data-value");
             t.val(num);
             var data = {"shoppingCartItemId":id,"num":num};

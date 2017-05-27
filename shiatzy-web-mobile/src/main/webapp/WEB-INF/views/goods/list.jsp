@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="do-list-header">
-        <a href="javascript:;" class="link-down font-16 j_panel_trigger" data-panel="j_panel_cat">${categoryName}</a>
+        <a href="javascript:;" class="link-down font-16 j_panel_trigger" data-panel="j_panel_cat">${sessionScope.language=='en_US'?goodsCategoryDomain.enName:goodsCategoryDomain.name}</a>
         <div class="pull-right font-12">
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_filter">筛选</a>
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort">排序</a>
@@ -24,14 +24,14 @@
     </div>
 
     <ul class="do-pro-list j_scroll_list">
-        <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num" begin="0" end="3" step="1">
+        <c:forEach var="goods" items="${goodsDomainPageList.list}" varStatus="num" >
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
         <li>
             <a href="/goods/details/${firstItem.id}">
                 <div class="do-img">
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
                 </div>
-                <p class="do-pro-t ellipsis-2l" name="goodsName">${goods.name}</p>
+                <p class="do-pro-t ellipsis-25" name="goodsName">${goods.name}</p>
                 <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="goods" items="${goods.goodsItemList}">
@@ -40,7 +40,7 @@
                 </ul>
             </a>
             <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect active" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
+            <i class="icon-collect j_collect" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
                 <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
@@ -50,10 +50,10 @@
         </c:if>
 
     </ul>
-    <c:if test="${not empty goodsDomainPageList.list}" >
+    <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>1}" >
     <div class="font-12 text-center do-load-list">
-        <span class="link-down-before">向下自动载入</span>
-        <span style="display: none">-已到底部-</span>
+        <span class="link-down-before moreGoods">向下自动载入</span>
+        <span class="overGoods" style="display: none">-已到底部-</span>
     </div>
     </c:if>
 </div>
@@ -113,6 +113,14 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+    function getJsonObjLength(jsonObj) {
+        var Length = 0;
+        for (var item in jsonObj) {
+            Length++;
+            console.log("item:"+item);
+        }
+        return Length;
+    }
     $(function () {
         //console.log('${goodsList}');
 
@@ -150,12 +158,81 @@
         });
         //价格点击事件
         $('.j_price_order').click(function () {
+
             var $this = $(this);
             var priceorder = $this.attr('data-order');
             var href = window.location.href;
             var priceWay="priceWay";
-            setQueryString(priceWay,priceorder,href);
+            var newHref = setQueryString(priceWay,priceorder,href);
+            console.log(newHref);
+            location.href = newHref;
         });
 
+
+        //加载更多商品
+        var offset = '${goodsDomainPageList.list.size()}'*1-1;
+        var page = 2;
+        console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
+        $(".moreGoods").click(function () {
+            //当前分类
+            var categoryId = '${goodsCategoryDomain.id}'
+            //当前排列的方式
+            var priceWay = "${sessionScope.priceWay}";
+            //当前页
+            var nowPage = page++;
+
+            var data2 = {"categoryId":categoryId,"priceWay":priceWay,"offset":offset,"nowPage":nowPage}
+            console.log("data2:"+data2+" offset:"+offset);
+            $.post("/goods/listMore",data2,function (data) {
+
+                if(data.code==200){
+                    var moreListJson = eval(data.data);
+                    var moreList = moreListJson.list;
+                    var nowSize = getJsonObjLength(moreList);
+                    offset = offset+nowSize;
+                    console.log(moreList+" nowSize:"+nowSize);
+
+                    if(moreList!=''){
+                        console.log("exe")
+                        for(var i=0;i<nowSize;i++){
+                            var firstItem = moreList[i].goodsItemList[0];
+                            var srcJson = eval(firstItem.thumb);
+                            var src = srcJson[0].file;
+                            var sizeIds = new Array();
+                            var strrrr = '${sizeList}';
+                            console.log("size:"+strrrr);
+                            var str = " <li>" +
+                                    " <a href='/goods/details/"
+                                    +firstItem.id+
+                                    "' ><div class='do-img'><img src="
+                                    +src+
+                                    " alt='' style='height: 120px;'/></div>  " +
+                                    " <p class='do-pro-t ellipsis-25' name='goodsName'>"
+                                    +moreList[i].name+
+                                    " </p> " +
+                                    " <p class='do-pro-price ellipsis' name='goodsPrice'>"
+                                    +firstItem.price+
+                                    " </p> " +
+                                    "<ul class='do-list-color' name='skuId' data-value=''><li style='background: #000000'></li> </ul> " +
+                                    "</a> " +
+                                    "<i class='icon-collect j_collect' data-value="
+                                    +firstItem.id+
+                                    " data-ids='${sizeList[i]}'> <svg class='do-heart'><use xlink:href='#heart'></use></svg> </i> </li>";
+                                //console.log(str);
+                            //滚动条滚动一段距离
+                            $(".j_scroll_list").append(str);
+                            /*  var t = $(window).scrollTop();
+                            $('body,html').animate({scrollTop:t+500},100);*/
+                        }
+                    }else {
+                        $(".moreGoods").hide().siblings(".overGoods").show();
+                    }
+                }else {
+                    layer.msg("加载失败");
+                }
+            });
+
+
+        });
     });
 </script>
