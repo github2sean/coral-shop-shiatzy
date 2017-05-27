@@ -29,7 +29,8 @@ public class ContentItemDomain implements Serializable {
 	
 	/*标题*/
 	private String title;
-	
+	/*英文标题*/
+	private String en_title;
 	/*缩略图*/
 	private String thumb;
 	
@@ -44,7 +45,8 @@ public class ContentItemDomain implements Serializable {
 	
 	/*内容*/
 	private String content;
-	
+	/*英文内容*/
+	private String en_content;
 	/*排序*/
 	private Long displayOrder;
 

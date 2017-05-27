@@ -29,7 +29,8 @@ public class ContentCategoryDomain implements Serializable {
 	
 	/*分类标题*/
 	private String title;
-	
+	/*英文标题*/
+	private String en_title;
 	/*slug*/
 	private String slug;
 	
@@ -48,4 +49,9 @@ public class ContentCategoryDomain implements Serializable {
 	/*父分类*/
 	@Transient
 	private ContentCategoryDomain parent;
+
+	/*二级标题*/
+	@Transient
+	private List<ContentItemDomain> contentItemDomainList;
+
 }
