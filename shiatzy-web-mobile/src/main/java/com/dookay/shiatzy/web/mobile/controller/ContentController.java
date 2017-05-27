@@ -39,14 +39,14 @@ public class ContentController extends BaseController {
             List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
             content.setContentItemDomainList(contentItemDomains);
         }
-        ModelAndView modelAndView = new ModelAndView("/content/faq");
+        ModelAndView modelAndView = new ModelAndView("content/faq");
         modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
 
     @RequestMapping(value = "specialService", method = RequestMethod.GET)
     public ModelAndView specialService(){
-        ModelAndView modelAndView = new ModelAndView("/content/specialService");
+        ModelAndView modelAndView = new ModelAndView("content/specialService");
         return modelAndView;
     }
 }

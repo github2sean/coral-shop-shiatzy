@@ -11,15 +11,15 @@
     <div class="content">
         <c:forEach var="itemDomain" items="${domainList}">
             <p class="first-title j_toggle"><a href="#">${sessionScope.language=='en_US'?itemDomain.en_title:itemDomain.title}</a></p>
+            <ul class="second-title j_toggle2 hide">
             <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
-                <ul class="second-title j_toggle2 hide">
-                            <li><a href="#">${sessionScope.language=='en_US'?domainlist.en_title:domainlist.title}</a>
-                                <p class="answer hide">${sessionScope.language=='en_US'?domainlist.en_content:domainlist.content}</p>
-                            </li>
 
-                </ul>
+                <li><a href="#">${sessionScope.language=='en_US'?domainlist.en_title:domainlist.title}</a>
+                    <p class="answer hide">${sessionScope.language=='en_US'?domainlist.en_content:domainlist.content}</p>
+                </li>
+
             </c:forEach>
-
+            </ul>
         </c:forEach>
        <%-- <p class="first-title j_toggle"><a href="#">我的账户管理</a></p>--%>
         <%--<ul class="second-title j_toggle2 hide">
