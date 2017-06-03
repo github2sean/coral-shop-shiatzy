@@ -379,3 +379,24 @@ svg{width: 2rem;height: 2rem}
 .do-list-icon>li{ margin-bottom: .7rem; }
 .icon-bag svg{width: 1.6rem;height: 1.6rem;position: relative;left: .2rem;margin: .2rem 0}
 .icon-bag.active svg{width: 2rem;height: 2rem;left: 0;margin: 0}
+.form-item{
+    margin-bottom: 2rem;
+    position: relative;
+}
+.form-item2{
+    position: relative;
+}
+.form-item2 .msg-box {
+    color: #ffffff;
+    font-size: .9rem;
+    line-height: 1;
+    padding-top: 4px;
+    position: absolute;
+    right: 8rem;
+    top:0;
+    left:inherit;
+}
+
+.form-item2  .n-invalid{
+    background-color: #ffffff;
+}

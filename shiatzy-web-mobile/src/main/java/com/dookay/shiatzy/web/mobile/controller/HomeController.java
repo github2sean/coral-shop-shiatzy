@@ -66,9 +66,7 @@ public class HomeController extends MobileBaseController {
         ContentCategoryQuery querys=new ContentCategoryQuery();
         querys.setLevel(1);
         List<ContentCategoryDomain> domainList=contentCategoryService.getList(querys);
-        if(couponService.checkCoupon(couponDomain.getCode())!=null){
-            mv.addObject("coupon",couponDomain);
-        }
+        mv.addObject("coupon",couponDomain);
         mv.addObject("domainList",domainList);
         return mv;
     }

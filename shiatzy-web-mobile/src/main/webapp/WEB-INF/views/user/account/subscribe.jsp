@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="com.dookay.coral.shop.customer.enums.SubscribeTypeEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <jsp:include page="/WEB-INF/views/include/header.jsp">
@@ -10,26 +11,38 @@
     <p style="float: left">我的账户/我的订阅 </p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
-<div class="my-account">
-    <div class="contact">
-        <h3>我同意 夏资陈 通过以下方式与我联系</h3>
-        <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="1"><i class="i-radiobox"></i>快递及邮件</label></span>
-        </div>
-        <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="2"><i class="i-radiobox"></i>短信</label></span>
-        </div>
-        <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="3"><i class="i-radiobox"></i>彩信</label></span>
-        </div>
-        <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="4"><i class="i-radiobox"></i>我希望收到夏姿电商產品信息</label></span>
-        </div>
-    </div>
-    <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>
-    <div class="finish">
-        <a href="#" id="saveBtn">完成</a>
-    </div>
+<div class="my-account">.
+    <c:choose>
+        <c:when test="${customerDomain.subscribeType==null}">
+            <div class="contact">
+                <h3>我同意 夏资陈 通过以下方式与我联系</h3>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="1"><i
+                            class="i-radiobox"></i>快递及邮件</label></span>
+                </div>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="2"><i
+                            class="i-radiobox"></i>短信</label></span>
+                </div>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="3"><i
+                            class="i-radiobox"></i>彩信</label></span>
+                </div>
+                <div>
+                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="4"><i
+                            class="i-radiobox"></i>我希望收到夏姿电商產品信息</label></span>
+                </div>
+            </div>
+            <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>
+            <div class="finish">
+                <a href="#" id="saveBtn">完成</a>
+            </div>
+        </c:when>
+        <c:otherwise>
+        <p>您已经订阅：${SubscribeTypeEnum.valueOf(customerDomain.subscribeType).description}</p>
+        </c:otherwise>
+    </c:choose>
+
     <div class="privacy">
         <a href="#">
             <span style="float:left;">>　</span>
@@ -51,12 +64,12 @@
 
         $("#saveBtn").click(function () {
             var info = $('input[name="subscribe"]:checked ').attr("data-value");
-            if(typeof (info)=="undefined"){
+            if (typeof (info) == "undefined") {
                 $("#showInfo").show();
                 return false;
             }
-            $.post("/u/account/setSubscribe",{"subscribeType":info},function (data) {
-                if(data.code==200){
+            $.post("/u/account/setSubscribe", {"subscribeType": info}, function (data) {
+                if (data.code == 200) {
                     location.href = "/u/account/details";
                 }
             });

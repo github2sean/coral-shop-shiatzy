@@ -13,15 +13,27 @@
         <a href="/passport/toLogin" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <div class="content">
-        <div class="title" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
-        <input type="email" placeholder="<spring:message code="login.holderAccount"/>" class="userName" name="userName" id="userName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="login.holderAccount"/>'">
-        <div class="dx-verify clearfix">
-            <input type="text" class="verify" placeholder="<spring:message code="register.holderValidCode"/>" name="validCode">
-            <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
-        </div>
-        <div class="remind"></div>
-        <button type="button" class="sendBtn"><spring:message code="send"/></button>
-        <div class="register"><spring:message code="login.noneAccount"/>？ <a href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
+        <form class="j_ajaxForm" action="/passport/sendPassword.do" method="post" data-next="${ctx}/passport/toLogin">
+            <div class="title" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
+            <div class="form-item">
+            <input type="email" placeholder="<spring:message code="login.holderAccount"/>" class="userName"
+                   name="userName" id="userName" onfocus="this.placeholder=''"
+                   onblur="this.placeholder='<spring:message code="login.holderAccount"/>'"
+                   data-rule="电子邮箱:required;email">
+            </div>
+            <div class="form-item">
+            <div class="dx-verify clearfix">
+                <input type="text" class="verify" placeholder="<spring:message code="register.holderValidCode"/>"
+                       name="validCode"
+                       data-rule="验证码:required;">
+                <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
+            </div>
+            </div>
+            <div class="remind"></div>
+            <button type="submit" class="sendBtn"><spring:message code="send"/></button>
+            <div class="register"><spring:message code="login.noneAccount"/>？ <a
+                    href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
+        </form>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -29,15 +41,14 @@
 </jsp:include>
 <script>
     //邮箱验证
-    function userName(){
-        var userName =$("#userName").val();
-        var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if(userName=='') {
-            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
+    function userName() {
+        var userName = $("#userName").val();
+        var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if (userName == '') {
+            $(".remind").show().css("color", "red").text("<spring:message code="register.validNull"/>");
             return false;
-        }else if(!reg.test(userName))
-        {
-            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
+        } else if (!reg.test(userName)) {
+            $(".remind").show().css("color", "red").text("<spring:message code="register.validNull"/>");
             return false;
         }
         $(".remind").hide();
@@ -46,33 +57,32 @@
 
     };
     //验证码验证
-    function validCode()
-    {
+    function validCode() {
         var validCode = $('.verify').val();
-        if(validCode =='') {
-            $(".remind").show().css("color","red").text("<spring:message code="register.validNull"/>");
+        if (validCode == '') {
+            $(".remind").show().css("color", "red").text("<spring:message code="register.validNull"/>");
             return false;
         }
         $(".remind").hide();
 
         return true;
     }
-    $(function () {
-        $('#userName').focus(function(){
-            $(".remind").show().css("color","red").text("<spring:message code="register.validEmail"/>");
+   /* $(function () {
+        $('#userName').focus(function () {
+            $(".remind").show().css("color", "red").text("<spring:message code="register.validEmail"/>");
         }).blur(userName);
-        $('.verify').focus(function(){
-            $(".remind").show().css("color","red").text("<spring:message code="register.holderValidCode"/>");
+        $('.verify').focus(function () {
+            $(".remind").show().css("color", "red").text("<spring:message code="register.holderValidCode"/>");
         }).blur(validCode);
 
         $(".sendBtn").click(function () {
             var userName = $(".userName").val();
             var validCode = $(".verify").val();
-            var data  = {"userName":userName,"validCode":validCode };
-            $.post("/passport/sendPassword.do",data,function (data) {
+            var data = {"userName": userName, "validCode": validCode};
+            $.post("/passport/sendPassword.do", data, function (data) {
                 alert(data.message);
             })
         });
-    });
+    });*/
 </script>
 

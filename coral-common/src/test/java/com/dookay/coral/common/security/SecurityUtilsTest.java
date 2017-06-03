@@ -21,6 +21,6 @@ public class SecurityUtilsTest {
 
     @Test
     public void dbPassword() throws Exception {
-        logger.info(com.alibaba.druid.filter.config.ConfigTools.encrypt("szpz3?66jxk!"));
+        logger.info(com.alibaba.druid.filter.config.ConfigTools.encrypt("%YwYk(vJ"));
     }
 }

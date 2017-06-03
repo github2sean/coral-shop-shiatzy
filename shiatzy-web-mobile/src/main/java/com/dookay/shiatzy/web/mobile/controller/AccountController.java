@@ -16,7 +16,8 @@ import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
-import com.dookay.shiatzy.web.mobile.form.UpdateEamilForm;
+import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
+import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -149,16 +150,25 @@ public class AccountController extends MobileBaseController {
         return mv;
     }
 
-    @RequestMapping(value = "updateEmailOrPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "updateEmail", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult updateEmailOrPassword(@ModelAttribute UpdateEamilForm updateEamilForm){
+    public JsonResult updateEmail(@ModelAttribute UpdateEmailForm updateEmailForm){
+        beanValidator(updateEmailForm);
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        accountDomain.setEmail(updateEmailForm.getEmail());
+
+        return successResult("修改成功");
+    }
+
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult updatePassword(@ModelAttribute UpdatePasswordForm updatePasswordForm){
 
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
-        System.out.print("updateEamilForm:"+ JsonUtils.toJSONString(updateEamilForm));
-        if(accountService.validateAccount(accountDomain.getEmail(),updateEamilForm.getPassword())){
-            accountService.updateEmailOrPassword(accountDomain,updateEamilForm.getNewEmail(),updateEamilForm.getNewPassword());
+        if(accountService.validateAccount(accountDomain.getEmail(), updatePasswordForm.getOldPassword())){
+            accountService.updateEmailOrPassword(accountDomain, accountDomain.getEmail(), updatePasswordForm.getNewPassword());
         }else{
-            return errorResult("用户名和密码不匹配");
+            return errorResult("旧密码不正确");
         }
 
         return successResult("修改成功");
@@ -214,8 +224,12 @@ public class AccountController extends MobileBaseController {
     @RequestMapping(value = "initSubscribe", method = RequestMethod.GET)
     public ModelAndView initSubscribe(){
         ModelAndView mv = new ModelAndView("user/account/subscribe");
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        mv.addObject("customerDomain",customerDomain);
         return mv;
     }
+
     @RequestMapping(value = "setSubscribe", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult setSubscribe(Integer subscribeType){

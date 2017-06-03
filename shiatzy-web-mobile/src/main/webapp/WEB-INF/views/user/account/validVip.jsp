@@ -8,42 +8,22 @@
 </jsp:include>
 
 <div class="back-up clearfix">
-    <a href="我的账户.个人信息.html">
-        <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><h3>< 回上一页</h3></a>
-    </a>
+    <a style="float: right;" href=”#” onClick="javascript :history.go(-1);"><h3>< 返回上页</h3></a>
 </div>
 <div class="club">
-    <h3>ART CLUB会员认证 </h3>
-    <p>请输入您加入ART CLUB时留存的手机号码
-        <input type="text" class="phoneNum">
-    </p>
-    <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
-    <a href="#" class="validBtn">认证</a>
-    <div class="club-bottom">
-        <p>加入夏姿陈Art Club会员，可</p>
-        <p>尊享xxxxxxxxxxxxxxxxxxxxxxx.</p>
-    </div>
+    <form action="/u/account/validVip" method="post" data-next="/u/account/vipDetail">
+        <h3>ART CLUB会员认证 </h3>
+        <p>请输入您加入ART CLUB时留存的手机号码
+            <input type="text" class="phoneNum"
+                   data-rule="手机号码:required;mobile">
+        </p>
+        <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
+        <button type="submit" class="btn btn-default">认证</button>
+        <div class="club-bottom" style="margin-top: 30px;">
+            <p>ART CLUB会员，线上同尊享线下购物礼遇。</p>
+        </div>
+    </form>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
-<script>
-    $(function () {
-
-
-        $(".validBtn").click(function () {
-            var  phoneNum = $(".phoneNum").val();
-
-            $.post("/u/account/validVip",{"phoneNumber":phoneNum},function (data) {
-                if(data.code==200){
-                    location.href = "/u/account/vipDetail";
-                }else{
-                    console.log(data.message);
-                    $("#showInfo").show().text(data.message);
-                }
-            });
-        });
-
-    });
-
-</script>

@@ -369,6 +369,18 @@
     border-right: 2px solid #999999;
 }
 
+.btn-default{
+    width: 100%;
+    display: block;
+    background-color: #999999;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    line-height: 2.7826rem;
+    border: none;
+    padding: 0;
+
+}
 .club a {
     display: inherit;
     background-color: #999999;
@@ -473,7 +485,7 @@
     font-size: 1.0821rem;
     line-height: 3.942rem;
     padding-left: 2.3188rem;
-    margin-bottom: 1.1rem;
+
     border: 2px solid #999999;
 }
 
@@ -489,15 +501,14 @@
     margin-bottom: 4.6377rem;
 }
 
-.register-mail .input {
-    position: relative;
-}
+
 
 .register-mail i {
     position: absolute;
     top: -0.6184rem;
     right: 0;
     color: #b5272d;
+    width: 16px;
 }
 
 .my-account .contact h3 {

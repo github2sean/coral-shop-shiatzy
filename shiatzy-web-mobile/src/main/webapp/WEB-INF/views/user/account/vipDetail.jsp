@@ -19,7 +19,7 @@
     <p class="card-num">会员卡号：＃＃＃＃＃＃＃＃</p>
 </div>
 <div class="anew">
-    <a href="我的账户.个人信息.art_club认证.html">
+    <a href="/u/account/toValidVip">
         <p>重新认证</p>
     </a>
 </div>

@@ -73,12 +73,7 @@
             <span style="float: left;"><spring:message code="account.personal.secret"/></span>
         </a>
     </div>
-    <div class="privacy">
-        <a href="#">
-            <span style="float:left;">>　</span>
-            <span style="float: left;"><spring:message code="account.personal.secret"/></span>
-        </a>
-    </div>
+
 
 
 </div>

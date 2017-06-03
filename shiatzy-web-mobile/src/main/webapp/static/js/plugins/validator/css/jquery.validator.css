@@ -5,8 +5,8 @@
 .n-arrow { position: absolute; overflow: hidden; }
 .n-arrow b, .n-arrow i { position: absolute; left: 0; top: 0; border: 0; margin: 0; padding: 0; overflow: hidden; font-weight: 400; font-style: normal; font-size: 12px; font-family: serif; line-height: 14px; _line-height: 15px; color: #FFE7D5; }
 .n-arrow i { text-shadow: none; }
-.n-icon { width: 16px; height: 16px; overflow: hidden; background-repeat: no-repeat; }
-.n-msg { display: inline-block; line-height: 15px; margin-left: 2px; *margin-top: -1px; _margin-top: 0; font-size: 14px; font-family: 微软雅黑; }
+.n-icon { width: 0px; height: 16px; overflow: hidden; background-repeat: no-repeat; }
+.n-msg { display: inline-block; line-height: 1.2rem; margin-left: 2px; *margin-top: -1px; _margin-top: 0; font-size: .9rem; font-family: 微软雅黑; }
 .n-error { color: #c33; }
 .n-ok { color: #390; }
 .n-tip, .n-loading { color: #808080; }
@@ -35,12 +35,12 @@
 .n-right .n-arrow { left: -6px; }
 .n-right .n-arrow b { left: 1px; }
 .n-right .n-arrow i { left: 2px; }
-.n-default .n-left, .n-default .n-right { margin-top: 5px; }
+.n-default .n-left, .n-default .n-right {  }
 .n-default .n-top .msg-wrap { bottom: 100%; }
 .n-default .n-bottom .msg-wrap { top: 100%; }
-.n-default .msg-wrap { position: absolute; z-index: 1;top: -23px; }
+.n-default .msg-wrap { position: absolute; z-index: 1;    top: 100%; }
 /*.n-default .msg-wrap .n-icon { background-image: url("images/validator_default.png"); }*/
-.n-default .n-tip .n-icon { display: none; }
+.n-default .n-tip .n-icon { display: none;}
 .n-simple .msg-wrap { position: absolute; z-index: 1; }
 .n-simple .msg-wrap .n-icon { background-image: url("images/validator_simple.png"); }
 .n-simple .n-top .msg-wrap { bottom: 100%; }
@@ -60,5 +60,11 @@
 .n-yellow .n-tip .n-icon { display: none; }
 .n-invalid { color: #ff0000; border-color: #ff0000; background-color: #ffe8d6; }
 .n-top .n-arrow{ border: transparent solid 4px; border-top: #ffe8d6 solid 4px; border-left: #ffe8d6 solid 4px; position: absolute; bottom: -8px; left: 0px;width: 0;height: 0; }
-.msg-box { position: relative;bottom: 2px;float: left;}
+.msg-box {     color: #ff4949;
+    font-size: .9rem;
+    line-height: 1;
+    padding-top: 4px;
+    position: absolute;
+    top: 100%;
+    left: 0;}
 .nice-validator .error{ border:1px solid #ff0000;padding-top: 1px;padding-bottom: 1px;}
