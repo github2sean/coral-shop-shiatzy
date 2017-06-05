@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left">退货</p>
-    <a style="float: right;" href="/order/details?orderId=${order.id}">< 返回</a>
+    <a style="float: right;" href="/order/details?orderId=${order.id}">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">

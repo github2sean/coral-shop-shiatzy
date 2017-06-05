@@ -86,14 +86,21 @@ public class ReturnOrderController extends BaseController {
         query.setReturnRequestId(returnRequestDomain.getId());
         List<ReturnRequestItemDomain> returnOrderItemList  = returnRequestItemService.getList(query);
         Double preBackMoney = 0D;
+        OrderDomain orderDomain = orderService.getOrder(returnRequestDomain.getOrderNo());
+        Double fee = orderDomain.getShipFee();
+        Double dis = orderDomain.getCouponDiscount();
+        dis = dis==null?0D:dis;
         for(ReturnRequestItemDomain line:returnOrderItemList){
             preBackMoney += line.getGoodsPrice()*line.getNum();
         }
+        preBackMoney = preBackMoney-dis;
         returnRequestItemService.withGoodsItem(returnOrderItemList);
         ModelAndView mv = new ModelAndView("user/returnOrder/details");
         mv.addObject("returnRequestDomain",returnRequestDomain);
         mv.addObject("returnOrderItemList",returnOrderItemList);
         mv.addObject("preBackMoney",preBackMoney);
+        mv.addObject("fee",fee);
+        mv.addObject("dis",dis);
         return mv;
     }
 

@@ -12,10 +12,7 @@ import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
-import com.dookay.coral.shop.order.domain.OrderDomain;
-import com.dookay.coral.shop.order.domain.OrderItemDomain;
-import com.dookay.coral.shop.order.domain.OrderLogDomain;
-import com.dookay.coral.shop.order.domain.ReservationDomain;
+import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.*;
 import com.dookay.coral.shop.order.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,8 @@ public class OrderController extends BaseController {
     private IOrderLogService orderLogService;
     @Autowired
     private IReturnRequestService returnRequestService;
+    @Autowired
+    private IReturnRequestItemService returnRequestItemService;
     @Autowired
     private IReservationService reservationService;
     @Autowired
@@ -88,7 +87,7 @@ public class OrderController extends BaseController {
         GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
         goodsItemQuery.setIds(ids);
         List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
-        //退货数量等于订单的数量不可在退货
+        //退货数量等于订单的数量不可再退货
         Integer orderNum = 0;
         Integer returnNum = 0;
         for (OrderItemDomain orderItemDomain:orderItemList){
@@ -97,6 +96,18 @@ public class OrderController extends BaseController {
             orderItemDomain.setGoodsItemDomain(goodsItemDomain);
             orderNum += orderItemDomain.getNum();
             returnNum += orderItemDomain.getReturnNum();
+
+
+        }
+        //判断该订单是否有对应退货单
+        ReturnRequestQuery backQuery = new ReturnRequestQuery();
+        query.setOrderId(orderDomain.getId());
+        ReturnRequestDomain returnRequestDomain = returnRequestService.getFirst(query);
+        if(returnRequestDomain!=null){
+            orderDomain.setReturnRequestDomain(returnRequestDomain);
+            ReturnRequestItemQuery returnRequestItemQuery = new ReturnRequestItemQuery();
+            returnRequestItemQuery.setReturnRequestId(returnRequestDomain.getId());
+            orderDomain.setReturnRequestItemList(returnRequestItemService.getList(returnRequestItemQuery));
         }
         orderDomain.setCanReturnNum(orderNum-returnNum);
         ModelAndView mv = new ModelAndView("user/order/details");

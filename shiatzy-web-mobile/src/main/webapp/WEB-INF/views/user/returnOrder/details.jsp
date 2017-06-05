@@ -10,20 +10,19 @@
 
 <div class="order">
     <p style="float: left">退货详情</p>
-    <a style="float: right;" href="/order/list">< 上一页</a>
+    <a style="float: right;" href="/order/list">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="verify-message-top">
         <h2>退货单号：${returnRequestDomain.orderNo}</h2>
-        <div class="return-time">
+        <div class="return-time" style="border-top:2px solid #cccccc">
             <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
-            提交，总计¥${preBackMoney}的退款申请。
+            提交，总计¥${preBackMoney-fee}的退款申请。
             </p>
         </div>
     </div>
     <div class="verify-message-middle">
-        <h2>退货详情</h2>
-
+        <h2>退货详情<span style="float: right">v</span></h2>
         <c:forEach var="row" items="${returnOrderItemList}">
         <div style="padding-left: 3rem;" class="verify-main">
             <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
@@ -60,8 +59,11 @@
         </p>
         </c:forEach>
     </div>
-    <div style="margin-bottom: 7rem;" class="verify-message-bottom">
-        <h2 style="text-align: right;padding-right: 1.5rem;">退回总额：¥ ${preBackMoney}</h2>
+
+
+    <div style="margin-bottom: 7rem;" class="verify-message-middle">
+        <p style="padding-left: 3rem;border-top: 2px solid #cccccc;line-height: 2.5rem" class="order-state">退货运费：<span class="fee" style="float: right">¥ -${fee}</span></p>
+        <p style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem">退回总额：¥ ${preBackMoney-fee}</p>
     </div>
     <div class="privacy">
         <a href="#">

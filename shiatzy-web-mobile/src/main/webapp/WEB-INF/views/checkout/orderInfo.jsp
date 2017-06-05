@@ -36,7 +36,7 @@
         <div class="privilege">
             <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button><button type="button" class="btn cancelCouponBtn hide">移除</button>
+                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button><button type="button" class="btn cancelCouponBtn hide">移除代码</button>
             </form>
         </div>
         <div class="showInfo" style="text-align: center;color: red"></div>
@@ -175,11 +175,11 @@
                 if(data.code==200){
                     layer.msg('使用优惠码成功');
                     $("#discount").text(data.data);
-                    $(".couponBtn").addClass("hide").siblings(".cancelCouponBtn").removeClass("hide");
                     clsTotal();
                 }else{
                     $('.showInfo').text(data.message);
                 }
+                $(".couponBtn").addClass("hide").siblings(".cancelCouponBtn").removeClass("hide");
             });
         });
 
@@ -187,10 +187,10 @@
 
             $.post("/checkout/cancelUseCoupon",function (data) {
                 if(data.code==200){
-                    layer.msg('取消优惠码成功');
                     $(".cancelCouponBtn").addClass("hide").siblings(".couponCode").val("").siblings(".couponBtn").removeClass("hide");
                     $("#discount").text(0);
                     clsTotal();
+                    $('.showInfo').text("");
                 }else{
                     $('.showInfo').text(data.message);
                 }
