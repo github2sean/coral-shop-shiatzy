@@ -12,36 +12,25 @@
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< 回上页</a>
 </div>
 <div class="my-account">.
-    <c:choose>
-        <c:when test="${customerDomain.subscribeType==null}">
             <div class="contact">
                 <h3>我同意 夏资陈 通过以下方式与我联系</h3>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="1"><i
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType0" value="0" data-value="0"><i
                             class="i-radiobox"></i>快递及邮件</label></span>
                 </div>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="2"><i
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType1" value="1" data-value="1"><i
                             class="i-radiobox"></i>短信</label></span>
                 </div>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="3"><i
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType2" value="2" data-value="2"><i
                             class="i-radiobox"></i>彩信</label></span>
-                </div>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="radio" name="subscribe" data-value="4"><i
-                            class="i-radiobox"></i>我希望收到夏姿电商產品信息</label></span>
                 </div>
             </div>
             <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>
             <div class="finish">
                 <a href="#" id="saveBtn">完成</a>
             </div>
-        </c:when>
-        <c:otherwise>
-        <p>您已经订阅：${SubscribeTypeEnum.valueOf(customerDomain.subscribeType).description}</p>
-        </c:otherwise>
-    </c:choose>
 
     <div class="privacy">
         <a href="#">
@@ -58,19 +47,46 @@
 
     $(function () {
 
+
+        var haveCheck = '${customerDomain.subscribeType}';
+        console.log("list:"+haveCheck);
+        var array;
+        if(haveCheck.indexOf(",")>0){
+            array = haveCheck.split(",");
+
+        }else{
+            array = new Array();
+            array[0] = haveCheck;
+        }
+        console.log("array:"+array);
+        $('input[type=checkbox]').each(function () {
+            for(var i=0;i<array.length;i++){
+                if($(this).val()==array[i]){
+                    $(this).attr("checked","checked")
+                }
+            }
+        });
+
+
         $('input[name="subscribe"]').click(function () {
             $("#showInfo").hide();
         });
 
         $("#saveBtn").click(function () {
-            var info = $('input[name="subscribe"]:checked ').attr("data-value");
+            var type0 = $('input[name="subscribeType0"]:checked ').attr("data-value");
+            var type1 = $('input[name="subscribeType1"]:checked ').attr("data-value");
+            var type2 = $('input[name="subscribeType2"]:checked ').attr("data-value");
+            var info = {"subscribeType0": type0,"subscribeType1":type1,"subscribeType2":type2};
             if (typeof (info) == "undefined") {
                 $("#showInfo").show();
                 return false;
             }
-            $.post("/u/account/setSubscribe", {"subscribeType": info}, function (data) {
+            console.log(info);
+            $.post("/u/account/setSubscribe",info, function (data) {
                 if (data.code == 200) {
                     location.href = "/u/account/details";
+                }else{
+                    layer.msg("订阅失败");
                 }
             });
         });

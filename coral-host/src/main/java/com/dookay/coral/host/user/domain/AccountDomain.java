@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -51,5 +52,11 @@ public class AccountDomain implements Serializable {
 
     /*是否有效*/
     private Integer isValid;
+
+    /*是否有效*/
+    private String validateCode;
+
+    /*是否有效*/
+    private Timestamp registerDate;
 
 }

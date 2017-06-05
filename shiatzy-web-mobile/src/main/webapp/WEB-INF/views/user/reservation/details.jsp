@@ -20,7 +20,7 @@
             <div class="time">营业时间 : ${reservationDomain.storeDomain.time}<span></span></div>
             <div class="status">订单状态 : <span>
             <c:choose>
-                <c:when test="${reservationDomain.status==0}">处理中</c:when>
+                <c:when test="${reservationDomain.status==0}">已提交</c:when>
             </c:choose>
             </span></div>
             <div class="retentionTime">订单保留至: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
@@ -32,7 +32,10 @@
             <div class="goods clearfix">
                 <div class="goods-left">
                     <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
-                    <%--<div class="status">状态 : <span>预约成功</span></div>--%>
+                   <div class="status">状态 : <c:choose>
+                       <c:when test="${row.status==0}"><span>已提交</span></c:when>
+                       <c:when test="${row.status==1}"><span>预约成功</span></c:when>
+                   </c:choose></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>

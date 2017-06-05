@@ -43,3 +43,15 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
+<script>
+
+    $(function () {
+        var backUrl = document.referrer;
+        console.log(backUrl);
+        if(backUrl.indexOf("toLogin")>0 || backUrl.indexOf("toRegister")>0){
+            $(".j_ajaxForm").attr("data-next","${ctx}/u/account/index");
+        }else{
+            $(".j_ajaxForm").attr("data-next",backUrl);
+        }
+    });
+</script>

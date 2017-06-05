@@ -57,6 +57,9 @@ public class ReservationItemDomain implements Serializable {
 	/*更新时间*/
 	private Date updateTime;
 
+	/*状态*/
+	private Integer status;
+
 	@Transient
 	private GoodsItemDomain goodsItemDomain;
 

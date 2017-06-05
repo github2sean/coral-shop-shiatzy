@@ -2,27 +2,34 @@
 <%@ page import="net.sf.json.JSONObject" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
-<div class="dx-wish clearfix dx-shopping">
-    <div class="dx-title" style="background-color: #999999"><spring:message code="myAccount"/> / <spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
-    <div class="content ">
+<style>
+    .childlist>a>li{
+        width:90%;
+        height: 2.5rem;
+        margin: 0 1.7rem;
+        font-size: 1.1rem;
+        line-height: 2.2rem;
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+    .childlist .active{
+        background-color: #cccccc;
+    }
+</style>
+<div class="dx-wish clearfix ">
+    <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
+    <div class="content">
         <c:if test="${not empty wishList}">
         <div id="toggleDiv">
-            <div class="dx-total">
-            <div class="title"><spring:message code="wish.save"/></div>
-            <ul class="list hide">
-                <li>女士</li>
-                <li class="active">男士</li>
-                <li>包袋</li>
-                <li>鞋履</li>
-            </ul>
+            <div class="dx-total" style="margin-bottom: 2px">
+            <span class="categoryList"><div class="title" style="border-bottom:.1rem solid #333"><spring:message code="wish.save"/>&nbsp;></div></span>
             </div>
         </div>
+
         </c:if>
         <c:if test="${empty wishList}">
             <div id="toggleDiv2">
@@ -30,7 +37,18 @@
             </div>
         </c:if>
     </div>
-        <div class="dx-GoodsDetails">
+    <div class="childDiv" style="overflow: hidden;width: 100%;margin-top: 0">
+        <ul class="childlist">
+            <c:forEach var="row" items="${categoryList}">
+            <a href="/cart/wishlist?categoryId=${row.id}"><li data-value="${row.id}" class="<c:if test='${categoryDomain.id==row.id}'>active</c:if>" >${row.name}</li></a>
+            </c:forEach>
+            <%--<li style="">女士</li>
+            <li class="active">男士</li>
+            <li>包袋</li>
+            <li>鞋履</li>--%>
+        </ul>
+    </div>
+        <div class="dx-GoodsDetails" style="display: block">
             <c:forEach var="row" items="${wishList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
@@ -72,6 +90,13 @@
 <script>
 
     $(function () {
+
+        $(".categoryList").click(function () {
+            location.href = "${ctx}/cart/wishlist"
+        });
+        $(".childDiv li").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+        });
 
         if(${empty wishList}){
             $("#toggleDiv2").show();

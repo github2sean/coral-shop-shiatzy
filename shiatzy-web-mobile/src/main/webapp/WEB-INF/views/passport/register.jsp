@@ -10,7 +10,7 @@
 <div class="dx-registered">
     <div class="dx-title"><spring:message code="register"/> <a href="/passport/toLogin"><spring:message
             code="goBack"/></a></div>
-    <form class="j_ajaxForm" action="/passport/register.do" method="post" data-next="${ctx}/passport/toLogin">
+    <form class="j_ajaxForm" action="/passport/register.do" method="post" data-next="${ctx}/u/account/index">
         <div class="content">
             <div class="title"><spring:message code="register.titleInfo"/></div>
             <div class="form-item">
@@ -53,6 +53,10 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+
+    $(function () {
+    });
+
     /*//邮箱验证
     function userName() {
         var userName = $("#userName").val();

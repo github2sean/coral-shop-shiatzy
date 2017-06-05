@@ -7,10 +7,9 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">精品店预约详情 <a href="/u/account/index"></a></div>
+    <div class="dx-title">精品店预约详情 <a style="float: right;" href="/u/account/index"><spring:message code="goBack"/></a></div>
     <div class="content">
         <div class="dx-reservation">预约订单</div>
-
         <c:if test="${empty reservationList}">
             <div class="content ">
                 <div id="toggleDiv3">
@@ -26,6 +25,9 @@
                 <c:choose>
                     <c:when test="${row.status==0}">
                         已提交
+                    </c:when>
+                    <c:when test="${row.status==1}">
+                        已完成
                     </c:when>
                 </c:choose>
                 </div>

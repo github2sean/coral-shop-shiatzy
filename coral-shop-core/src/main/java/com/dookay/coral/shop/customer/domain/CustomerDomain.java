@@ -53,7 +53,7 @@ public class CustomerDomain implements Serializable {
 	private Date createTime;
 	
 	/*订阅类型*/
-	private Integer subscribeType;
+	private String subscribeType;
 
 	/*生日*/
 	private Date birthday;

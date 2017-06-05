@@ -14,43 +14,51 @@
 </style>
 
 <div class="order">
-    <p style="float: left"><spring:message code="account.personal.updateEmail"/></p>
+    <p style="float: left"><spring:message code="account.personal.updatePassword"/></p>
     <a style="float: right;" href="/u/account/details">< <spring:message code="goBack"/></a>
 </div>
 
-<div class="mail-change" style="padding-bottom: 15px;border-bottom: none">
-    <form class="j_ajaxForm" action="/u/account/updateEmail" method="post" data-next="${ctx}/u/account/details">
-        <h4><spring:message code="account.personal.update.email"/></h4>
+<div class="mail-change" style="border-bottom: none">
+
+        <h4><spring:message code="account.personal.update.password"/></h4>
         <h4>* <spring:message code="account.personal.updateEmailOrPass.must"/></h4>
-        <div class="register-mail">
-            <p><spring:message code="account.personal.updateEmailOrPass.nowEmail"/>：</p>
-            <p style="margin-bottom: 2rem;">${accountDomain.email}</p>
-            <p><spring:message code="account.personal.updateEmailOrPass.email"/>：</p>
 
-            <div class="input form-item">
-                <i>*</i>
-                <input id="email" name="email" type="text"
-                       placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewEmail"/>"
-                       onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
-                        code="account.personal.updateEmailOrPass.holderNewEmail"/>'"
-                       data-rule="邮箱:required;email"/>
-            </div>
-            <div class="input form-item">
-                <i>*</i>
-                <input id="confirmEmail" name="confirmEmail" type="text"
-                       placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewEmail"/>"
-                       onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
-                        code="account.personal.updateEmailOrPass.holderReNewEmail"/>'"
-                       data-rule="确认邮箱:required;email;match(email)"/>
-            </div>
-            <div class="emailInfo"></div>
-            <button type="submit" class="btn-default"><spring:message
-                    code="account.personal.updateEmailOrPass.validEmail"/></button>
-
-        </div>
-    </form>
 </div>
+<div class="password-change">
+    <form class="j_ajaxForm" action="/u/account/updatePassword" method="post" data-next="${ctx}/u/account/details">
+    <div class="register-mail">
+        <div class="input form-item">
+            <i>*</i>
+            <input class="oldPassword" name="oldPassword" type="password"
+                   placeholder="<spring:message code="account.personal.updateEmailOrPass.holderPassword"/>"
+                   onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
+                    code="account.personal.updateEmailOrPass.holderPassword"/>'"
+                   data-rule="旧密码:required;password"/>
+        </div>
+        <div class="input form-item">
+            <i>*</i>
+            <input id="newPassword" name="newPassword" type="password"
+                   placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewPassword"/>"
+                   onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
+                    code="account.personal.updateEmailOrPass.holderNewPassword"/>'"
+                   data-rule="新密码:required;password"/>
+        </div>
+        <div class="input form-item">
+            <i>*</i>
+            <input id="confirmPassword" name="confirmPassword" type="password"
+                   placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewPassword"/>"
+                   onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
+                    code="account.personal.updateEmailOrPass.holderReNewPassword"/>'"
+                   data-rule="确认密码:required;password;match(newPassword)">
+        </div>
+        <div class="emailInfo2"></div>
+        <button type="submit" class="btn-default"><spring:message
+                code="account.personal.updateEmailOrPass.validEmail"/></button>
 
+    </div>
+    </form>
+
+</div>
 
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

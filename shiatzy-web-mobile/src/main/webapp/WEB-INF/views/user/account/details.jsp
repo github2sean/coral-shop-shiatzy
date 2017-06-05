@@ -13,9 +13,9 @@
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
-        <p style="margin-right: 1.7005rem;"><spring:message code="account.welcome"/></p>
-        <c:if test="${empty customerDomain}"><p>${user_context.userName}</p></c:if>
-        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}</p></c:if>
+        <p><spring:message code="account.welcome"/>,</p>
+        <c:if test="${empty customerDomain.lastName && empty customerDomain.firstName}"><p>XX</p></c:if>
+        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}!</p></c:if>
     </div>
     <div class="account-message">
         <ul>
@@ -34,22 +34,40 @@
                     <li><spring:message code="account.personal.address"/>：${customerAddressDomain.address}</li>
                 </ol>
             </li>
+
+            <c:if test="${not empty customerDomain.isArtClubMember}">
+                <li>
+                    <a href="#">
+                        <span><spring:message code="account.personal.level"/>：
+                        <c:choose>
+                            <c:when test="${customerDomain.customerLevel==1}">
+                                普通会员
+                            </c:when>
+                            <c:when test="${customerDomain.customerLevel==2}">
+                                兰花卡会员
+                            </c:when>
+                            <c:when test="${customerDomain.customerLevel==3}">
+                                墨竹卡会员
+                            </c:when>
+                            <c:when test="${customerDomain.customerLevel==4}">
+                                牡丹卡会员
+                            </c:when>
+                        </c:choose>
+                        </span>
+                        <span style="float: right;"></span>
+                    </a>
+                </li>
+            </c:if>
+
             <li>
-                <a href="#">
-                    <c:choose>
-                        <c:when test="${customerDomain.isArtClubMember==0}">
-                            <span><spring:message code="account.personal.level"/>：非会员</span>
-                        </c:when>
-                        <c:when test="${customerDomain.isArtClubMember==1}">
-                            <span><spring:message code="account.personal.level"/>：${customerDomain.customerLevel}</span>
-                        </c:when>
-                    </c:choose>
+                <a href="/u/account/toUpdateEmail">
+                    <span><spring:message code="account.personal.updateEmail"/> </span>
                     <span style="float: right;">></span>
                 </a>
             </li>
             <li>
-                <a href="/u/account/toUpdateEmail">
-                    <span><spring:message code="account.personal.updateEmail"/> </span>
+                <a href="/u/account/toUpdatePassword">
+                    <span><spring:message code="account.personal.updatePassword"/> </span>
                     <span style="float: right;">></span>
                 </a>
             </li>
@@ -70,7 +88,7 @@
     <div class="privacy">
         <a href="#">
             <span style="float:left;">>　</span>
-            <span style="float: left;"><spring:message code="account.personal.secret"/></span>
+            <span style="float:left;"><spring:message code="account.personal.secret"/></span>
         </a>
     </div>
 

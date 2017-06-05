@@ -3,17 +3,19 @@ package com.dookay.shiatzy.web.mobile.controller;
 import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
-import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
-import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
-import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.domain.*;
+import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
+import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
+import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
@@ -54,6 +56,8 @@ public class ShoppingCartController extends BaseController{
     private ISkuService skuService;
     @Autowired
     private IGoodsItemService goodsItemService;
+    @Autowired
+    private IGoodsCategoryService goodsCategoryService;
 
     @RequestMapping(value = "addToCart" ,method = RequestMethod.POST)
     @ResponseBody
@@ -153,12 +157,42 @@ public class ShoppingCartController extends BaseController{
     }
 
     @RequestMapping(value = "wishlist" ,method = RequestMethod.GET)
-    public ModelAndView wishlist(){
+    public ModelAndView wishlist(Long categoryId){
+        ModelAndView mv = new ModelAndView("wishlist/list");
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
         shoppingCartService.withGoodsItem(wishList);
-        ModelAndView mv = new ModelAndView("wishlist/list");
+
+        GoodsQuery query = new GoodsQuery();
+        List<Long> goodsIds = new ArrayList<>();
+        List<Long> categoryIds = new ArrayList<>();
+        for(ShoppingCartItemDomain line:wishList){
+            SkuDomain skuDomain = skuService.get(line.getSkuId());
+            goodsIds.add(skuDomain.getGoodsId());
+            line.setCategoryId((goodsService.get(skuDomain.getGoodsId())).getCategoryId());
+        }
+        query.setIds(goodsIds);
+        List<GoodsDomain> goodsList =  goodsService.getList(query);
+        for(GoodsDomain line:goodsList){
+            categoryIds.add(line.getCategoryId());
+        }
+        List<GoodsCategoryDomain> categoryDomainList = new ArrayList<>();
+
+        GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
+        categoryQuery.setIds(categoryIds);
+        categoryDomainList = goodsCategoryService.getList(categoryQuery);
+        if(categoryId!=null){
+            mv.addObject("categoryDomain",goodsCategoryService.get(categoryId));
+            List<ShoppingCartItemDomain> newWishList  = new ArrayList<>();
+            for(ShoppingCartItemDomain line:wishList){
+                if(line.getCategoryId().equals(categoryId)){
+                    newWishList.add(line);
+                }
+            }
+            wishList = newWishList;
+        }
+        mv.addObject("categoryList",categoryDomainList);
         mv.addObject("wishList",wishList);
         return mv;
     }

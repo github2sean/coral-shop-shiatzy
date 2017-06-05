@@ -18,6 +18,7 @@ import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -150,27 +151,42 @@ public class AccountController extends MobileBaseController {
         return mv;
     }
 
+    @RequestMapping(value = "toUpdatePassword", method = RequestMethod.GET)
+    public ModelAndView toUpdatePassword(){
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        ModelAndView mv = new ModelAndView("user/account/updatePassword");
+        mv.addObject("accountDomain",accountDomain);
+        return mv;
+    }
+
     @RequestMapping(value = "updateEmail", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateEmail(@ModelAttribute UpdateEmailForm updateEmailForm){
         beanValidator(updateEmailForm);
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
-        accountDomain.setEmail(updateEmailForm.getEmail());
-
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        String email = updateEmailForm.getEmail();
+        accountDomain.setEmail(email);
+        accountDomain.setUserName(email);
+        customerDomain.setEmail(email);
+        if(accountService.getAccountByEmail(email)!=null){
+            return errorResult("邮箱已存在");
+        }
+        accountService.update(accountDomain);
+        customerService.update(customerDomain);
         return successResult("修改成功");
     }
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updatePassword(@ModelAttribute UpdatePasswordForm updatePasswordForm){
-
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         if(accountService.validateAccount(accountDomain.getEmail(), updatePasswordForm.getOldPassword())){
-            accountService.updateEmailOrPassword(accountDomain, accountDomain.getEmail(), updatePasswordForm.getNewPassword());
+           // accountService.updateEmailOrPassword(accountDomain, accountDomain.getEmail(), updatePasswordForm.getNewPassword());
+            accountService.changePassword(accountDomain,updatePasswordForm.getOldPassword(),updatePasswordForm.getNewPassword());
         }else{
             return errorResult("旧密码不正确");
         }
-
         return successResult("修改成功");
     }
 
@@ -232,10 +248,18 @@ public class AccountController extends MobileBaseController {
 
     @RequestMapping(value = "setSubscribe", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult setSubscribe(Integer subscribeType){
-        if(subscribeType==null){
-            return errorResult("参数为空");
+    public JsonResult setSubscribe(String subscribeType0,String subscribeType1,String subscribeType2){
+        String subscribeType = "";
+        if(StringUtils.isNotBlank(subscribeType0)){
+            subscribeType += subscribeType0;
         }
+        if(StringUtils.isNotBlank(subscribeType1)){
+            subscribeType += ","+subscribeType1;
+        }
+        if(StringUtils.isNotBlank(subscribeType2)){
+            subscribeType += ","+subscribeType2;
+        }
+        System.out.println("subscribeType:"+subscribeType);
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerDomain.setSubscribeType(subscribeType);

@@ -59,7 +59,7 @@
             <span class="pull-right">v</span>
             <ul class="text-center model-select-option" style="display: none">
             <c:forEach var="row" items="${storeCountryList}">
-                <li data-option="${row.id}" value="${row.id}" class="">${row.name}</li>
+                <li data-option="${row.id}" value="${row.id}" class="<c:if test='${row.id!=1}'>hide</c:if>">${row.name}</li>
             </c:forEach>
             </ul>
         </div>

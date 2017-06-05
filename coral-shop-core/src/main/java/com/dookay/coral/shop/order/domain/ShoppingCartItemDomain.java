@@ -63,6 +63,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	@Transient
 	private GoodsItemDomain goodsItemDomain;
 
+	@Transient
+	private Long categoryId;
+
 	/*尺寸*/
 	@Transient
 	private String size;

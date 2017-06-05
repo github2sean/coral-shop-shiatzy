@@ -12,9 +12,9 @@
 </div>
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
-        <p style="margin-right: 1.7005rem;"><spring:message code="account.welcome"/></p>
-        <c:if test="${empty customerDomain}"><p>${accountDomain.userName}</p></c:if>
-        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}</p></c:if>
+        <p><spring:message code="account.welcome"/>,</p>
+        <c:if test="${empty customerDomain.lastName && empty customerDomain.firstName}"><p>XX</p></c:if>
+        <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}!</p></c:if>
     </div>
     <div class="my-account-message">
         <ul>

@@ -204,10 +204,13 @@ public class ReservationController extends BaseController{
             reservationItemDomain.setSpecifications(line.getSkuSpecifications());
             reservationItemDomain.setCreateTime(new Date());
             reservationItemDomain.setUpdateTime(new Date());
+            reservationItemDomain.setStatus(0);
             reservationItemService.create(reservationItemDomain);
             //从精品店中移除
             shoppingCartService.removeFromCart(line.getId());
         }
+        //清空session
+        session.setAttribute("submitCartList",null);
         return successResult("提交成功",reservationDomain.getId());
     }
 
