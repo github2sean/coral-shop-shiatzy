@@ -15,7 +15,7 @@
 <c:if test="${empty preOderItemList}">
     <div class="content dx-wish dx-shopping">
         <div id="toggleDiv2">
-          <a href="/home/index"> <div class=" content"><p><spring:message code="shoppingCart.null"/></p></div></a>
+          <a href="/home/index"> <div class=" content"><p><spring:message code="reservation.list"/>(0)</p></div></a>
         </div>
     </div>
 </c:if>
@@ -61,7 +61,7 @@
 
     <c:if test="${empty preOderItemList}">
         <div class="choose-store">
-            <a href="/home/index"><spring:message code="shoppingCart.selectGoods"/></a>
+            <a href="javascript:void(0)"><spring:message code="register"/>&nbsp;/&nbsp;<spring:message code="login"/></a>
         </div>
     </c:if>
     <c:if test="${not empty preOderItemList}">
@@ -70,9 +70,9 @@
     </div>
     </c:if>
     <ul>
-        <li><a href="#"><spring:message code="shoppingCart.shoppingInfo"/><span>></span></a></li>
-        <li><a href="#"><spring:message code="shoppingCart.term"/><span>></span></a></li>
-        <li><a href="#"><spring:message code="shoppingCart.rule"/><span>></span></a></li>
+        <li><a href="#"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+        <li><a href="#"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+        <li><a href="#"><spring:message code="reservation.what"/>?<span>></span></a></li>
     </ul>
 </div>
 
@@ -87,6 +87,14 @@
         //console.log('${goodsList}');
 
 
+        $(".choose-store").find("a").click(function(){
+            var href = "${ctx}/passport/toLogin";
+            var user = '${sessionScope.user_context}';
+            if(user!=''){
+                href = '${ctx}/passport/toRegister';
+            }
+            location.href = href;
+        });
 
         $(".deleteBtn").on("click",function () {
             var $self = $(this);

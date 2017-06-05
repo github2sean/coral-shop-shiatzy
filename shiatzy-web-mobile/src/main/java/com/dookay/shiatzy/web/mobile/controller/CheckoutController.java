@@ -26,6 +26,7 @@ import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
@@ -318,6 +319,12 @@ public class CheckoutController  extends BaseController{
     @RequestMapping(value = "createShipAddress",method = RequestMethod.GET)
     public  ModelAndView createShipAddress(){
         ModelAndView mv = new ModelAndView("checkout/createShipAddress");
+        //查询出配送国家
+        ShippingCountryQuery query = new ShippingCountryQuery();
+        query.setDesc(false);
+        query.setOrderBy("rank");
+        List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(query);
+        mv.addObject("countryList",shippingCountryDomainList);
         return mv;
     }
 
@@ -410,7 +417,7 @@ public class CheckoutController  extends BaseController{
     @RequestMapping(value = "listStore",method = RequestMethod.GET)
     public  ModelAndView listStore(){
         List<StoreDomain> storeDomainList = storeService.getList(new StoreQuery());
-        ModelAndView modelAndView= new ModelAndView("/checkout/listStore");
+        ModelAndView modelAndView= new ModelAndView("checkout/listStore");
         List<StoreCountryDomain> storeCountryList  = storeCountryService.getList(new StoreCountryQuery());
         modelAndView.addObject("storeDomainList",storeDomainList);
         modelAndView.addObject("storeCountryList",storeCountryList);

@@ -25,6 +25,7 @@ import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
+import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -194,6 +195,12 @@ public class ShoppingCartController extends BaseController{
         }
         mv.addObject("categoryList",categoryDomainList);
         mv.addObject("wishList",wishList);
+
+
+        //把获取的记录存到List集合
+        List<GoodsDomain> historyList = HistoryUtil.getHistory();
+        goodsService.withGoodsItemList(historyList);
+        mv.addObject("historyList",historyList);
         return mv;
     }
 

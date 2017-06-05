@@ -20,7 +20,15 @@
             </div>
             <div class="address">
                 <div class="title">地址*</div>
-                <div class="country">国别 / 区域* <input type="text" value="${address.countryId}" name="countryId" id="countryId"> <span> ></span></div>
+                <div class="country">国别 / 区域*
+
+                    <select name="countryId" id="countryId" class="">
+                        <c:forEach var="row" items="${countryList}">
+                        <option value="${row.id}">${row.name}</option>
+                        </c:forEach>
+                    </select>
+
+                    <span> ></span></div>
                 <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> <span> ></span></div>
                 <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> <span> ></span></div>
                 <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="address"></div>
@@ -154,7 +162,7 @@
 
         }).blur(phone);
 
-        $('.appellation-popup').children("li").click(function (){
+        $('.appellation-popup').children("li:not(:first-child)").click(function (){
             var li=$(this).text();
             $('#title').val(li);
             layer.close(layer.index);

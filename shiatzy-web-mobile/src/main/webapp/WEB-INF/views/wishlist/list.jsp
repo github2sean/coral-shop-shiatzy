@@ -20,7 +20,7 @@
         background-color: #cccccc;
     }
 </style>
-<div class="dx-wish clearfix ">
+<div class="dx-wish clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
     <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
     <div class="content">
         <c:if test="${not empty wishList}">
@@ -32,22 +32,20 @@
 
         </c:if>
         <c:if test="${empty wishList}">
-            <div id="toggleDiv2">
-            <div class=""><p><spring:message code="shoppingCart.null"/></p></div>
+            <div id="toggleDiv2" style="text-align: center">
+            <div class="" style="padding-top: 50px;text-align: center;border-bottom: 2px solid #cccccc;width: 90%;margin: auto"><p><spring:message code="wish"/>(0)</p></div>
             </div>
         </c:if>
     </div>
+    <c:if test="${not empty wishList}">
     <div class="childDiv" style="overflow: hidden;width: 100%;margin-top: 0">
         <ul class="childlist">
             <c:forEach var="row" items="${categoryList}">
             <a href="/cart/wishlist?categoryId=${row.id}"><li data-value="${row.id}" class="<c:if test='${categoryDomain.id==row.id}'>active</c:if>" >${row.name}</li></a>
             </c:forEach>
-            <%--<li style="">女士</li>
-            <li class="active">男士</li>
-            <li>包袋</li>
-            <li>鞋履</li>--%>
         </ul>
     </div>
+    </c:if>
         <div class="dx-GoodsDetails" style="display: block">
             <c:forEach var="row" items="${wishList}">
             <div class="goods clearfix goodsDiv">
@@ -72,6 +70,28 @@
             </c:forEach>
 
         </div>
+    <c:if test="${empty wishList}">
+    <div class="maybeLike clearfix" style="border-top: 2px solid #cccccc">
+        <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%">推荐商品</div>
+        <c:forEach var="goods" items="${historyList}" begin="0" end="1">
+            <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+            <a href="/goods/details/${firstItem.id}">
+                <div class="left">
+                    <div class="pic">
+                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;">
+                    </div>
+                    <div class="name">${goods.name}</div>
+                    <div class="price">${firstItem.price}</div>
+                    <ul class="color clearfix">
+                        <c:forEach var="goodsItem" items="${goods.goodsItemList}">
+                            <li style="background: ${goodsItem.colorValue}"></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </a>
+        </c:forEach>
+    </div>
+    </c:if>
         <div class="dx-clause">
             <ul>
                 <li><a href="#"><spring:message code="shoppingCart.selectWoman"/></a></li>
