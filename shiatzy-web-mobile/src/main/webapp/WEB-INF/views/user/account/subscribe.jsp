@@ -47,13 +47,15 @@
 
     $(function () {
 
-
         var haveCheck = '${customerDomain.subscribeType}';
         console.log("list:"+haveCheck);
         var array;
+        if(haveCheck.indexOf(",")==0){
+            haveCheck=haveCheck.substr(1);
+        }
+
         if(haveCheck.indexOf(",")>0){
             array = haveCheck.split(",");
-
         }else{
             array = new Array();
             array[0] = haveCheck;

@@ -33,7 +33,7 @@
                 </a>
             </li>
             <li>
-                <a href="/boutique/list">
+                <a href="/reservation/list">
                     <span><svg><use xlink:href="#ap-small"></use></svg></span>
                     <span><spring:message code="account.reservation"/></span>
                     <span style="float: right;">></span>

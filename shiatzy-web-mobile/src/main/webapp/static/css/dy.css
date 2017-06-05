@@ -343,7 +343,7 @@
 .club,
 .club-card {
     padding: 0 23px 0 28px;
-    margin-top: 9.0435rem;
+
 }
 
 .club h3 {
@@ -374,8 +374,8 @@
     display: block;
     background-color: #999999;
     text-align: center;
-    color: #fff;
-    font-size: 18px;
+
+    font-size: 1rem;
     line-height: 2.7826rem;
     border: none;
     padding: 0;

@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="remind"></div>
-            <button type="submit" class="registerBtn"><spring:message code="register"/></button>
+            <button type="submit" class="btn btn-default"><spring:message code="register"/></button>
             <div class="notice"><spring:message code="register.endInfo"/></div>
         </div>
     </form>

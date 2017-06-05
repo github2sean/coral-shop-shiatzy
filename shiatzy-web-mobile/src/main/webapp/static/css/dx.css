@@ -365,7 +365,7 @@ i{
 }
 .dx-login .content input{
     width: 100%;
-    height: 2.6rem;
+    height: 2.8rem;
     border: none;
     border: .2rem solid #b2b2b2;
     padding-left: .6rem;
@@ -422,18 +422,18 @@ i{
 }
 .dx-login .content .verify{
     float: left;
-    width: 50%;
-    height: 4rem;
+    width: 60%;
+
 }
 .dx-login .dx-verify-pic{
     float: right;
-    width: 50%;
-    height: 4rem;
+    width: 40%;
+    height: 2.8rem;
     overflow: hidden;
 }
 .dx-login .dx-verify-pic img{
     display: block;
-    height: 4rem;
+    height: 2.8rem;
     width: 100%;
 }
 
@@ -444,7 +444,7 @@ i{
     margin-top: 0;
 }
 .dx-ForgotPassword .content input{
-    height: 4rem;
+    height: 2.8rem;
 }
 .dx-ForgotPassword .content .dx-verify{
     margin-top: 1.3rem;
@@ -468,7 +468,7 @@ i{
 }
 .dx-registered .content input{
     width: 100%;
-    height: 3.7rem;
+    height: 2.8rem;
     border: none;
     border: .2rem solid #b2b2b2;
 
@@ -485,12 +485,12 @@ i{
 .dx-registered .dx-verify-pic{
     float: right;
     width: 50%;
-    height: 3.7rem;
+    height: 2.8rem;
     overflow: hidden;
 }
 .dx-registered .dx-verify-pic img{
     display: block;
-    height: 3.7rem;
+    height: 2.8rem;
     width: 100%;
 }
 .dx-registered .content .remind{
@@ -506,7 +506,7 @@ i{
     text-align: center;
     font-size: 1rem;
     line-height: 1.8rem;
-    color: #fff;
+
     background-color: #b2b2b2;
     border: none;
     margin: 0 auto;

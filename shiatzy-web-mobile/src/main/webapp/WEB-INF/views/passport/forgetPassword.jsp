@@ -30,7 +30,7 @@
             </div>
             </div>
             <div class="remind"></div>
-            <button type="submit" class="sendBtn"><spring:message code="send"/></button>
+            <button type="submit" class="btn btn-default"><spring:message code="send"/></button>
             <div class="register"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
         </form>
