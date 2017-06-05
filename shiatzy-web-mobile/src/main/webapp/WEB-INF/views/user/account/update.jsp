@@ -105,7 +105,7 @@
         </div>
         <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
         <div class="complete">
-            <button type="submit" class="updateBtn"><spring:message code="account.personal.update.enter"/></button>
+            <button type="submit" class="btn btn-default"><spring:message code="account.personal.update.enter"/></button>
         </div>
     </form>
 

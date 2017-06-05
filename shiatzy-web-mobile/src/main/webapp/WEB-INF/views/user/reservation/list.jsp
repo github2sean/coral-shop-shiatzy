@@ -19,7 +19,7 @@
         </c:if>
         <c:forEach var="row" items="${reservationList}">
         <a href="/reservation/details?reservationId=${row.id}" class="dx-reservaList clearfix">
-            <div class="time"><fmt:formatDate value="${row.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></div>
+            <div class="time"><fmt:formatDate value="${row.createTime}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></div>
             <div class="orderNumber">${row.reservationNo}</div>
             <div class="status">
                 <c:choose>
@@ -34,7 +34,7 @@
         </a>
         </c:forEach>
     </div>
-    <div class="check clearfix"><span>查看所有订单</span><a href="/order/list">></a></div>
+
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

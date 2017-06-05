@@ -33,7 +33,7 @@
             </div>
             <div class="remind loginInfo"></div>
             <!--添加的a标签用来演示-->
-            <button type="submit" class="btn loginBtn"><spring:message code="login"/></button>
+            <button type="submit" class="btn btn-default"><spring:message code="login"/></button>
             <div class="register"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
         </div>

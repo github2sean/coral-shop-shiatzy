@@ -11,7 +11,7 @@
     <a style="float: right;" href=”#” onClick="javascript :history.go(-1);"><h3>< 返回上页</h3></a>
 </div>
 <div class="club">
-    <form action="/u/account/validVip" method="post" data-next="/u/account/vipDetail">
+    <form action="/u/account/validVip" class="j_ajaxForm" method="post" data-next="/u/account/vipDetail">
         <h3>ART CLUB会员认证 </h3>
         <p>请输入您加入ART CLUB时留存的手机号码
             <input type="text" class="phoneNum"
