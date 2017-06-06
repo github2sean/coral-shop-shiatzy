@@ -6,6 +6,17 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
+<style>
+    select{
+        border:none;
+        width: 100px;
+        text-align: center;
+        padding-left: 20px;
+    }
+    input{
+    padding-left: 20px;
+    }
+</style>
 
 <form class="addressForm" method="post" action="/checkout/addAddress">
     <div class="dx-EditAddress">
@@ -15,9 +26,18 @@
                 <div class="title">收件人*</div>
                 <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName" id="firstName"></div>
                 <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName" id="lastName"></div>
-                <div class="appellation j_appelPopup">称谓* <input type="text" value="${address.title}" name="title" id="title"> <span> ></span></div>
+                <div class="appellation ">称谓*
+                    <select name="title" id="title" class="">
+                            <option value="女士">女士</option>
+                            <option value="先生">先生</option>
+                            <option value="小姐">小姐</option>
+                            <option value="无">无</option>
+                    </select>
+                    <%--<input type="text" value="${address.title}" name="title" id="title"> <span> ></span></div>--%>
+                 </div>
                 <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone" id="phone"></div>
             </div>
+
             <div class="address">
                 <div class="title">地址*</div>
                 <div class="country">国别 / 区域*
@@ -28,9 +48,9 @@
                         </c:forEach>
                     </select>
 
-                    <span> ></span></div>
-                <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> <span> ></span></div>
-                <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> <span> ></span></div>
+                    </div>
+                <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> </div>
+                <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> </div>
                 <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="address"></div>
                 <div class="more">地址更多信息 <input type="text" value="${address.memo}" name="memo"></div>
             </div>

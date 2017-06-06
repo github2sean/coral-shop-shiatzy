@@ -342,6 +342,12 @@ public class CheckoutController  extends BaseController{
     public  ModelAndView updateShipAddress(Long addressId){
         CustomerAddressDomain customerAddressDomain = customerAddressService.get(addressId);
         ModelAndView mv = new ModelAndView("checkout/updateShipAddress");
+        //查询出配送国家
+        ShippingCountryQuery query = new ShippingCountryQuery();
+        query.setDesc(false);
+        query.setOrderBy("rank");
+        List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(query);
+        mv.addObject("countryList",shippingCountryDomainList);
         mv.addObject("address",customerAddressDomain);
         return mv;
     }

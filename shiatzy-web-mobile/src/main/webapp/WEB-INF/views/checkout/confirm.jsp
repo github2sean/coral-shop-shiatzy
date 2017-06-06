@@ -9,7 +9,7 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
-    <a style="float: right;" href="${referrerPage}">< 回上页</a>
+    <a style="float: right;" href="/checkout/orderInfo">< 回上页</a>
 </div>
 <div class="order-finish">
     <h3>订单总额：¥ ${order.orderTotal}</h3>

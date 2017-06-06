@@ -8,7 +8,7 @@
 </jsp:include>
 
 <div class="dx-shipping">
-    <div class="dx-title">送货地址设定 <a href="javascript:history.go(-1)">回上页</a></div>
+    <div class="dx-title">送货地址设定 <a href="#" class="goBack"><spring:message code="goBack"/></a></div>
     <div class="content">
         <a href="/checkout/createShipAddress" class="new-address">新增地址 +</a>
         <c:forEach var="row" items="${addressList}" varStatus="num">
@@ -40,6 +40,16 @@
 <script>
     $(function(){
 
+        var backUrl = 'javascript:history.go(-1)';
+        var historyUrl = document.referrer;
+        if(historyUrl.indexOf("u/account/index")>0){
+            backUrl = "/u/account/index"
+            $(".addressDiv").find(".iconfont").hide();
+        }else if(historyUrl.indexOf("checkout/createShipAddress")>0){
+            backUrl = 'javascript:history.go(-3)';
+        }
+        $(".goBack").attr("href",backUrl);
+
         $(".iconfont").click(function () {
             $(this).css("background-color","#333");
             $(this).parents(".addressDiv").siblings().find(".iconfont").css({"background-color":"white","border":"1px solid black"});
@@ -47,7 +57,6 @@
             $.post("/checkout/setAddress",{"addressId":id},function (data) {
                 console.log(data);
                 if(data.code==200){
-
                 }
             });
         });
