@@ -61,6 +61,10 @@ public class StoreDomain implements Serializable {
 	
 	/*创建时间*/
 	private Date createTime;
+
+	/*位置坐标*/
+	private String localPoint;
+
 	
 	/*更新时间*/
 	private Date updateTime;

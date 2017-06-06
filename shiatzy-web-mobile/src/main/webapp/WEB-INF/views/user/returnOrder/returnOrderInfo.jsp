@@ -45,75 +45,55 @@
         </div>
     </div>
    <div class="return-list clearfix" style="display: none">
-        <p>请勾选退货理由（可复选）</p>
+        <p style="">请勾选退货理由（可复选）</p>
         <ul>
-            <li>尺寸</li>
+            <li>服务</li>
             <li>
                 <div>
                     <input type="hidden" name="skuId" value="${row.skuId}">
                     <input type="hidden" name="orderId" value="${row.skuId}">
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="太大"><i class="i-radiobox"></i>太大</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i>错误商品</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason2" value="太小"><i class="i-radiobox"></i>太小</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason3" value="太长"><i class="i-radiobox"></i>太长</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason4" value="太短"><i class="i-radiobox"></i>太短</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason2" value="货运过长"><i class="i-radiobox"></i>货运过长</label></span>
                 </div>
             </li>
         </ul>
         <ul>
-            <li>尺寸</li>
+            <li>品质</li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="太大"><i class="i-radiobox"></i>太大</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i>瑕紙品</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason2" value="太小"><i class="i-radiobox"></i>太小</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason3" value="太长"><i class="i-radiobox"></i>太长</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason4" value="太短"><i class="i-radiobox"></i>太短</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason2" value="与图片不符"><i class="i-radiobox"></i>与图片不符</label></span>
                 </div>
             </li>
         </ul>
         <ul>
-            <li>尺寸</li>
+            <li>其它</li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason1" value="太大"><i class="i-radiobox"></i>太大</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason1" value="色差"><i class="i-radiobox"></i>色差</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason2" value="太小"><i class="i-radiobox"></i>太小</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason2" value="面料"><i class="i-radiobox"></i>面料</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason3" value="太长"><i class="i-radiobox"></i>太长</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason3" value="风格不合适"><i class="i-radiobox"></i>风格不合适</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason4" value="太短"><i class="i-radiobox"></i>太短</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason4" value="改变心意"><i class="i-radiobox"></i>改变心意</label></span>
                 </div>
             </li>
         </ul>

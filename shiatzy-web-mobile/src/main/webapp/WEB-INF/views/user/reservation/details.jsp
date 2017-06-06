@@ -6,7 +6,7 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GgHjw11mitCe2jvbdaYB31EzxOIxNCj8"></script>
 <div class="dx-orderDetails clearfix">
     <div class="dx-title">精品店预约订单详情<a href="/reservation/list">返回上页</a></div>
     <div class="content">
@@ -14,7 +14,7 @@
         <div class="orderNumber">预约单编号 ${reservationDomain.reservationNo}</div>
         <div class="dx-details">
             <div class="date">订单日期 : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
-            <div class="retail">预约门店 : <span>${reservationDomain.storeDomain.name}</span> <a href="#">地图</a></div>
+            <div class="retail">预约门店 : <span>${reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap">地图</a></div>
             <div class="site">地址 : <span>${reservationDomain.storeDomain.address}</span></div>
             <div class="telephone">电话 : ${reservationDomain.tel}<span></span></div>
             <div class="time">营业时间 : ${reservationDomain.storeDomain.time}<span></span></div>
@@ -70,6 +70,44 @@
     };
     $(function () {
         clsTotal();
+
+
+        $(".alertMap").click(function () {
+
+            var html = "<div id='allmap'></div>";
+            layer.open({
+                type: 1,
+                title:'百度地图',
+                skin: 'layui-layer-rim', //加上边框
+                area: ['420px', '440px'], //宽高
+                content: html
+            });
+
+        });
+
+        var localPoint = '${reservationDomain.storeDomain.localPoint}';
+        var city = '${reservationDomain.storeDomain.cityId}';
+        var address = '${reservationDomain.storeDomain.address}';
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");    // 创建Map实例
+        var point = new BMap.Point(localPoint);
+        map.centerAndZoom(point, 15);  // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+        var marker = new BMap.Marker(localPoint);  // 创建标注
+        map.addOverlay(marker);              // 将标注添加到地图中
+
+        var opts = {
+            width : 200,     // 信息窗口宽度
+            height: 100,     // 信息窗口高度
+            title : "${reservationDomain.storeDomain.name}" , // 信息窗口标题
+            enableMessage:true,//设置允许信息窗发送短息
+            message:"亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+        };
+
+        var infoWindow = new BMap.InfoWindow("地址："+address, opts);  // 创建信息窗口对象
+        marker.addEventListener("click", function(){
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
+        });
 
     });
 
