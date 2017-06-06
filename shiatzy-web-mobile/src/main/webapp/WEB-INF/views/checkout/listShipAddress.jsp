@@ -13,7 +13,7 @@
         <a href="/checkout/createShipAddress" class="new-address">新增地址 +</a>
         <c:forEach var="row" items="${addressList}" varStatus="num">
             <div class="address addressDiv" >
-                <div class="title">地址${num.count} <span data-value="${row.id}" class="icon iconfont" style="background-color: inherit;border:1px solid #333">&#xe618;</span></div>
+                <div class="title">地址${num.count} <span data-value="${row.id}" class="icon iconfont" style="display: none;background-color: inherit;border:1px solid #333">&#xe618;</span></div>
                 <div class="text clearfix">
                     <div class="text-left">
                         <div class="postcode">${row.title}</div>
@@ -40,13 +40,14 @@
 <script>
     $(function(){
 
-        var backUrl = 'javascript:history.go(-1)';
-        var historyUrl = document.referrer;
-        if(historyUrl.indexOf("u/account/index")>0){
+        var way = '${way}';
+        var backUrl;
+
+        if(way=='index'){
             backUrl = "/u/account/index"
-            $(".addressDiv").find(".iconfont").hide();
-        }else if(historyUrl.indexOf("checkout/createShipAddress")>0){
-            backUrl = 'javascript:history.go(-3)';
+        }else{
+            backUrl = '/checkout/confirm?page=/checkout/orderInfo';
+            $(".addressDiv").find(".iconfont").show();
         }
         $(".goBack").attr("href",backUrl);
 

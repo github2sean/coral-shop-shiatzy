@@ -25,19 +25,19 @@
             <span class="mr-2">
                 <label class="radiobox" style="float: left;width: 30%">
                     <input type="checkbox" name="returnList[${num.count-1}].orderItemId" value="${row.id}">
-                    <i class="i-radiobox" style="float: left"></i>
-                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height: 100px;float: left">
+                    <i class="i-radiobox" style="float: left;margin-top: 30px"></i>
+                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height:80px;float: left;padding-left: 20px">
                 </label>
-                <div class="verify-main" style="float: right;width: 70%;border-bottom: none">
+                <div class="verify-main" style="float: right;width: 70%;border-bottom: none;height: auto">
                     <div class="img-message">
                         <h3>${row.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;<span class="reasonShow">v</span></h3>
-                        <h6>${row.goodsCode}</h6>
-                        <div style="display: inline-block;" class="size">
+                        <h6><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</h6>
+                        <div style="display: inline-block;" class="size hide">
                             <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
                             <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
                         </div>
-                        <p>数量：${row.num}</p>
-                        <p>单价　¥ ${row.goodsPrice}</p>
+                        <p class="hide">数量：${row.num}</p>
+                        <p class="hide">单价　¥ ${row.goodsPrice}</p>
                     </div>
                 </div>
             </span>
@@ -52,7 +52,9 @@
                 <div>
                     <input type="hidden" name="skuId" value="${row.skuId}">
                     <input type="hidden" name="orderId" value="${row.skuId}">
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i>错误商品</label></span>
+                    <span class="mr-2"><label class="radiobox">
+                        <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
+                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i>错误商品</label></span>
                 </div>
             </li>
             <li>
@@ -65,7 +67,9 @@
             <li>品质</li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i>瑕紙品</label></span>
+                    <span class="mr-2"><label class="radiobox">
+                        <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
+                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i>瑕紙品</label></span>
                 </div>
             </li>
             <li>
@@ -78,22 +82,24 @@
             <li>其它</li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason1" value="色差"><i class="i-radiobox"></i>色差</label></span>
+                    <span class="mr-2"><label class="radiobox">
+                        <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
+                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i class="i-radiobox"></i>色差</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason2" value="面料"><i class="i-radiobox"></i>面料</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason2" value="面料"><i class="i-radiobox"></i>面料</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason3" value="风格不合适"><i class="i-radiobox"></i>风格不合适</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason3" value="风格不合适"><i class="i-radiobox"></i>风格不合适</label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="type3.reason4" value="改变心意"><i class="i-radiobox"></i>改变心意</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason4" value="改变心意"><i class="i-radiobox"></i>改变心意</label></span>
                 </div>
             </li>
         </ul>
@@ -134,6 +140,13 @@
            $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
         });
         $(".return-list:first").show();
+
+        if($('input[type=checkbox]').is(':checked')) {
+            // do something
+        }
+
+
+
         $(".submitBtn").click(function () {
             $(this).css("color","#333");
             var data = $(".goodsForm").serializeArray();

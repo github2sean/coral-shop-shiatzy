@@ -25,6 +25,7 @@ import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.ReturnInfoForm;
 import com.dookay.shiatzy.web.mobile.model.ChooseGoodsModel;
 import com.dookay.shiatzy.web.mobile.model.ReturnReasonModel;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -157,8 +158,10 @@ public class ReturnOrderController extends BaseController {
             return new ModelAndView("redirect:home/index");
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderInfo");
-        mv.addObject(CART_LIST,cartList);
-        mv.addObject(ORDER,orderDomain);
+        /*mv.addObject(CART_LIST,cartList);
+        mv.addObject(ORDER,orderDomain);*/
+        session.setAttribute(CART_LIST,cartList);
+        session.setAttribute(ORDER,orderDomain);
         return mv;
     }
 
@@ -229,16 +232,21 @@ public class ReturnOrderController extends BaseController {
         HttpSession session = request.getSession();
         HashMap jsonMap = new HashMap();
         List<ReturnReasonModel> reasonModels = returnInfoForm.getReturnList();
-        if(reasonModels==null||reasonModels.size()<1){
+        if(reasonModels==null||(reasonModels!=null&&reasonModels.size()<1)){
             return errorResult("没有选择退货商品");
         }
         List<OrderItemDomain> list = (List<OrderItemDomain>)session.getAttribute(CART_LIST);
         List<OrderItemDomain> newList = new ArrayList<OrderItemDomain>();
+
              for(int i=0;i<list.size();i++){
                  for(ReturnReasonModel line:reasonModels){
+                     if(!line.isChooseReason()){
+                         return errorResult("退货理由必选");
+                     }
+                     System.out.println("line:"+JsonUtils.toJSONString(line));
                      if(list.get(i).getId().equals(line.getOrderItemId())){
                          newList.add(list.get(i));
-                         jsonMap.put(line.getOrderItemId()+"",JsonUtils.toJSONString(line));
+                         jsonMap.put(line.getOrderItemId()+"",line.allReason());
                      }
                  }
              }
@@ -250,6 +258,22 @@ public class ReturnOrderController extends BaseController {
         return successResult("选择成功");
     }
 
+    @RequestMapping(value = "fillReturnAddress" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult fillReturnAddress(String address,String name){
+        if(StringUtils.isBlank(address)){
+            return errorResult("地址必填");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        ReturnRequestDomain returnRequest = (ReturnRequestDomain)session.getAttribute(RETURN_ORDER);
+        session.setAttribute("returnAddress",address);
+        session.setAttribute("shipName",name);
+        returnRequest.setShipAddress(address);
+        returnRequest.setShipName(name);
+        returnRequest.setReturnShippingMethod(1);
+        return successResult("操作成功");
+    }
 
     @RequestMapping(value = "sureReturnWay" ,method = RequestMethod.POST)
     @ResponseBody
@@ -259,7 +283,7 @@ public class ReturnOrderController extends BaseController {
         ReturnRequestDomain returnRequest = (ReturnRequestDomain)session.getAttribute(RETURN_ORDER);
         CustomerAddressDomain customerAddress = customerAddressService.get(addressId);
         returnRequest.setReturnShippingMethod(backWay);
-        if(backWay==1){
+        /*if(backWay==1){
             if(customerAddress==null){
                 return errorResult("选择失败，无此地址");
             }
@@ -267,13 +291,15 @@ public class ReturnOrderController extends BaseController {
             returnRequest.setReturnShopId(null);
             returnRequest.setCustomerAddressDomain(customerAddress);
             returnRequest.setStoreDomain(null);
-        }else if(backWay==2){
+        }else*/ if(backWay==2){
             StoreDomain storeDomain = storeService.get(addressId);
             if(storeDomain==null){
                 return errorResult("选择失败，无此门店");
             }
+            session.setAttribute("returnAddress",null);
             returnRequest.setStoreDomain(storeDomain);
             returnRequest.setReturnShopId(addressId);
+            returnRequest.setShipName(null);
             returnRequest.setShipAddress(null);
             returnRequest.setCustomerAddressDomain(null);
         }
@@ -347,7 +373,9 @@ public class ReturnOrderController extends BaseController {
         session.setAttribute(RETURN_ORDER,null);
         session.setAttribute(CART_LIST,null);
         session.setAttribute(BACK_WAY, null);
-
+        session.setAttribute("returnJsonReason", null);
+        session.setAttribute("shipName",null);
+        session.setAttribute("returnAddress",null);
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
         orderLogDomain.setOrderId(orderId);

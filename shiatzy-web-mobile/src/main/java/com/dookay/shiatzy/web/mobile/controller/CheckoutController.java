@@ -305,7 +305,7 @@ public class CheckoutController  extends BaseController{
      * @return
      */
     @RequestMapping(value = "listShipAddress",method = RequestMethod.GET)
-    public  ModelAndView listShipAddress(){
+    public  ModelAndView listShipAddress(String way){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         CustomerAddressQuery query = new CustomerAddressQuery();
@@ -313,6 +313,7 @@ public class CheckoutController  extends BaseController{
         List addressList = customerAddressService.getList(query);
         ModelAndView mv = new ModelAndView("checkout/listShipAddress");
         mv.addObject("addressList",addressList);
+        mv.addObject("way",way);
         return mv;
     }
 

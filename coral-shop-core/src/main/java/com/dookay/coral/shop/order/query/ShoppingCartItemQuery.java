@@ -2,10 +2,11 @@ package com.dookay.coral.shop.order.query;
 
 import com.dookay.coral.common.persistence.Query;
 import lombok.Data;
-import org.omg.CORBA.INTERNAL;
 import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+
+import java.util.List;
 
 /**
  * 购物车的Query
@@ -23,6 +24,7 @@ public class ShoppingCartItemQuery extends Query {
 	private Double goodsPrice;
 	private String skuSpecifications;
 	private Long itemId;
+	private List<Long> ids;
 
 	@Override
 	public QueryCriteria toCriteria() {
@@ -51,6 +53,9 @@ public class ShoppingCartItemQuery extends Query {
 		}
 		if(valid(itemId)){
 			criteria.andEqualTo("itemId",itemId);
+		}
+		if(valid(ids)){
+			criteria.andIn("id",ids);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

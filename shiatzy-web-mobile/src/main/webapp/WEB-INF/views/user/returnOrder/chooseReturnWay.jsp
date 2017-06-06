@@ -31,13 +31,12 @@
                 <p>退回门店</p>
                 <a href="/returnOrder/listStoreCountry">编辑 ></a>
             </div>--%>
-
                 <c:if test="${not empty return_order.storeDomain}">
                     <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
                         <span>快递运送</span>
-                        <p></p>
-                        <p style="display: initial;"></p>
-                        <a href="/returnOrder/listAddress">选择 ></a>
+                        <p class="shipName"></p>
+                        <p style="display: initial;" class="shipAddress"></p>
+                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
                     </div>
                     <div class="delivery-message" style="height: 100px;background-color: #cccccc;">
                         <p>门店退货</p>
@@ -49,9 +48,9 @@
                 <c:if test="${empty return_order.storeDomain}">
                     <div class="delivery-message" style="margin-top: 2px">
                         <span>快递运送</span>
-                        <p>${return_order.customerAddressDomain.title}</p>
-                        <p style="display: initial;">${return_order.customerAddressDomain.address}</p>
-                        <a href="/returnOrder/listAddress">选择 ></a>
+                        <p class="shipName">${sessionScope.shipName}</p>
+                        <p style="display: initial;" class="shipAddress">${sessionScope.returnAddress}</p>
+                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
                     </div>
                     <div class="drugstore">
                         <p>门店退货</p>
@@ -78,6 +77,9 @@
     </div>
 </div>
 
+
+
+
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
@@ -93,7 +95,39 @@
             location.href="/returnOrder/returnOrderConsigneeInfo";
         });
 
+        $(".fillAddress").on("click",function () {
+            var html = '<div style="overflow: hidden;text-align: center"><div style="width: 100%"><div style="width: 30%;text-align: right">收货人：</div><input type="text" id="shipName" style="width: 70%"/></div><div style="width: 100%;overflow: hidden"> <div style="width: 30%;text-align: right">收货人地址：</div><input id="shipAddress" type="text" style="width: 70%"/></div><div style="text-align: center;margin-top: 5px"><button onclick="hideLayer()" class="btn btn-default fillBtn" style="margin: auto;width: 40%;border-radius: 0">确认</button></div></div>';
+            //页面层
+            layer.open({
+                type: 1,
+                title:"收货人信息",
+                area: ['400px', '190px'], //宽高
+                content: html
+            });
+        });
+
 
     });
+
+    function hideLayer() {
+
+        var name = $("#shipName").val();
+        var shipAddress = $("#shipAddress").val();
+        if(name==''||shipAddress==''){
+            layer.msg('收货信息必填');
+            return false;
+        }else {
+            $.post("/returnOrder/fillReturnAddress",{"address":shipAddress,"name":name},function (data) {
+
+                if(data.code==200){
+                    $(".shipName").text(name);
+                    $(".shipAddress").text(shipAddress);
+                }
+                console.log(data);
+            });
+        }
+
+        layer.close(layer.index);
+    };
 
 </script>

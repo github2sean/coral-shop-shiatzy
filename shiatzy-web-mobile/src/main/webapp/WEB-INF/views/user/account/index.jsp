@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li>
-                <a href="/checkout/listShipAddress">
+                <a href="/checkout/listShipAddress?way=index">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
                     <span><spring:message code="account.address"/></span>
                     <span style="float: right;">></span>
