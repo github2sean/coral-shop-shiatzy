@@ -652,6 +652,7 @@ public class PaymentContoller extends BaseController{
             couponDomain.setLimitTimes(limitNum-1);
             couponService.update(couponDomain);
         }
+        //商品库存减少@todo
         orderService.update(orderDomain);
     }
 
@@ -681,6 +682,7 @@ public class PaymentContoller extends BaseController{
         //对key键值按字典升序排序
         Collections.sort(list);
         for (int i = 0; i < list.size(); i++) {
+            System.out.println("list["+i+"]:"+list.get(i)+" value:"+map.get(list.get(i)));
             //选填字段为空不生成
             if(!isMustKey(list.get(i)) && ("".equals(map.get(list.get(i)))|| map.get(list.get(i))==null) ){
                 continue;

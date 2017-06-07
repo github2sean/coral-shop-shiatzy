@@ -49,4 +49,24 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/specialService");
         return modelAndView;
     }
+    @RequestMapping(value = "returnOrchange", method = RequestMethod.GET)
+    public ModelAndView returnOrchange(){
+        ModelAndView modelAndView = new ModelAndView("content/returnOrchange");
+        return modelAndView;
+    }
+    @RequestMapping(value = "deliveryTime", method = RequestMethod.GET)
+    public ModelAndView deliveryTime(){
+        ModelAndView modelAndView = new ModelAndView("content/deliveryTime");
+        return modelAndView;
+    }
+    @RequestMapping(value = "whatBoutique", method = RequestMethod.GET)
+    public ModelAndView whatBoutique(){
+        ModelAndView modelAndView = new ModelAndView("content/whatBoutique");
+        return modelAndView;
+    }
+    @RequestMapping(value = "privacyNotice", method = RequestMethod.GET)
+    public ModelAndView privacyNotice(){
+        ModelAndView modelAndView = new ModelAndView("content/privacyNotice");
+        return modelAndView;
+    }
 }

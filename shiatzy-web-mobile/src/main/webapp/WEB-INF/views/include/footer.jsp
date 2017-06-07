@@ -7,15 +7,17 @@
         <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
         <%--<li><a href="/content/faq?id="><spring:message code="commonQuestion"/></a></li>--%>
         <c:forEach var="item" items="${domainList}">
+            <c:if test="${item.level==1 && item.isIndex == 1}">
             <li><a href="/content/faq?id=${item.id}">${sessionScope.language=='en_US'?item.en_title:item.title}</a></li>
+            </c:if>
         </c:forEach>
         <li><a href="/content/specialService"><spring:message code="specialService"/></a></li>
         <li>
             <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">
                 <li><a href="http://brand.shiatzychen.com/"><spring:message code="officialSite"/></a></li>
-                <li><a href=""><spring:message code="contactUs"/></a></li>
-                <li><a href=""><spring:message code="privacyPolicy"/></a></li>
+                <li><a href="#"><spring:message code="contactUs"/></a></li>
+                <li><a href="#" class="privacyNotice"><spring:message code="privacyPolicy"/></a></li>
             </ul>
         </li>
     </ul>
@@ -135,6 +137,20 @@
                 return false;
             }
 
+        });
+
+
+        //iframe窗
+        $(".privacyNotice").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="privacyPolicy"/>',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '80%'],
+                content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
+                shadeClose: true
+            });
         });
 
     });

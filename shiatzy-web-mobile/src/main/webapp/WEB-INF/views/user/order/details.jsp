@@ -97,7 +97,7 @@
         </a>
     </div>
     <div class="privacy">
-        <a href="#">
+        <a href="#" class="privacyNotice">
             <span style="float:left;">> </span>
             <span style="float: left;">隐私权政策</span>
         </a>
@@ -184,6 +184,11 @@
             })
             $(".logisticInfo").slideToggle();
         });
+
+
+
+
+
 
     });
 

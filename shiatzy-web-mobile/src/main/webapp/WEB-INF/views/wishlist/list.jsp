@@ -94,8 +94,8 @@
     </c:if>
         <div class="dx-clause">
             <ul>
-                <li><a href="#"><spring:message code="shoppingCart.selectWoman"/></a></li>
-                <li><a href="#"><spring:message code="shoppingCart.selectMan"/></a></li>
+                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
+                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
                 <li class="last"><a href="#"><spring:message code="wish.whatWish"/>?</a></li>
             </ul>
         </div>
@@ -173,6 +173,7 @@
             });
         });
         
+
 
 
     });

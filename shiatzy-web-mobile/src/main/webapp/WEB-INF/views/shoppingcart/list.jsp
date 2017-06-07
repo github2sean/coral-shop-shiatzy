@@ -11,7 +11,7 @@
 <div class="dx-shopping">
     <div class="dx-title clearfix">
         <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="shoppingCart"/></div>
-        <a href="/home/index" class="icon iconfont" type="button">&#xe67d;</a>
+        <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 <c:if test="${cartList.size()>0}">
     <div class="content">
@@ -44,8 +44,8 @@
         <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping"><spring:message code="shoppingCart.checkout"/></a>
         <div class="dx-clause">
             <ul>
-                <li><a href="#"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
-                <li><a href="#"><spring:message code="shoppingCart.deliveryTime"/></a></li>
+                <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
+                <li><a href="#" class="deliveryTime"><spring:message code="shoppingCart.deliveryTime"/></a></li>
                 <li class="last hide"><a href="#"><spring:message code="shoppingCart.rule"/></a></li>
             </ul>
         </div>
@@ -59,8 +59,8 @@
             <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
             <div class="dx-clause">
                 <ul>
-                    <li><a href="#"><spring:message code="shoppingCart.selectWoman"/></a></li>
-                    <li><a href="#"><spring:message code="shoppingCart.selectMan"/></a></li>
+                    <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
+                    <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
                 </ul>
             </div>
         </div>
@@ -173,5 +173,32 @@
                 }
             });
         });
+
+
+        //
+        //iframe窗
+        $(".returnAndExchange").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="shoppingCart.returnAndExchange"/>',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '80%'],
+                content: ['${ctx}/content/returnOrchange'],//iframe的url，no代表不显示滚动条
+                shadeClose: true
+            });
+        });
+        $(".deliveryTime").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="shoppingCart.deliveryTime"/>',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '80%'],
+                content: ['${ctx}/content/deliveryTime'],//iframe的url，no代表不显示滚动条
+                shadeClose: true
+            });
+        });
+
     });
 </script>

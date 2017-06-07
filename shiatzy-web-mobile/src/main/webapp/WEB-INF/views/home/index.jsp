@@ -8,8 +8,11 @@
 </jsp:include>
 
 <div class="index-w text-center">
-    <a href="" class="do-block img-cover"><img src="${ctx}/static/images/index-banner.jpg" alt=""></a>
-    <div class="index-se font-16">
+    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-1.jpg" alt=""></a>
+    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-2.jpg" alt=""></a>
+    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-3.jpg" alt=""></a>
+    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-4.jpg" alt=""></a>
+    <div class="index-se font-16 hide">
         <a href="/home/index">
             <c:if test="${ not empty coupon}">
                 <p class="text-bold">${coupon.title}</p>
@@ -24,16 +27,26 @@
         </a>
     </div>
     <div class="col-2-w clearfix">
-        <a href="/goods/list?categoryId=16">
+        <a href="/goods/list?categoryId=16" style="padding-right: 5px">
             <p class="guide-link-before"><spring:message code="womenClothing"/></p>
-            <div><img src="${ctx}/static/images/index-women.jpg" alt=""></div>
+            <div><img src="${ctx}/static/images/Banner-5.jpg" alt=""></div>
         </a>
-        <a href="/goods/list?categoryId=26">
+        <a href="/goods/list?categoryId=26" style="padding-left: 5px">
             <p class="guide-link-before"><spring:message code="menClothing"/></p>
-            <div><img src="${ctx}/static/images/index-men.jpg" alt=""></div>
+            <div><img src="${ctx}/static/images/Banner-7.jpg" alt=""></div>
         </a>
     </div>
-    <a href="/goods/list?categoryId=21" class="do-block img-cover index-cat">
+
+    <a href="#" class="do-block img-cover " style="margin-top: 10px">
+        <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
+        <img src="${ctx}/static/images/Banner-8.jpg" alt="">
+    </a>
+
+    <a href="#" class="do-block img-cover " style="margin-top: 10px">
+        <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
+        <img src="${ctx}/static/images/Banner-9.jpg" alt="">
+    </a>
+    <%--<a href="/goods/list?categoryId=21" class="do-block img-cover index-cat">
         <p class="guide-link-before"><spring:message code="bags"/></p>
         <img src="${ctx}/static/images/index-list1.jpg" alt="">
     </a>
@@ -48,7 +61,7 @@
     <a href="/goods/list?categoryId=14" class="do-block index-show">
         <p class="guide-link-before">2017<spring:message code="fashion"/></p>
         <img src="${ctx}/static/images/index-show.jpg" alt="">
-    </a>
+    </a>--%>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

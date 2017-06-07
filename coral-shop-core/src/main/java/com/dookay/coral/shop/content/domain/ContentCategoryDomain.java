@@ -42,6 +42,10 @@ public class ContentCategoryDomain implements Serializable {
 
 	/*分类等级*/
 	private Integer level;
+
+	/*是否在页脚*/
+	private Integer isIndex;
+
 	/*子分类*/
 	@Transient
 	private List<ContentCategoryDomain> children;

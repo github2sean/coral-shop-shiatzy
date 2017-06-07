@@ -46,7 +46,7 @@
             </div>
         </c:if>
     </div>
-
+    <div class="check clearfix"> <span>查看所有订单</span><a href="/reservation/list"> ></a></div>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

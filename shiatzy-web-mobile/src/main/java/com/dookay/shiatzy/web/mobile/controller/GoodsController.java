@@ -98,19 +98,35 @@ public class GoodsController extends BaseController{
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
+
+        //商品分类
+        GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
+        modelAndView.addObject("goodsCategoryDomain",goodsCategoryDomain);
+        List <GoodsCategoryDomain> list =null;
+        if(goodsCategoryDomain.getLevel()==1){
+            List<Long> childCategoryIds = new ArrayList<>();
+            GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
+            goodsCategoryQuery.setParentId(goodsCategoryDomain.getId());
+            goodsCategoryQuery.setLevel(2);
+            list  = goodsCategoryService.getList(goodsCategoryQuery);
+            for (GoodsCategoryDomain line: list){
+                childCategoryIds.add(line.getId());
+            }
+            query.setCategoryIds(childCategoryIds);
+            query.setCategoryId(null);
+        }else{
+            query.setCategoryId(categoryId);
+        }
         //商品列表
-        query.setCategoryId(categoryId);
         System.out.println("query:"+query);
         List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
 
         goodsService.withGoodsItemList(goodsList);
         System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         modelAndView.addObject("query",query);
-        //商品分类
-        GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
-        modelAndView.addObject("goodsCategoryDomain",goodsCategoryDomain);
-        //分类列表
-        List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
+
+        //同级分类列表
+        List<GoodsCategoryDomain> goodsCategoryDomainList =list!=null&&list.size()>0?list:goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
 
         //材质列表

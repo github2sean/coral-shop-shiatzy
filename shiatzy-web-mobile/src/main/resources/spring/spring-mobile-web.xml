@@ -103,7 +103,7 @@
     </bean>
     <!--unionPay配置 -->
     <bean class="com.dookay.coral.adapter.payment.unionpay.acp.config.UnionConfig" name="unionConfig">
-        <property name="merId" value="777290058146843" />
+        <property name="merId" value="802320056910501" />
         <!--<property name="backUrl" value="http://test-ip-41.coralcodes.com/payment/backRcvResponse"/>
         <property name="frontUrl" value="http://test-ip-41.coralcodes.com/payment/frontRcvResponse"/>-->
         <property name="backUrl" value="http://shiatzy-w.doolab.cn/payment/backRcvResponse"/>
@@ -127,16 +127,18 @@
         <property name="currencyCode" value="CNY"/>
         <property name="settlementCurrencyCode" value="CNY"/>
         <property name="borrowingMarked" value="0"/>
-        <property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>
-        <!--<property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>-->
-        <property name="partnerId" value="10000007526"/>
+        <!--<property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>-->
+        <property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>
+        <property name="partnerId" value="10000003846"/>
+        <!--<property name="partnerId" value="10000007526"/>-->
         <property name="payMode" value="10"/>
         <property name="payType" value="EDC"/>
         <property name="charset" value="1"/>
         <property name="signType" value="2"/>
-        <property name="postUrl" value="http://api.test.ipaylinks.com/webgate/crosspay.htm"/>
+       <!-- <property name="postUrl" value="http://api.test.ipaylinks.com/webgate/crosspay.htm"/>-->
+        <property name="postUrl" value="https://cashsite.iPayLinks.com/webgate/crosspay.htm"/>
         <!--生产环境 https://cashsite.iPayLinks.com/webgate/crosspay.htm-->
         <property name="directFlag" value="0"/>
         <property name="language" value="cn"/>

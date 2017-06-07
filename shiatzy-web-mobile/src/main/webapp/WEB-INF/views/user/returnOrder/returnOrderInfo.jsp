@@ -139,12 +139,15 @@
         $(".reasonShow").click(function () {
            $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
         });
-        $(".return-list:first").show();
+        //$(".return-list:first").show();
 
         if($('input[type=checkbox]').is(':checked')) {
             // do something
         }
 
+        $(".i-radiobox").click(function () {
+            $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
+        });
 
 
         $(".submitBtn").click(function () {
