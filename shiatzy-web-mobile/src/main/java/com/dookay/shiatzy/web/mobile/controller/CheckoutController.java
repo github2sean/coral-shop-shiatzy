@@ -1,11 +1,14 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.enums.ValidEnum;
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.BeanValidators;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
+import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -17,6 +20,7 @@ import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
+import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
@@ -45,6 +49,7 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -178,6 +183,7 @@ public class CheckoutController  extends BaseController{
         //商品金额
         calcOrderTotal(orderDomain, cartList);
 
+        int count = 0;
 
         for(ShoppingCartItemDomain line :cartList){
             //准备商品数据
@@ -186,28 +192,56 @@ public class CheckoutController  extends BaseController{
             goodsItemService.withColor(goodsItemDomain);
             GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
             goodsService.withGoodsItemList(goodsDomain);
-
             //尺寸
             List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
             PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
 
+            for(Long id:sizeIds){
+                goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
+            }
             line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
             System.out.println("goodsDomain:"+goodsDomain+"\n sizeList:"+sizeList);
         }
-
-
-
-
-
 
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
         mv.addObject(CART_LIST,cartList);
         mv.addObject(ORDER,orderDomain);
         return mv;
     }
+
+    @RequestMapping(value = "updateGoodsInCheck",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult updateGoodsInCheck(Long goodsItemId,Long sizeId,Long cartId,Integer num){
+        if(shoppingCartService.get(cartId)!=null){
+            shoppingCartService.removeFromCart(cartId);
+        }else{
+            return errorResult("参数出错");
+        }
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+         /*获取SKU*/
+        Long itemId = goodsItemId;
+        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
+
+        SkuQuery skuQuery = new SkuQuery();
+        skuQuery.setItemId(itemId);
+        skuQuery.setIsValid(ValidEnum.YES.getValue());
+        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
+        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+        System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
+        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+        if(skuDomain == null)
+        {
+            throw new ServiceException("参数错误");
+        }
+        skuDomain.setItemId(itemId);
+        shoppingCartService.addToCart(customerDomain, skuDomain,1,num);
+        return successResult("修改成功");
+    }
+
 
     @RequestMapping(value = "confirm",method = RequestMethod.GET)
     public ModelAndView confirm(String page){

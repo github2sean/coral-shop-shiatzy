@@ -34,4 +34,6 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
     void withGoodsItemList(List<GoodsDomain> goodsDomainList);
     void withGoodsItemList(List<GoodsDomain> goodsDomainList,Integer onSale);
     void withGoodsItemList(GoodsDomain goodsDomain);
+    void withGoodsItemListAndQuantity(GoodsDomain goodsDomain, Long sizeId);
+
 }
