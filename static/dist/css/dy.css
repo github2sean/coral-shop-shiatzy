@@ -1044,3 +1044,22 @@
     display: none;
 }
 
+.site-notice{
+    position: relative;
+    z-index: 1;
+    padding:0.9rem 4rem 0.9rem 1.5rem;
+    font-size: 0.8rem;
+    color:#fff;
+    background-color:#4d4d4d;
+    letter-spacing: 0.12rem;
+}
+
+.site-notice a.iconfont{
+    position: absolute;
+    color:#fff;
+    right:0.8rem;
+    line-height:1;
+    font-size:3rem;
+    top:50%;
+    transform:translateY(-50%);
+}

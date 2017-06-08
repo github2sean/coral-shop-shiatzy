@@ -202,7 +202,9 @@
             16.599,11 16.599,7.7 13.849,5.5 	"/> </g> <g> <circle style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" cx="132.76" cy="180.545" r="6.45"/> <line style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" x1="137.32" y1="185.105" x2="141.311" y2="189.096"/> </g>
         </symbol></svg>
 </div>
-<header class="top-bar">
+
+<header class="relative">
+    <div class="top-bar">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">
@@ -210,6 +212,7 @@
         <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
+    </div>
 </header>
 <div class="do-nav-panel" id="j_nav_panel">
     <div class="do-nav-head">
