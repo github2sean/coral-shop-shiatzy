@@ -11,7 +11,7 @@
 <div class="dx-accounts">
     <div class="dx-title">结账 <a href="/cart/list">回上页</a></div>
     <div class="content">
-        <c:forEach var="row" items="${cartList}">
+        <c:forEach var="row" items="${cartList}" varStatus="num">
         <div class="dx-GoodsDetails goodsDiv">
             <div class="goods clearfix">
                 <div class="goods-left">
@@ -30,8 +30,43 @@
                     <li><a href="javascript:;" class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
-            <div class="alter j_alter"><a href="javascript:;">修改</a></div>
+            <div class="alter j_alter"  data-value="${num.count-1}"><a href="javascript:;">修改</a></div>
         </div>
+            <div class="alter-popup alter-popup${num.count-1}">
+                <div class="dx-goods clearfix">
+                    <div class="goods-pic">
+                        <span></span><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;">
+                    </div>
+                    <div class="goods-details">
+                        <div class="name">${row.goodsName}</div>
+                        <div class="number">${row.goodsCode}</div>
+                        <div class="color">
+                            <div class="title">${row.goodsItemDomain.name}(还有款颜色)</div>
+                            <ul>
+                                <c:forEach var="row" items="${cartList[0].goodsDomain.goodsItemList}" varStatus="status">
+                                    <li class=" <c:if test="${status.first}">active</c:if> "><a href="">${row.name}</a></li>
+                                </c:forEach>
+                                    <%--<li class="active"><a href="">紅色</a></li>
+                                    <li><a href="">藍色</a></li>
+                                    <li><a href="">桃色</a></li>--%>
+                            </ul>
+                        </div>
+                        <div class="size">
+                            <div class="title">选择尺寸</div>
+                            <ul>
+                                <c:forEach var="row" items="${cartList[0].sizeDomins}" >
+                                    <li class="active"><a href="">${row.name} <c:if test=""></c:if><span>(已售完)</span></a></li>
+                                </c:forEach>
+                                    <%--<li><a href="">S</a> <span></span></li>
+                                    <li class="active"><a href="">M</a> <span></span></li>
+                                    <li><a href="">L</a> <span>(已售完)</span></li>--%>
+                            </ul>
+                        </div>
+                        <div class="quantity">数量 <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
+                    </div>
+                </div>
+                <button type="button" class="btn j_x_close">確認</button>
+            </div>
         </c:forEach>
         <div class="privilege">
             <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
@@ -54,35 +89,7 @@
 </div>
 
 <!-------修改弹窗开始------->
-<div class="alter-popup">
-    <div class="dx-goods clearfix">
-        <div class="goods-pic">
-            <span></span><img src="images/goods-pic01.jpg" alt="">
-        </div>
-        <div class="goods-details">
-            <div class="name">玉镯提包系列黑色刺绣托特包</div>
-            <div class="number">产品编号 1B1184 Z</div>
-            <div class="color">
-                <div class="title">黑色(还有3款颜色)</div>
-                <ul>
-                    <li class="active"><a href="">紅色</a></li>
-                    <li><a href="">藍色</a></li>
-                    <li><a href="">桃色</a></li>
-                </ul>
-            </div>
-            <div class="size">
-                <div class="title">选择尺寸</div>
-                <ul>
-                    <li><a href="">S</a> <span></span></li>
-                    <li class="active"><a href="">M</a> <span></span></li>
-                    <li><a href="">L</a> <span>(已售完)</span></li>
-                </ul>
-            </div>
-            <div class="quantity">数量 <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
-        </div>
-    </div>
-    <button type="button" class="btn j_x_close">確認</button>
-</div>
+
 
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -112,10 +119,13 @@
         clsTotal();
         //修改弹窗
         $(".j_alter").on("click",function () {
+
+            var num = $(this).attr("data-value");
+            var str = ".alter-popup"+num;
             layer.open({
                 type:1,
                 title: false,
-                content:$(".alter-popup"),
+                content:$(str),
                 shade:0.8,
                 area:['29rem','30rem']
             });
@@ -123,12 +133,23 @@
 
         //点击问号弹窗
         $(".j_alter2").on("click",function () {
-            layer.open({
+            /*layer.open({
                 type:1,
                 title: false,
                 content:$(".question-popup"),
                 shade:0.8,
+                closeBtn:1,
                 area:['25rem','44rem']
+            });*/
+            //自定页
+            layer.open({
+                title:'优惠券',
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn:1,
+                shadeClose: true, //开启遮罩关闭
+                content: '<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 14px">输入相应的“优惠代码/优惠券号”，点击“应用”，即刻享有相应优惠礼遇。请注意使用时间和相应条款。</span>',
+                area:['25rem','12rem']
             });
         });
 

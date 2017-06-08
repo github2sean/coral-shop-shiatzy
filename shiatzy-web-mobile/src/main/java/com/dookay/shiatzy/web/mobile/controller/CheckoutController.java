@@ -12,7 +12,14 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
@@ -94,6 +101,13 @@ public class CheckoutController  extends BaseController{
     @Autowired
     private IShippingCountryService shippingCountryService;
 
+    @Autowired
+    private IGoodsItemService goodsItemService;
+    @Autowired
+    private IGoodsService goodsService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+
 
     private static String CART_LIST = "cartList";
     private static String ORDER = "order";
@@ -163,6 +177,32 @@ public class CheckoutController  extends BaseController{
         }
         //商品金额
         calcOrderTotal(orderDomain, cartList);
+
+
+        for(ShoppingCartItemDomain line :cartList){
+            //准备商品数据
+            GoodsItemDomain goodsItemDomain =  goodsItemService.get(line.getItemId());
+            Long goodsId = goodsItemDomain.getGoodsId();
+            goodsItemService.withColor(goodsItemDomain);
+            GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
+            goodsService.withGoodsItemList(goodsDomain);
+
+            //尺寸
+            List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
+            PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+            prototypeSpecificationOptionQuery.setIds(sizeIds);
+            List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+
+            line.setSizeDomins(sizeList);
+            line.setGoodsDomain(goodsDomain);
+            System.out.println("goodsDomain:"+goodsDomain+"\n sizeList:"+sizeList);
+        }
+
+
+
+
+
+
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
         mv.addObject(CART_LIST,cartList);
         mv.addObject(ORDER,orderDomain);

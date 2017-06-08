@@ -1,6 +1,9 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsColorDomain;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 购物车的domain
@@ -64,11 +68,21 @@ public class ShoppingCartItemDomain implements Serializable {
 	private GoodsItemDomain goodsItemDomain;
 
 	@Transient
+	private GoodsDomain goodsDomain;
+
+	@Transient
 	private Long categoryId;
 
 	/*尺寸*/
 	@Transient
 	private String size;
 
+	/*同类商品尺寸*/
+	@Transient
+	private List<PrototypeSpecificationOptionDomain> sizeDomins;
+
+	/*同类商品颜色*/
+	@Transient
+	private List<GoodsColorDomain> colorDomains;
 	
 }

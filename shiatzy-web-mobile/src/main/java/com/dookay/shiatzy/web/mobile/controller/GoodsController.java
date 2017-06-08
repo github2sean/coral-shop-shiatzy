@@ -387,7 +387,6 @@ public class GoodsController extends BaseController{
         //商品数据校验，没有sku，跳转到404页面
 
         //准备商品数据
-
         GoodsItemDomain goodsItemDomain =  goodsItemService.get(itemId);
         Long goodsId = goodsItemDomain.getGoodsId();
         goodsItemService.withColor(goodsItemDomain);
@@ -400,6 +399,7 @@ public class GoodsController extends BaseController{
         List<GoodsDomain> historyList = HistoryUtil.getHistory();
         goodsService.withGoodsItemList(historyList);
 
+        //尺寸
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(sizeIds);

@@ -35,7 +35,7 @@
         </div>
 
         <div class="size">
-            <div class="title j_choose">选择尺寸 &nbsp; <span>查看尺寸指南</span></div>
+            <div class="title j_choose"><spring:message code="shoppingCart.size"/> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice">查看尺寸指南</span></div>
             <ul class="hide" id="js_size">
                 <c:forEach var="item" items="${sizeList}" varStatus="status" >
                 <li class="<c:if test="${status.first}">active</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}<span></span></a> </li>
@@ -102,7 +102,13 @@
 
         $(".j_choose").on("click",function () {
             $(this).siblings().toggleClass("hide");
-        })
+        });
+
+        $("#js_size").find(".sizeIds").click(function () {
+            $(this).parent("ul").addClass("hide");
+           var size = $(this).find('a').text();
+           $(".sizeChecked").text(size);
+        });
 
         $(".j_collect").click(function () {
             var url ="";
@@ -114,6 +120,7 @@
                   sizeId = $(this).attr("data-value");
               }
            });
+
             var data = {"itemId":'${goodsItemDomain.id}',"num":1,"sizeId":sizeId,"type":2};
             console.log(data);
             var url = "";
@@ -166,5 +173,21 @@
                 }
             });
         });
+
+
+        //iframe窗
+        $(".sizeNotice").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="shoppingCart.size"/>'+'指南',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '80%'],
+                content: ['${ctx}/content/sizeNotice'],//iframe的url，no代表不显示滚动条
+                shadeClose: true
+            });
+        });
+
+
     });
 </script>
