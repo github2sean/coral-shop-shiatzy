@@ -246,12 +246,12 @@
             </c:forEach>
             <li><a href="/goods/onSale">SALE</a></li>
         </ul>
-        <ul class="do-list-lang do-list-btm">
+        <ul class="do-list-lang">
             <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
             <li class="do-login"><a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
             <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
         </ul>
-        <ul class="do-list-lang do-list-btm j_drop_down">
+        <ul class="do-list-lang j_drop_down">
             <li class=""><a href="javascript:void(0);"><spring:message code="selectLanguage"/>
                 <ul class="do-sub-list-btm">
                     <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
