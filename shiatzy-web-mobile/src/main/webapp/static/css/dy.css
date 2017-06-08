@@ -169,7 +169,7 @@
     margin-bottom: 1.5459rem;
 }
 
-.verify-message-middle>h2 {
+.verify-message-middle > h2 {
     font-size: 1.0821rem;
     text-indent: 0.8502rem;
     margin-top: 2.8599rem;
@@ -331,11 +331,11 @@
 }
 
 .back-up a h3 {
-    font-size: 1.0rem;
+    font-size: 1.3914rem;
     float: right;
     border: 1px solid #cccccc;
     margin-right: 1.0821rem;
-    line-height: 2rem;
+    line-height: 2.5507rem;
     padding: 0.778rem 1.2367rem;
     color: #999999;
 }
@@ -343,6 +343,7 @@
 .club,
 .club-card {
     padding: 0 23px 0 28px;
+    margin-top: 9.0435rem;
 }
 
 .club h3 {
@@ -366,17 +367,6 @@
     width: 100%;
     border-bottom: none;
     border-right: 2px solid #999999;
-}
-
-.btn-default {
-    width: 100%;
-    display: block;
-    background-color: #999999;
-    text-align: center;
-    font-size: 1rem;
-    line-height: 2.7826rem;
-    border: none;
-    padding: 0;
 }
 
 .club a {
@@ -483,6 +473,7 @@
     font-size: 1.0821rem;
     line-height: 3.942rem;
     padding-left: 2.3188rem;
+    margin-bottom: 1.1rem;
     border: 2px solid #999999;
 }
 
@@ -498,12 +489,15 @@
     margin-bottom: 4.6377rem;
 }
 
+.register-mail .input {
+    position: relative;
+}
+
 .register-mail i {
     position: absolute;
     top: -0.6184rem;
     right: 0;
     color: #b5272d;
-    width: 16px;
 }
 
 .my-account .contact h3 {
@@ -535,7 +529,7 @@
     margin-bottom: 4.6377rem;
 }
 
-.order-finish>h3 {
+.order-finish > h3 {
     font-size: 1.3913rem;
     text-align: center;
 }
@@ -570,7 +564,7 @@
 
 .drugstore {
     padding: 0 1.5459rem 0 3.0918rem;
-    border: 2px solid #e6e6e6;
+    border: 2px solid #999999;
     border-top: none;
 }
 
@@ -596,17 +590,10 @@
     line-height: 3.2rem;
 }
 
-.delivery ul {
-    border-top: 2px solid #cccccc;
-    border-left: 2px solid #cccccc;
-    border-right: 2px solid #cccccc;
-}
-
 .delivery ul li {
     font-size: 1.0821rem;
     line-height: 3.5rem;
     border-bottom: 2px solid #cccccc;
-    padding-left: 2rem;
 }
 
 .delivery ul .active {
@@ -628,7 +615,7 @@
     margin-bottom: 3.8647rem;
 }
 
-.delivery ul+p {
+.delivery ul + p {
     line-height: 1.8rem;
     border-bottom: 2px solid #cccccc;
     text-align: center;
@@ -679,7 +666,7 @@
     color: #000000;
 }
 
-.unfinished h3+p {
+.unfinished h3 + p {
     font-size: 0.9rem;
     text-align: center;
     color: #999999;
@@ -711,29 +698,29 @@
     float: right;
 }
 
-.order-details h4+ul {
+.order-details h4 + ul {
     border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
 }
 
-.order-details h4+ul li {
+.order-details h4 + ul li {
     font-size: 0.9rem;
 }
 
-.order-details h4+ul li span {
+.order-details h4 + ul li span {
     float: right;
 }
 
-.order-details ul+p {
+.order-details ul + p {
     text-indent: 0.8502rem;
     margin-bottom: 3.8647rem;
 }
 
-.order-details ul+p span {
+.order-details ul + p span {
     float: right;
 }
 
-.order-details h4+p {
+.order-details h4 + p {
     font-size: 1.0821rem;
     text-indent: 0.8502rem;
 }
@@ -759,12 +746,12 @@
     margin-top: 0;
 }
 
-.order-num h3+p {
+.order-num h3 + p {
     font-size: 1.0821rem;
     float: left;
 }
 
-.order-num h3+p span {
+.order-num h3 + p span {
     margin-left: 2.7053rem;
 }
 
@@ -841,18 +828,18 @@
     margin-bottom: 1.9rem;
 }
 
-.explain ul>li {
+.explain ul > li {
     border-bottom: 1px solid #d9d9d9;
     margin: 0 .7rem;
     text-align: left;
 }
 
-.explain ul>li>a {
+.explain ul > li > a {
     display: block;
     padding: 1rem 1.7rem .6rem;
 }
 
-.explain ul>li>a>span {
+.explain ul > li > a > span {
     float: right;
 }
 
@@ -909,11 +896,11 @@
     margin-top: 1rem;
 }
 
-.return-way+p {
+.return-way + p {
     font-size: .9rem;
 }
 
-.return-way+p+p {
+.return-way + p + p {
     font-size: .9rem;
     margin-bottom: 3rem;
 }
@@ -946,16 +933,16 @@
     margin-right: 0;
 }
 
-.return-commodity>div {
+.return-commodity > div {
     float: left;
 }
 
-.return-commodity>div+div p {
+.return-commodity > div + div p {
     font-size: .9rem;
     margin-bottom: 0;
 }
 
-.return-commodity>div+div span {
+.return-commodity > div + div span {
     font-size: .7rem;
 }
 
@@ -963,13 +950,13 @@
     position: relative;
 }
 
-.return-commodity>div+div {
+.return-commodity > div + div {
     position: absolute;
     top: 38%;
     left: 30%;
 }
 
-.return-commodity>div+div p span {
+.return-commodity > div + div p span {
     margin-left: 6rem;
 }
 
@@ -1049,11 +1036,11 @@
     border-bottom: 2px solid #ccc;
 }
 
-.select_control+.select_control {
+.select_control + .select_control {
     margin-top: 10px;
 }
 
-.store,
-.stores-introduce {
+.store, .stores-introduce {
     display: none;
 }
+
