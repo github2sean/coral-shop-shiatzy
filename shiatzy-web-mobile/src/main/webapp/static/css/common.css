@@ -2142,8 +2142,16 @@ h3 {
 
 .do-pro-list>li>a {
     display: block;
-    font-size: 1.2rem;
-    padding: 0 .5rem
+    font-size: 0.95rem;
+}
+
+.do-pro-list>li>a p {
+    margin:0 0 1rem;
+}
+
+.do-pro-list>li>a .do-pro-price {
+    font-size:0.85rem;
+    letter-spacing: 0.1rem;
 }
 
 .do-list-color>li {
@@ -2153,7 +2161,7 @@ h3 {
 }
 
 .do-list-color {
-    margin: 1rem 0
+    margin: 1rem 0;
 }
 
 .do-pro-list .do-img {
@@ -2215,7 +2223,9 @@ h3 {
     border-top: 2px solid #000;
     margin-top: 2rem
 }
-
+.do-sort-list>li{
+    padding: .7rem 2rem .2rem
+}
 .do-sort-list>li>a {
     display: block;
     margin: 0 -2rem;
@@ -2361,13 +2371,13 @@ svg {
 }
 
 .icon-collect svg {
-    width: 1.6rem;
-    height: 1.6rem
+    width: 2.2rem;
+    height: 2.2rem
 }
 
 .do-pro-list .icon-collect {
     position: absolute;
-    top: .5rem;
+    top: 0;
     right: .5rem;
     z-index: 5
 }

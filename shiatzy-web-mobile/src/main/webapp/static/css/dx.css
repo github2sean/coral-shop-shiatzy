@@ -1478,7 +1478,7 @@ i {
 .dx-commodity .title {
     font-size: 1.4rem;
     line-height: 3.7rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 
 .dx-commodity .number {
@@ -1686,5 +1686,5 @@ i {
     margin-right: .2rem;
     width: 1rem;
     height: 1rem;
-    border: .2rem solid #ccc;
+    border: 1px solid #ccc;
 }

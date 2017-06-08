@@ -1222,11 +1222,13 @@ i{
     margin-bottom: 1.8rem;
 }
 .dx-commodity .title{
+    color:#000;
     font-size: 1.4rem;
     line-height: 3.7rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 .dx-commodity .number {
+    color:#808080;
     font-size: 1rem;
     line-height: 2rem;
     margin-bottom: 2.7rem;

@@ -30,10 +30,10 @@
                 <li>
                     <a href="/goods/details/${firstItem.id}">
                         <div class="do-img">
-                            <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 120px;">
+                            <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                         </div>
                         <p class="do-pro-t ellipsis-2l" name="goodsName">${goods.name}</p>
-                        <p class="do-pro-price ellipsis" name="goodsPrice">${firstItem.price}</p>
+                        <p class="do-pro-price" name="goodsPrice">${firstItem.price}</p>
                         <ul class="do-list-color" name="skuId" data-value="">
                         <c:forEach var="goods" items="${goods.goodsItemList}">
                             <li style="background: ${goods.colorValue}"></li>
