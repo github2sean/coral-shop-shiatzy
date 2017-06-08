@@ -21,7 +21,7 @@
             </ul>
         </li>
     </ul>
-    <ul class="do-list-lang do-list-btm j_drop_down">
+    <ul class="do-list-lang j_drop_down">
         <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
         <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
@@ -66,6 +66,10 @@
     $(function () {
         commonApp.init();
         backendApp.init();
+        <%--关闭提示--%>
+        $(".j_cls_notice").on("click touchstart",function(){
+            $(this).parent().fadeOut();
+        })
     });
 </script>
 <script>
