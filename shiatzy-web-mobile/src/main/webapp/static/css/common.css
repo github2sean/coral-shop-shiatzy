@@ -1012,7 +1012,7 @@ ul.bxslider {
 .bx-viewport {
     /*fix other elements on the page moving (on Chrome)*/
     -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 
@@ -2307,15 +2307,15 @@ h3 {
 
 svg {
     width: 2rem;
-    height: 2rem
+    height: 2rem;
 }
 
 .top-right-nav>li {
-    float: left
+    float: left;
 }
 
 .do-logo-w {
-    width: 15rem
+    width: 18rem;
 }
 
 .do-logo-w img {
@@ -2446,4 +2446,10 @@ svg {
 
 .form-item2 .n-invalid {
     background-color: #ffffff;
+}
+
+input,
+select,
+textarea {
+    -webkit-appearance: none;
 }
