@@ -96,7 +96,7 @@
             <ul>
                 <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
                 <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
-                <li class="last"><a href="#"><spring:message code="wish.whatWish"/>?</a></li>
+                <li class="last whatWish"><a href="#"><spring:message code="wish.whatWish"/>?</a></li>
             </ul>
         </div>
 </div>
@@ -172,8 +172,19 @@
                 }
             });
         });
-        
 
+
+        $(".whatWish").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="wish.whatWish"/>',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '50%'],
+                content: ['${ctx}/content/whatWish'],//iframe的url，no代表不显示滚动条
+                shadeClose: true
+            });
+        });
 
 
     });

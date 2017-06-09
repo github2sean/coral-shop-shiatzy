@@ -82,6 +82,19 @@ public class GoodsDomain implements Serializable {
 	@Transient
 	private List<GoodsItemDomain> goodsItemList;
 
+
+	@Transient
+	private List<GoodsColorDomain> goodsColorDomainList;
+
+	/*商品尺寸*/
+	@Transient
+	private List<PrototypeSpecificationOptionDomain> sizeDomainList;
+
+	/*默认第一个商品尺寸*/
+	@Transient
+	private PrototypeSpecificationOptionDomain firstSizeDomain;
+
+
 	/*商品规格*/
 	@Transient
 	private List<PrototypeSpecificationDomain> specificationList;

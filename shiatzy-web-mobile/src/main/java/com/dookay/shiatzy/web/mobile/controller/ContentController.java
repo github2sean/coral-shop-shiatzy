@@ -69,4 +69,19 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/privacyNotice");
         return modelAndView;
     }
+    @RequestMapping(value = "sizeNotice", method = RequestMethod.GET)
+    public ModelAndView sizeNotice(){
+        ModelAndView modelAndView = new ModelAndView("content/sizeNotice");
+        return modelAndView;
+    }
+    @RequestMapping(value = "whatWish", method = RequestMethod.GET)
+    public ModelAndView whatWish(){
+        ModelAndView modelAndView = new ModelAndView("content/whatWish");
+        return modelAndView;
+    }
+    @RequestMapping(value = "whatCoupon", method = RequestMethod.GET)
+    public ModelAndView whatCoupon(){
+        ModelAndView modelAndView = new ModelAndView("content/whatCoupon");
+        return modelAndView;
+    }
 }

@@ -93,8 +93,15 @@
         });*/
     }
     $(function () {
-        setCartNum();
 
+        $("#j_back_top").click(function () {
+            var speed=500;//滑动的速度
+            $('body,html').animate({ scrollTop: 0 }, speed);
+            return false;
+        });
+
+
+        setCartNum();
         $("#searchBtn").click(function () {
 
            var key = $("#searchKey").val();
@@ -158,6 +165,8 @@
         });
 
     });
+
+
 
 </script>
 <!-- js页面应用 结束 -->

@@ -14,6 +14,7 @@
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
 
+
 <div class="container">
     <div class="do-list-header">
         <a href="javascript:;" class="link-down font-16 j_panel_trigger" data-panel="j_panel_cat">${sessionScope.language=='en_US'?goodsCategoryDomain.enName:goodsCategoryDomain.name}</a>
@@ -114,43 +115,49 @@
 </jsp:include>
 <script>
     function getJsonObjLength(jsonObj) {
-        var Length = 0;
-        for (var item in jsonObj) {
-            Length++;
-            console.log("item:"+item);
+        console.log("jsonObjlength:"+jsonObj.length);
+        return jsonObj.length;
+    }
+
+    function addToWish(now,type){
+        var isLogin = '${sessionScope.user_context}';
+        if(isLogin==null || isLogin ==""){
+            location.href="${ctx}/passport/toLogin";
         }
-        return Length;
+        var selectSizeId=$(now).attr("data-ids");
+        var selectItemId = $(now).attr("data-value");
+        var selectSizeId=selectSizeId;
+         var itemId = selectItemId;
+        var isAdd =  $(now).find("use").attr("xlink:href");
+        console.log(isAdd);
+        var data = {"itemId":itemId,"num":1,"sizeId":selectSizeId,"type":2};
+        console.log(data);
+        var url = "";
+        if(type==1 && isAdd=="#heart-red"){
+            url = "/cart/addToCart";
+        }else if(type==1 && isAdd=="#heart"){
+            url = "/cart/removeFromWish";
+        }else if(type==2 && isAdd=="#heart-red"){
+            $(now).find("use").attr("xlink:href","#heart");
+            url = "/cart/removeFromWish";
+        }else if(type==2 && isAdd=="#heart"){
+            $(now).find("use").attr("xlink:href","#heart-red");
+            url = "/cart/addToCart";
+        }
+        console.log(url);
+        $.post(url,data,function (result) {
+            console.log(result);
+            if(result.code==200){
+                console.log(result.message);
+            }
+        });
     }
     $(function () {
         //console.log('${goodsList}');
-
         //var cartNum  = $(".do-num").val();
-            $(".j_collect").click(function () {
-                var isLogin = '${sessionScope.user_context}';
-                if(isLogin==null || isLogin ==""){
-                    location.href="${ctx}/passport/toLogin";
-                }
-                var selectSizeId=$(this).attr("data-ids");
-                var skuId = $(this).attr("data-value");
-                var isAdd =  $(this).find("use").attr("xlink:href");
-                console.log(isAdd);
-                var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":2};
-                console.log(data);
-                var url = "";
-                if(isAdd=="#heart-red"){
-                    url = "/cart/addToCart";
-                }else if(isAdd=="#heart"){
-                    url = "/cart/removeFromWish";
-                }
-                console.log(url);
-                $.post(url,data,function (result) {
-                    console.log(result);
-                    if(result.code==200){
-                        console.log(result.message);
-                    }
-                });
-            });
-
+        $(".j_collect").click(function () {
+            addToWish(this,1);
+        });
         $(".btn-submit").click(function () {
             var data = $(".filterForm").serializeArray();
             console.log(data)
@@ -169,70 +176,154 @@
         });
 
 
-        //加载更多商品
+
+
+            //加载更多商品
         var offset = '${goodsDomainPageList.list.size()}'*1-1;
         var page = 2;
         console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
         $(".moreGoods").click(function () {
-            //当前分类
-            var categoryId = '${goodsCategoryDomain.id}'
-            //当前排列的方式
-            var priceWay = "${sessionScope.priceWay}";
-            //当前页
-            var nowPage = page++;
-
-            var data2 = {"categoryId":categoryId,"priceWay":priceWay,"offset":offset,"nowPage":nowPage}
-            console.log("data2:"+data2+" offset:"+offset);
-            $.post("/goods/listMore",data2,function (data) {
-
-                if(data.code==200){
-                    var moreListJson = eval(data.data);
-                    var moreList = moreListJson.list;
-                    var nowSize = getJsonObjLength(moreList);
-                    offset = offset+nowSize;
-                    console.log(moreList+" nowSize:"+nowSize);
-
-                    if(moreList!=''){
-                        console.log("exe")
-                        for(var i=0;i<nowSize;i++){
-                            var firstItem = moreList[i].goodsItemList[0];
-                            var srcJson = eval(firstItem.thumb);
-                            var src = srcJson[0].file;
-                            var sizeIds = new Array();
-                            var strrrr = '${sizeList}';
-                            console.log("size:"+strrrr);
-                            var str = " <li>" +
-                                    " <a href='/goods/details/"
-                                    +firstItem.id+
-                                    "' ><div class='do-img'><img src="
-                                    +src+
-                                    " alt='' style='height: 120px;'/></div>  " +
-                                    " <p class='do-pro-t ellipsis-25' name='goodsName'>"
-                                    +moreList[i].name+
-                                    " </p> " +
-                                    " <p class='do-pro-price' name='goodsPrice'>"
-                                    +firstItem.price+
-                                    " </p> " +
-                                    "<ul class='do-list-color' name='skuId' data-value=''><li style='background: #000000'></li> </ul> " +
-                                    "</a> " +
-                                    "<i class='icon-collect j_collect' data-value="
-                                    +firstItem.id+
-                                    " data-ids='${sizeList[i]}'> <svg class='do-heart'><use xlink:href='#heart'></use></svg> </i> </li>";
-                                //console.log(str);
-                            //滚动条滚动一段距离
-                            $(".j_scroll_list").append(str);
-                            /*  var t = $(window).scrollTop();
-                            $('body,html').animate({scrollTop:t+500},100);*/
-                        }
-                    }else {
-                        $(".moreGoods").hide().siblings(".overGoods").show();
-                    }
-                }else {
-                    layer.msg("加载失败");
-                }
-            });
-
-
+            loadMore();
         });
     });
+
+    //加载更多商品
+    var offset = '${goodsDomainPageList.list.size()}'*1-1;
+    var page = 2;
+    console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
+    function loadMore() {
+        //当前分类
+        var categoryId = '${goodsCategoryDomain.id}'
+        //当前排列的方式
+        var priceWay = "${sessionScope.priceWay}";
+        //当前页
+        var nowPage = page++;
+
+        var data2 = {"categoryId":categoryId,"priceWay":priceWay,"offset":offset,"nowPage":nowPage}
+        console.log("data2:"+data2+" offset:"+offset);
+        $.post("/goods/listMore",data2,function (data) {
+
+            if(data.code==200){
+                var moreListJson = eval(data.data);
+                var moreList = moreListJson.list;
+                var nowSize = getJsonObjLength(moreList);
+                offset = offset+nowSize;
+                console.log(moreList+" nowSize:"+nowSize);
+
+                if(moreList!=''){
+                    console.log("exe")
+                    for(var i=0;i<nowSize;i++){
+                        var firstItem = moreList[i].goodsItemList[0];
+                        var srcJson = eval(firstItem.thumb);
+                        var src = srcJson[0].file;
+                        var sizeIds = new Array();
+                        var strrrr = '${sizeList}';
+                        console.log("moreList:"+moreList[i]);
+                        var colorList  = moreList[i].goodsColorDomainList;
+                        console.log("moreList:"+moreList[i]+" colorList:"+colorList);
+                        var colorStr ="<ul class='do-list-color' name='skuId' data-value=''>";
+                        for(var j=0;j<getJsonObjLength(colorList);j++){
+                            var nowJson =colorList[j];
+                            var nowColor = nowJson.color;
+                            colorStr += "<li style='background:"+nowColor+"'></li> ";
+                        }
+                        colorStr += "</ul>";
+                        // var colorStr = "<ul class='do-list-color' name='skuId' data-value=''><li style='background: #000000'></li> </ul>";
+                        var firstSizeid = moreList[i].firstSizeDomain.id;
+                        console.log("firstSizeid:"+firstSizeid);
+
+                        var now = 't'+'h'+'i'+'s';
+                        var str = " <li>" +
+                                " <a href='/goods/details/"
+                                +firstItem.id+
+                                "' ><div class='do-img'><img src="
+                                +src+
+                                " alt='' style='height: 120px;'/></div>  " +
+                                " <p class='do-pro-t ellipsis-25' name='goodsName'>"
+                                +moreList[i].name+
+                                " </p> " +
+                                " <p class='do-pro-price' name='goodsPrice'>"
+                                +firstItem.price+
+                                " </p> " +
+                                colorStr +
+                                "</a> " +
+                                "<i class='icon-collect j_collect' onclick='addToWish("+now+","+2+")'  data-value="
+                                +firstItem.id+
+                                " data-ids="+firstSizeid+"> <svg class='do-heart'><use xlink:href='#heart'></use></svg> </i> </li>";
+                        //console.log(str);
+                        //滚动条滚动一段距离
+                        $(".j_scroll_list").append(str);
+                        /*  var t = $(window).scrollTop();
+                         $('body,html').animate({scrollTop:t+500},100);*/
+                    }
+                }else {
+                    $(".moreGoods").hide().siblings(".overGoods").show();
+                }
+            }else {
+                layer.msg("加载失败");
+            }
+        });
+    };
+
+
+    var initHeight = $(".moreGoods").offset().top;
+    var moveHeight = ($(".do-pro-list").find("li").height())*2;//Li 的高度
+    moveHeight = parseInt(moveHeight);
+    window.onscroll = function(){
+        //console.log("initHeight:"+initHeight+"   moveHeight:"+moveHeight);
+        //为了保证兼容性，这里取两个值，哪个有值取哪一个
+        var scrollTop = getScrollTop();
+        var maxHeight = $(window).height();//可视区域
+        scrollTop = parseInt(scrollTop);
+        var pageNum = Math.abs(scrollTop%300);
+
+        if(0==pageNum){
+            console.log("加载下一页了");
+            loadMore();
+        }else if(getWindowHeight()+scrollTop==getScrollHeight()){
+            loadMore();
+            console.log("底部");
+        }
+        //scrollTop就是触发滚轮事件时滚轮的高度});
+
+    };
+
+
+
+    //滚动条在Y轴上的滚动距离
+    function getScrollTop(){
+        var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+        if(document.body){
+            bodyScrollTop = document.body.scrollTop;
+        }
+        if(document.documentElement){
+            documentScrollTop = document.documentElement.scrollTop;
+        }
+        scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+        return scrollTop;
+    }
+
+    //文档的总高度
+    function getScrollHeight(){
+        var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+        if(document.body){
+            bodyScrollHeight = document.body.scrollHeight;
+        }
+        if(document.documentElement){
+            documentScrollHeight = document.documentElement.scrollHeight;
+        }
+        scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+        return scrollHeight;
+    }
+    //浏览器视口的高度
+    function getWindowHeight(){
+        var windowHeight = 0;
+        if(document.compatMode == "CSS1Compat"){
+            windowHeight = document.documentElement.clientHeight;
+        }else{
+            windowHeight = document.body.clientHeight;
+        }
+        return windowHeight;
+    }
+
 </script>

@@ -2,6 +2,7 @@ package com.dookay.coral.shop.goods.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.enums.ValidEnum;
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
@@ -128,6 +129,30 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		goodsDomain.setGoodsItemList(goodsItemDomainList);
+	}
+
+	@Override
+	public void withGoodsItemListAndQuantity(GoodsDomain goodsDomain, Long sizeId) {
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setGoodsId(goodsDomain.getId());
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for(GoodsItemDomain line:goodsItemDomainList){
+			SkuQuery skuQuery = new SkuQuery();
+			skuQuery.setItemId(line.getId());
+			skuQuery.setIsValid(ValidEnum.YES.getValue());
+
+			List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+			System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
+			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> net.sf.json.JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+			if(skuDomain == null)
+			{
+				throw new ServiceException("参数错误");
+			}
+			int quantity = skuDomain.getQuantity();
+			System.out.println("库存："+quantity);
+			line.setQuantity(quantity);
+		}
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
 	}
 
