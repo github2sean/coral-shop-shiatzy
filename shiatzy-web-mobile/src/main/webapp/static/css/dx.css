@@ -52,7 +52,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     color: #333;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     margin-bottom: 2.1rem;
 }
 
@@ -72,7 +72,7 @@ i {
 
 .dx-orderList .check {
     margin-top: 6.2rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     font-size: 1rem;
     line-height: 2rem;
 }
@@ -99,7 +99,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-orderDetails .dx-details {
@@ -130,7 +130,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     ;
 }
 
@@ -187,7 +187,7 @@ i {
 }
 
 .dx-orderDetails .dx-total {
-    border-top: .2rem solid #ccc;
+    border-top: 2px solid #ccc;
     font-size: 1rem;
     line-height: 1.8rem;
     text-align: center;
@@ -229,12 +229,12 @@ i {
     margin-bottom: 8.8rem;
     font-size: 1.4rem;
     line-height: 3.7rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     text-align: center;
 }
 
 .dx-wish .dx-recommend {
-    border-top: .2rem solid #ccc;
+    border-top: 2px solid #ccc;
     padding: 2rem 2rem 0;
 }
 
@@ -242,7 +242,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-wish .dx-recommend .goods-left {
@@ -289,7 +289,7 @@ i {
 }
 
 .dx-wish .dx-clause li {
-    border-top: .2rem solid #d9d9d9;
+    border-top: 2px solid #d9d9d9;
     /*    height: 2.6rem;*/
     padding-left: 1.5rem;
     padding-top: .8rem;
@@ -309,7 +309,7 @@ i {
 }
 
 .dx-wish .dx-clause .last {
-    border-bottom: .2rem solid #d9d9d9;
+    border-bottom: 2px solid #d9d9d9;
 }
 
 
@@ -323,7 +323,7 @@ i {
     margin: 0 1.7rem;
     font-size: 1.1rem;
     line-height: 2.2rem;
-    border-bottom: .2rem solid #d9d9d9;
+    border-bottom: 2px solid #d9d9d9;
 }
 
 .dx-wish .dx-total .list li {
@@ -374,7 +374,7 @@ i {
 
 .dx-wish .dx-GoodsDetails .goods-right .number {
     font-size: .6rem;
-    border-top: .2rem solid #d9d9d9;
+    border-top: 2px solid #d9d9d9;
     margin-bottom: .7rem;
 }
 
@@ -437,28 +437,28 @@ i {
 }
 
 .dx-login .login {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 2rem;
-    border-bottom: .2rem solid #d9d9d9;
+    border-bottom: 2px solid #d9d9d9;
 }
 
 .dx-login .title {
-    font-size: .9rem;
+    font-size: 1rem;
     line-height: 2rem;
     margin-top: 1.4rem;
 }
 
 .dx-login .content input {
+    font-size: 1.1rem;
     width: 100%;
     height: 2.8rem;
     border: none;
-    border: .2rem solid #b2b2b2;
+    border: 2px solid #b2b2b2;
     padding-left: .6rem;
 }
 
 .dx-login .remind {
     font-size: .8rem;
-    line-height: 2rem;
     text-align: center;
     margin-bottom: 1.4rem;
 }
@@ -476,14 +476,14 @@ i {
 }
 
 .dx-login .register {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 3.3rem;
     text-align: center;
     margin-bottom: 1.8rem;
 }
 
 .dx-login .thirdparty {
-    border-top: .2rem solid #b2b2b2;
+    border-top: 2px solid #b2b2b2;
 }
 
 .dx-login .thirdparty .title {
@@ -575,7 +575,7 @@ i {
     width: 100%;
     height: 2.8rem;
     border: none;
-    border: .2rem solid #b2b2b2;
+    border: 2px solid #b2b2b2;
     padding-left: 2.2rem;
 }
 
@@ -630,7 +630,7 @@ i {
 }
 
 .dx-registered .thirdparty {
-    border-top: .2rem solid #b2b2b2;
+    border-top: 2px solid #b2b2b2;
 }
 
 .dx-registered .thirdparty .title {
@@ -687,7 +687,7 @@ i {
     font-size: 1.2rem;
     line-height: 2.2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-CommonProblems .content .first-title {
@@ -695,7 +695,7 @@ i {
     font-size: 1.2rem;
     line-height: 2.2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-CommonProblems .content .first-title a:after {
@@ -780,7 +780,7 @@ i {
 .dx-shopping .content p {
     width: 14rem;
     font-size: 1rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     margin: 4.2rem auto;
 }
 
@@ -811,7 +811,7 @@ i {
 }
 
 .dx-shopping .shopping-start .dx-clause li {
-    border-top: .2rem solid #d9d9d9;
+    border-top: 2px solid #d9d9d9;
     padding-left: 1.5rem;
     padding-top: .8rem;
     position: relative;
@@ -830,7 +830,7 @@ i {
 }
 
 .dx-shopping .shopping-start .dx-clause .last {
-    border-bottom: .2rem solid #d9d9d9;
+    border-bottom: 2px solid #d9d9d9;
 }
 
 .dx-shopping .dx-GoodsDetails {
@@ -841,7 +841,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: .8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     ;
 }
 
@@ -1005,7 +1005,7 @@ i {
 }
 
 .dx-accounts .privilege {
-    border: .2rem solid #d2d2d2;
+    border: 2px solid #d2d2d2;
     padding: 0 .7rem;
     margin-bottom: 3.4rem;
 }
@@ -1014,7 +1014,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: .7rem;
-    border-bottom: .2rem solid #d2d2d2;
+    border-bottom: 2px solid #d2d2d2;
 }
 
 .dx-accounts .privilege .title:after {
@@ -1060,7 +1060,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: 2rem;
-    border-bottom: .2rem solid #d2d2d2;
+    border-bottom: 2px solid #d2d2d2;
 }
 
 .dx-accounts .total .wrap {
@@ -1167,8 +1167,8 @@ i {
 
 .alter-popup .dx-goods .goods-details .color ul,
 .alter-popup .dx-goods .goods-details .size ul {
-    border-top: .2rem solid #d2d2d2;
-    border-bottom: .2rem solid #d2d2d2;
+    border-top: 2px solid #d2d2d2;
+    border-bottom: 2px solid #d2d2d2;
 }
 
 .alter-popup .dx-goods .goods-details .color ul li a,
@@ -1195,7 +1195,7 @@ i {
     display: inline-block;
     width: 1.4rem;
     height: 1.4rem;
-    border: .2rem solid #d2d2d2;
+    border: 2px solid #d2d2d2;
     vertical-align: middle;
     line-height: 1.4rem;
     text-align: center;
@@ -1237,7 +1237,7 @@ i {
     text-align: center;
     margin-top: -3rem;
     margin-bottom: 3rem;
-    border-bottom: .2rem solid #d2d2d2;
+    border-bottom: 2px solid #d2d2d2;
     color: #b5272d;
 }
 
@@ -1272,13 +1272,13 @@ i {
     height: 2.7rem;
     font-size: 1rem;
     line-height: 2.7rem;
-    border: .2rem solid #ccc;
+    border: 2px solid #ccc;
     text-align: center;
     margin: 2.4rem auto 1.7rem;
 }
 
 .dx-shipping .content .address {
-    border: .2rem solid #ccc;
+    border: 2px solid #ccc;
     padding: 1.4rem .8rem 0;
 }
 
@@ -1286,7 +1286,7 @@ i {
     font-size: 1rem;
     line-height: 2rem;
     padding-left: 2.2rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-shipping .content .address .title span {
@@ -1369,14 +1369,13 @@ i {
 }
 
 .dx-EditAddress .content .title a {
-    display: inline-block;
     float: right;
     width: 7rem;
     height: 2.4rem;
     font-size: 1rem;
     line-height: 2.4rem;
     text-align: center;
-    border: .2rem solid #ccc;
+    border: 2px solid #ccc;
     margin-top: .7rem;
 }
 
@@ -1384,7 +1383,7 @@ i {
 .dx-EditAddress .address div {
     font-size: 1rem;
     line-height: 1.8rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     color: #999;
     margin-bottom: 1.8rem;
 }
@@ -1508,7 +1507,7 @@ i {
 .dx-commodity .content .price {
     font-size: 1.6rem;
     line-height: 2.5rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
     margin-bottom: .7rem;
     height: 2.5rem;
 }
@@ -1536,7 +1535,7 @@ i {
 
 .dx-commodity .content .color ul {
     padding-top: 1.6rem;
-    border-bottom: .2rem solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
 .dx-commodity .content .color li {
@@ -1560,7 +1559,7 @@ i {
 }
 
 .dx-commodity .content .size ul {
-    border-bottom: .2rem solid #d2d2d2;
+    border-bottom: 2px solid #d2d2d2;
 }
 
 .dx-commodity .content .size ul li a {
@@ -1592,7 +1591,7 @@ i {
     line-height: 2.6rem;
     height: 2.6rem;
     border: none;
-    border: .2rem solid #999;
+    border: 2px solid #999;
 }
 
 .dx-commodity .content .order {
@@ -1636,7 +1635,7 @@ i {
 }
 
 .dx-commodity .dx-GoodsDetails .list {
-    border-top: .2rem solid #ccc;
+    border-top: 2px solid #ccc;
     padding-top: 1rem;
 }
 
@@ -1650,7 +1649,7 @@ i {
 .dx-commodity .maybeLike .title {
     font-size: .9rem;
     line-height: 2rem;
-    border-bottom: .2rem solid #999;
+    border-bottom: 2px solid #999;
     padding-left: 2rem;
 }
 
@@ -1658,12 +1657,19 @@ i {
     width: 15rem;
     margin-top: 2rem;
     float: left;
-    border-right: .2rem solid #f2f2f2;
+    border-right: 2px solid #f2f2f2;
     text-align: center;
+}
+.dx-commodity .maybeLike .left:nth-of-type(even) {
+    border-right:0;
+}
+
+.dx-commodity .maybeLike .pic img{
+    max-height:100%;
 }
 
 .dx-commodity .maybeLike .pic {
-    margin: 2.7rem 0;
+    height:15rem;
 }
 
 .dx-commodity .maybeLike .name {
