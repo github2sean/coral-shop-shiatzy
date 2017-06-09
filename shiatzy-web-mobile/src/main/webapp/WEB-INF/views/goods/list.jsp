@@ -51,7 +51,7 @@
         </c:if>
 
     </ul>
-    <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>1}" >
+    <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>19}" >
     <div class="font-12 text-center do-load-list">
         <span class="link-down-before moreGoods">向下自动载入</span>
         <span class="overGoods" style="display: none">-已到底部-</span>
@@ -266,8 +266,8 @@
     };
 
 
-    var initHeight = $(".moreGoods").offset().top;
-    var moveHeight = ($(".do-pro-list").find("li").height())*2;//Li 的高度
+    //var initHeight = $(".moreGoods").offset().top;
+    var moveHeight = ($(".do-pro-list").find("li").height())*19;//Li 的高度
     moveHeight = parseInt(moveHeight);
     window.onscroll = function(){
         //console.log("initHeight:"+initHeight+"   moveHeight:"+moveHeight);
@@ -275,7 +275,7 @@
         var scrollTop = getScrollTop();
         var maxHeight = $(window).height();//可视区域
         scrollTop = parseInt(scrollTop);
-        var pageNum = Math.abs(scrollTop%300);
+        var pageNum = Math.abs(scrollTop%moveHeight);
 
         if(0==pageNum){
             console.log("加载下一页了");

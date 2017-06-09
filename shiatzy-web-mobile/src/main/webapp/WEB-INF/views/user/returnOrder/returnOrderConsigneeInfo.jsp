@@ -44,15 +44,24 @@
         <a href="/returnOrder/chooseReturnWay"><h4>选择退貨方式*<span style="float: right;">></span></h4></a>
         <p>退貨方式：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
-            <c:when test="${return_order.customerAddressDomain.address!=null}">
+            <c:when test="${backWay==1}">
                 快递退货
             </c:when>
-            <c:when test="${return_order.storeDomain.address!=null}">
+            <c:when test="${backWay==2}">
                 门店退货
             </c:when>
         </c:choose>
         </span></p>
-        <p>取件地址：<span class="addressInfo">${return_order.customerAddressDomain.address}${return_order.storeDomain.address}</span></p>
+        <p>取件地址：<span class="addressInfo">
+        <c:choose>
+            <c:when test="${backWay==1}">
+                ${return_order.shipAddress}
+            </c:when>
+            <c:when test="${backWay==2}">
+                ${return_order.storeDomain.address}
+            </c:when>
+        </c:choose>
+        </span></p>
     </div>
 
     <div class="return-btn">

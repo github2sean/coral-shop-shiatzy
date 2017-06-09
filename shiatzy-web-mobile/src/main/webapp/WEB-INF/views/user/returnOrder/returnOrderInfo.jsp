@@ -30,7 +30,7 @@
                 </label>
                 <div class="verify-main" style="float: right;width: 70%;border-bottom: none;height: auto">
                     <div class="img-message">
-                        <h3>${row.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;<span class="reasonShow">v</span></h3>
+                        <h3>${row.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                         <h6><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</h6>
                         <div style="display: inline-block;" class="size hide">
                             <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
@@ -125,7 +125,7 @@
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;">隐私权政策</span>
+            <span style="float: left;" class="privacyNotice">隐私权政策</span>
         </a>
     </div>
 </div>
@@ -137,7 +137,7 @@
 <script>
     $(function(){
         $(".reasonShow").click(function () {
-           $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
+           //$(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
         });
         //$(".return-list:first").show();
 

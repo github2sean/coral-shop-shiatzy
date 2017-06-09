@@ -94,7 +94,7 @@ public class GoodsController extends BaseController{
 
         query.setOrderBy("price");
         query.setDesc(false);
-        query.setPageSize(4);
+        query.setPageSize(20);
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
@@ -245,7 +245,7 @@ public class GoodsController extends BaseController{
         //query.setOffset(offset);
        // query.setLimit(2);
         query.setPageIndex(nowPage);
-        query.setPageSize(4);
+        query.setPageSize(10);
         System.out.println("offset:"+offset);
         //商品列表
         query.setCategoryId(categoryId);

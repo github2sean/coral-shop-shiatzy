@@ -31,7 +31,7 @@
                 <p>退回门店</p>
                 <a href="/returnOrder/listStoreCountry">编辑 ></a>
             </div>--%>
-                <c:if test="${not empty return_order.storeDomain}">
+                <c:if test="${backWay==2}">
                     <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
                         <span>快递运送</span>
                         <p class="shipName"></p>
@@ -45,7 +45,7 @@
                         <a href="/returnOrder/listStoreCountry">选择 ></a>
                     </div>
                 </c:if>
-                <c:if test="${empty return_order.storeDomain}">
+                <c:if test="${backWay==1}">
                     <div class="delivery-message" style="margin-top: 2px">
                         <span>快递运送</span>
                         <p class="shipName">${sessionScope.shipName}</p>
@@ -72,7 +72,7 @@
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;">隐私权政策</span>
+            <span style="float: left;" class="privacyNotice">隐私权政策</span>
         </a>
     </div>
 </div>
@@ -87,9 +87,10 @@
 <script>
     $(function () {
 
+        console.log('backWay '+'${backWay}');
         $(".sureBtn").click(function () {
-            if(${return_order.customerAddressDomain==null&&return_order.storeDomain==null}){
-             alert("请先选择地址和退货方式");
+            if('${backWay}'==''&&${return_order.storeDomain==null}){
+             layer.msg("请先选择退货方式");
              return false;
              }
             location.href="/returnOrder/returnOrderConsigneeInfo";
@@ -122,6 +123,7 @@
                 if(data.code==200){
                     $(".shipName").text(name);
                     $(".shipAddress").text(shipAddress);
+                    window.location.reload();
                 }
                 console.log(data);
             });

@@ -250,10 +250,10 @@ public class ReturnOrderController extends BaseController {
                      }
                  }
              }
-        session.setAttribute(CART_LIST,newList);
         if(!(newList!=null && newList.size()>0)){
             return errorResult("没有选择退货商品");
         }
+        session.setAttribute(CART_LIST,newList);
         session.setAttribute("returnJsonReason",jsonMap);
         return successResult("选择成功");
     }
@@ -269,6 +269,7 @@ public class ReturnOrderController extends BaseController {
         ReturnRequestDomain returnRequest = (ReturnRequestDomain)session.getAttribute(RETURN_ORDER);
         session.setAttribute("returnAddress",address);
         session.setAttribute("shipName",name);
+        session.setAttribute(BACK_WAY,1);
         returnRequest.setShipAddress(address);
         returnRequest.setShipName(name);
         returnRequest.setReturnShippingMethod(1);

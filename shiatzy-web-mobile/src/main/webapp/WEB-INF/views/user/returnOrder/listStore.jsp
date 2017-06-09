@@ -14,11 +14,11 @@
 <div class="dx-pickUp">
         <div class="model-select-box">
             <div class="model-select-country" data-value="" id="countrySelect">
-                <span class="pl-2" id="chooseCountry">请选择国家</span>
+                <span class="pl-2" id="chooseCountry">中国</span>
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" style="display: none">
                     <c:forEach var="row" items="${storeCountryList}">
-                        <li data-option="${row.id}" value="${row.id}" class="">${row.name}</li>
+                        <li data-option="${row.id}" value="${row.id}"  class="<c:if test='${row.id!=1}'>hide</c:if> ">${row.name}</li>
                     </c:forEach>
                 </ul>
             </div>
@@ -102,6 +102,25 @@
         }
     };
     $(function () {
+
+        $.post("/checkout/initCity",{"countryId":1},function (data) {
+            var cityJson = data.data;
+            console.log(cityJson);
+            if(data.code==200 && cityJson!=null){
+                $("#cityFather").children("li").each(function () {
+                    $(this).remove();
+                });
+                var json = eval(cityJson)
+                for(var i=0; i<json.length; i++)
+                {
+                    $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                }
+            }else{
+                layer.msg("该国家下无门店");
+            }
+        });
+
+
 
         $("#countrySelect").click(function () {
             var $option =  $(this).find(".model-select-option");
