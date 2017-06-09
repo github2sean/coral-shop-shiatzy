@@ -78,7 +78,7 @@
             <a href="/goods/details/${firstItem.id}">
                 <div class="left">
                     <div class="pic">
-                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="" style="height: 89px;width: 92px;">
+                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
                     <div class="name">${goods.name}</div>
                     <div class="price">${firstItem.price}</div>
