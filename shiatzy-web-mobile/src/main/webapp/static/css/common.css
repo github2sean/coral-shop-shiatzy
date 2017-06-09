@@ -1767,7 +1767,7 @@ h3 {
     display: none
 }
 
-.do-list-btm>li.active .do-sub-list-btm {
+.active .do-sub-list-btm {
     display: block
 }
 
