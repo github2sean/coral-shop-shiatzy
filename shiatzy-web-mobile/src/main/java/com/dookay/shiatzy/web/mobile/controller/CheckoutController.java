@@ -215,6 +215,7 @@ public class CheckoutController  extends BaseController{
     @RequestMapping(value = "updateGoodsInCheck",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateGoodsInCheck(Long goodsItemId,Long sizeId,Long cartId,Integer num){
+        System.out.println("oldCartGood:"+cartId);
         if(shoppingCartService.get(cartId)!=null){
             shoppingCartService.removeFromCart(cartId);
         }else{
@@ -238,7 +239,7 @@ public class CheckoutController  extends BaseController{
             throw new ServiceException("参数错误");
         }
         skuDomain.setItemId(itemId);
-        shoppingCartService.addToCart(customerDomain, skuDomain,1,num);
+        shoppingCartService.addToCart(customerDomain, skuDomain,ShoppingCartTypeEnum.SHOPPING_CART.getValue(),num);
         return successResult("修改成功");
     }
 

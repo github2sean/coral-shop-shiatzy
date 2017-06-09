@@ -263,6 +263,8 @@ public class GoodsController extends BaseController{
         System.out.println("colorIds:"+queryColorIds);
         System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
         System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
+
+
         // 过滤goodsList
         Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
         Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
@@ -291,6 +293,27 @@ public class GoodsController extends BaseController{
             goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
         }
+
+        //把商品与自己的颜色和尺寸关联
+        for(GoodsDomain goodsDomain:goodsList){
+            List<Long> sizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
+            List<Long> colorIds = JsonUtils.toLongArray(goodsDomain.getColorIds());
+            //关联颜色
+            List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
+            GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
+            goodsColorQuery.setIds(newColorIds);
+            List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+            goodsDomain.setGoodsColorDomainList(goodsColorDomainList);
+            //关联默认第一个尺寸
+            List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
+            PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+            prototypeSpecificationOptionQuery.setIds(newSizeIds);
+            List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+            goodsDomain.setSizeDomainList(sizeList);
+            System.out.println("sizeIds:"+sizeIds+" sizeList"+sizeList);
+            goodsDomain.setFirstSizeDomain(sizeList.get(0));
+        }
+
         PageList<GoodsDomain> goodsDomainPageList = null;
         if(priceWay == null ){
              goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());

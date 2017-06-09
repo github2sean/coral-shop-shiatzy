@@ -196,7 +196,7 @@
             console.log(sendData);
             if(goodsItemId!=''&& sizeId!=''&&num!=null){
                 //移除原来商品，把新的商品加入购物车，更新下当前的session
-                $.post("/checkout/updateGoodsInCheck",function (data) {
+                $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
                     console.log(data);
                     if(data.code==200){
                         location.href = "${ctx}/checkout/initOrder";
