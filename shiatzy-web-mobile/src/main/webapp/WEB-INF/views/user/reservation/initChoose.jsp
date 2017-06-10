@@ -16,7 +16,7 @@
 
             <div class="order-main-left goodsDiv">
                 <p class="product-num">产品编号 ${row.leftItem.goodsCode}</p>
-                <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
+                <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height:14rem;">
                 <p class="product-name">${row.leftItem.goodsName}</p>
                 <div class="color-size">
                     <p>${row.leftItem.goodsItemDomain.name}</p>

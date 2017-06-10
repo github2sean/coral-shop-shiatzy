@@ -8,8 +8,10 @@
 </jsp:include>
 <div class="dx-login">
     <div class="dx-title clearfix">
-        <div class="member"><span><img src="${ctx}/static/images/icon-member.png" alt=""></span><spring:message
-                code="vip"/></div>
+        <div class="member">
+            <span> <img src="${ctx}/static/images/icon-member.png" alt=""></span>
+            <spring:message code="vip"/>
+            </div>
         <a href="" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
     <form class="j_ajaxForm" method="post" action="/passport/login" data-next="${ctx}/home/index">

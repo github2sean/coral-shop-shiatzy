@@ -22,14 +22,13 @@
 
 .order-main {
     text-align: center;
-    border: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
 }
 
 .order-main-left {
     width: 50%;
     float: left;
     border-right: 1px solid #cccccc;
-    border-bottom: 2px solid #cccccc;
     position: relative;
 }
 
@@ -41,14 +40,7 @@
 .order-main-right {
     width: 50%;
     float: right;
-    border-left: 1px solid #cccccc;
-    border-bottom: 2px solid #cccccc;
     position: relative;
-}
-
-.order-main .product-num {
-    font-size: 0.6183rem;
-    line-height: 1.3913rem;
 }
 
 .order-main .color-size p {
@@ -57,25 +49,20 @@
     padding: 0 0.6183rem;
 }
 
+.order-main {
+    font-size: 1rem;
+}
+
+.order-main .product-num {
+    padding: 0.4rem;
+}
+
 .order-main img {
-    margin-bottom: 0.2318rem;
+    margin-bottom: 0.6rem;
 }
-
-.order-main .product-name {
-    font-size: 0.8502rem;
-    line-height: 1.5458rem;
-}
-
-.order-main .color-size {
-    font-size: 0.6183rem;
-    line-height: 0.9275rem;
-    margin-bottom: 1.9323rem;
-}
-
+.order-main .color-price ,
 .order-main .price {
-    font-size: 0.7729rem;
-    line-height: 1.0821rem;
-    margin-bottom: 0.3865rem;
+    margin-bottom: 0.6rem;
 }
 
 .order-main .order-price {
@@ -833,7 +820,7 @@
     width: 18.5507rem;
     color: #fff;
     background-color: #333333;
-    line-height: 1.8rem;
+    line-height: 2.6rem;
     text-align: center;
 }
 
@@ -1058,21 +1045,21 @@
     display: none;
 }
 
-.site-notice{
+.site-notice {
     position: relative;
-    padding:0.9rem 4rem 0.9rem 1.5rem;
+    padding: 0.9rem 4rem 0.9rem 1.5rem;
     font-size: 0.8rem;
-    color:#fff;
-    background-color:#4d4d4d;
+    color: #fff;
+    background-color: #4d4d4d;
     letter-spacing: 0.12rem;
 }
 
-.site-notice a.iconfont{
+.site-notice a.iconfont {
     position: absolute;
-    color:#fff;
-    right:0.8rem;
-    line-height:1;
-    font-size:3rem;
-    top:50%;
-    transform:translateY(-50%);
+    color: #fff;
+    right: 0.8rem;
+    line-height: 1;
+    font-size: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
 }

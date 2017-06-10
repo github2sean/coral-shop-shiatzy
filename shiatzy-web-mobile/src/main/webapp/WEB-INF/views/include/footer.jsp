@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <a href="javascript:;" id="j_back_top" class="back-top"><spring:message code="toTop"/></a>
 <footer class="footer font-12">
-    <ul class="do-list-btm j_drop_down">
+    <ul class="do-list-btm">
         <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
         <%--<li><a href="/content/faq?id="><spring:message code="commonQuestion"/></a></li>--%>
         <c:forEach var="item" items="${domainList}">
@@ -12,6 +12,8 @@
             </c:if>
         </c:forEach>
         <li><a href="/content/specialService"><spring:message code="specialService"/></a></li>
+    </ul>
+    <ul class="do-list-btm j_drop_down">
         <li>
             <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">

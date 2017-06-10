@@ -153,7 +153,7 @@
                 title: '<spring:message code="reservation.what"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '80%'],
+                area: ['90%', '75%'],
                 content: ['${ctx}/content/whatBoutique'],//iframe的url，no代表不显示滚动条
                 shadeClose: true
             });

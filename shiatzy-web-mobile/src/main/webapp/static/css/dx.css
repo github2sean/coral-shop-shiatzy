@@ -415,12 +415,16 @@ i {
 
 .dx-login .dx-title .member {
     float: left;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 4.2rem;
 }
 
 .dx-login .dx-title .member span {
     margin-right: .7rem;
+}
+
+.dx-login .dx-title .member span img {
+    margin-top:-0.15rem;
 }
 
 .dx-login .dx-title a {
@@ -458,7 +462,7 @@ i {
 }
 
 .dx-login .remind {
-    font-size: .8rem;
+    font-size: 1rem;
     text-align: center;
     margin-bottom: 1.4rem;
 }
@@ -618,15 +622,16 @@ i {
     line-height: 1.8rem;
     background-color: #b2b2b2;
     border: none;
-    margin: 0 auto;
+    margin: 2.5rem auto 0;
     display: block;
 }
 
 .dx-registered .content .notice {
-    font-size: .6rem;
+    font-size: 1rem;
     text-align: center;
     margin-top: 2.8rem;
     margin-bottom: 3.4rem;
+    padding: 0 3rem;
 }
 
 .dx-registered .thirdparty {
@@ -779,7 +784,7 @@ i {
 
 .dx-shopping .content p {
     width: 14rem;
-    font-size: 1rem;
+    font-size: 1.6rem;
     border-bottom: 2px solid #ccc;
     margin: 4.2rem auto;
 }
@@ -796,13 +801,18 @@ i {
 .dx-shopping .shopping-start .shopping {
     display: block;
     width: 18.5rem;
-    height: 1.9rem;
+    height:2.4rem;
     text-align: center;
-    font-size: 1rem;
-    line-height: 1.9rem;
+    font-size: 1.2rem;
+    line-height: 2.6rem;
     background-color: #333;
     color: #fff;
     margin: 0 auto;
+}
+
+.dx-shopping .shopping-start .shopping:hover
+.dx-shopping .shopping-start .shopping:active{
+    background-color:#4d4d4d;
 }
 
 .dx-shopping .shopping-start .dx-clause {
@@ -814,18 +824,19 @@ i {
     border-top: 2px solid #d9d9d9;
     padding-left: 1.5rem;
     padding-top: .8rem;
+    padding-bottom:0.2rem;
     position: relative;
 }
 
 .dx-shopping .shopping-start .dx-clause li a {
-    font-size: .9rem;
+    font-size: 1.1rem;
     line-height: 2rem;
 }
 
 .dx-shopping .shopping-start .dx-clause li a:after {
     content: ">";
     position: absolute;
-    top: 35%;
+    top: 25%;
     right: 2rem;
 }
 
@@ -834,7 +845,7 @@ i {
 }
 
 .dx-shopping .dx-GoodsDetails {
-    margin-top: .4rem;
+    margin-bottom:1rem;
 }
 
 .dx-shopping .dx-GoodsDetails .title {
@@ -842,12 +853,10 @@ i {
     line-height: 2rem;
     padding-left: .8rem;
     border-bottom: 2px solid #ccc;
-    ;
 }
 
 .dx-shopping .dx-GoodsDetails .goods {
-    padding: 0 1rem;
-    margin-bottom: 1rem;
+    padding: 0.6rem 1rem;
     border-bottom: .07rem solid #ccc;
 }
 
@@ -857,8 +866,8 @@ i {
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
-    width: 9.7rem;
-    height: 9.2rem;
+    width: 10.7rem;
+    height: 10.2rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic img {
@@ -869,22 +878,20 @@ i {
 .dx-shopping .dx-GoodsDetails .goods-right {
     float: left;
     text-align: left;
-    /*margin-left: 12%;*/
+    font-size:1rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right .name {
-    font-size: 1rem;
+    font-size:1.2rem;
     margin: 1.3rem 0 .8rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right .number {
-    font-size: .6rem;
     margin-bottom: .8rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right .color,
 .dx-shopping .dx-GoodsDetails .goods-right .quantity {
-    font-size: .7rem;
     margin-bottom: .8rem;
 }
 
@@ -1483,7 +1490,7 @@ i {
 .dx-commodity .number {
     font-size: 1rem;
     line-height: 2rem;
-    margin-bottom: 2.7rem;
+    margin-bottom: 0.7rem;
 }
 
 .dx-commodity .dx-bag-slide {
@@ -1513,13 +1520,12 @@ i {
 }
 
 .dx-commodity .content .price a {
-    display: inline-block;
     float: right;
     margin-right: 1.5rem;
 }
 
 .dx-commodity .content .color .title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     color: #000;
 }
@@ -1553,9 +1559,8 @@ i {
     color: #000;
 }
 
-.dx-commodity .content .size .title span {
-    font-size: .8rem;
-    color: #000;
+.dx-commodity .content .size .title span{
+    font-size: 1rem;
 }
 
 .dx-commodity .content .size ul {
@@ -1587,7 +1592,7 @@ i {
     margin: 3.4rem auto .5rem;
     background-color: #e6e6e6;
     width: 100%;
-    font-size: .9rem;
+    font-size: 1.2rem;
     line-height: 2.6rem;
     height: 2.6rem;
     border: none;
@@ -1601,7 +1606,7 @@ i {
 }
 
 .dx-commodity .content .remind {
-    font-size: .8rem;
+    font-size: 1rem;
     line-height: 2.2rem;
     text-align: center;
 }
@@ -1612,7 +1617,7 @@ i {
 }
 
 .dx-commodity .dx-GoodsDetails .title {
-    font-size: .9rem;
+    font-size: 1.2rem;
     line-height: 1.7rem;
     height: 1.7rem;
     padding-left: 1rem;
@@ -1627,7 +1632,7 @@ i {
 }
 
 .dx-commodity .dx-GoodsDetails .text {
-    font-size: .9rem;
+    font-size: 1rem;
     line-height: 1.6rem;
     padding-top: .5rem;
     padding-left: 1rem;
@@ -1640,14 +1645,14 @@ i {
 }
 
 .dx-commodity .dx-GoodsDetails .list li {
-    font-size: .9rem;
+    font-size: 1rem;
     line-height: 1.8rem;
     margin-left: 1.8rem;
     list-style: circle;
 }
 
 .dx-commodity .maybeLike .title {
-    font-size: .9rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     border-bottom: 2px solid #999;
     padding-left: 2rem;

@@ -1702,7 +1702,11 @@ h3 {
 }
 
 .do-list-btm {
-    margin-bottom: 3rem
+    margin-bottom: 3rem;
+}
+
+.do-list-btm + .do-list-btm{
+    margin-top: -3rem;
 }
 
 .do-list-btm>li {
@@ -1714,10 +1718,20 @@ h3 {
     margin: 0 1.2rem;
 }
 
+.do-list-lang>li{
+    margin-bottom:0.6rem;
+}
+
 .do-list-lang>li>a {
     display: block;
     padding: .5rem 1.7rem .2rem;
     position: relative;
+}
+.do-list-lang>li>a:hover,
+.do-list-lang>li>a:active,
+.do-list-btm>li>a:hover,
+.do-list-lang>li>a:active{
+    background-color: #2a2a2a;
 }
 
 .do-list-btm>li>a {
@@ -1732,6 +1746,11 @@ h3 {
     padding: .8rem 1.2rem .5rem;
     position: relative;
     font-size: 1.4rem
+}
+
+.guide-nav>li>a:hover,
+.guide-nav>li>a:active{
+    background-color: #fff;
 }
 
 .guide-nav>li>a:after,
@@ -1774,6 +1793,10 @@ h3 {
     border-top: 1px solid #666;
     margin: 0 .7rem;
     padding-top: 1rem
+}
+
+.do-list-lang + .do-list-lang{
+    padding-top: 0;
 }
 
 .col-2-w>a,
@@ -1906,7 +1929,7 @@ h3 {
 
 .do-online-service {
     margin: 1.5rem 3rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .do-online-service .do-online-t {
@@ -2096,11 +2119,15 @@ h3 {
 .link-down:after {
     content: ">";
     display: inline-block;
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
     margin-left: 3px;
     position: relative;
     top: -.2rem
+}
+
+.link-down:active:after ,
+.link-down:hover:after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .link-down-before:before {
@@ -2158,8 +2185,8 @@ h3 {
 
 .do-list-color>li {
     display: inline-block;
-    width: .5rem;
-    height: .5rem
+    width: .8rem;
+    height: .8rem
 }
 
 .do-list-color {
@@ -2167,7 +2194,7 @@ h3 {
 }
 
 .do-pro-list .do-img {
-    height: 15rem;
+    height: 18rem;
     position: relative;
     overflow: hidden
 }
@@ -2185,7 +2212,16 @@ h3 {
 .do-pro-list .do-pro-t {
     height: 2.5rem;
     line-height: 1.4rem;
-    margin-bottom: .3rem
+    margin-bottom: .3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center
 }
 
 .do-pro-list:after {
@@ -2432,6 +2468,10 @@ svg {
     margin: .2rem 0
 }
 
+.do-list-icon .icon-bag svg {
+    left:0;
+}
+
 .icon-bag.active svg {
     width: 2rem;
     height: 2rem;
@@ -2440,7 +2480,7 @@ svg {
 }
 
 .form-item {
-    margin-bottom: 0.7rem;
+    margin-bottom: 1.7rem;
     position: relative;
 }
 

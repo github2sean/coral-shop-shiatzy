@@ -75,8 +75,8 @@
         <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%">推荐商品</div>
         <c:forEach var="goods" items="${historyList}" begin="0" end="1">
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-            <a href="/goods/details/${firstItem.id}">
                 <div class="left">
+                    <a href="/goods/details/${firstItem.id}">
                     <div class="pic">
                         <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
@@ -87,8 +87,8 @@
                             <li style="background: ${goodsItem.colorValue}"></li>
                         </c:forEach>
                     </ul>
+                     </a>
                 </div>
-            </a>
         </c:forEach>
     </div>
     </c:if>

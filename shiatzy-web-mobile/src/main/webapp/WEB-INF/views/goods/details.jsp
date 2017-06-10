@@ -60,8 +60,8 @@
         <div class="title">您也许也喜欢</div>
          <c:forEach var="goods" items="${historyList}">
              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-             <a href="/goods/details/${firstItem.id}">
              <div class="left">
+                 <a href="/goods/details/${firstItem.id}">
                  <div class="pic">
                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                  </div>
@@ -72,8 +72,9 @@
                          <li style="background: ${goodsItem.colorValue}"></li>
                          </c:forEach>
                      </ul>
+                     </a>
              </div>
-             </a>
+             
          </c:forEach>
     </div>
 </div>
