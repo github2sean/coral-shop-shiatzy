@@ -16,4 +16,6 @@ public class AddShoppingCartForm {
     private Long skuId;
 
     private Integer num;
+
+    private String id;
 }

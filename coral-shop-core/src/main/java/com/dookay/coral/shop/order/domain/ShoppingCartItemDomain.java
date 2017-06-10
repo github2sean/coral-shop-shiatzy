@@ -84,5 +84,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	/*同类商品颜色*/
 	@Transient
 	private List<GoodsColorDomain> colorDomains;
+
+	/*与seseion中的数据绑定*/
+	@Transient
+	private String formId;
 	
 }

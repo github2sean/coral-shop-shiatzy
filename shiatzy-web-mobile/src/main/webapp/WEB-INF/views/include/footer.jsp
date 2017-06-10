@@ -78,21 +78,26 @@
     function setCartNum() {
         var nowNum =0;
         var cartNum;
-
         //判断是否登录
-        $.post("/cart/getCartNum",function (data) {
-            if (data.code==200){
-                cartNum = data.data;
-                $(".cart_num").text(cartNum);
-            }else{
-               // layer.msg('更新购物车数量失败');
-            }
-        });
-        /*$.post("/cart/freshCartNum",{"num":nowNum},function (data) {
-            if (data.code!=200){
-                layer.msg('更新购物车数量失败');
-            }
-        });*/
+        if('${isGuest}'!='onLine'){
+            $.post("/cart/querySessionCartNum",{"type":1},function (data) {
+                if (data.code==200){
+                    cartNum = data.data;
+                    $(".cart_num").text(cartNum);console.log(cartNum);
+                }else{
+                    // layer.msg('更新购物车数量失败');
+                }
+            });
+        }else{
+            $.post("/cart/getCartNum",function (data) {
+                if (data.code==200){
+                    cartNum = data.data;
+                    $(".cart_num").text(cartNum);
+                }else{
+                    // layer.msg('更新购物车数量失败');
+                }
+            });
+        }
     }
     $(function () {
 

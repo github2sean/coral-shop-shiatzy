@@ -61,7 +61,9 @@ public class UserContext {
      */
     public static void signOut() {
         HttpServletRequest request = HttpContext.current().getRequest();
-        request.getSession().setAttribute(USER_CONTEXT_KEY, null);
+        HttpSession session = request.getSession();
+        session.setAttribute(USER_CONTEXT_KEY, null);
+        session.setAttribute("isGuest",null);
     }
 
 

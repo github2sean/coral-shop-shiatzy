@@ -110,7 +110,7 @@
            var size = $(this).find('a').text();
            $(".sizeChecked").text(size);
         });
-
+        var isLogin = '${isGuest}'=='onLine'?true:false;
         $(".j_collect").click(function () {
             var url ="";
             var isAdd =  $(this).find("use").attr("xlink:href");
@@ -123,12 +123,15 @@
            });
 
             var data = {"itemId":'${goodsItemDomain.id}',"num":1,"sizeId":sizeId,"type":2};
-            console.log(data);
+            console.log(isAdd);
             var url = "";
             if(isAdd=="#heart-red"){
                 url = "/cart/addToCart";
-            }else if(isAdd=="#heart"){
+            }else if(isLogin && isAdd=="#heart"){
+               // $(this).find("use").attr("xlink:href","#heart");
                 url = "/cart/removeFromWish";
+            }else if(!isLogin && isAdd=="#heart"){
+                url = "/cart/removeFromSessionCart";
             }
             console.log(url);
             $.post(url,data,function (result) {
@@ -138,13 +141,8 @@
                 }
             });
         });
-
         $(".addToCart").click(function () {
-            setCartNum("add");
-            var isLogin = '${user_context}';
-            if(isLogin==''){
-                location.href="/passport/toLogin";
-            }
+            //setCartNum("add");
             var skuId = ${goodsItemDomain.id};
             var url = "/cart/addToCart";
             var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":1};
@@ -159,12 +157,8 @@
             });
         });
         $(".addToBoutique").click(function () {
-            var isLogin = '${user_context}';
-            if(isLogin==''){
-                location.href="/passport/toLogin";
-            }
             var skuId = ${goodsItemDomain.id};
-            var url = "/boutique/addToBoutique";
+            var url = !isLogin?"/cart/addToCart":"/boutique/addToBoutique";
             var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":3};
             $.post(url,data,function (result) {
                 console.log(result);

@@ -4,17 +4,22 @@ import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.SkuQuery;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
@@ -36,6 +41,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,18 +63,57 @@ public class BoutiqueController extends BaseController{
     private ICustomerService customerService;
     @Autowired
     private ISkuService skuService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
 
 
     private static int  SHOPPINGCART_TYPE = 3;//精品店
-
+    //Session 购物车
+    private static final String SESSION_CART ="session_cart";
 
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),SHOPPINGCART_TYPE);
+        UserContext userContext = UserContext.current();
+
+        List<ShoppingCartItemDomain> sessionCartList = new ArrayList<>();
+        if(userContext.isGuest()){
+            //构建虚拟购物车商品
+            HttpServletRequest request = HttpContext.current().getRequest();
+            HttpSession session = request.getSession();
+            List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+            if(listCart!=null&&listCart.size()>0) {
+                for(AddShoppingCartForm form:listCart){
+                    System.out.println("from:"+form);
+                    if(form.getType()== ShoppingCartTypeEnum.RESERVATION.getValue()){
+                        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(form.getItemId(),form.getSizeId());
+                           if(skuDomain==null){
+                               continue;
+                           }
+                        GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
+                        GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
+                        ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
+                        shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+                        shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
+                        shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
+                        shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+                        shoppingCartItemDomain.setSkuId(skuDomain.getId());
+                        shoppingCartItemDomain.setItemId(skuDomain.getItemId());
+                        shoppingCartItemDomain.setShoppingCartType(form.getType());
+                        shoppingCartItemDomain.setNum(form.getNum());
+                        shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
+                        shoppingCartItemDomain.setFormId(form.getId());
+                        System.out.println("shoppingCartItemDomain:"+shoppingCartItemDomain);
+                        sessionCartList.add(shoppingCartItemDomain);
+                        shoppingCartService.withGoodsItem(sessionCartList);
+                        shoppingCartService.withSku(sessionCartList);
+                    }
+                }
+            }
+        }
+        List<ShoppingCartItemDomain> cartList = userContext.isGuest()?
+                sessionCartList:shoppingCartService.listShoppingCartItemByCustomerId(customerService.getAccount(userContext.getAccountDomain().getId()).getId(),SHOPPINGCART_TYPE);
         shoppingCartService.withGoodsItem(cartList);
         List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
         for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){

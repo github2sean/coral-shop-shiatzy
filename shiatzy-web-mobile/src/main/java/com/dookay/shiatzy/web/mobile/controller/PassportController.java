@@ -1,5 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.jcaptcha.JCaptcha;
@@ -10,10 +12,18 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
+import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
+import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
@@ -33,10 +43,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by admin on 2017/4/25.
@@ -53,8 +60,18 @@ public class PassportController extends MobileBaseController{
     private ICustomerService customerService;
     @Autowired
     private IShoppingCartService shoppingCartService;
+    @Autowired
+    private IGoodsService goodsService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
-    public static String CRAT_NUM = "cartNumber";
+    public static final String CRAT_NUM = "cartNumber";
+
+    //Session 购物车
+    private static final String SESSION_CART ="session_cart";
+    private static final String IS_GUEST ="isGuest";
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
@@ -62,14 +79,43 @@ public class PassportController extends MobileBaseController{
     }
 
     @RequestMapping(value = "toLogin", method = RequestMethod.GET)
-    public String toLogin(){
+    public ModelAndView toLogin(){
 
+        ModelAndView mv = new ModelAndView("passport/login");
         //如果已经登陆直接跳转到个人信息页面
         if(!UserContext.isGuest()){
-            return "redirect:/u/account/index";
+            return new ModelAndView("redirect:/u/account/index");
         }
-
-        return "passport/login";
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        //判断session购物中是否有商品
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        List<SkuDomain> skuDomainList = new ArrayList<>();
+        if(listCart!=null&&listCart.size()>0){
+            for(AddShoppingCartForm form:listCart){
+                if(form.getType()==2){
+                    Long itemId = form.getItemId();
+                    Long sizeId = form.getSizeId();
+                    System.out.println("tologinForm:"+JsonUtils.toJSONString(form));
+                    SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
+                    if(skuDomain == null) {
+                        continue;
+                    }
+                    skuDomain.setItemId(itemId);
+                    Integer num = form.getNum();
+                    //准备商品数据
+                    GoodsItemDomain goodsItemDomain =  goodsItemService.get(itemId);
+                    GoodsDomain goodsDomain = goodsService.get(goodsItemDomain.getGoodsId());//得到商品
+                    skuDomain.setGoodsItem(goodsItemDomain);
+                    skuDomain.setGoods(goodsDomain);
+                    skuDomain.setSizeDomain(prototypeSpecificationOptionService.get(sizeId));
+                    skuDomainList.add(skuDomain);
+                }
+            }
+        }
+        mv.addObject("skuList",skuDomainList);
+        System.out.println("skuList:"+ JsonUtils.toJSONString(skuDomainList));
+        return mv;
     }
 
     @RequestMapping(value = "toForget", method = RequestMethod.GET)
@@ -84,21 +130,46 @@ public class PassportController extends MobileBaseController{
         String userName = loginForm.getUserName();
         String password = loginForm.getPassword();
         Boolean checkAccount = accountService.validateAccount(userName,password);
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        CustomerDomain customerDomain = null;
        if(checkAccount) {
            AccountDomain accountDomain = accountService.getAccount(userName);
            UserContext.signIn(accountDomain);
-           CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+           customerDomain = customerService.getAccount(accountDomain.getId());
            ShoppingCartItemQuery query = new ShoppingCartItemQuery();
            query.setCustomerId(customerDomain.getId());
            query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
-           HttpServletRequest request = HttpContext.current().getRequest();
-           HttpSession session = request.getSession();
            int cartNum = shoppingCartService.count(query);
            session.setAttribute(CRAT_NUM,cartNum);
+           session.setAttribute(IS_GUEST,"onLine");
+           //判断session购物中是否有商品
+           List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+           if(listCart!=null&&listCart.size()>0){ //全部加入到真实购物车中
+               for(AddShoppingCartForm form:listCart){
+                   Long itemId = form.getItemId();
+                   Long sizeId = form.getSizeId();
+                   SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
+                   if(skuDomain == null) {
+                       System.out.println("loginForm:"+JsonUtils.toJSONString(form));
+                       continue;
+                   }
+                   skuDomain.setItemId(itemId);
+                   Integer num = form.getNum();
+                   if(form.getType()==ShoppingCartTypeEnum.WISH_LIST.getValue()){
+                       ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
+                       if(queryShoppingCart!=null){
+                           continue;
+                       }
+                   }
+                   shoppingCartService.addToCart(customerDomain, skuDomain, form.getType(),num);
+               }
+               //清空session中商品
+               session.setAttribute(SESSION_CART,null);
+           }
        }else{
            return errorResult("账户不存在或者密码错误");
        }
-
         return successResult("登录成功");
     }
 
