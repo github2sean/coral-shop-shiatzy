@@ -38,6 +38,28 @@
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
         </div>
     </form>
+
+<c:if test="${ not empty skuList}">
+    <div class="dx-commodity">
+    <div class="maybeLike clearfix" style="border-top: 2px solid #cccccc">
+    <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%">心愿单</div>
+    <c:forEach var="row" items="${skuList}" >
+        <a href="/goods/details/${row.goodsItem.id}" style="width: 50%;">
+            <div class="left">
+                <div class="pic" style="height: 100px">
+                    <img style="width:80px;height: 100px;" src="${ImageModel.toFirst(row.goodsItem.thumb).file}" alt="">
+                </div>
+                <div class="name" style="text-align: center">${row.goods.name}</div>
+                <div class="price">${row.goodsItem.price}</div>
+                <ul class="color clearfix">
+                        <li style="background: ${row.goodsItem.colorValue}"></li>
+                </ul>
+            </div>
+        </a>
+    </c:forEach>
+    </div>
+    </div>
+</c:if>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

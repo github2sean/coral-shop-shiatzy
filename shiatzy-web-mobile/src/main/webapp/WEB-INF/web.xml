@@ -44,8 +44,8 @@
   <filter-mapping>
     <filter-name>loginFilter</filter-name>
     <url-pattern>/u/*</url-pattern>
-    <url-pattern>/boutique/*</url-pattern>
-    <url-pattern>/cart/*</url-pattern>
+    <!--<url-pattern>/boutique/*</url-pattern>
+    <url-pattern>/cart/*</url-pattern>-->
   </filter-mapping>
   <!--当前用户筛选器-->
   <filter>

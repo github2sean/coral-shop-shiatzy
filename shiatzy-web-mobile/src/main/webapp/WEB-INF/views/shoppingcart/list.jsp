@@ -29,9 +29,9 @@
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect" data-value="${row.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href="javascript:;"  class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_appointment" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> > <svg><use xlink:href="#ap-small"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_collect" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> ><svg><use xlink:href="#heart"></use></svg></a></li>
+                    <li><a href="javascript:;"  class="deleteBtn" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> ><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
             </c:forEach>
@@ -115,50 +115,87 @@
             }
             clsTotal();
         });
-
+        var isLogin = '${isGuest}'=='onLine'?true:false;
+        console.log('${isGuest} '+isLogin)
         $(".deleteBtn").on("click",function () {
             var $self = $(this);
             var id = $(this).attr("data-value");
             console.log(id);
-            $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
-                console.log(data);
-                if(data.code==200){
-                    $self.parents(".goodsDiv").remove();
-                    var  isNull= $(".goodsDiv").attr("class");
-                    setCartNum();
-                    if(typeof (isNull)=="undefined"){
-                        window.location.reload();
-                    }else{
-                        clsTotal();
+            if(!isLogin){
+                id = $(this).attr("data-formid");
+                $.post("/cart/removeFromSessionCart",{"formId":id},function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        var  isNull= $(".goodsDiv").attr("class");
+                        setCartNum();
+                        if(typeof (isNull)=="undefined"){
+                            window.location.reload();
+                        }else{
+                            clsTotal();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        var  isNull= $(".goodsDiv").attr("class");
+                        setCartNum();
+                        if(typeof (isNull)=="undefined"){
+                            window.location.reload();
+                        }else{
+                            clsTotal();
+                        }
+                    }
+                });
+            }
         });
+
         $(".j_collect").on("click",function () {
             var $self = $(this);
-            var id = $(this).attr("data-value");
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
             var data = {"shoppingCartItemId":id};
-            $.post("/cart/cartToWish",data,function (data) {
-                console.log(data);
-                if(data.code==200){
-                    $self.parents(".goodsDiv").remove();
-                    var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入心愿单成功");
-                    setCartNum();
-                    if(typeof (isNull)=="undefined"){
-                        window.location.reload();
-                    }else{
-                        clsTotal();
+            if(!isLogin){
+                $.post("/cart/changeFromSessionCartType",{"formId":id,"goalType":2},function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        var  isNull= $(".goodsDiv").attr("class");
+                        layer.msg("加入心愿单成功");
+                        setCartNum();
+                        if(typeof (isNull)=="undefined"){
+                            window.location.reload();
+                        }else{
+                            clsTotal();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                $.post("/cart/cartToWish",data,function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        var  isNull= $(".goodsDiv").attr("class");
+                        layer.msg("加入心愿单成功");
+                        setCartNum();
+                        if(typeof (isNull)=="undefined"){
+                            window.location.reload();
+                        }else{
+                            clsTotal();
+                        }
+                    }
+                });
+            }
         });
         $(".j_appointment").on("click",function () {
             setCartNum('sub');
             var $self = $(this);
-            var id = $(this).attr("data-value");
-            var data = {"shoppingCartItemId":id};
-            $.post("/cart/cartToBoutique",data,function (data) {
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
+            var data = isLogin?{"shoppingCartItemId":id}:{"formId":id,"goalType":3};
+            var url = isLogin?"/cart/cartToBoutique":"/cart/changeFromSessionCartType";
+            $.post(url,data,function (data) {
                 console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();

@@ -1,5 +1,6 @@
 <%--suppress ALL --%>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="net.sf.json.JSONObject" %>
 <%@ page import="com.dookay.coral.common.web.HttpContext" %>
 <%@ page import="com.dookay.coral.shop.goods.domain.GoodsColorDomain" %>
 <%@ page import="com.dookay.coral.shop.goods.domain.GoodsDomain" %>
@@ -35,13 +36,13 @@
                 <p class="do-pro-t ellipsis-25" name="goodsName">${goods.name}</p>
                 <p class="do-pro-price" name="goodsPrice">${firstItem.price}</p>
                 <ul class="do-list-color" name="skuId" data-value="">
-                <c:forEach var="goods" items="${goods.goodsItemList}">
-                    <li style="background: ${goods.colorValue}"></li>
+                <c:forEach var="item" items="${goods.goodsItemList}">
+                    <li style="background: ${item.colorValue}"></li>
                 </c:forEach>
                 </ul>
             </a>
             <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect" data-value="${firstItem.id}" data-ids="${sizeList[num.count-1].id}">
+            <i class="icon-collect j_collect" data-value="${firstItem.id}" data-ids="${goods.sizeDomainList[0].id}" >
                 <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
@@ -120,10 +121,7 @@
     }
 
     function addToWish(now,type){
-        var isLogin = '${sessionScope.user_context}';
-        if(isLogin==null || isLogin ==""){
-            location.href="${ctx}/passport/toLogin";
-        }
+        var isLogin = '${isGuest}'=='onLine'?true:false;
         var selectSizeId=$(now).attr("data-ids");
         var selectItemId = $(now).attr("data-value");
         var selectSizeId=selectSizeId;
@@ -135,14 +133,19 @@
         var url = "";
         if(type==1 && isAdd=="#heart-red"){
             url = "/cart/addToCart";
-        }else if(type==1 && isAdd=="#heart"){
+        }else if(isLogin && type==1 && isAdd=="#heart"){
             url = "/cart/removeFromWish";
-        }else if(type==2 && isAdd=="#heart-red"){
+        }else if(isLogin && type==2 && isAdd=="#heart-red"){
             $(now).find("use").attr("xlink:href","#heart");
             url = "/cart/removeFromWish";
         }else if(type==2 && isAdd=="#heart"){
             $(now).find("use").attr("xlink:href","#heart-red");
             url = "/cart/addToCart";
+        }else if(!isLogin && type==1 && isAdd=="#heart"){
+            url = "/cart/removeFromSessionWish";
+        }else if(!isLogin && type==2 && isAdd=="#heart-red"){
+            $(now).find("use").attr("xlink:href","#heart");
+            url = "/cart/removeFromSessionWish";
         }
         console.log(url);
         $.post(url,data,function (result) {

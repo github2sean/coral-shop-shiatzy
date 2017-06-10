@@ -1,6 +1,8 @@
 package com.dookay.coral.shop.order.service.impl;
 
+import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
@@ -19,6 +21,7 @@ import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
+import net.sf.json.JSONObject;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,7 +108,6 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
 			super.create(shoppingCartItemDomain);
 		}
-
 	}
 
 	@Override
@@ -280,12 +282,26 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	}
 
 	@Override
-	public void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList) {
-	for(ShoppingCartItemDomain line:shoppingCartItemDomainList){
-		SkuQuery query = new SkuQuery();
-		SkuDomain skuDomain = 	skuService.get(line.getSkuId());
-		line.setQuantity(skuDomain.getQuantity());
+	public SkuDomain getSkubySizeAndItem(Long itemId ,Long sizeId) {
+		 /*获取SKU*/
+		System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
+		SkuQuery skuQuery = new SkuQuery();
+		skuQuery.setItemId(itemId);
+		skuQuery.setIsValid(ValidEnum.YES.getValue());
+		System.out.println("skuQuery"+ JsonUtils.toJSONString(skuQuery));
+		List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
+		System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
+		SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+		return skuDomain;
 	}
+
+	@Override
+	public void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList) {
+		for(ShoppingCartItemDomain line:shoppingCartItemDomainList){
+			SkuQuery query = new SkuQuery();
+			SkuDomain skuDomain = 	skuService.get(line.getSkuId());
+			line.setQuantity(skuDomain.getQuantity());
+		}
 	}
 
 

@@ -58,4 +58,7 @@ public class SkuDomain implements Serializable {
 	@Transient
 	private GoodsItemDomain goodsItem;
 
+	@Transient
+	private PrototypeSpecificationOptionDomain sizeDomain;
+
 }

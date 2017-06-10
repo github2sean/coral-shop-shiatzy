@@ -156,4 +156,16 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
 	}
 
+	@Override
+	public void withSizeDomain(List<GoodsDomain> goodsList) {
+			for(GoodsDomain goods:goodsList){
+				List<Long> sizeIds = JsonUtils.toLongArray(goods.getSizeIds());
+				PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+				prototypeSpecificationOptionQuery.setIds(sizeIds);
+				List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+				goods.setSizeDomainList(sizeList);
+				System.out.println("goodId:"+goods.getId()+" sizeList:"+sizeList);
+			}
+	}
+
 }

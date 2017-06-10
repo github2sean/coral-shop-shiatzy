@@ -48,7 +48,7 @@ public interface IShoppingCartService extends IBaseService<ShoppingCartItemDomai
     void withGoodsItem(List<ShoppingCartItemDomain> shoppingCartItemDomainList);
     void withReservationItem(List<ReservationItemDomain> reservationItemDomainList);
 
-
+    SkuDomain getSkubySizeAndItem(Long itemId ,Long sizeId);
     void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList);
 
 }

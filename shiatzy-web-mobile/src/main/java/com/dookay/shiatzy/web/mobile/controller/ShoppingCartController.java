@@ -4,6 +4,7 @@ import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.Query;
+import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -38,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,28 +62,45 @@ public class ShoppingCartController extends BaseController{
     @Autowired
     private IGoodsCategoryService goodsCategoryService;
 
+
+    //Session 购物车
+    private static final String SESSION_CART ="session_cart";
+    private static final String IS_GUEST ="isGuest";
+
     @RequestMapping(value = "addToCart" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult addToCart(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        Integer shoppingCartType = addShoppingCartForm.getType();
 
+        UserContext userContext = UserContext.current();
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        if(userContext.isGuest()){//游客先保存到session中
+            addShoppingCartForm.setId(RandomUtils.buildNo());
+            List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+            System.out.println("addShoppingCartForm:"+JsonUtils.toJSONString(addShoppingCartForm));
+            if(listCart!=null&&listCart.size()>0){
+                /*if(listCart.size()==8){
+                    return successResult("购物车最多添加8件商品");
+                }*/
+                listCart.add(addShoppingCartForm);
+            }else{
+                listCart = new ArrayList<>();
+                listCart.add(addShoppingCartForm);
+            }
+            session.setAttribute(SESSION_CART,listCart);
+            return successResult("添加成功");
+        }
+        Long accountId = userContext.getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
+
+        Integer shoppingCartType = addShoppingCartForm.getType();
          /*获取SKU*/
         Long itemId = addShoppingCartForm.getItemId();
         Long sizeId = addShoppingCartForm.getSizeId();
         System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
-
-        SkuQuery skuQuery = new SkuQuery();
-        skuQuery.setItemId(itemId);
-        skuQuery.setIsValid(ValidEnum.YES.getValue());
-        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
-        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-        System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
-        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
-        if(skuDomain == null)
-        {
-            throw new ServiceException("参数错误");
+        SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
+        if(skuDomain == null) {
+            throw new ServiceException("无此商品");
         }
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
@@ -95,6 +114,27 @@ public class ShoppingCartController extends BaseController{
         return  successResult("添加成功");
     }
 
+    @RequestMapping(value = "querySessionCartNum" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult querySessionCartNum(Integer type){
+        if(type==null){
+            errorResult("参数为空");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        Integer retNum = 0;
+        if(listCart!=null&&listCart.size()>0){
+            for(AddShoppingCartForm form :listCart){
+             if(form.getType()==type){
+                 retNum +=1;
+             }
+            }
+        }
+        return  successResult("操作成功",retNum);
+    }
+
+
     @RequestMapping(value = "removeFromCart" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult removeFromCart(Long shoppingCartItemId){
@@ -102,6 +142,78 @@ public class ShoppingCartController extends BaseController{
             return errorResult("参数为空");
         }
         shoppingCartService.removeFromCart(shoppingCartItemId);
+        return  successResult("删除成功");
+    }
+    @RequestMapping(value = "removeFromSessionCart" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult removeFromSessionCart(String formId){
+        if(formId==null){
+            return errorResult("参数为空");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        System.out.println("oldlistCart:"+JsonUtils.toJSONString(listCart));
+        if(listCart!=null&&listCart.size()>0) {
+            Iterator<AddShoppingCartForm> it = listCart.iterator();
+            while(it.hasNext()){
+                AddShoppingCartForm now = it.next();
+                if(now.getId().equals(formId)){
+                    System.out.println("dellistCart:"+JsonUtils.toJSONString(now));
+                    it.remove();
+                }
+            }
+        }
+        System.out.println("nowlistCart:"+JsonUtils.toJSONString(listCart));
+        session.setAttribute(SESSION_CART,listCart);
+        return  successResult("删除成功");
+    }
+
+    @RequestMapping(value = "changeFromSessionCartType" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult changeFromSessionCartType(String formId,Integer goalType){
+        if(formId==null){
+            return errorResult("参数为空");
+        }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        if(listCart!=null&&listCart.size()>0) {
+            Iterator<AddShoppingCartForm> it = listCart.iterator();
+            while(it.hasNext()){
+                AddShoppingCartForm now = it.next();
+                if(now.getId().equals(formId)){
+                    now.setType(goalType);
+                }
+            }
+        }
+        session.setAttribute(SESSION_CART,listCart);
+        return  successResult("修改成功");
+    }
+
+    @RequestMapping(value = "removeFromSessionWish" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult removeFromSessionWish(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
+
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        System.out.println("oldlistCart:"+JsonUtils.toJSONString(listCart));
+        if(listCart!=null&&listCart.size()>0) {
+            Iterator<AddShoppingCartForm> it = listCart.iterator();
+            while(it.hasNext()){
+                AddShoppingCartForm now = it.next();
+                /*获取SKU*/
+                Long itemId = addShoppingCartForm.getItemId();
+                Long sizeId = addShoppingCartForm.getSizeId();
+                if(now.getItemId().equals(itemId) && now.getSizeId().equals(sizeId) && now.getType()==2){
+                    it.remove();
+                    System.out.println("dellistCart:"+JsonUtils.toJSONString(now));
+                }
+            }
+        }
+        System.out.println("nowlistCart:"+JsonUtils.toJSONString(listCart));
+        session.setAttribute(SESSION_CART,listCart);
         return  successResult("删除成功");
     }
 
@@ -115,13 +227,7 @@ public class ShoppingCartController extends BaseController{
         Long itemId = addShoppingCartForm.getItemId();
         Long sizeId = addShoppingCartForm.getSizeId();
         System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
-
-        SkuQuery skuQuery = new SkuQuery();
-        skuQuery.setItemId(itemId);
-        skuQuery.setIsValid(ValidEnum.YES.getValue());
-        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
-        List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+        SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
         if(skuDomain == null)
         {
             throw new ServiceException("参数错误");
@@ -147,11 +253,43 @@ public class ShoppingCartController extends BaseController{
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
-        shoppingCartService.withGoodsItem(cartList);
-        shoppingCartService.withSku(cartList);
+        UserContext userContext = UserContext.current();
+        List<ShoppingCartItemDomain> cartList = new ArrayList<>();
+        if(userContext.isGuest()){
+            //构建虚拟购物车商品
+            HttpServletRequest request = HttpContext.current().getRequest();
+            HttpSession session = request.getSession();
+            List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+            if(listCart!=null&&listCart.size()>0) {
+                for(AddShoppingCartForm form:listCart){
+                    if(form.getType()==ShoppingCartTypeEnum.SHOPPING_CART.getValue()){
+                        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(form.getItemId(),form.getSizeId());
+                        GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
+                        GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
+                        ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
+                        shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+                        shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
+                        shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
+                        shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+                        shoppingCartItemDomain.setSkuId(skuDomain.getId());
+                        shoppingCartItemDomain.setItemId(skuDomain.getItemId());
+                        shoppingCartItemDomain.setShoppingCartType(form.getType());
+                        shoppingCartItemDomain.setNum(form.getNum());
+                        shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
+                        shoppingCartItemDomain.setFormId(form.getId());
+                        cartList.add(shoppingCartItemDomain);
+                        shoppingCartService.withGoodsItem(cartList);
+                        shoppingCartService.withSku(cartList);
+                    }
+                }
+            }
+        }else {
+            Long accountId = userContext.getAccountDomain().getId();
+            CustomerDomain customerDomain = customerService.getAccount(accountId);
+            cartList= shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
+            shoppingCartService.withGoodsItem(cartList);
+            shoppingCartService.withSku(cartList);
+        }
         ModelAndView mv = new ModelAndView("shoppingcart/list");
         mv.addObject("cartList",cartList);
         return mv;

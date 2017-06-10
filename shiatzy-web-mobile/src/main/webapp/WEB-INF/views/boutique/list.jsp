@@ -33,9 +33,9 @@
         </div>
         <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.leftItem.goodsPrice}</p>
         <ul class="do-list-icon">
-            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
-            <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
-            <li><a href="" class="deleteBtn" data-value="${row.leftItem.id}"><svg><use xlink:href="#close"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if>  ><svg><use xlink:href="#heart"></use></svg></a></li>
+            <li><a href="" class="deleteBtn" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if> ><svg><use xlink:href="#close"></use></svg></a></li>
         </ul>
     </div>
     <c:if test="${not empty row.rightItem}">
@@ -49,9 +49,9 @@
         </div>
         <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.rightItem.goodsPrice}</p>
         <ul class="do-list-icon">
-            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
-            <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
-            <li><a href="" class="deleteBtn" data-value="${row.rightItem.id}"><svg><use xlink:href="#close"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
+            <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#heart"></use></svg></a></li>
+            <li><a href="" class="deleteBtn" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#close"></use></svg></a></li>
         </ul>
     </div>
     </c:if>
@@ -94,12 +94,14 @@
             }
             location.href = href;
         });
-
+        var isLogin = '${isGuest}'=='onLine'?true:false;
         $(".deleteBtn").on("click",function () {
             var $self = $(this);
-            var id = $(this).attr("data-value");
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
+            var url = isLogin?"/cart/removeFromCart":"/cart/removeFromSessionCart";
+            var data = isLogin?{"shoppingCartItemId":id}:{"formId":id};
             console.log(id);
-            $.post("/cart/removeFromCart",{"shoppingCartItemId":id},function (data) {
+            $.post(url,data,function (data) {
                 console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
@@ -112,10 +114,11 @@
         });
         $(".j_collect").on("click",function () {
             var $self = $(this);
-            var id = $(this).attr("data-value");
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
+            var url = isLogin?"/cart/boutiqueToWish":"/cart/changeFromSessionCartType";
+            var data = isLogin?{"shoppingCartItemId":id}:{"formId":id,"goalType":2};
             console.log(id);
-            var data = {"shoppingCartItemId":id};
-            $.post("/cart/boutiqueToWish",data,function (data) {
+            $.post(url,data,function (data) {
                 console.log(data);
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
@@ -129,9 +132,10 @@
         });
         $(".j_bag").on("click",function () {
             var $self = $(this);
-            var id = $(this).attr("data-value");
-            var data = {"shoppingCartItemId":id};
-            $.post("/cart/boutiqueToCart",data,function (data) {
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
+            var url = isLogin?"/cart/boutiqueToWish":"/cart/changeFromSessionCartType";
+            var data = isLogin?{"shoppingCartItemId":id}:{"formId":id,"goalType":1};
+            $.post(url,data,function (data) {
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");

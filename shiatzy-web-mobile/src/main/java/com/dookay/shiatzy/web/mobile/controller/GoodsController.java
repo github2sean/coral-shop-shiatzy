@@ -167,7 +167,9 @@ public class GoodsController extends BaseController{
         prototypeSpecificationOptionQuery.setIds(newSizeIds);
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         modelAndView.addObject("sizeList",sizeList);
-
+        System.out.println("sizeList:"+sizeList);
+        System.out.println("sizeList:"+sizeList);
+        goodsService.withSizeDomain(goodsList);
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
 
@@ -225,6 +227,7 @@ public class GoodsController extends BaseController{
             goodsList =goodsList.stream().distinct().collect(Collectors.toList());
             goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
         }
+        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         if(priceWay == null ){
             PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),query.getPageSize());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
@@ -427,6 +430,7 @@ public class GoodsController extends BaseController{
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(sizeIds);
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+        System.out.println("sizeIds"+sizeIds);
 
         ModelAndView mv = new ModelAndView("goods/details");
         mv.addObject("goodsItemDomain",goodsItemDomain);

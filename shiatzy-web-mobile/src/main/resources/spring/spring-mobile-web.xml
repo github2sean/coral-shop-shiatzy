@@ -128,10 +128,10 @@
         <property name="currencyCode" value="CNY"/>
         <property name="settlementCurrencyCode" value="CNY"/>
         <property name="borrowingMarked" value="0"/>
-        <!--<property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>-->
-        <property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>
+        <property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>
+        <!--<property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>-->
         <property name="partnerId" value="10000003846"/>
         <!--<property name="partnerId" value="10000007526"/>-->
         <property name="payMode" value="10"/>
