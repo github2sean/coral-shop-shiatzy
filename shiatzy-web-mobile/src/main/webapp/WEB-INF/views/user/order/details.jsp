@@ -47,19 +47,19 @@
     <div class="verify-message-middle">
         <h2>商品详情<span style="float: right">v</span></h2>
         <c:forEach var="item" items="${orderItemList}">
-        <div class="verify-main">
-            <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
-            <div class="img-message">
-                <h3>${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                <h6>${item.goodsCode}</h6>
-                <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;">${item.goodsItemDomain.name}</p>
-                    <p>${JSONObject.fromObject(item.skuSpecifications).getString("size")}号</p>
+            <div class="verify-main">
+                <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
+                <div class="img-message">
+                    <h3>${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                    <h6>${item.goodsCode}</h6>
+                    <div style="display: inline-block;" class="size">
+                        <p style="float:left;margin-right: 3.0918rem;">${item.goodsItemDomain.name}</p>
+                        <p>${JSONObject.fromObject(item.skuSpecifications).getString("size")}号</p>
+                    </div>
+                    <p>数量：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p>单价　¥ ${item.goodsPrice}</p>
                 </div>
-                <p>数量：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <p>单价　¥ ${item.goodsPrice}</p>
             </div>
-        </div>
         </c:forEach>
     </div>
     <div class="order-details">
@@ -77,14 +77,14 @@
         <p>${orderDomain.shipAddress}</p>
         <p>${orderDomain.shipTitle}</p>
         <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
-        <div class="information" style="margin-top: 2rem">
-            <p ><a href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}">申请退货<span style="float: right">></span></a></p>
-        </div>
+            <div class="information" style="margin-top: 2rem">
+                <p ><a href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}">申请退货<span style="float: right">></span></a></p>
+            </div>
         </c:if>
 
         <c:if test="${not empty orderDomain.returnRequestDomain}">
 
-        <a href="/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}"><p style="margin-top: 2rem;height: 3rem;line-height: 3rem;border-top:2px solid #cccccc;border-bottom:2px solid #cccccc">查看退货详情 <span style="float: right">></span></p></a>
+            <a href="/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}"><p style="margin-top: 2rem;height: 3rem;line-height: 3rem;border-top:2px solid #cccccc;border-bottom:2px solid #cccccc">查看退货详情 <span style="float: right">></span></p></a>
 
         </c:if>
 
@@ -184,11 +184,6 @@
             })
             $(".logisticInfo").slideToggle();
         });
-
-
-
-
-
 
     });
 
