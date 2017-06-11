@@ -75,6 +75,38 @@
     });
 </script>
 <script>
+    function setPrice() {
+        $.post("/home/queryCurrentRate",function (data) {
+            var coinSymbol = '￥';
+            var rate = 1;
+            if (data.code==200){
+                var obj = data.data;
+                var type = obj.rateType;
+                console.log("type2"+type);
+                if(obj.rateType == 1){
+                    coinSymbol = '<spring:message code="coin.USA"/>';
+                }else if(obj.rateType == 2){
+                    coinSymbol = '<spring:message code="coin.EU"/>';
+                }
+                rate = obj.rate;
+                console.log("rate"+rate);
+            }
+            $(".do-pro-price").each(function () {
+                var oldPri = $(this).attr("data-value")*1;
+                $(this).text(coinSymbol+" "+((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+            }) ;
+        });
+    }
+    function queryCurrentRate() {
+        $.post("/home/queryCurrentRate",function (data) {
+            if (data.code==200){
+               var country = data.data;
+                var json = JSON.parse(data);
+                console.log(json.rate);
+                return data.data.rate;
+            }
+        });
+    };
     function setCartNum() {
         var nowNum =0;
         var cartNum;
@@ -100,7 +132,6 @@
         }
     }
     $(function () {
-
         $("#j_back_top").click(function () {
             var speed=500;//滑动的速度
             $('body,html').animate({ scrollTop: 0 }, speed);

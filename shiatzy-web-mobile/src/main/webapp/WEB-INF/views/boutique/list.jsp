@@ -31,7 +31,7 @@
             <p>${sessionScope.language=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
             <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
         </div>
-        <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.leftItem.goodsPrice}</p>
+        <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span></p>
         <ul class="do-list-icon">
             <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
             <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if>  ><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -47,7 +47,7 @@
             <p>${sessionScope.language=='en_US'?row.rightItem.goodsItemDomain.enName:row.rightItem.goodsItemDomain.name}</p>
             <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
         </div>
-        <p class="price"><spring:message code="shoppingCart.unitPrice"/>　¥ ${row.rightItem.goodsPrice}</p>
+        <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.rightItem.goodsPrice}">&nbsp;</span></p>
         <ul class="do-list-icon">
             <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
             <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -85,7 +85,7 @@
 
     $(function () {
         //console.log('${goodsList}');
-
+        setPrice();
         $(".choose-store").find("a").click(function(){
             var href = "${ctx}/passport/toLogin";
             var user = '${sessionScope.user_context}';

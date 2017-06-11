@@ -16,14 +16,14 @@
         <div class="dx-GoodsDetails goodsDiv">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
+                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
                     <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
                     <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -81,10 +81,10 @@
     <div class="total">
         <div class="title">结算</div>
         <div class="wrap">
-            <div class="subtotal">小计 <span>&yen;<span id="subtotal">${order.goodsTotal}</span></span> </div>
-            <div class="discount" style="color: red">优惠 <span>&yen;<span id="discount"> 0</span></span></div>
-            <div class="express">快递 <span>&yen;<span id="express" data-value="${order.shipFee==null?0:order.shipFee}">${order.shipFee==null?0:order.shipFee}</span></span> </div>
-            <div class="predict">预计订单总额 <span>&yen;<span id="ordertotal"> ${order.orderTotal}</span></span></div>
+            <div class="subtotal">小计 <span><span id="subtotal" class="do-pro-price" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span> </div>
+            <div class="discount" style="color: red">优惠 <span class="coinSymbol">&nbsp;<span id="discount">0</span></span></div>
+            <div class="express">快递 <span><span id="express" class="do-pro-price" data-value="${order.shipFee==null?0:order.shipFee}">&nbsp;</span></span> </div>
+            <div class="predict">预计订单总额 <span><span id="ordertotal" class="do-pro-price" data-value="${order.orderTotal}">&nbsp;</span></span></div>
         </div>
     </div>
     <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn">结账</a>
@@ -118,6 +118,7 @@
 
     $(function(){
         commonApp.init();
+        setPrice();
         clsTotal();
         //修改弹窗
         $(".j_alter").on("click",function () {
@@ -247,6 +248,8 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('使用优惠码成功');
+                    var rate = $(".do-pro-price").attr("data-rate");
+                    console.log("rate;"+rate);
                     $("#discount").text(data.data);
                     clsTotal();
                 }else{

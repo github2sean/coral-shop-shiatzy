@@ -2,7 +2,6 @@
     height: 4.1739rem;
     background: #999999;
     padding: 0 1.7778rem 0 2.1642rem;
-
     margin-bottom: 2.0096rem;
 }
 
@@ -22,12 +21,14 @@
 .order-main {
     text-align: center;
     border-top: 1px solid #cccccc;
+   
 }
 
 .order-main-left {
     width: 50%;
     float: left;
-    border-right: 1px solid #cccccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     position: relative;
 }
 
@@ -40,6 +41,7 @@
     width: 50%;
     float: right;
     position: relative;
+    border-bottom: 1px solid #ccc;
 }
 
 .order-main .color-size p {
@@ -49,6 +51,7 @@
 }
 
 .order-main {
+    clear: both;
     font-size: 1rem;
 }
 
@@ -56,10 +59,19 @@
     padding: 0.4rem;
 }
 
+.order-main .product-name {
+    height: 2.4rem;
+}
+
+.order-main .goodsDiv{
+    margin-top: -1px;
+}
+
 .order-main img {
     margin-bottom: 0.6rem;
 }
-.order-main .color-price ,
+
+.order-main .color-price,
 .order-main .price {
     margin-bottom: 0.6rem;
 }
@@ -71,7 +83,7 @@
 }
 
 .order-main .order-price p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .order-stores {
@@ -86,7 +98,7 @@
 
 .model-select-box,
 .model-select-box ul li {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .model-select-box .model-select-store,
@@ -148,7 +160,7 @@
 
 .verify-message .verify-message-top ul {
     text-indent: 0.8502rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .verify-message .verify-message-top ul li {
@@ -156,7 +168,7 @@
 }
 
 .verify-message-middle>h2 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     text-indent: 0.8502rem;
     margin-top: 2.8599rem;
     border-bottom: 2px solid #cccccc;
@@ -203,7 +215,7 @@
 }
 
 .verify-message-bottom h2 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     text-align: center;
     border-top: 1px solid #cccccc;
     line-height: 1.855rem;
@@ -245,7 +257,7 @@
     margin-bottom: 5.1787rem;
     border-bottom: 1px solid #cccccc;
     padding-left: 2.3188rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .account-message ul li {
@@ -278,7 +290,7 @@
 .privacy a {
     display: inline-block;
     line-height: 0.5rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .data-setting h3 {
@@ -320,7 +332,7 @@
     font-size: 1.0rem;
     float: right;
     border: 1px solid #cccccc;
-    margin-right: 1.0821rem;
+    margin-right: 1.1821rem;
     line-height: 2rem;
     padding: 0.778rem 1.2367rem;
     color: #999999;
@@ -338,7 +350,7 @@
 }
 
 .club p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     line-height: 2.087rem;
 }
 
@@ -423,7 +435,7 @@
 
 .club-bottom {
     text-align: center;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     color: #999999;
 }
 
@@ -431,7 +443,7 @@
     display: inherit;
     text-align: center;
     color: #b5272d;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-bottom: 4.6377rem;
 }*/
 
@@ -447,7 +459,7 @@
 
 .mail-change h4,
 .password-change h4 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     color: #999999;
     margin: 0;
 }
@@ -459,14 +471,14 @@
 
 .mail-change .register-mail p,
 .password-change .register-mail p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-bottom: 0;
 }
 
 .mail-change .register-mail input,
 .password-change .register-mail input {
     width: 100%;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     line-height: 3.942rem;
     padding-left: 2.3188rem;
     border: 2px solid #999999;
@@ -493,13 +505,13 @@
 }
 
 .my-account .contact h3 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     border-bottom: solid #999999 2px;
     line-height: 1.5459rem;
 }
 
 .mr-2 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .mr-2 .radiobox {
@@ -508,7 +520,19 @@
 
 .i-radiobox {
     margin-right: 3.0918rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: #fff;
+    color: #fff;
+    border-radius: 50%;
+    border:1px solid #333;
 }
+
+.radiobox input:checked+.i-radiobox {
+    background-color:#333;
+}
+
 
 .finish a {
     display: inherit;
@@ -528,11 +552,11 @@
 
 .order-finish .delivery h3,
 .order-finish .delivery .delivery-message span {
-    font-size: 1.0821rem;
+    font-size: 1.3913rem;
 }
 
 .order-finish .delivery .delivery-message span {
-    margin-bottom: 1.0821rem;
+    margin-bottom: 1.1821rem;
     display: inherit;
 }
 
@@ -542,7 +566,7 @@
 }
 
 .order-finish .delivery .delivery-message p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-bottom: 0;
 }
 
@@ -551,7 +575,7 @@
     display: block;
     float: right;
     border-bottom: 1px solid #999999;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .drugstore {
@@ -566,7 +590,7 @@
 
 .drugstore p {
     line-height: 4.7923rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     display: block;
     float: left;
 }
@@ -577,7 +601,7 @@
 
 .pay-options {
     background-color: #cccccc;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     text-align: center;
     line-height: 3.2rem;
 }
@@ -589,7 +613,7 @@
 }
 
 .delivery ul li {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     line-height: 3.5rem;
     border-bottom: 2px solid #cccccc;
     padding-left: 2rem;
@@ -633,7 +657,7 @@
 }
 
 .order-pay span {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
 }
 
 .order-pay {
@@ -687,7 +711,7 @@
 }
 
 .order-details h4 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     line-height: 1.8rem;
     border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
@@ -720,7 +744,7 @@
 }
 
 .order-details h4+p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     text-indent: 0.8502rem;
 }
 
@@ -746,7 +770,7 @@
 }
 
 .order-num h3+p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     float: left;
 }
 
@@ -755,11 +779,11 @@
 }
 
 .order-date p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
 }
 
 .information h4 {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     line-height: 1.8rem;
     border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
@@ -775,7 +799,7 @@
 }
 
 .information span {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-left: 0.8502rem;
 }
 
@@ -813,9 +837,11 @@
     background-color: #cccccc;
     padding-top: 1.3913rem;
 }
-.explain a{
+
+.explain a {
     font-size: 1.4rem;
 }
+
 .choose-store a {
     display: inline-block;
     width: 18.5507rem;
@@ -860,7 +886,7 @@
 }
 
 .return-time {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     padding: 0 2.5rem;
 }
 
@@ -873,7 +899,7 @@
 
 .sales-return-message p {
     padding-left: 3rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-bottom: 0;
     line-height: 2.5rem;
 }
@@ -1000,13 +1026,13 @@
 
 .returnWay h4 {
     text-indent: .6rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
 }
 
 .returnWay p {
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     text-indent: .6rem;
 }
 
@@ -1016,7 +1042,7 @@
 
 .invoice-info {
     margin-left: 2.7rem;
-    font-size: 1.0821rem;
+    font-size: 1.1821rem;
     margin-top: 2.7053rem;
     border-bottom: 2px solid #cccccc;
 }
