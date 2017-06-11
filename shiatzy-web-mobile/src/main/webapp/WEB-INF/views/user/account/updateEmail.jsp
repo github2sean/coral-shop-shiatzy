@@ -11,10 +11,18 @@
         line-height: 5.942rem;
         left: -10px;
     }
+    .content input {
+        font-size: 1.1rem;
+        width: 100%;
+        height: 2.8rem;
+        border: none;
+        border: 2px solid #b2b2b2;
+        padding-left: .6rem;
+    }
 </style>
 
 <div class="order">
-    <p style="float: left"><spring:message code="account.personal.updateEmail"/></p>
+    <p style="float: left" ><spring:message code="account.personal.updateEmail"/></p>
     <a style="float: right;" href="/u/account/details">< <spring:message code="goBack"/></a>
 </div>
 
@@ -22,7 +30,7 @@
     <form class="j_ajaxForm" action="/u/account/updateEmail" method="post" data-next="${ctx}/u/account/details">
         <h4><spring:message code="account.personal.update.email"/></h4>
         <h4>* <spring:message code="account.personal.updateEmailOrPass.must"/></h4>
-        <div class="register-mail">
+        <div class="register-mail content">
             <p><spring:message code="account.personal.updateEmailOrPass.nowEmail"/>：</p>
             <p style="margin-bottom: 2rem;">${accountDomain.email}</p>
             <p><spring:message code="account.personal.updateEmailOrPass.email"/>：</p>

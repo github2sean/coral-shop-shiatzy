@@ -11,8 +11,17 @@
         line-height: 5.942rem;
         left: -10px;
     }
-</style>
 
+
+    .content input {
+        font-size: 1.1rem;
+        width: 100%;
+        height: 2.8rem;
+        border: none;
+        border: 2px solid #b2b2b2;
+        padding-left: .6rem;
+    }
+</style>
 <div class="order">
     <p style="float: left"><spring:message code="account.personal.updatePassword"/></p>
     <a style="float: right;" href="/u/account/details">< <spring:message code="goBack"/></a>
@@ -26,7 +35,7 @@
 </div>
 <div class="password-change">
     <form class="j_ajaxForm" action="/u/account/updatePassword" method="post" data-next="${ctx}/u/account/details">
-    <div class="register-mail">
+    <div class="register-mail content">
         <div class="input form-item">
             <i>*</i>
             <input class="oldPassword" name="oldPassword" type="password"

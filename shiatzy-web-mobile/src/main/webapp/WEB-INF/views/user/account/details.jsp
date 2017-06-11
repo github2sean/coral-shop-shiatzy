@@ -6,7 +6,18 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
+<style>
+    .account-message span{font-size: 1.4rem;}
+    .my-account-message ul li, .account-message ul li{
+        margin-bottom: 2rem;
+    }
+    .my-account-message .deit-message, .account-message .deit-message{
+        margin-top: -1rem;
+    }
+    .my-account-title{
+        margin-bottom: 1rem;
+    }
+</style>
 <div class="order">
     <p style="float: left"><spring:message code="account.information"/></p>
     <a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a>
