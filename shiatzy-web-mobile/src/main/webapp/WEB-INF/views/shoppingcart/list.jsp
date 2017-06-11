@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="shopping-start">
-        <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping"><spring:message code="shoppingCart.checkout"/></a>
+        <a data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
         <div class="dx-clause">
             <ul>
                 <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
@@ -81,6 +81,11 @@
         })
     }
     $(function(){
+        var isLogin = '${isGuest}'=='onLine'?true:false;
+        //
+        var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
+        $(".checkout").attr("href",href);
+
         //初始化购物车数量
         var cartNum = '${cartList.size()}'*1;
         $(".cart_num").text(cartNum);
@@ -115,7 +120,7 @@
             }
             clsTotal();
         });
-        var isLogin = '${isGuest}'=='onLine'?true:false;
+
         console.log('${isGuest} '+isLogin)
         $(".deleteBtn").on("click",function () {
             var $self = $(this);
