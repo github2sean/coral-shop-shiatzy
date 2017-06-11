@@ -15,6 +15,7 @@
         float: right;margin-top: 6px;
     }
     .my-account-title{margin-bottom: 1rem;}
+    .my-account-message li a{display: block}
 </style>
 <div class="order">
     <p style="float: left"><spring:message code="myAccount"/> </p>

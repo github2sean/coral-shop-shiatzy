@@ -17,6 +17,7 @@
     .my-account-title{
         margin-bottom: 1rem;
     }
+    .account-message li a{display: block}
 </style>
 <div class="order">
     <p style="float: left"><spring:message code="account.information"/></p>

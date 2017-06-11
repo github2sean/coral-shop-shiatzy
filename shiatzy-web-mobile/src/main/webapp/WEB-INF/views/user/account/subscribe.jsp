@@ -13,9 +13,10 @@
         line-height: 1.5459rem;
         padding-bottom: 0.6rem;
     }
+    .btn-default{font-size: 1.2rem;}
 </style>
 <div class="order">
-    <p style="float: left">我的账户/我的订阅 </p>
+    <p style="float: left">我的订阅 </p>
     <a style="float: right;" href="/u/account/details" >< 返回上页</a>
 </div>
 <div class="my-account">.
