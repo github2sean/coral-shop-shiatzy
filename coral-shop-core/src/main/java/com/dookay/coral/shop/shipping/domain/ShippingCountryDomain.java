@@ -52,4 +52,7 @@ public class ShippingCountryDomain implements Serializable {
 	/*汇率*/
 	private Double rate;
 
+	/*汇率类型*/
+	private Integer rateType;
+
 }

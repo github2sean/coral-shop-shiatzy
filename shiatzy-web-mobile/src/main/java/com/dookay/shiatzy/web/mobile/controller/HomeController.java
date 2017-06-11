@@ -120,14 +120,14 @@ public class HomeController extends MobileBaseController {
 
         Long id = (Long)session.getAttribute(SHIPPING_COUNTRY_ID);
         if(id==null){
-            return successResult("人民币",1);
+            errorResult("未选择国家");
         }
         //查询出配送国家
-        ShippingCountryQuery query = new ShippingCountryQuery();
-        query.setDesc(false);
-        query.setOrderBy("rank");
         ShippingCountryDomain country = shippingCountryService.get(id);
-        return successResult("选择成功",country.getRate());
+        if(country==null){
+            errorResult("无此国家");
+        }
+        return successResult("查询成功",country);
     }
 
 }
