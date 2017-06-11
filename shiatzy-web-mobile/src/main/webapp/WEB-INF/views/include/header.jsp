@@ -209,7 +209,7 @@
     <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">
         <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num">${cartNumber==null?0:cartNumber}</span></a></li>
-        <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg><span class="do-num cart_num">0</span></a></li>
+        <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg><span class="do-num boutique_num">0</span></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
     </div>

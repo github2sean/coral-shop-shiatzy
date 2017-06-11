@@ -91,7 +91,9 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 				shoppingCartItemDomainList.stream().filter(x-> Objects.equals(x.getSkuId(), skuDomain.getId())).findFirst().orElse(null);
 		//如果购物车中已经存在，则更新购物车
 		if(existShoppingCartItem != null){
-			this.updateShoppingCartItem(customerDomain,existShoppingCartItem.getItemId(),num);
+			if(customerDomain!=null){
+				this.updateShoppingCartItem(customerDomain,existShoppingCartItem.getItemId(),num);
+			}
 		}else{
 			GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
 			GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
@@ -114,12 +116,14 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	public void updateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num) {
 		Long customerId = customerDomain.getId();
 		ShoppingCartItemDomain shoppingCartItemDomain = super.get(shoppingCartItemId);
-		if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){
-			if(num>0){
-				shoppingCartItemDomain.setNum(num);
-				super.update(shoppingCartItemDomain);
-			}else{
-				super.delete(shoppingCartItemId);
+		if(shoppingCartItemDomain!=null){
+			if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){
+				if(num>0){
+					shoppingCartItemDomain.setNum(num);
+					super.update(shoppingCartItemDomain);
+				}else{
+					super.delete(shoppingCartItemId);
+				}
 			}
 		}
 	}

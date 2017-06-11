@@ -66,7 +66,7 @@
     </c:if>
     <c:if test="${not empty preOderItemList}">
     <div class="choose-store">
-        <a href="/reservation/initChoose"><spring:message code="reservation.findstore"/></a>
+        <a href="${isGuest!='onLine'?'/passport/toLogin':'/reservation/initChoose'}"><spring:message code="reservation.findstore"/></a>
     </div>
     </c:if>
     <ul>

@@ -66,7 +66,7 @@
                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                  </div>
                  <div class="name">${goods.name}</div>
-                 <div class="price">${firstItem.price}</div>
+                 <div class="price do-pro-price" data-value="${firstItem.price}">&nbsp;</div>
                      <ul class="color clearfix">
                          <c:forEach var="goodsItem" items="${goods.goodsItemList}">
                          <li style="background: ${goodsItem.colorValue}"></li>
@@ -160,6 +160,7 @@
             var skuId = ${goodsItemDomain.id};
             var url = !isLogin?"/cart/addToCart":"/boutique/addToBoutique";
             var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":3};
+            console.log("url:"+url);
             $.post(url,data,function (result) {
                 console.log(result);
                 if(result.code==200){

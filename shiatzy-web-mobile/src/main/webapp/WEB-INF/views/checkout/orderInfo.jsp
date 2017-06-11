@@ -23,7 +23,7 @@
                     <div class="number">${row.goodsCode}</div>
                     <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
                     <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp;<font class="coinSymbol">&nbsp;</font>&nbsp;<span class="only-price true-price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -82,9 +82,9 @@
         <div class="title">结算</div>
         <div class="wrap">
             <div class="subtotal">小计 <span><span id="subtotal" class="do-pro-price" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span> </div>
-            <div class="discount" style="color: red">优惠 <span class="coinSymbol">&nbsp;<span id="discount">0</span></span></div>
-            <div class="express">快递 <span><span id="express" class="do-pro-price" data-value="${order.shipFee==null?0:order.shipFee}">&nbsp;</span></span> </div>
-            <div class="predict">预计订单总额 <span><span id="ordertotal" class="do-pro-price" data-value="${order.orderTotal}">&nbsp;</span></span></div>
+            <div class="discount" style="color: red">优惠 <span><font class="coinSymbol">&nbsp;</font>&nbsp;<span id="discount" class="only-price">0</span></span></div>
+            <div class="express">快递 <span><font class="coinSymbol">&nbsp;</font>&nbsp;<span id="express" class="only-price">${order.shipFee==null?0:order.shipFee}</span></span> </div>
+            <div class="predict">预计订单总额<span><font class="coinSymbol" style="margin-right: 0">&nbsp;</font>&nbsp;<span id="ordertotal" class="only-price">${order.orderTotal}</span></span></div>
         </div>
     </div>
     <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn">结账</a>
@@ -103,15 +103,15 @@
         var total = 0;
         $(".goods").find(".goods-right").each(function () {
             var num =  ($(this).find(".quantity").attr("data-value"))*1;
-            var price  = ($(this).find(".price").attr("data-value"))*1;
+            var price  = ($(this).find(".true-price").text())*1;
             total +=num * price;
             $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
 
         });
-        var fee = ($("#express").attr("data-value"))*1;
+        var fee = ($("#express").text())*1;
         var dis = ($("#discount").text())*1;
         var final_amt = total+fee-dis;
-        console.log(fee+" dis "+ dis+" "+final_amt);
+        console.log("fee:"+fee+" dis "+ dis+" "+final_amt);
         $("#ordertotal").html("&nbsp;"+final_amt.toFixed(2));
 
     }
@@ -250,7 +250,7 @@
                     layer.msg('使用优惠码成功');
                     var rate = $(".do-pro-price").attr("data-rate");
                     console.log("rate;"+rate);
-                    $("#discount").text(data.data);
+                    $("#discount").text((data.data/rate).toFixed(2));
                     clsTotal();
                 }else{
                     $('.showInfo').text(data.message);

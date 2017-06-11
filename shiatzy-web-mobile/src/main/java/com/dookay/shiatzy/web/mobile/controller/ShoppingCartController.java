@@ -424,13 +424,17 @@ public class ShoppingCartController extends BaseController{
     }
     @RequestMapping(value = "getCartNum" ,method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult getCartNum(){
+    public JsonResult getCartNum(Integer type){
+        if(type==null){
+            return errorResult("参数为空");
+        }
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         ShoppingCartItemQuery query = new ShoppingCartItemQuery();
         query.setCustomerId(customerDomain.getId());
+        query.setShoppingCartType(type);
         query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         Integer num = shoppingCartService.count(query);
         session.setAttribute("cartNumber",num);

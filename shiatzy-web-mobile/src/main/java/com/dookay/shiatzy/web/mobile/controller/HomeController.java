@@ -120,13 +120,14 @@ public class HomeController extends MobileBaseController {
 
         Long id = (Long)session.getAttribute(SHIPPING_COUNTRY_ID);
         if(id==null){
-            errorResult("未选择国家");
+            return errorResult("未选择国家");
         }
         //查询出配送国家
         ShippingCountryDomain country = shippingCountryService.get(id);
         if(country==null){
-            errorResult("无此国家");
+            return  errorResult("无此国家");
         }
+        System.out.println("country:"+country);
         return successResult("查询成功",country);
     }
 

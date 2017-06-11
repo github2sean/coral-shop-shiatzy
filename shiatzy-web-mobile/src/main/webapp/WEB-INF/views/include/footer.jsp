@@ -95,6 +95,12 @@
                 var oldPri = $(this).attr("data-value")*1;
                 $(this).text(coinSymbol+" "+((oldPri/rate).toFixed(2))).attr("data-rate",rate);
             }) ;
+            $(".only-price").each(function () {
+                var oldPri = $(this).text()*1;
+                $(this).text(((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+            }) ;
+
+            $(".coinSymbol").text(coinSymbol);
         });
     }
     function queryCurrentRate() {
@@ -120,11 +126,28 @@
                     // layer.msg('更新购物车数量失败');
                 }
             });
+            $.post("/cart/querySessionCartNum",{"type":3},function (data) {
+                if (data.code==200){
+                    cartNum = data.data;
+                    $(".boutique_num").text(cartNum);console.log(cartNum);
+                    console.log("boutique:"+cartNum)
+                }else{
+                    // layer.msg('更新购物车数量失败');
+                }
+            });
         }else{
-            $.post("/cart/getCartNum",function (data) {
+            $.post("/cart/getCartNum",{"type":1},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
                     $(".cart_num").text(cartNum);
+                }else{
+                    // layer.msg('更新购物车数量失败');
+                }
+            });
+            $.post("/cart/getCartNum",{"type":3},function (data) {
+                if (data.code==200){
+                    cartNum = data.data;
+                    $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
