@@ -7,7 +7,7 @@
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
 
-<div class="order">
+<div class="dx-title" style="background-color: #999999">
     <p style="float: left"><spring:message code="reservation"/></p>
     <a style="float: right;" onclick="history.go(-1)">X</a>
 </div>
@@ -15,7 +15,7 @@
 <c:if test="${empty preOderItemList}">
     <div class="content dx-wish dx-shopping">
         <div id="toggleDiv2">
-          <a href="/home/index"> <div class=" content"><p><spring:message code="reservation.list"/>(0)</p></div></a>
+          <a href="/home/index"> <div class="message"><p><spring:message code="reservation.list"/>(0)</p></div></a>
         </div>
     </div>
 </c:if>

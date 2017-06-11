@@ -31,10 +31,10 @@ i {
     line-height: 4.2rem;
 }
 
-.dx-title a:before {
+/*.dx-title a:before {
     content: "<";
     margin-right: .8rem;
-}
+}*/
 
 .dx-orderList .content {
     padding: .3rem 1.7rem 0 2.1rem;
@@ -700,27 +700,45 @@ i {
     font-size: 1.2rem;
     line-height: 2.2rem;
     padding-left: .8rem;
-    border-bottom: 2px solid #ccc;
+   /* border-bottom: 2px solid #ccc;*/
 }
 
-.dx-CommonProblems .content .first-title a:after {
+.dx-CommonProblems .content .first-title >a:after {
     content: ">";
     float: right;
     margin-right: .7rem;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: -webkit-transform .5s;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s, -webkit-transform .5s;
+}
+
+.dx-CommonProblems .content .first-title.active >a:after {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
-.dx-CommonProblems .content .second-title a {
+.dx-CommonProblems .content .second-title li a {
     padding-left: 2.8rem;
 }
 
-.dx-CommonProblems .content .second-title a:after {
+.dx-CommonProblems .content .second-title li a:after {
     content: ">";
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
     float: right;
     margin-right: 2.4rem;
+    -webkit-transition: -webkit-transform .5s;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s, -webkit-transform .5s;
+}
+
+.dx-CommonProblems .content .second-title li.active a:after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .dx-CommonProblems .content .second-title li {
@@ -778,11 +796,11 @@ i {
     content: "";
 }
 
-.dx-shopping .content {
+.dx-shopping .message {
     text-align: center;
 }
 
-.dx-shopping .content p {
+.dx-shopping .message p {
     width: 14rem;
     font-size: 1.6rem;
     border-bottom: 2px solid #ccc;
@@ -1488,7 +1506,7 @@ i {
 }
 
 .dx-commodity .number {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     margin-bottom: 0.7rem;
 }
@@ -1652,7 +1670,7 @@ i {
 }
 
 .dx-commodity .maybeLike .title {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     line-height: 2rem;
     border-bottom: 2px solid #999;
     padding-left: 2rem;
@@ -1678,7 +1696,7 @@ i {
 }
 
 .dx-commodity .maybeLike .name {
-    font-size: .9rem;
+    font-size: 1.2rem;
     margin-bottom: 1.5rem;
 }
 

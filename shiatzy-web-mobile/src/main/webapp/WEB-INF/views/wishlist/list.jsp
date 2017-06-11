@@ -7,52 +7,48 @@
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
 <style>
-    .childlist>a>li{
-        width:90%;
-        height: 2.5rem;
-        margin: 0 1.7rem;
-        font-size: 1.1rem;
-        line-height: 2.2rem;
-        margin-top: 1px;
-        margin-bottom: 1px;
-    }
-    .childlist .active{
-        background-color: #cccccc;
-    }
-</style>
-<div class="dx-wish clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
-    <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
-    <div class="content">
-        <c:if test="${not empty wishList}">
-        <div id="toggleDiv">
-            <div class="dx-total" style="margin-bottom: 2px">
-            <span class="categoryList"><div class="title" style="border-bottom:.1rem solid #333"><spring:message code="wish.save"/>&nbsp;></div></span>
-            </div>
-        </div>
 
-        </c:if>
-        <c:if test="${empty wishList}">
-            <div id="toggleDiv2" style="text-align: center">
-            <div class="" style="padding-top: 50px;text-align: center;border-bottom: 2px solid #cccccc;width: 90%;margin: auto"><p><spring:message code="wish"/>(0)</p></div>
-            </div>
+    .categoryList{margin-top: 1rem;margin-left: 2rem;margin-right: 2rem;}
+    .categoryList .title{    border-bottom: 1px solid #000;display: inline-block;width: 100%;}
+    .categoryList .title:after{
+        content: ">";
+        float: right;
+        margin-right: .7rem;
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        -webkit-transition: -webkit-transform .5s;
+        transition: -webkit-transform .5s;
+        transition: transform .5s;
+        transition: transform .5s, -webkit-transform .5s;}
+    .categoryList.active .title:after{    -webkit-transform: rotate(90deg);  transform: rotate(90deg);}
+    .categoryList .body{margin-top: 1rem;line-height: 2rem;display: none;}
+    .categoryList.active .body{display: block;}
+    .categoryList .body .category-item{margin: 0 1rem;}
+    .categoryList .body .category-item:hover,.categoryList .body .category-item.active{background-color: #cccccc;}
+    .j_collapse{}
+</style>
+<div class="dx-shopping clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
+    <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
+    <div class="categoryList j_collapse">
+        <a href="javascript:void(0)" class="title"><spring:message code="wish.save"/></a>
+        <c:if test="${not empty wishList}">
+            <ul class="body">
+                <c:forEach var="row" items="${categoryList}">
+                    <li class="category-item <c:if test='${categoryDomain.id==row.id}'>active</c:if>" >
+                        <a href="/cart/wishlist?categoryId=${row.id}">${row.name}</a>
+                    </li>
+                </c:forEach>
+            </ul>
         </c:if>
     </div>
-    <c:if test="${not empty wishList}">
-    <div class="childDiv" style="overflow: hidden;width: 100%;margin-top: 0">
-        <ul class="childlist">
-            <c:forEach var="row" items="${categoryList}">
-            <a href="/cart/wishlist?categoryId=${row.id}"><li data-value="${row.id}" class="<c:if test='${categoryDomain.id==row.id}'>active</c:if>" >${row.name}</li></a>
-            </c:forEach>
-        </ul>
-    </div>
-    </c:if>
+
         <div class="dx-GoodsDetails" style="display: block">
             <c:forEach var="row" items="${wishList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
                     <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;"></div>
                 </div>
-                <div class="goods-right" style="width: 200px;word-break: break-all">
+                <div class="goods-right" style="word-break: break-all">
                     <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
@@ -92,11 +88,11 @@
         </c:forEach>
     </div>
     </c:if>
-        <div class="dx-clause">
+        <div class="explain">
             <ul>
-                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
-                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
-                <li class="last whatWish"><a href="#"><spring:message code="wish.whatWish"/>?</a></li>
+                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/><span>&gt;</span></a></li>
+                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/><span>&gt;</span></a></li>
+                <li class="last whatWish"><a href="#"><spring:message code="wish.whatWish"/>?<span>&gt;</span></a></li>
             </ul>
         </div>
 </div>
@@ -110,7 +106,11 @@
 <script>
 
     $(function () {
-
+        $(".j_collapse>a").on("click", function (e) {
+            e.preventDefault();
+            $(this).parent().toggleClass("active");
+            return false;
+        });
         $(".categoryList").click(function () {
             location.href = "${ctx}/cart/wishlist"
         });

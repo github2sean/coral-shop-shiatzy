@@ -34,7 +34,6 @@
         </a>
         </c:forEach>
     </div>
-
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -43,7 +42,6 @@
 
 <script>
     $(function () {
-
 
         /*$(".status").each(function () {
             var status = $(this).attr("data-value");
@@ -59,7 +57,6 @@
                 $(this).text("已取消");
             }
         });*/
-
 
     });
 

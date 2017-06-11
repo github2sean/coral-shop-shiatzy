@@ -2,8 +2,7 @@
     height: 4.1739rem;
     background: #999999;
     padding: 0 1.7778rem 0 2.1642rem;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
+
     margin-bottom: 2.0096rem;
 }
 
@@ -814,7 +813,9 @@
     background-color: #cccccc;
     padding-top: 1.3913rem;
 }
-
+.explain a{
+    font-size: 1.4rem;
+}
 .choose-store a {
     display: inline-block;
     width: 18.5507rem;
