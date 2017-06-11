@@ -2560,3 +2560,13 @@ select,
 textarea {
     -webkit-appearance: none;
 }
+
+.do-color-show{
+    position: absolute;
+    left:0.5rem;
+    top:50%;
+    transform:translateY(-0.4rem);
+    width: .8rem;
+    height: .8rem;
+    background-color:#000;
+}
