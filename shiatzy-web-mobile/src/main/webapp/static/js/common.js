@@ -29,12 +29,14 @@ var commonApp = function () {
   };
   //产品列表筛选
   var proFilter = function () {
-    $('.j_panel_trigger').on('click', function () {
+    $('.j_panel_trigger').on('click', function (e) {
+      e.preventDefault();
       var id = '#' + $(this).data('panel');
       $(id).fadeIn();
       $('.j_close_panel').on('click', function () {
         $(this).parent().fadeOut();
       });
+      alert('12313')
     })
   };
 
