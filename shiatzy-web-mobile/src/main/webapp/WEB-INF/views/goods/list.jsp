@@ -34,7 +34,7 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${goods.name}</p>
-                <p class="do-pro-price" name="goodsPrice">${firstItem.price}</p>
+                <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
                     <li style="background: ${item.colorValue}"></li>
@@ -119,7 +119,6 @@
         console.log("jsonObjlength:"+jsonObj.length);
         return jsonObj.length;
     }
-
     function addToWish(now,type){
         var isLogin = '${isGuest}'=='onLine'?true:false;
         var selectSizeId=$(now).attr("data-ids");
@@ -156,6 +155,8 @@
         });
     }
     $(function () {
+        //显示价格
+        setPrice();
         //console.log('${goodsList}');
         //var cartNum  = $(".do-num").val();
         $(".j_collect").click(function () {
@@ -245,8 +246,8 @@
                                 " <p class='do-pro-t ellipsis-25' name='goodsName'>"
                                 +moreList[i].name+
                                 " </p> " +
-                                " <p class='do-pro-price' name='goodsPrice'>"
-                                +firstItem.price+
+                                " <p class='do-pro-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
+                                +"&nbsp;"+
                                 " </p> " +
                                 colorStr +
                                 "</a> " +
@@ -256,6 +257,7 @@
                         //console.log(str);
                         //滚动条滚动一段距离
                         $(".j_scroll_list").append(str);
+                        setPrice();
                         /*  var t = $(window).scrollTop();
                          $('body,html').animate({scrollTop:t+500},100);*/
                     }

@@ -6,14 +6,32 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<style>
+    .model-select-box span{font-size: 1.4rem;}
+    .model-select-box, .model-select-box ul li{font-size: 1.4rem}
+    .order-stores h1{margin-bottom: 2rem;}
+    .model-select-box .model-select-store, .model-select-box .model-select-country, .model-select-box .model-select-city{
+        margin-bottom: 1.5rem;
+    }
+    .model-select-box a:after{
+        content: ">";
+        float: right;
+        font-size: 1.4rem;
+        -webkit-transition: -webkit-transform .5s;
+        transition: -webkit-transform .5s;
+        transition: transform .5s;
+        transition: transform .5s, -webkit-transform .5s;}
+    .model-select-box .active a:after{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+        display: block;}
+</style>
 <div class="order">
     <p class="pull-left">门市预约 / 详细</p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a>
 </div>
 <div class="order-main clearfix">
     <c:forEach var="row" items="${preOderItemList}">
-
             <div class="order-main-left goodsDiv">
                 <p class="product-num">产品编号 ${row.leftItem.goodsCode}</p>
                 <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height:14rem;">
@@ -54,34 +72,34 @@
 <div class="order-stores">
     <h1>选择预约门市</h1>
     <div class="model-select-box">
-        <div class="model-select-country" data-value="" id="countrySelect">
-            <span class="pl-2" id="chooseCountry">中国</span>
-            <span class="pull-right">v</span>
+        <div class="model-select-country j_collapse" data-value="" id="countrySelect">
+            <a class="pl-2" id="chooseCountry">中国</a>
+
             <ul class="text-center model-select-option" style="display: none">
             <c:forEach var="row" items="${storeCountryList}">
-                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=1}'>hide</c:if>">${row.name}</li>
+                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=1}'>hide</c:if>"><span>${row.name}</span></li>
             </c:forEach>
             </ul>
         </div>
     </div>
     <div class="model-select-box" >
         <div class="model-select-city" data-value="" id="citySelect">
-            <span class="pl-2" id="chooseCity">请选择省/州</span>
-            <span class="pull-right">v</span>
+            <a class="pl-2" id="chooseCity">请选择省/州</a>
+
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
-                    <li data-option="${row.id}" value="${row.id}">${row.name}</li>
+                    <li data-option="${row.id}" value="${row.id}"><span>${row.name}</span></li>
                 </c:forEach>
             </ul>
         </div>
     </div>
     <div class="model-select-box" >
         <div class="model-select-store" data-value="" id="storeSelect">
-            <span class="pl-2" id="chooseStore">请选择门市</span>
-            <span class="pull-right">v</span>
+            <a class="pl-2" id="chooseStore">请选择门市</a>
+
             <ul class="text-center model-select-option" id="storeFather" style="display: none">
             <c:forEach var="row" items="${storeList}" varStatus="num">
-                <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${row.name}</li>
+                <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}"><span>${row.name}</span></li>
             </c:forEach>
             </ul>
         </div>
@@ -93,7 +111,7 @@
         <p id="storeTel"></p>
     </div>
     <div class="submit-btn">
-        <a href="#" class="sendBtn" data-value="">送出预约</a>
+        <a href="#" class="sendBtn" data-value="" style="line-height: 3rem;">送出预约</a>
     </div>
 </div>
 
@@ -102,6 +120,7 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+
     //下拉列表
     function selectModel() {
         var $box = $('div.model-select-box');
@@ -146,6 +165,7 @@
     $(function () {
 
         $("#countrySelect").click(function () {
+            $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").click(function () {
@@ -192,6 +212,7 @@
 
         var json = "";
         $("#citySelect").click(function () {
+            $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").on("click",function () {
@@ -219,6 +240,7 @@
         });
 
         $("#storeSelect").click(function () {
+            $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").on("click",function () {

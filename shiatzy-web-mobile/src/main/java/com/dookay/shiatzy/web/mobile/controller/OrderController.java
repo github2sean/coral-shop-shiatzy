@@ -1,6 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.adapter.express.KdniaoSubscribeAPI;
+import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -58,21 +59,10 @@ public class OrderController extends BaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         OrderQuery query = new OrderQuery();
         query.setCustomerId(customerDomain.getId());
-        List orderList = orderService.getList(query);
-
-        //退货单
-        ReturnRequestQuery query2 = new ReturnRequestQuery();
-        query2.setCustomerId(customerDomain.getId());
-        List returnList= returnRequestService.getList(query2);
-        //预约单查询
-        ReservationQuery query3 = new ReservationQuery();
-        query3.setCustomerId(customerDomain.getId());
-        List reservationList  = reservationService.getList(query3);
-
+        query.setPageSize(8);
+        PageList<OrderDomain> orderList = orderService.getPageList(query);
         ModelAndView mv = new ModelAndView("user/order/list");
         mv.addObject("orderList",orderList);
-        mv.addObject("returnList",returnList);
-        mv.addObject("reservationList",reservationList);
         return mv;
     }
 
@@ -96,7 +86,6 @@ public class OrderController extends BaseController {
             orderItemDomain.setGoodsItemDomain(goodsItemDomain);
             orderNum += orderItemDomain.getNum();
             returnNum += orderItemDomain.getReturnNum();
-
 
         }
         //判断该订单是否有对应退货单

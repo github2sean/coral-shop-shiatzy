@@ -54,8 +54,8 @@
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                        <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
                     </span></div>
-                    <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span>${row.goodsPrice}</span></div>
-                    <div class="price"><spring:message code="wish.discountPrice"/>&nbsp; &yen; <span>0</span></div>
+                    <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                    <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
@@ -73,11 +73,11 @@
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
                 <div class="left">
                     <a href="/goods/details/${firstItem.id}">
-                    <div class="pic">
+                    <div class="pic" style="height: 100px">
                         <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
                     <div class="name">${goods.name}</div>
-                    <div class="price">${firstItem.price}</div>
+                    <div class="price do-pro-price" data-value="${goods.price}">&nbsp;</div>
                     <ul class="color clearfix">
                         <c:forEach var="goodsItem" items="${goods.goodsItemList}">
                             <li style="background: ${goodsItem.colorValue}"></li>
@@ -106,6 +106,9 @@
 <script>
 
     $(function () {
+
+        setPrice();
+
         $(".j_collapse>a").on("click", function (e) {
             e.preventDefault();
             $(this).parent().toggleClass("active");

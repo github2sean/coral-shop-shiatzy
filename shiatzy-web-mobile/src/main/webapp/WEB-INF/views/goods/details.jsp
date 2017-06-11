@@ -19,7 +19,7 @@
                 </c:forEach>
             </ul>
         </div>
-        <div class="price">&yen; <span>${goodsItemDomain.price}</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+        <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
 
         <div class="color">
             <div class="title j_choose">${goodsItemDomain.goodsColor.name}(还有${goodsDomain.goodsItemList.size()-1}款颜色)</div>
@@ -58,7 +58,7 @@
     </div>
     <div class="maybeLike clearfix">
         <div class="title">您也许也喜欢</div>
-         <c:forEach var="goods" items="${historyList}">
+         <c:forEach var="goods" items="${historyList}" begin="0" end="3">
              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
              <div class="left">
                  <a href="/goods/details/${firstItem.id}">
@@ -74,7 +74,6 @@
                      </ul>
                      </a>
              </div>
-             
          </c:forEach>
     </div>
 </div>
@@ -87,6 +86,7 @@
     $(function(){
         commonApp.init();
 
+        setPrice();
         $(".j_s_slider").bxSlider({
             auto:false,
             pager:false,

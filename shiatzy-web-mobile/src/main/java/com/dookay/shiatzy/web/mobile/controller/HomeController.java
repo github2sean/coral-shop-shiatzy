@@ -111,4 +111,23 @@ public class HomeController extends MobileBaseController {
         return successResult("选择成功");
     }
 
+    @RequestMapping(value = "queryCurrentRate", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult queryCurrentRate(){
+        //判断当前语言环境
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+
+        Long id = (Long)session.getAttribute(SHIPPING_COUNTRY_ID);
+        if(id==null){
+            errorResult("未选择国家");
+        }
+        //查询出配送国家
+        ShippingCountryDomain country = shippingCountryService.get(id);
+        if(country==null){
+            errorResult("无此国家");
+        }
+        return successResult("查询成功",country);
+    }
+
 }

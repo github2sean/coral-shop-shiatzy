@@ -16,16 +16,22 @@
     input{
         padding-left: 20px;
     }
+    .dx-EditAddress .recipients div, .dx-EditAddress .address div{
+        font-size: 1.2rem;
+    }
+    .dx-EditAddress .content .btn{
+        font-size: 1.2rem;
+    }
 </style>
 <form class="addressForm" method="post" action="/checkout/addAddress">
     <div class="dx-EditAddress">
         <div class="content">
-            <div class="title">編輯地址 <a href="javascript:" onclick="self.location=document.referrer;">回上一步</a></div>
+            <div class="title">编辑地址 <a href="javascript:" onclick="self.location=document.referrer;">返回上页</a></div>
             <div class="recipients">
                 <input type="hidden" value="${address.id}" name="id">
-                <div class="title">收件人*</div>
-                <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName"></div>
-                <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName"></div>
+                <div class="title">联系人*</div>
+                <div class="name" >名* <input type="text" value="${address.firstName}" name="firstName"></div>
+                <div class="name" >姓* <input type="text" value="${address.lastName}" name="lastName"></div>
                 <div class="appellation ">称谓*
                     <select name="title" id="title" class="" value="${address.title}">
                         <option value="女士">女士</option>
@@ -34,11 +40,11 @@
                         <option value="无">无</option>
                     </select>
                 </div>
-                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone"></div>
+                <div class="tel">电话* <input type="tel" value="${address.phone}" name="phone"></div>
             </div>
             <div class="address">
-                <div class="title">地址*</div>
-                <div class="country">国别 / 区域*
+                <div class="title">地址信息*</div>
+                <div class="country">地区*
 
                     <select name="countryId" id="countryId" class="">
                         <c:forEach var="row" items="${countryList}">
@@ -47,11 +53,11 @@
                     </select>
                     </div>
                 <div class="province">省/州* <input type="text" value="${address.province}" name="provinceId"> </div>
-                <div class="city">城区* <input type="text" value="${address.city}" name="cityId"> </div>
+                <div class="city">区* <input type="text" value="${address.city}" name="cityId"> </div>
                 <div class="detailedAddress">详细地址: <input type="text" value="${address.address}" name="address"></div>
-                <div class="more">地址更多信息: <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="more">更多信息（地址）: <input type="text" value="${address.memo}" name="memo"></div>
             </div>
-            <a href="#"  class="btn completeBtn">完成</a>
+            <a href="#"  class="btn completeBtn">保存</a>
         </div>
     </div>
 </form>
@@ -104,6 +110,7 @@
             $.post("/checkout/updateShipAddress",data,function (data) {
                 if(data.code==200){
                     layer.msg(data.message);
+                    setTimeout('self.location=document.referrer;',2000);
                 }else{
                     layer.msg(data.message);
                 }

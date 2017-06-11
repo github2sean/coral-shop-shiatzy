@@ -12,7 +12,7 @@
     <a style="float: right;" href="/checkout/orderInfo">< 回上页</a>
 </div>
 <div class="order-finish">
-    <h3>订单总额：¥ ${order.orderTotal}</h3>
+    <h3>订单总额：<span class="do-pro-price" data-value="${order.orderTotal}">&nbsp;</span></h3>
     <div class="delivery content">
         <h3>1. 配送</h3>
         <c:if test="${not empty order.storeDomain}">
@@ -69,11 +69,12 @@
                         <div class="goods-right" style="word-break: break-all;width:200px;">
                             <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                             <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
+                            <div class=""><spring:message code="shoppingCart.number"/>&nbsp;x${row.num}</div>
                             <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                             <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
                              </span>
                             </div>
-                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span>${row.goodsPrice}</span></div>
+                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
                         </div>
                     </div>
                 </c:forEach>
@@ -118,6 +119,7 @@
     };
 
     $(function(){
+        setPrice();
         noNeedBill();
 
         $(".moreBtn").click(function () {

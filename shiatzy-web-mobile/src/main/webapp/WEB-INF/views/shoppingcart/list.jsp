@@ -26,7 +26,7 @@
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${JSONObject.fromObject(row.skuSpecifications).getString("size")}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.quantity}" data-value="${row.id}">+</a></div>
-                    <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span class="js_price">${row.goodsPrice}</span></div>
+                    <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> > <svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -36,12 +36,12 @@
             </div>
             </c:forEach>
 
-            <div class="total"><spring:message code="shoppingCart.sub"/> <span id="js_total">&yen; &nbsp;</span></div>
+            <div class="total"><spring:message code="shoppingCart.sub"/> <span class="coinSymbol"></span><span id="js_total" style="margin-left: 2px"> &nbsp;</span></div>
 
         </div>
     </div>
     <div class="shopping-start">
-        <a href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping"><spring:message code="shoppingCart.checkout"/></a>
+        <a data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
         <div class="dx-clause">
             <ul>
                 <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
@@ -52,17 +52,20 @@
     </div>
 </c:if>
     <c:if test="${cartList.size()==0}">
-        <div class="content">
-           <p><spring:message code="shoppingCart.bagNull"/>&nbsp;(0)</p>
-        </div>
-        <div class="shopping-start">
-            <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
-            <div class="dx-clause">
-                <ul>
-                    <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
-                    <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
-                </ul>
+        <div class="content dx-wish dx-shopping">
+            <div id="toggleDiv2">
+                <a href="/home/index"> <div class="message"><p><spring:message code="shoppingCart.bagNull"/>&nbsp;(0)</p></div></a>
             </div>
+        </div>
+        <div class="explain">
+
+        <div class="choose-store">
+            <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
+        </div>
+            <ul>
+                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+            </ul>
         </div>
     </c:if>
 </div>
@@ -77,10 +80,40 @@
            var num =  ($(this).find(".quantitys").val())*1;
            var price  = ($(this).find(".js_price").text())*1;
             total +=num * price;
-            $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
+            $("#js_total").html(total.toFixed(2));
         })
     }
+    function setPrice() {
+        $.post("/home/queryCurrentRate",function (data) {
+            var coinSymbol = '￥';
+            var rate = 1;
+            if (data.code==200){
+                var obj = data.data;
+                var type = obj.rateType;
+                console.log("type2"+type);
+                if(obj.rateType == 1){
+                    coinSymbol = '<spring:message code="coin.USA"/>';
+                }else if(obj.rateType == 2){
+                    coinSymbol = '<spring:message code="coin.EU"/>';
+                }
+                rate = obj.rate;
+                console.log("rate"+rate);
+            }
+            $(".do-pro-price").each(function () {
+                var oldPri = $(this).attr("data-value")*1;
+                $(this).text(((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+            });
+            $(".coinSymbol").text(coinSymbol);
+            clsTotal();
+        });
+    }
     $(function(){
+        setPrice();
+        var isLogin = '${isGuest}'=='onLine'?true:false;
+        //
+        var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
+        $(".checkout").attr("href",href);
+
         //初始化购物车数量
         var cartNum = '${cartList.size()}'*1;
         $(".cart_num").text(cartNum);
@@ -115,7 +148,7 @@
             }
             clsTotal();
         });
-        var isLogin = '${isGuest}'=='onLine'?true:false;
+
         console.log('${isGuest} '+isLogin)
         $(".deleteBtn").on("click",function () {
             var $self = $(this);
