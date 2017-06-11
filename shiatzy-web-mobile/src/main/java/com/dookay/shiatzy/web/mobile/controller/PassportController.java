@@ -162,6 +162,7 @@ public class PassportController extends MobileBaseController{
                            continue;
                        }
                    }
+                   System.out.println("customerDomain"+customerDomain+"\nskuDomain"+skuDomain+"\ntype:"+form.getType()+"\nnum:"+num);
                    shoppingCartService.addToCart(customerDomain, skuDomain, form.getType(),num);
                }
                //清空session中商品

@@ -116,12 +116,14 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	public void updateShoppingCartItem(CustomerDomain customerDomain, Long shoppingCartItemId, int num) {
 		Long customerId = customerDomain.getId();
 		ShoppingCartItemDomain shoppingCartItemDomain = super.get(shoppingCartItemId);
-		if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){
-			if(num>0){
-				shoppingCartItemDomain.setNum(num);
-				super.update(shoppingCartItemDomain);
-			}else{
-				super.delete(shoppingCartItemId);
+		if(shoppingCartItemDomain!=null){
+			if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){
+				if(num>0){
+					shoppingCartItemDomain.setNum(num);
+					super.update(shoppingCartItemDomain);
+				}else{
+					super.delete(shoppingCartItemId);
+				}
 			}
 		}
 	}
