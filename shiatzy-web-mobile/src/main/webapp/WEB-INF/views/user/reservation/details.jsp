@@ -47,7 +47,7 @@
             </c:forEach>
 
         </div>
-        <div class="dx-total" style="text-align: right;font-size: 18px;">预计订单总额 : &yen; <span id="js_total"></span></div>
+        <div class="dx-total" style="text-align: right;font-size: 1.2rem;margin-top: 15px;">订单总额 : &yen; <span id="js_total"></span></div>
         <div class="dx-explain">您的订单将于1-3个工作日内尽快配送至指定门店，请耐心等待。精品店预约订单遵循门店销售规则，不享有在线购物的“7天轻松退货”政策。</div>
         <div class="dx-instructions"><a href="#">在线客户服务</a></div>
         <!--<div class="dx-privacy"><a href="#">隐私权政策</a></div>-->

@@ -5,7 +5,18 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
+<style>
+    .my-account-message span{font-size: 1.4rem;}
+    .my-account-message ul li, .account-message ul li{
+        margin-bottom: 2rem;
+        font-size: 1.4rem;
+    }
+    .my-account-message ul li .arrow{
+        float: right;margin-top: 6px;
+    }
+    .my-account-title{margin-bottom: 1rem;}
+    .my-account-message li a{display: block}
+</style>
 <div class="order">
     <p style="float: left"><spring:message code="myAccount"/> </p>
     <a style="float: right;" href="/home/index" >< <spring:message code="goBack"/></a>
@@ -20,39 +31,40 @@
         <ul>
             <li>
                 <a href="/u/account/details">
-                    <span><svg><use xlink:href="#ac-info"></use></svg></span>
+                    <span ><svg><use xlink:href="#ac-info"></use></svg></span>
                     <span><spring:message code="account.information"/></span>
-                    <span style="float: right;">></span>
-                </a>
-            </li>
-            <li>
-                <a href="/order/list">
-                    <span><svg><use xlink:href="#ac-order"></use></svg></span>
-                    <span><spring:message code="account.order"/></span>
-                    <span style="float: right;">></span>
-                </a>
-            </li>
-            <li>
-                <a href="/reservation/list">
-                    <span><svg><use xlink:href="#ap-small"></use></svg></span>
-                    <span><spring:message code="account.reservation"/></span>
-                    <span style="float: right;">></span>
-                </a>
-            </li>
-            <li>
-                <a href="/cart/wishlist">
-                    <span><svg><use xlink:href="#heart"></use></svg></span>
-                    <span><spring:message code="account.wish"/></span>
-                    <span style="float: right;">></span>
+                    <span class="arrow">></span>
                 </a>
             </li>
             <li>
                 <a href="/checkout/listShipAddress?way=index">
                     <span><svg><use xlink:href="#ac-add"></use></svg></span>
                     <span><spring:message code="account.address"/></span>
-                    <span style="float: right;">></span>
+                    <span class="arrow">></span>
                 </a>
             </li>
+            <li>
+                <a href="/order/list">
+                    <span><svg><use xlink:href="#ac-order"></use></svg></span>
+                    <span><spring:message code="account.order"/></span>
+                    <span class="arrow">></span>
+                </a>
+            </li>
+            <li>
+                <a href="/reservation/list">
+                    <span><svg><use xlink:href="#ap-small"></use></svg></span>
+                    <span><spring:message code="account.reservation"/></span>
+                    <span class="arrow">></span>
+                </a>
+            </li>
+            <li>
+                <a href="/cart/wishlist">
+                    <span><svg><use xlink:href="#heart"></use></svg></span>
+                    <span><spring:message code="account.wish"/></span>
+                    <span class="arrow">></span>
+                </a>
+            </li>
+
         </ul>
     </div>
     <div class="outline">

@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="com.dookay.coral.shop.order.enums.OrderStatusEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <jsp:include page="/WEB-INF/views/include/header.jsp">
@@ -7,39 +8,30 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">订单详情<a style="float: right;" href="/u/account/index"><spring:message code="goBack"/></a></div>
-    <div class="content">
-        <div class="dx-reservation">订单列表</div>
-
-        <c:if test="${empty orderList && empty returnList}">
-            <div class="content ">
+    <div class="dx-title">我的账户 / 订单详情<a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a></div>
+    <div class="content" style="padding-top: 3rem;">
+        <c:if test="${empty orderList.list}">
+            <div class="content dx-wish dx-shopping">
                 <div id="toggleDiv2">
-                    <div class="dx-collect">订单（0）</div>
+                    <a href="/home/index"> <div class="message"><p>订单(0)</p></div></a>
                 </div>
             </div>
         </c:if>
-       <c:forEach var="row" items="${orderList}" varStatus="num">
+       <c:forEach var="row" items="${orderList.list}" varStatus="num">
         <a href="/order/details?orderId=${row.id}" class="dx-reservaList clearfix clearfix${num.count-1} <c:if test='${num.count>9}'>hide</c:if>">
             <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd " type="date" dateStyle="long" /></div>
             <div class="orderNumber" style="padding-left: 5%">${row.orderNo}</div>
-            <div class="status" style="padding-right: 1rem" data-value="${row.status}"></div>
+            <div class="status" style="padding-right: 1rem" >${OrderStatusEnum.valueOf(row.status).description}</div>
         </a>
         </c:forEach>
-        <%--<c:forEach var="row" items="${returnList}" begin="0" end="3">
-            <a href="/returnOrder/details?orderId=${row.id}" class="dx-reservaList clearfix">
-                <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd" type="date" dateStyle="long" /></div>
-                <div class="orderNumber" style="padding-left: 5%">${row.orderNo}</div>
-                <div class="status" style="padding-right: 1rem" data-value="">退货</div>
-            </a>
-        </c:forEach>--%>
-        <c:if test="${(returnList.size()>4 && orderList.size()>9)}" >
+        <c:if test="${orderList.list.size()>9}" >
             <div class="font-12 text-center do-load-list">
                 <span class="link-down-before moreList">向下自动载入</span>
                 <span class="overGoods" style="display: none">-已到底部-</span>
             </div>
         </c:if>
     </div>
-    <div class="check clearfix"> <span>查看所有订单</span><a href="/reservation/list"> ></a></div>
+
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -49,20 +41,7 @@
 <script>
     var noMore = true;
     $(function () {
-        $(".status").each(function () {
-            var status = $(this).attr("data-value");
-            if(status == '1'){
-                $(this).text("未付款");
-            }else if(status == '2'){
-                $(this).text("已付款未配送");
-            }else if(status == '3'){
-                $(this).text("已配送");
-            }else if(status == '4'){
-                $(this).text("已收货");
-            }else if(status == '-1'){
-                $(this).text("已取消");
-            }
-        });
+
 
         $(".moreList").click(function () {
 
@@ -94,9 +73,8 @@
             }
         };
 
-
         function loadMoreOrder() {
-            var size = '${orderList.size()}';
+            var size = '${orderList.list.size()}';
             var lastStr = ".clearfix"+(size-1);
             if(size<=9){
                 return false;

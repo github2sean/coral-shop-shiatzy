@@ -36,7 +36,6 @@ var commonApp = function () {
       $('.j_close_panel').on('click', function () {
         $(this).parent().fadeOut();
       });
-      alert('12313')
     })
   };
 

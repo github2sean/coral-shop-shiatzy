@@ -52,17 +52,20 @@
     </div>
 </c:if>
     <c:if test="${cartList.size()==0}">
-        <div class="content">
-           <p><spring:message code="shoppingCart.bagNull"/>&nbsp;(0)</p>
-        </div>
-        <div class="shopping-start">
-            <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
-            <div class="dx-clause">
-                <ul>
-                    <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/></a></li>
-                    <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/></a></li>
-                </ul>
+        <div class="content dx-wish dx-shopping">
+            <div id="toggleDiv2">
+                <a href="/home/index"> <div class="message"><p><spring:message code="shoppingCart.bagNull"/>&nbsp;(0)</p></div></a>
             </div>
+        </div>
+        <div class="explain">
+
+        <div class="choose-store">
+            <a href="/home/index" class="shopping"><spring:message code="shoppingCart.selectGoods"/></a>
+        </div>
+            <ul>
+                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+            </ul>
         </div>
     </c:if>
 </div>

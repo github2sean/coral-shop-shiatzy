@@ -14,7 +14,13 @@
         padding-left: 20px;
     }
     input{
-    padding-left: 20px;
+        padding-left: 20px;
+    }
+    .dx-EditAddress .recipients div, .dx-EditAddress .address div{
+        font-size: 1.2rem;
+    }
+    .dx-EditAddress .content .btn{
+        font-size: 1.2rem;
     }
 </style>
 
@@ -23,7 +29,7 @@
         <div class="content">
             <div class="title">新增地址 <a href="javascript:" onclick="self.location=document.referrer;">回上一步</a></div>
             <div class="recipients">
-                <div class="title">收件人*</div>
+                <div class="title">联系人*</div>
                 <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName" id="firstName"></div>
                 <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName" id="lastName"></div>
                 <div class="appellation ">称谓*
@@ -52,7 +58,7 @@
                 <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> </div>
                 <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> </div>
                 <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="address"></div>
-                <div class="more">地址更多信息 <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="more">更多信息（地址） <input type="text" value="${address.memo}" name="memo"></div>
             </div>
             <div class="remind"></div>
             <a href="#"  class="btn completeBtn">完成</a>
@@ -214,6 +220,7 @@
                 console.log(data);
                 if(data.code==200){
                     layer.msg("添加成功");
+                    setTimeout('self.location=document.referrer;',2000);
                 }
             },"json");
         });
