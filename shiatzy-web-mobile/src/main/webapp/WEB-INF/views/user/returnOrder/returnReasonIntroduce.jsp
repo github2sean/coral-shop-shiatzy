@@ -37,70 +37,46 @@
         <ul>
             <li>尺寸</li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="size"><i class="i-radiobox"></i>太大</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="size"><i class="i-radiobox"></i>太小</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="size"><i class="i-radiobox"></i>太长</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="size"><i class="i-radiobox"></i>太短</label>
             </li>
         </ul>
         <ul>
-            <li>尺寸</li>
+            <li>服务</li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="service"><i class="i-radiobox"></i>错误商品</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="service"><i class="i-radiobox"></i>货运过长</label>
             </li>
         </ul>
         <ul>
-            <li>尺寸</li>
+            <li>品质</li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太大</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox"  name="quality"><i class="i-radiobox"></i>瑕疵品</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太小</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="qulity"><i class="i-radiobox"></i>与图片不符</label>
+            </li>
+        </ul>
+        <ul>
+            <li>其他</li>
+            <li>
+                <label class="radiobox"><input type="checkbox"  name="others"><i class="i-radiobox"></i>面料</label>
             </li>
             <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太长</label></span>
-                </div>
+                <label class="radiobox"><input type="checkbox" name="others"><i class="i-radiobox"></i>风格不合适</label>
             </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox"><i class="i-radiobox"></i>太短</label></span>
-                </div>
+             <li>
+                <label class="radiobox"><input type="checkbox" name="others"><i class="i-radiobox"></i>改变心意</label>
             </li>
         </ul>
     </div>

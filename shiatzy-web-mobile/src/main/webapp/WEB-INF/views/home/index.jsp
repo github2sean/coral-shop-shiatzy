@@ -9,9 +9,33 @@
 
 <div class="index-w text-center">
     <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-1.jpg" alt=""></a>
+    <div class="do-title text-right">
+        <div class="title-main">大标题</div>
+        <div class="title-sub">小标题</div>
+    </div>
     <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-2.jpg" alt=""></a>
-    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-3.jpg" alt=""></a>
-    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-4.jpg" alt=""></a>
+    <div class="do-title text-center">
+        <div class="title-main">大标题</div>
+        <div class="title-sub">小标题</div>
+    </div>
+    <a href="#" class="do-block img-cover">
+        <img src="${ctx}/static/images/Banner-3.jpg" alt="">
+        <span class="do-cover-title do-cover-start">
+            <span class="cover-title-main">标题标题</span>
+        </span>
+    </a>
+    <a href="#" class="do-block img-cover">
+        <img src="${ctx}/static/images/Banner-4.jpg" alt="">
+        <span class="do-cover-title do-cover-center">
+            <span class="cover-title-main">标题标题</span>
+        </span>
+    </a>
+    <a href="#" class="do-block img-cover">
+        <img src="${ctx}/static/images/Banner-4.jpg" alt="">
+        <span class="do-cover-title do-cover-end">
+            <span class="cover-title-main">标题标题</span>
+        </span>
+    </a>
     <div class="index-se font-16 hide">
         <a href="/home/index">
             <c:if test="${ not empty coupon}">

@@ -887,6 +887,7 @@ i {
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
     width: 10.7rem;
     height: 10.2rem;
+    overflow: hidden;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic img {

@@ -50,7 +50,7 @@
             <c:if test="${not empty row.rightItem}">
                 <div class="order-main-right goodsDiv">
                     <p class="product-num">产品编号 ${row.rightItem.goodsCode}</p>
-                    <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
+                    <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 14rem;">
                     <p class="product-name">${row.rightItem.goodsName}</p>
                     <div class="color-size">
                         <p>${row.rightItem.goodsItemDomain.name}</p>
