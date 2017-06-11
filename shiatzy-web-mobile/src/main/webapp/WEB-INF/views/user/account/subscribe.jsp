@@ -16,15 +16,15 @@
                 <h3>我同意 夏资陈 通过以下方式与我联系</h3>
                 <div>
                     <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType0" value="0" data-value="0"><i
-                            class="i-radiobox"></i>快递及邮件</label></span>
+                            class="i-radiobox iconfont icon-duigou"></i>快递及邮件</label></span>
                 </div>
                 <div>
                     <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType1" value="1" data-value="1"><i
-                            class="i-radiobox"></i>短信</label></span>
+                            class="i-radiobox iconfont icon-duigou"></i>短信</label></span>
                 </div>
                 <div>
                     <span class="mr-2"><label class="radiobox"><input type="checkbox" class="subscribeType" name="subscribeType2" value="2" data-value="2"><i
-                            class="i-radiobox"></i>彩信</label></span>
+                            class="i-radiobox iconfont icon-duigou"></i>彩信</label></span>
                 </div>
             </div>
             <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>

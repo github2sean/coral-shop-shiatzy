@@ -45,8 +45,8 @@
     <div class="delivery">
         <h3>2. 发票信息</h3>
         <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox"></i>不需要发票</label></span>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox"></i>需要发票</label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox iconfont icon-duigou"></i>不需要发票</label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox iconfont icon-duigou"></i>需要发票</label></span>
         </div>
         <p id="showBill" style="display: none;margin-left: 2.3rem;font-size: 1.0821rem;margin-top: 2.7rem;border-bottom: 2px solid #cccccc;">
             发票抬头*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
@@ -59,14 +59,14 @@
             <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>
-        <div class="dx-wish clearfix dx-shopping moreGoods" style="display:none;">
+        <div class="clearfix dx-shopping" style="display:none;">
             <div class="dx-GoodsDetails">
                 <c:forEach var="row" items="${cartList}">
                     <div class="goods clearfix goodsDiv">
                         <div class="goods-left">
-                            <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;"></div>
+                            <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                         </div>
-                        <div class="goods-right" style="word-break: break-all">
+                        <div class="goods-right" style="word-break: break-all;width:200px;">
                             <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                             <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                             <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>

@@ -31,11 +31,15 @@
         </p>
         <c:if test="${orderDomain.status==1}">
             <p><a id="rePay" href="javascript:void(0);">重新支付<span style="float:right;" class="rotateicon">></span></a></p>
-            <p style="display: none" class="rePayWay">选择支付方式:
-                <label style=""><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/>支付宝</label>
-                <label style=""><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/>银联</label>
-                <label style=""><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/>ipaylinks</label>
-                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="margin-left:20px;background-color: #2b2b2b;color: white">支付</a></p>
+            <p style="display: none" class="rePayWay">
+                选择支付方式: <br>
+                <label><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i>支付宝</label>
+                <label><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>银联</label>
+                <label><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>ipaylinks</label>
+                <div class="text-right">
+                    <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="margin-left:20px;background-color: #2b2b2b;color: white">支付</a>
+                </div>
+            </p>     
         </c:if>
         <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
             <p><a id="queryExpress" href="javascript:void(0);">查看配送状态<span style="float:right;" class="rotateicon">></span></a></p>
