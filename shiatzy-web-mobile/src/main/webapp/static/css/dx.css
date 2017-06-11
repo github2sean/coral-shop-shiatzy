@@ -881,6 +881,7 @@ i {
 .dx-shopping .dx-GoodsDetails .goods-left {
     float: left;
     width: 9.7rem;
+    margin-top:1.3rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
@@ -891,6 +892,7 @@ i {
 .dx-shopping .dx-GoodsDetails .goods-left .pic img {
     display: block;
     width: 100%;
+    margin-left:-0.5rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right {
@@ -962,43 +964,42 @@ i {
 }
 
 .dx-accounts .dx-GoodsDetails .goods {
-    padding: .4rem 1.8rem 0 2.1rem;
+    padding: .4rem 0.8rem 0 0.8rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-left {
     float: left;
-    width: 5.5rem;
-    margin-right: .9rem;
+    width: 9.7rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-left .pic {
-    width: 5.5rem;
-    height: 9.2rem;
+    width: 10.7rem;
+    height: 10.2rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-left .pic img {
     display: block;
     width: 100%;
+    margin-left: -0.5rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right {
     float: left;
     width: 17rem;
+    font-size: 1rem
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right .name {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 1.3rem 0 .8rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right .number {
-    font-size: .6rem;
     margin-bottom: .8rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right .color,
 .dx-accounts .dx-GoodsDetails .goods-right .quantity {
-    font-size: .7rem;
     margin-bottom: .8rem;
 }
 
@@ -1013,7 +1014,6 @@ i {
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right .price {
-    font-size: 1rem;
     margin-left: 8.4rem;
 }
 
@@ -1070,10 +1070,10 @@ i {
     font-size: 1rem;
     line-height: 1.5rem;
     background-color: #fff;
-    border: none;
-    border: .1rem solid #ccc;
+    border: 1px solid #ccc;
     float: right;
     margin-top: .5rem;
+    padding: 0 0.8rem;
 }
 
 .dx-accounts .total {
@@ -1110,6 +1110,7 @@ i {
     margin-top: 1.3rem;
     line-height: 3.4rem;
     height: 3.4rem;
+    font-size:1.3rem;
 }
 
 .dx-accounts .accounts-btn {
@@ -1316,9 +1317,9 @@ i {
 
 .dx-shipping .content .address .title span {
     float: right;
-    display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
+    line-height: 1.5rem;
     text-align: center;
     background-color: #000;
     color: #fff;
@@ -1551,11 +1552,19 @@ i {
 .dx-commodity .content .color .title:after,
 .dx-commodity .content .size .title:after {
     content: ">";
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
     float: right;
     margin-right: 2rem;
 }
+
+.dx-commodity .content .color .title:hover:after,
+.dx-commodity .content .color .title:active:after,
+.dx-commodity .content .size .title:active:after,
+.dx-commodity .content .size .title:hover:after{
+     -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+
 
 .dx-commodity .content .color ul {
     padding-top: 1.6rem;
@@ -1613,7 +1622,6 @@ i {
     font-size: 1.2rem;
     line-height: 2.6rem;
     height: 2.6rem;
-    border: none;
     border: 2px solid #999;
 }
 
@@ -1627,6 +1635,10 @@ i {
     font-size: 1rem;
     line-height: 2.2rem;
     text-align: center;
+}
+
+.dx-commodity .content .remind .iconfont {
+    font-size: 1rem;
 }
 
 .dx-commodity .dx-GoodsDetails {
@@ -1672,18 +1684,23 @@ i {
 .dx-commodity .maybeLike .title {
     font-size: 1.4rem;
     line-height: 2rem;
-    border-bottom: 2px solid #999;
+    border-bottom: 2px solid #ccc;
     padding-left: 2rem;
 }
 
 .dx-commodity .maybeLike .left {
     width: 15rem;
-    margin-top: 2rem;
+    padding:2rem 0;
     float: left;
-    border-right: 2px solid #f2f2f2;
+    border-right: 1px solid #ccc;
     text-align: center;
 }
+
 .dx-commodity .maybeLike .left:nth-of-type(even) {
+    margin-left:1rem;
+}
+
+.dx-commodity .maybeLike .left:nth-of-type(odd) {
     border-right:0;
 }
 

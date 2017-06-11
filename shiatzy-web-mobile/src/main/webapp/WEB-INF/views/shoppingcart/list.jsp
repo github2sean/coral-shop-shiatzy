@@ -19,7 +19,7 @@
             <c:forEach var="row" items="${cartList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
-                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;"></div>
+                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right" style="width: 200px;word-break: break-all">
                     <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
