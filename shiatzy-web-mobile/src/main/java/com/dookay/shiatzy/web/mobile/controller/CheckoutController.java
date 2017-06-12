@@ -177,6 +177,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
+        shoppingCartService.withSizeDomain(cartList);
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
@@ -258,6 +259,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
+        shoppingCartService.withSizeDomain(cartList);
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }

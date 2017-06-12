@@ -59,19 +59,19 @@
             <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>
-        <div class="clearfix dx-shopping" style="display:none;">
+        <div class="clearfix dx-shopping moreGoods" style="display:none;">
             <div class="dx-GoodsDetails">
                 <c:forEach var="row" items="${cartList}">
                     <div class="goods clearfix goodsDiv">
                         <div class="goods-left">
-                            <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
+                            <div class="pic"> <img style="height: 120px;width: 100px" src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                         </div>
                         <div class="goods-right" style="word-break: break-all;width:200px;">
                             <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                             <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                             <div class=""><spring:message code="shoppingCart.number"/>&nbsp;x${row.num}</div>
                             <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                            <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
+                            <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                              </span>
                             </div>
                             <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>

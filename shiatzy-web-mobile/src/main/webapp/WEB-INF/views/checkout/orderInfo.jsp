@@ -21,7 +21,7 @@
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="color" >${row.goodsItemDomain.name}<span >${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</span></div>
+                    <div class="color" >${row.goodsItemDomain.name}<span >${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</span></div>
                     <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
                     <div class="price" data-value="${row.goodsPrice}">单价&nbsp;<font class="coinSymbol">&nbsp;</font>&nbsp;<span class="only-price true-price">${row.goodsPrice}</span></div>
                 </div>
