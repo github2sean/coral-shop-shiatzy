@@ -76,6 +76,7 @@
             <div class="cat-t link-down">颜色</div>
             <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
+                <div class="do-color-show"></div>
                 <input type="checkbox" name="colorIds" id="color${item.id}" value="${item.id}">
                 <label for="color${item.id}">${item.name}(10)</label>
             </div>
