@@ -36,17 +36,21 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 		query.setCode(couponCode);
 		CouponDomain couponDomain = getOne(query);
 		if(couponDomain==null){
-			throw new ServiceException("优惠码错误");
+			throw new ServiceException("无此优惠券");
 		}else{
-			int num = couponDomain.getLeftTimes();
-			Date startTime = couponDomain.getStartTime();
-			Date endTime = couponDomain.getEndTime();
-			Date nowTime = new Date();
-			if(nowTime.after(endTime) || nowTime.before(startTime)){
-				throw new ServiceException("优惠券失效");
-			}
-			if(num<=0){
-				throw new ServiceException("优惠券使用次数不足");
+			if(couponDomain.getIsValid()==0){
+				throw new ServiceException("优惠券无效");
+			}else{
+				int num = couponDomain.getLeftTimes();
+				Date startTime = couponDomain.getStartTime();
+				Date endTime = couponDomain.getEndTime();
+				Date nowTime = new Date();
+				if(nowTime.after(endTime) || nowTime.before(startTime)){
+					throw new ServiceException("优惠券失效");
+				}
+				if(couponDomain.getRuleType()!=0&&couponDomain.getRuleType()!=1&&num<=0){//0,1是无限次
+					throw new ServiceException("优惠券使用次数不足");
+				}
 			}
 		}
 		return couponDomain;

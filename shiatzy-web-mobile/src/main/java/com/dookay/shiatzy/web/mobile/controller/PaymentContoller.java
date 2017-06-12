@@ -115,6 +115,10 @@ public class PaymentContoller extends BaseController{
         sParaTemp.put("body", ""); //商品描述，可空
         //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.2Z6TSk&treeId=60&articleId=103693&docType=1
 
+        //建立请求前判断优惠券是否被使用
+        if(orderDomain.getCouponId()!=null){
+            couponService.checkCoupon(""+orderDomain.getCouponId());
+        }
         //建立请求
         String form = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
         mv.addObject("form",form);
@@ -181,8 +185,7 @@ public class PaymentContoller extends BaseController{
                 if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                         total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
                         seller_id.equals(alipayConfig.getSeller_id())){
-
-                    updateOrderStatus(orderDomain);
+                    orderService.updateOrderStatus(orderDomain);
                 }
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
@@ -254,7 +257,7 @@ public class PaymentContoller extends BaseController{
                         total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
                         seller_id.equals(alipayConfig.getSeller_id())){
 
-                    updateOrderStatus(orderDomain);
+                    orderService.updateOrderStatus(orderDomain);
                 }
             }
             //该页面可做页面美工编辑
@@ -324,8 +327,12 @@ public class PaymentContoller extends BaseController{
         Map<String, String> submitFromData = AcpService.sign(requestData,unionConfig.getEncoding());  //报文中certId,signature的值是在signData方法中获取并自动赋值的，只要证书配置正确即可。
 
         String requestFrontUrl = SDKConfig.getConfig().getFrontRequestUrl();  //获取请求银联的前台地址：对应属性文件acp_sdk.properties文件中的acpsdk.frontTransUrl
-        String html = AcpService.createAutoFormHtml(requestFrontUrl, submitFromData,unionConfig.getEncoding());   //生成自动跳转的Html表单
 
+        //建立请求前判断优惠券是否被使用
+        if(orderDomain.getCouponId()!=null){
+            couponService.checkCoupon(""+orderDomain.getCouponId());
+        }
+        String html = AcpService.createAutoFormHtml(requestFrontUrl, submitFromData,unionConfig.getEncoding());   //生成自动跳转的Html表单
         LogUtil.writeLog("打印请求HTML，此为请求报文，为联调排查问题的依据："+html);
         //将生成的html写到浏览器中完成自动跳转打开银联支付页面；这里调用signData之后，将html写到浏览器跳转到银联页面之前均不能对html中的表单项的名称和值进行修改，如果修改会导致验签不通过
 
@@ -378,7 +385,7 @@ public class PaymentContoller extends BaseController{
             OrderDomain orderDomain = orderService.getOrder(orderNo);
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
-                updateOrderStatus(orderDomain);
+                orderService.updateOrderStatus(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -438,7 +445,7 @@ public class PaymentContoller extends BaseController{
             OrderDomain orderDomain = orderService.getOrder(orderNo);
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
-                updateOrderStatus(orderDomain);
+                orderService.updateOrderStatus(orderDomain);
             }
             mv.addObject("order",orderDomain);
         }
@@ -539,6 +546,10 @@ public class PaymentContoller extends BaseController{
 
         String postUrl = ipayLinksConfig.getPostUrl();//  https://api.ipaylinks.com/webgate/ipayapi.htm
 
+        //建立请求前判断优惠券是否被使用
+        if(orderDomain.getCouponId()!=null){
+            couponService.checkCoupon(""+orderDomain.getCouponId());
+        }
         String html = AcpService.createAutoFormHtml(postUrl,requestData,"UTF-8");
         System.out.println("html:"+html);
         ModelAndView mv = new ModelAndView("payment/initUnionPay");
@@ -565,7 +576,7 @@ public class PaymentContoller extends BaseController{
             OrderDomain orderDomain = orderService.getOrder(orderId);
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal()) ){
-                updateOrderStatus(orderDomain);
+                orderService.updateOrderStatus(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -597,8 +608,8 @@ public class PaymentContoller extends BaseController{
             //验证成功
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal()) ){
-                updateOrderStatus(orderDomain);
-
+                //updateOrderStatus(orderDomain);
+                orderService.updateOrderStatus(orderDomain);
             }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal())){
                 message= "订单已支付";
@@ -641,20 +652,40 @@ public class PaymentContoller extends BaseController{
         return res;
     }
 
-    public void updateOrderStatus(OrderDomain orderDomain){
+    /*public void updateOrderStatus(OrderDomain orderDomain){
         orderDomain.setPaidTime(new Date());
         orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
         //优惠券次数减少
         if(orderDomain.getCouponId()!=null){
             CouponDomain couponDomain = couponService.get(orderDomain.getCouponId());
-            Integer limitNum = couponDomain.getLimitTimes();
-            couponService.checkCoupon(couponDomain.getCode());
-            couponDomain.setLimitTimes(limitNum-1);
+            switch (couponDomain.getRuleType()) {
+                case 0://全单打折 无限次
+                    couponService.checkCoupon(couponDomain.getCode());
+                    System.out.println(0);
+                    break;
+                case 1://全单满减 无限次
+                    couponService.checkCoupon(couponDomain.getCode());
+                    System.out.println(1);
+                    break;
+                case 2://抵扣券 1次
+                    couponService.checkCoupon(couponDomain.getCode());
+                    couponDomain.setIdValid(0);
+                    couponDomain.setLeftTimes(couponDomain.getLeftTimes()-1);
+                    System.out.println(2);
+                    break;
+                case 3://折扣券 1次
+                    couponService.checkCoupon(couponDomain.getCode());
+                    couponDomain.setIdValid(0);
+                    couponDomain.setLeftTimes(couponDomain.getLeftTimes()-1);
+                    System.out.println(3);
+                    break;
+            }
             couponService.update(couponDomain);
         }
         //商品库存减少@todo
+        orderService.updateSkuStock(orderDomain);
         orderService.update(orderDomain);
-    }
+    }*/
 
     public String amtRemovePoint(Double amt){
         String returnAmt = "0";

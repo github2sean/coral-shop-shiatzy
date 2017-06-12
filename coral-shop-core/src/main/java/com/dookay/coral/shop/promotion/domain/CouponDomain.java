@@ -55,8 +55,19 @@ public class CouponDomain implements Serializable {
 	/*首页显示*/
 	private Integer indexShow;
 
+	/*打折规则*/
+	private Integer ruleType;
+
+	/*打折说明*/
 	private String title;
 
+	/*打折英文说明*/
 	private String enTitle;
+
+	/*打折规则*/
+	private Double satisfyTop;
+
+	/*是否有效*/
+	private Integer isValid;
 
 }

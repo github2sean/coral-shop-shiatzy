@@ -612,12 +612,36 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
+        Double trueDiscountPrice = 0D;
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
-            order.setCouponDiscount(couponDomain.getDiscountPrice());
+            Double orderTotal = order.getOrderTotal();
+            switch (couponDomain.getRuleType()) {
+                case 0://全单打折 无限次
+                    trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
+                    System.out.println(0);
+                    break;
+                case 1://全单满减 无限次
+                    if(couponDomain.getSatisfyTop()>=orderTotal){
+                        trueDiscountPrice = couponDomain.getDiscountPrice();
+                    }else{
+                        return errorResult("优惠条件不符");
+                    }
+                    System.out.println(1);
+                    break;
+                case 2://抵扣券 1次
+                    trueDiscountPrice = couponDomain.getDiscountPrice();
+                    System.out.println(2);
+                    break;
+                case 3://折扣券 1次
+                    trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
+                    System.out.println(3);
+                    break;
+            }
+            order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }
-        return successResult("操作成功",couponDomain.getDiscountPrice());
+        return successResult("操作成功",trueDiscountPrice);
     }
 
     /**
