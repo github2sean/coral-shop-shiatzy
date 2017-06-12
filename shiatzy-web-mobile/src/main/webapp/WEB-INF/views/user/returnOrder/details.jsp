@@ -31,7 +31,7 @@
                 <h6>${row.goodsCode}</h6>
                 <div style="display: inline-block;" class="size">
                     <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
-                    <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
+                    <p>${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</p>
                 </div>
                 <p>数量：${row.num}</p>
                 <p>单价　¥ ${row.goodsPrice}</p>
@@ -74,7 +74,7 @@
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;">隐私权政策</span>
+            <span style="float: left;" class="privacyNotice">隐私权政策</span>
         </a>
     </div>
 </div>

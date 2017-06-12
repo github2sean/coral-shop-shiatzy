@@ -13,9 +13,11 @@ import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.*;
 import com.dookay.coral.shop.order.service.*;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +54,8 @@ public class OrderController extends BaseController {
     private IGoodsItemService goodsItemService;
     @Autowired
     private KdniaoSubscribeAPI kdniaoSubscribeAPI;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -86,7 +90,8 @@ public class OrderController extends BaseController {
             orderItemDomain.setGoodsItemDomain(goodsItemDomain);
             orderNum += orderItemDomain.getNum();
             returnNum += orderItemDomain.getReturnNum();
-
+            JSONObject jsonObject  = JSONObject.fromObject(orderItemDomain.getSkuSpecifications());
+            orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+jsonObject.get("size"))));
         }
         //判断该订单是否有对应退货单
         ReturnRequestQuery backQuery = new ReturnRequestQuery();

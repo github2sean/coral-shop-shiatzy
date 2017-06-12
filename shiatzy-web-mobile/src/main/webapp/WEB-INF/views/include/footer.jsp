@@ -41,7 +41,8 @@
             </form>
         </div>
     </div>
-    <div class="do-online-service">
+    <a name="do-online-service">
+        <div class="do-online-service"  >
         <p class="do-online-t"><spring:message code="customerServiceLine"/></p>
         <p><spring:message code="chinaPhone"/> 4008 213 760</p>
         <p>(<spring:message code="chinaOnly"/>)</p>
@@ -49,6 +50,7 @@
         <p class="mt-1"><spring:message code="onlineEmail"/></p>
         <p>(<spring:message code="allRegions"/>)</p>
     </div>
+    </a>
     <div class="text-center do-copy"><spring:message code="ending"/></div>
 </footer>
 </div>
@@ -147,6 +149,7 @@
             $.post("/cart/getCartNum",{"type":3},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    console.log("bou:"+cartNum);
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -221,7 +224,7 @@
                 shade: [0],
                 area: ['100%', '80%'],
                 content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
-                shadeClose: true
+                shade: [0.5,'#000'] //0.1透明度的白色背景
             });
         });
 

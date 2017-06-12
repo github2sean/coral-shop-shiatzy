@@ -58,7 +58,7 @@
                     <h6>${item.goodsCode}</h6>
                     <div style="display: inline-block;" class="size">
                         <p style="float:left;margin-right: 3.0918rem;">${item.goodsItemDomain.name}</p>
-                        <p>${JSONObject.fromObject(item.skuSpecifications).getString("size")}号</p>
+                        <p>${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}号</p>
                     </div>
                     <p>数量：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
                     <p>单价　¥ ${item.goodsPrice}</p>

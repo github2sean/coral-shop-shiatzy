@@ -57,6 +57,18 @@
                         <a href="/returnOrder/listStoreCountry">选择 ></a>
                     </div>
                 </c:if>
+                <c:if test="${backWay!=1 &&backWay!=2}">
+                    <div class="delivery-message" style="margin-top: 2px">
+                        <span>快递运送</span>
+                        <p class="shipName"></p>
+                        <p style="display: initial;" class="shipAddress"></p>
+                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
+                    </div>
+                    <div class="drugstore">
+                        <p>门店退货</p>
+                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                    </div>
+                </c:if>
 
         </div>
     </div>

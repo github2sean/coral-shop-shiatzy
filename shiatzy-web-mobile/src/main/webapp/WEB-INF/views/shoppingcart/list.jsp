@@ -108,6 +108,8 @@
         });
     }
     $(function(){
+
+        $(".top-right-nav").find("li:first").addClass("active");
         setPrice();
         var isLogin = '${isGuest}'=='onLine'?true:false;
         //

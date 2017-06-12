@@ -97,7 +97,7 @@
             </li>
         </ul>
     </div>
-    <div class="privacy">
+    <div class="privacy privacyNotice">
         <a href="#">
             <span style="float:left;">>　</span>
             <span style="float:left;"><spring:message code="account.personal.secret"/></span>
@@ -112,6 +112,6 @@
 </jsp:include>
 <script>
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
     });
 </script>

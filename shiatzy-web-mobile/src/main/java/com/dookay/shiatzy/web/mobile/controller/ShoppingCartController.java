@@ -436,7 +436,6 @@ public class ShoppingCartController extends BaseController{
         ShoppingCartItemQuery query = new ShoppingCartItemQuery();
         query.setCustomerId(customerDomain.getId());
         query.setShoppingCartType(type);
-        query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         Integer num = shoppingCartService.count(query);
         session.setAttribute("cartNumber",num);
         System.out.println("cartNumber"+num);

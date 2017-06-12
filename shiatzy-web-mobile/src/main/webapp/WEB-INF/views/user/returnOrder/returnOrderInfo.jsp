@@ -46,6 +46,31 @@
     </div>
    <div class="return-list clearfix" style="display: none">
         <p style="">请勾选退货理由（可复选）</p>
+       <ul>
+           <li>尺寸</li>
+           <li>
+               <div>
+                    <span class="mr-2"><label class="radiobox">
+                        <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
+                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="太大"><i class="i-radiobox"></i>太大</label></span>
+               </div>
+           </li>
+           <li>
+               <div>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="太小"><i class="i-radiobox"></i>太小</label></span>
+               </div>
+           </li>
+           <li>
+               <div>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason3" value="太长"><i class="i-radiobox"></i>太长</label></span>
+               </div>
+           </li>
+           <li>
+               <div>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason4" value="太短"><i class="i-radiobox"></i>太短</label></span>
+               </div>
+           </li>
+       </ul>
         <ul>
             <li>服务</li>
             <li>

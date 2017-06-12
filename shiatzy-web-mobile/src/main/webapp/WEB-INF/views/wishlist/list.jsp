@@ -58,7 +58,7 @@
                     <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg style="margin-left: 3px"><use xlink:href="#bag"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_appointment toBoutique" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href="" class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
@@ -106,7 +106,7 @@
 <script>
 
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         setPrice();
 
         $(".j_collapse>a").on("click", function (e) {

@@ -42,7 +42,7 @@
     var noMore = true;
     $(function () {
 
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         $(".moreList").click(function () {
 
         });

@@ -44,17 +44,17 @@
         </div>
         <a type="button" class="addition addToCart">添加到购物袋</a>
         <a type="button" class="order addToBoutique">精品店预约</a>
-        <div class="remind"><span class="icon iconfont">&#xe77d;</span>什么是精品店预约</div>
+        <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span>什么是精品店预约</div>
     </div>
     <div class="dx-GoodsDetails">
         <div class="title j_choose">产品详细信息</div>
-        <p class="text hide">品牌标志性的玉镯提包，以刺绣形式诠释出台湾插画家川贝母的童趣画作，为整体注入鲜活俏皮的时尚感。单品内设里衬，可轻松收纳你的必备物品；带拉链隔层则可将小件重要物品稳妥存放。不妨用其搭配本季刺绣服饰单品，完成total look的完美搭配。</p>
-        <ul class="list hide">
+        <p class="text hide">${goodsDomain.description}</p>
+        <%--<ul class="list hide">
             <li>贴布刺绣，玉镯提手</li>
             <li>100% 成牛皮</li>
             <li>意大利制造</li>
             <li>产品尺寸：24.5厘米/9.6英寸（长），16厘米/6.3英寸（宽），20厘米/7.9英寸（高）</li>
-        </ul>
+        </ul>--%>
     </div>
     <div class="maybeLike clearfix">
         <div class="title">您也许也喜欢</div>
@@ -178,12 +178,24 @@
                 title: '<spring:message code="shoppingCart.size"/>'+'指南',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '80%'],
+                area: ['90%', '75%'],
                 content: ['${ctx}/content/sizeNotice'],//iframe的url，no代表不显示滚动条
-                shadeClose: true
+                //shadeClose: true,
+                shade: [0.5,'#000'] //0.1透明度的白色背景
             });
         });
 
+        $(".whatBoutique").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="reservation.what"/>',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['90%', '75%'],
+                content: ['${ctx}/content/whatBoutique'],//iframe的url，no代表不显示滚动条
+                shade: [0.5,'#000'] //0.1透明度的白色背景
+            });
+        });
 
     });
 </script>

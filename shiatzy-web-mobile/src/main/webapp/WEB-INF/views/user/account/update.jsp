@@ -186,6 +186,8 @@
         return true;
     }
     $(function () {
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
+
         $('#firstName').focus(function () {
 
         }).blur(firstName);

@@ -41,3 +41,10 @@
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+<script>
+
+    $(function () {
+
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
+    });
+</script>

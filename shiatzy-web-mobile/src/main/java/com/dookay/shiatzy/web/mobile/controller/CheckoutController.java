@@ -541,6 +541,9 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        if(order==null){
+            return errorResult("订单失效");
+        }
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
         order.setStoreDomain(storeService.get(storeId));

@@ -84,6 +84,7 @@
 <script>
 
     $(function () {
+        $(".top-right-nav").find("li:eq(1)").addClass("active");
         //console.log('${goodsList}');
         setPrice();
         $(".choose-store").find("a").click(function(){
