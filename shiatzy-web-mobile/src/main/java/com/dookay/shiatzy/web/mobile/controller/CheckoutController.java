@@ -129,11 +129,15 @@ public class CheckoutController  extends BaseController{
         OrderDomain order = new OrderDomain();
         String countryId = session.getAttribute(HomeController.SHIPPING_COUNTRY_ID)+"";
         ShippingCountryDomain shippingCountryDomain = null;
+        String currentCode = "CNY";
         if(StringUtils.isNotBlank(countryId)){
             shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+            //根据国家选择结算币种
+            //currentCode =
         }
         //根据国家获取值
         order.setShipFee(shippingCountryDomain==null?0D:shippingCountryDomain.getShippingCost());
+        order.setCurrentCode(currentCode);
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());

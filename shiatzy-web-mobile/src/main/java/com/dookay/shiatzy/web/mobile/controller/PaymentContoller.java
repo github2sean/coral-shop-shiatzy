@@ -483,7 +483,8 @@ public class PaymentContoller extends BaseController{
         requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
         requestData.put(IpayLinksStatics.TRADE_TYPE,ipayLinksConfig.getTradeType());
         requestData.put(IpayLinksStatics.PAY_TYPE,ipayLinksConfig.getPayType());
-        requestData.put(IpayLinksStatics.CURRENCY_CODE,ipayLinksConfig.getCurrencyCode());
+        String currentCode = StringUtils.isBlank(orderDomain.getCurrentCode())?ipayLinksConfig.getCurrencyCode():orderDomain.getCurrentCode();
+        requestData.put(IpayLinksStatics.CURRENCY_CODE,currentCode);
         if(StringUtils.isNotBlank(ipayLinksConfig.getSettlementCurrencyCode())){
             requestData.put(IpayLinksStatics.SETTLEMENT_CURRENCY_CODE,ipayLinksConfig.getSettlementCurrencyCode());//选填
         }

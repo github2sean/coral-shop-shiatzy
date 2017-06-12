@@ -125,6 +125,10 @@ public class 	OrderDomain implements Serializable {
 	/*订单应收金额*/
 	private Double orderTotal;
 
+	/*结算币种*/
+	private String currentCode;
+
+
 	/**
 	 * 订单明细
 	 */

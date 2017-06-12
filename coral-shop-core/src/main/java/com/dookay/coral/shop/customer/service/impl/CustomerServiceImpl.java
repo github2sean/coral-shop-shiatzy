@@ -9,8 +9,11 @@ import com.dookay.coral.host.user.query.AccountQuery;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.host.user.service.impl.AccountServiceImpl;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
+import com.dookay.coral.shop.customer.domain.TempMemberDomain;
 import com.dookay.coral.shop.customer.query.CustomerQuery;
+import com.dookay.coral.shop.customer.query.TempMemberQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
+import com.dookay.coral.shop.customer.service.ITempMemberService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.Account;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -50,6 +53,10 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 
 	@Autowired
 	private ICustomerAddressService customerAddressService;
+
+	@Autowired
+	private ITempMemberService tempMemberService;
+
 
 	/**
 	 * 注册客户
@@ -122,20 +129,23 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	@Override
 	@Transactional("transactionManager")
 	public CustomerDomain validVip(CustomerDomain customerDomain,String phoneNumber) {
-
-		CustomerQuery query = new CustomerQuery();
-		//TODO
-		query.setAccountId(customerDomain.getAccountId());
-		query.setPhone(phoneNumber);
-		CustomerDomain customer = getOne(query);
-		if(customer==null){
+		if(StringUtils.isBlank(phoneNumber)||customerDomain==null){
+			throw new ServiceException("参数为空");
+		}
+		TempMemberQuery tempMemberQuery = new TempMemberQuery();
+		TempMemberDomain tempMemberDomain = tempMemberService.getFirst(tempMemberQuery);
+		if(tempMemberDomain==null){
 			throw new ServiceException("验证会员失败");
 		}else{
-			customer.setIsArtClubMember(1);
-			customer.setCustomerLevel(1);
-			update(customer);
+			if(phoneNumber.equals(customerDomain.getPhone())){
+				customerDomain.setIsArtClubMember(1);
+				customerDomain.setTempMemberDomain(tempMemberDomain);
+				update(customerDomain);
+			}else {
+				throw new ServiceException("验证会员失败");
+			}
 		}
-		return customer;
+		return customerDomain;
 	}
 
 	@Override

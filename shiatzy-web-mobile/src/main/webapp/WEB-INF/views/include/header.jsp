@@ -277,4 +277,4 @@
     </div>
 
 </div>
-<div class="main-content j_scroll_body">
+<div class="main-content j_scroll_body" style="position: relative">
