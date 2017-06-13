@@ -164,6 +164,21 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.content.query" />
 	</table>
+	<table tableName="t_content_banner" domainObjectName="Banner"
+		   packageName="com.dookay.coral.shop.content" desc="banner" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
+	<table tableName="t_content_message_template" domainObjectName="MessageTemplate"
+		   packageName="com.dookay.coral.shop.content" desc="消息模板" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
+	<table tableName="t_content_notice" domainObjectName="MessageTemplate"
+		   packageName="com.dookay.coral.shop.content" desc="公告" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
 	<!--内容模块 结束-->
 
 	<!--店铺模块 开始-->
@@ -191,4 +206,40 @@
 		<dto packageName="com.dookay.coral.shop.shipping.query" />
 	</table>
 	<!--系统模块 结束-->
+
+	<!--消息模块 开始-->
+	<table tableName="t_message_email" domainObjectName="Email"
+		   packageName="com.dookay.coral.shop.message" desc="邮件" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.message.query" />
+	</table>
+	<table tableName="t_message_email_history" domainObjectName="EmailHistory"
+		   packageName="com.dookay.coral.shop.message" desc="邮件历史" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.message.query" />
+	</table>
+	<table tableName="t_message_sms" domainObjectName="Sms"
+		   packageName="com.dookay.coral.shop.message" desc="短信" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.message.query" />
+	</table>
+	<table tableName="t_message_sms_history" domainObjectName="SmsHistory"
+		   packageName="com.dookay.coral.shop.message" desc="短信历史" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.message.query" />
+	</table>
+	<!--消息模块 结束-->
+
+	<!--首页模块 开始-->
+	<table tableName="t_index_block" domainObjectName="IndexBlock"
+		   packageName="com.dookay.coral.shop.index" desc="首页区块" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.index.query" />
+	</table>
+	<table tableName="t_index_block_group" domainObjectName="IndexBlockGroup"
+		   packageName="com.dookay.coral.shop.index" desc="首页区块分组" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.index.query" />
+	</table>
+	<!--首页模块 结束-->
 </context>
