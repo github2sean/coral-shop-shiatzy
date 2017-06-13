@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.content.mapper.PushContentMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`time` as 'time',
+		    	a.`account_id` as 'accountId',
+		    	a.`content` as 'content',
+				a.`en_content` as 'enContent',
+		    	a.`display_order` as 'displayOrder',
+				a.`is_valid` as 'isValid',
+		    </trim>
+	   	from 
+	    	`t_push_content` as a
+	</sql>
+  
+</mapper>

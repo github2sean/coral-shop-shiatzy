@@ -116,7 +116,7 @@ public class CheckoutController  extends BaseController{
 
     private static String CART_LIST = "cartList";
     private static String ORDER = "order";
-
+    private final static String SHIPPING_COUNTRY_ID="shippingCountryId";
     /**
      * 从购物车初始化订单
      * @return
@@ -127,16 +127,25 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         //创建订单对象
         OrderDomain order = new OrderDomain();
-        String countryId = session.getAttribute(HomeController.SHIPPING_COUNTRY_ID)+"";
+        String countryId = session.getAttribute(SHIPPING_COUNTRY_ID)+"";
         ShippingCountryDomain shippingCountryDomain = null;
         String currentCode = "CNY";
+        Double fee = 0D;
         if(StringUtils.isNotBlank(countryId)){
             shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+            Double rate = shippingCountryDomain.getRate();
             //根据国家选择结算币种
-            //currentCode =
+            int currentCodeType = shippingCountryDomain.getRateType();
+            if(currentCodeType==1){
+                currentCode = "USD";
+            }else if(currentCodeType==2){
+                currentCode = "EUR";
+            }
+            fee = shippingCountryDomain.getShippingCost()/rate;
         }
+        order.setShipFee(fee);
         //根据国家获取值
-        order.setShipFee(shippingCountryDomain==null?0D:shippingCountryDomain.getShippingCost());
+        order.setShippingCountryId(Long.parseLong(countryId));
         order.setCurrentCode(currentCode);
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
@@ -185,8 +194,6 @@ public class CheckoutController  extends BaseController{
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
-        //商品金额
-        calcOrderTotal(orderDomain, cartList);
 
         int count = 0;
 
@@ -208,12 +215,17 @@ public class CheckoutController  extends BaseController{
             }
             line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
+            Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
+            line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
             System.out.println("goodsDomain:"+goodsDomain+"\n sizeList:"+sizeList);
         }
-
+        //商品金额
+        calcOrderTotal(orderDomain, cartList);
         ModelAndView mv=  new ModelAndView("checkout/orderInfo");
-        mv.addObject(CART_LIST,cartList);
-        mv.addObject(ORDER,orderDomain);
+        //mv.addObject(CART_LIST,cartList);
+        //mv.addObject(ORDER,orderDomain);
+        session.setAttribute(CART_LIST,cartList);
+        session.setAttribute(ORDER,orderDomain);
         return mv;
     }
 
@@ -261,35 +273,16 @@ public class CheckoutController  extends BaseController{
             return new ModelAndView("redirect:/home/index");
         }
         //购物车
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
-        shoppingCartService.withGoodsItem(cartList);
-        shoppingCartService.withSizeDomain(cartList);
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
+
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
-        calcOrderTotal(orderDomain, cartList);
-        //配送方式
-        CustomerAddressQuery customerAddressQuery = new CustomerAddressQuery();
-        customerAddressQuery.setCustomerId(customerDomain.getId());
-        CustomerAddressDomain customerAddressDomain = customerAddressService.getFirst(customerAddressQuery);
-        if(customerAddressDomain !=null){
-            orderDomain.setShippingMethod(ShippingMethodEnum.EXPRESS.getValue());
-            orderDomain.setShipAddressId(customerAddressDomain.getId());
-            orderDomain.setShippingCountryId(customerAddressDomain.getCountryId());
-            orderDomain.setShipProvince(customerAddressDomain.getProvince());
-            orderDomain.setShipCity(customerAddressDomain.getCity());
-            orderDomain.setShipFirstName(customerAddressDomain.getFirstName());
-            orderDomain.setShipLastName(customerAddressDomain.getLastName());
-            orderDomain.setShipTitle(customerAddressDomain.getTitle());
-            orderDomain.setShipPhone(customerAddressDomain.getPhone());
-            orderDomain.setShipAddress(customerAddressDomain.getAddress());
-            orderDomain.setShipMemo(customerAddressDomain.getMemo());
-            orderDomain.setOrderTime(new Date());
-        }
-
         ModelAndView mv=  new ModelAndView("checkout/confirm");
-        mv.addObject(CART_LIST,cartList);
-        mv.addObject(ORDER,orderDomain);
+        //mv.addObject(CART_LIST,cartList);
+        //mv.addObject(ORDER,orderDomain);
+        session.setAttribute(CART_LIST,cartList);
+        session.setAttribute(ORDER,orderDomain);
         session.setAttribute("referrerPage",page);
         return mv;
     }
@@ -311,11 +304,11 @@ public class CheckoutController  extends BaseController{
             return errorResult("订单已经失效");
         }
         //购物车
-        List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
-        shoppingCartService.withGoodsItem(cartList);
+        List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         if(cartList== null || cartList.size() ==0){
             return errorResult("订单已经失效");
         }
+        shoppingCartService.withGoodsItem(cartList);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
         if(couponId!=null ){
@@ -327,6 +320,7 @@ public class CheckoutController  extends BaseController{
         order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
+        order.setOrderTime(new Date());
         CustomerAddressDomain customerAddressDomain = customerAddressService.get(order.getShipAddressId());
         order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
         orderService.create(order);
@@ -355,6 +349,7 @@ public class CheckoutController  extends BaseController{
 
         //清除session
         session.setAttribute(ORDER,null);
+        session.setAttribute(CART_LIST,null);
         //清除购物车
         for(int i=0 ;i<cartList.size();i++){
             shoppingCartService.removeFromCart(cartList.get(i).getId());
@@ -370,15 +365,18 @@ public class CheckoutController  extends BaseController{
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
         //商品金额
         Double goodsTotal = 0D;
+
+        Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
         for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
-            goodsTotal  = goodsTotal+ shoppingCartItemDomain.getGoodsPrice()* shoppingCartItemDomain.getNum();
+            goodsTotal  = goodsTotal+ shoppingCartItemDomain.getGoodsPrice() * shoppingCartItemDomain.getNum();
         }
         orderDomain.setGoodsTotal(goodsTotal);
         Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();
         Double memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
         Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
-        Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount;
-        orderDomain.setOrderTotal(orderTotal);
+        Double orderTotal = goodsTotal + shipFee -couponDiscount/rate - memberDiscount/rate;
+        BigDecimal bd = new BigDecimal(orderTotal);
+        orderDomain.setOrderTotal(bd.setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
     }
 
     /**
@@ -476,8 +474,7 @@ public class CheckoutController  extends BaseController{
         OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
         orderDomain.setCustomerAddressDomain(customerAddressDomain);
         orderDomain.setStoreDomain(null);
-        if(orderDomain == null)
-        {
+        if(orderDomain == null) {
             return errorResult("页面失效");
         }
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
@@ -616,6 +613,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
+        Double rate  = shippingCountryService.get(order.getShippingCountryId()).getRate();
         Double trueDiscountPrice = 0D;
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
@@ -626,15 +624,15 @@ public class CheckoutController  extends BaseController{
                     System.out.println(0);
                     break;
                 case 1://全单满减 无限次
-                    if(couponDomain.getSatisfyTop()>=orderTotal){
-                        trueDiscountPrice = couponDomain.getDiscountPrice();
+                    if(couponDomain.getSatisfyTop()/rate>=orderTotal){
+                        trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     }else{
                         return errorResult("优惠条件不符");
                     }
                     System.out.println(1);
                     break;
                 case 2://抵扣券 1次
-                    trueDiscountPrice = couponDomain.getDiscountPrice();
+                    trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     System.out.println(2);
                     break;
                 case 3://折扣券 1次
@@ -642,6 +640,7 @@ public class CheckoutController  extends BaseController{
                     System.out.println(3);
                     break;
             }
+            trueDiscountPrice = new BigDecimal(trueDiscountPrice).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue();
             order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }

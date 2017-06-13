@@ -159,6 +159,8 @@ public class GoodsController extends BaseController{
         goodsColorQuery.setIds(newColorIds);
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
         modelAndView.addObject("colorList",goodsColorDomainList);
+
+
         //尺寸列表
         List<Long> sizeIds = new ArrayList<>();
         goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));

@@ -163,8 +163,6 @@
             $('body,html').animate({ scrollTop: 0 }, speed);
             return false;
         });
-
-
         setCartNum();
         $("#searchBtn").click(function () {
 

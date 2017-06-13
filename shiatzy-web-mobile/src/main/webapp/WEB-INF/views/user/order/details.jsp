@@ -61,7 +61,21 @@
                         <p>${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}号</p>
                     </div>
                     <p>数量：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <p>单价　¥ ${item.goodsPrice}</p>
+                    <p>单价　
+                        &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+                     ${item.goodsPrice}</p>
                 </div>
             </div>
         </c:forEach>
@@ -69,12 +83,82 @@
     <div class="order-details">
         <h4>帐单详情<span>v</span></h4>
         <ul>
-            <li>优惠前<span>¥ ${orderDomain.goodsTotal}</span></li>
-            <li>优惠应用<span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">¥ -${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}</span></li>
-            <li>Art Club会员优惠<span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">¥ -${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}</span></li>
-            <li>运费<span>¥ ${orderDomain.shipFee}</span></li>
+            <li>优惠前<span>
+             &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+             ${orderDomain.goodsTotal}</span></li>
+            <li>优惠应用<span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">
+                &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+                -${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}</span></li>
+            <li>Art Club会员优惠<span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
+                &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+                -${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}</span></li>
+            <li>运费<span>
+             &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+             ${orderDomain.shipFee}</span></li>
         </ul>
-        <p>总计<span>¥ ${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}</span></p>
+        <p>总计<span>
+         &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+         ${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}</span></p>
     </div>
     <div class="information">
         <h4>配送信息<span>v</span></h4>

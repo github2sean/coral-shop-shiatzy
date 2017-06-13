@@ -128,25 +128,26 @@
         <property name="currencyCode" value="CNY"/>
         <property name="settlementCurrencyCode" value="CNY"/>
         <property name="borrowingMarked" value="0"/>
-        <property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>
-        <!--<property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
-        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>-->
-        <property name="partnerId" value="10000003846"/>
-        <!--<property name="partnerId" value="10000007526"/>-->
+        <!--<property name="noticeUrl" value="http://shiatzy-w.doolab.cn/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://shiatzy-w.doolab.cn/payment/ipayLinkReturnUrl"/>-->
+        <property name="noticeUrl" value="http://test-ip-41.coralcodes.com/payment/noticeUrl"/>
+        <property name="returnUrl" value="http://test-ip-41.coralcodes.com/payment/ipayLinkReturnUrl"/>
+        <!--<property name="partnerId" value="10000003846"/>-->
+        <!--测试-->
+        <property name="partnerId" value="10000007526"/>
         <property name="payMode" value="10"/>
         <property name="payType" value="EDC"/>
         <property name="charset" value="1"/>
         <property name="signType" value="2"/>
-       <!-- <property name="postUrl" value="http://api.test.ipaylinks.com/webgate/crosspay.htm"/>-->
-        <property name="postUrl" value="https://cashsite.iPayLinks.com/webgate/crosspay.htm"/>
+        <property name="postUrl" value="http://api.test.ipaylinks.com/webgate/crosspay.htm"/>
+        <!--<property name="postUrl" value="https://cashsite.iPayLinks.com/webgate/crosspay.htm"/>-->
         <!--生产环境 https://cashsite.iPayLinks.com/webgate/crosspay.htm-->
         <property name="directFlag" value="0"/>
         <property name="language" value="cn"/>
         <property name="mcc" value="4000"/>
         <property name="orderTerminal" value="01"/>
-        <!--<property name="pkey" value="30820122300d06092a864886f70d01010105000382010f003082010a02820101008cdefa747cd7c21207b551259ed4669179b160cdc133d517896277a40fff39bfd2bb761cb9c8f46948f5abce6cf76aa989f0f6ef157e4d5d92e6f9766eb9b922c32034fa4e8b88c99ac2a4ed3e8aebd1022b25f1674ea6bc7a80a8ca50a741cf26b1f5f3e509e949effb7f8fa4f8ee4a4716cd1c20b956274a35cb36d7aaed6b5f270199513d0ffe792b21a0fda3614788270cb3e4854b0117ba2da34a4c3008f303c4fd83a4836410c81f4b4dec1b36c387537a4ef8cd8dd3c3538ba6e5a6d14a1ee102d66377f61a01d2f044e078cde9ff0a19816132eb2834d6c6595eb4a383386e70ccc1d5b535a2aa6151a138031de7ca8e4ddd26a5e5f364fd19bb68350203010001"/>-->
-            <property name="pkey" value="30820122300d06092a864886f70d01010105000382010f003082010a0282010100bc0146e96213a9fc0bcb524fb7e2e43c5fd889da38038ecf28452402e4f53c6e9c3449ea7d5c0cff98c5e1d71ed0432e4a31d2abab3d81986bbfdcf200e70ac1ac845ece3ea2391a39d43d42753ce8c028c4b554bb9d473dd28b6844508d4661933aad7980488cc2968e98f98e18bde39fb497f370ae3507adfee9d13d84ff4d8157691b2c857a052cf60d114de9223e530e09c48a53453f14426ca44817b90263eef35f4644160eb3ca2b8be8a7d79bad0a145af21ad547a8976eb61673dfce3f58b32865f42ba45ae478888b819de039db12ff1acd1f9021d5bd860349ee299d260ad0f31bef104a5f94b00e4d1dafd7f179c12e7a9215797f8a562cf61cf50203010001"/>
+        <property name="pkey" value="30820122300d06092a864886f70d01010105000382010f003082010a02820101008cdefa747cd7c21207b551259ed4669179b160cdc133d517896277a40fff39bfd2bb761cb9c8f46948f5abce6cf76aa989f0f6ef157e4d5d92e6f9766eb9b922c32034fa4e8b88c99ac2a4ed3e8aebd1022b25f1674ea6bc7a80a8ca50a741cf26b1f5f3e509e949effb7f8fa4f8ee4a4716cd1c20b956274a35cb36d7aaed6b5f270199513d0ffe792b21a0fda3614788270cb3e4854b0117ba2da34a4c3008f303c4fd83a4836410c81f4b4dec1b36c387537a4ef8cd8dd3c3538ba6e5a6d14a1ee102d66377f61a01d2f044e078cde9ff0a19816132eb2834d6c6595eb4a383386e70ccc1d5b535a2aa6151a138031de7ca8e4ddd26a5e5f364fd19bb68350203010001"/>
+            <!--<property name="pkey" value="30820122300d06092a864886f70d01010105000382010f003082010a0282010100bc0146e96213a9fc0bcb524fb7e2e43c5fd889da38038ecf28452402e4f53c6e9c3449ea7d5c0cff98c5e1d71ed0432e4a31d2abab3d81986bbfdcf200e70ac1ac845ece3ea2391a39d43d42753ce8c028c4b554bb9d473dd28b6844508d4661933aad7980488cc2968e98f98e18bde39fb497f370ae3507adfee9d13d84ff4d8157691b2c857a052cf60d114de9223e530e09c48a53453f14426ca44817b90263eef35f4644160eb3ca2b8be8a7d79bad0a145af21ad547a8976eb61673dfce3f58b32865f42ba45ae478888b819de039db12ff1acd1f9021d5bd860349ee299d260ad0f31bef104a5f94b00e4d1dafd7f179c12e7a9215797f8a562cf61cf50203010001"/>-->
     </bean>
 
 

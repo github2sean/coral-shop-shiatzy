@@ -1,11 +1,13 @@
 package com.dookay.coral.shop.goods.domain;
 
 import lombok.Data;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -45,5 +47,9 @@ public class GoodsColorDomain implements Serializable {
 	
 	/*更新时间*/
 	private Date updateTime;
+
+	/*库存*/
+	@Transient
+	private int stock;
 
 }

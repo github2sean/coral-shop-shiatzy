@@ -49,9 +49,6 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	private ISkuService skuService;
 	@Autowired
 	private ICouponService couponService;
-	@Autowired
-	private IOrderService orderService;
-
 
 	@Override
 	public void withGoodItme(List<OrderItemDomain> cartList) {
@@ -121,7 +118,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			couponService.update(couponDomain);
 		}
 		//商品库存减少
-		orderService.updateSkuStock(orderDomain);
-		orderService.update(orderDomain);
+		updateSkuStock(orderDomain);
+		super.update(orderDomain);
 	}
 }

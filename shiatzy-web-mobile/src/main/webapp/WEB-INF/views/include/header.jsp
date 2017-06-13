@@ -202,11 +202,12 @@
             16.599,11 16.599,7.7 13.849,5.5 	"/> </g> <g> <circle style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" cx="132.76" cy="180.545" r="6.45"/> <line style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" x1="137.32" y1="185.105" x2="141.311" y2="189.096"/> </g>
         </symbol></svg>
 </div>
-
+<c:if test="${not empty pushContent}">
 <div class="site-notice">
-    #情人節這樣過# 愛情，本該甘於平淡，卻又不平淡；出於平凡，卻又不平凡。即日起至2月11日23：59分，夏姿•陳邀請你來講述你平凡又不平淡的愛情故事。
+        ${sessionScope.language=='en_US'?pushContent.enContent:pushContent.content}
     <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
 </div>
+</c:if>
 <header class="relative">
     <div class="top-bar">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>

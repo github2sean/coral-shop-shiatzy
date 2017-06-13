@@ -6,6 +6,8 @@ import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 
+import java.util.List;
+
 /**
  * 商品sku的Query
  * @author : luxor
@@ -18,6 +20,9 @@ public class SkuQuery extends Query {
 	private Long goodsId;
 	private Integer isValid;
 	private Long itemId;
+
+	private List<Long> goodsIds;
+	private List<Long> itemIds;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(SkuDomain.class);
@@ -29,8 +34,14 @@ public class SkuQuery extends Query {
 		if (valid(itemId)){
 			criteria.andEqualTo("itemId",itemId);
 		}
+		if (valid(itemId)){
+			criteria.andIn("itemId",itemIds);
+		}
 		if(valid(isValid)){
 			criteria.andEqualTo("isValid",isValid);
+		}
+		if (valid(goodsId)){
+			criteria.andIn("goodsId",goodsIds);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

@@ -1,6 +1,5 @@
 package com.dookay.coral.shop.goods.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
@@ -9,6 +8,8 @@ import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.*;
 import com.dookay.coral.shop.goods.service.*;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,7 +91,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		List<SkuDomain> skuDomainList = skuService.getList(query);
 		List<Long> sizeIds = new ArrayList<>();
 		for (SkuDomain skuDomain :skuDomainList){
-			JSONObject  jasonObject = JSONObject.parseObject(skuDomain.getSpecifications());
+			JSONObject jasonObject = JSONObject.fromObject(skuDomain.getSpecifications());
 			sizeIds.add(jasonObject.getLong("size"));
 		}
 		goodsDomain.setSizeIds(JsonUtils.toJSONString(sizeIds));
@@ -166,6 +167,46 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 				goods.setSizeDomainList(sizeList);
 				System.out.println("goodId:"+goods.getId()+" sizeList:"+sizeList);
 			}
+	}
+
+	@Override
+	public void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId, List<Long> parmaId) {
+
+		GoodsItemQuery itemQuery = new GoodsItemQuery();
+		itemQuery.setGoodsIds(parmaId);
+		List<GoodsItemDomain> itemDomainList = goodsItemService.getList(itemQuery);
+		List<Long> itemIds = new ArrayList<>();
+		for(GoodsItemDomain goodsItemDomain :itemDomainList){
+			itemIds.add(goodsItemDomain.getId());
+		}
+
+		SkuQuery query = new SkuQuery();
+		query.setGoodsIds(goodsId);
+		query.setItemIds(itemIds);
+		List<SkuDomain> skuDomainList = skuService.getList(query);
+		for(SkuDomain skuDomain:skuDomainList){
+
+			//skuDomain.getItemId()==
+		}
+
+	}
+
+	@Override
+	public void sizeWithStock(List<PrototypeSpecificationOptionDomain> sizeDomainList,List<Long> goodsId, List<Long> parmaId) {
+
+		SkuQuery query = new SkuQuery();
+		query.setGoodsIds(goodsId);
+		List<SkuDomain> skuDomainList = skuService.getList(query);
+		for(SkuDomain skuDomain:skuDomainList){
+			JSONObject jsonObject = JSONObject.fromObject(skuDomain.getSpecifications());
+			Long sizeId = jsonObject.getLong("size");
+			for(PrototypeSpecificationOptionDomain line:sizeDomainList){
+				if(line.getId().equals(sizeId)){
+					line.setStock(skuDomain.getQuantity());
+				}
+			}
+		}
+
 	}
 
 }

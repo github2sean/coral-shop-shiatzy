@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Date;
 
@@ -36,5 +37,9 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 	
 	/*显示顺序*/
 	private String rank;
+
+	/*库存*/
+	@Transient
+	private int stock;
 
 }

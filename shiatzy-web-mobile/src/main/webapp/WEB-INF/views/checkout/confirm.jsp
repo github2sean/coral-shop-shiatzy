@@ -9,10 +9,24 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">结 帐 / 详细</p>
-    <a style="float: right;" href="/checkout/orderInfo">< 回上页</a>
+    <a style="float: right;" href="/checkout/orderInfo">< <spring:message code="goBack"/></a>
 </div>
 <div class="order-finish">
-    <h3>订单总额：<span class="do-pro-price" data-value="${order.orderTotal}">&nbsp;</span></h3>
+    <h3>订单总额：
+        <font class="coinSymbol">
+            <c:choose>
+                <c:when test="${order.currentCode=='CNY'}">
+                    <spring:message code="coin.ZH"/>
+                </c:when>
+                <c:when test="${order.currentCode=='USD'}">
+                    <spring:message code="coin.USA"/>
+                </c:when>
+                <c:when test="${order.currentCode=='EUR'}">
+                    <spring:message code="coin.EU"/>
+                </c:when>
+            </c:choose>
+        </font>&nbsp;
+        <span class="">${order.orderTotal}</span></h3>
     <div class="delivery content">
         <h3>1. 配送</h3>
         <c:if test="${not empty order.storeDomain}">
@@ -74,7 +88,21 @@
                             <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                              </span>
                             </div>
-                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                                <font class="coinSymbol">
+                                    <c:choose>
+                                        <c:when test="${order.currentCode=='CNY'}">
+                                            &nbsp;<spring:message code="coin.ZH"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='USD'}">
+                                            &nbsp;<spring:message code="coin.USA"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='EUR'}">
+                                            &nbsp;<spring:message code="coin.EU"/>
+                                        </c:when>
+                                    </c:choose>
+                                </font>&nbsp;
+                                <span>${row.goodsPrice}</span></div>
                         </div>
                     </div>
                 </c:forEach>

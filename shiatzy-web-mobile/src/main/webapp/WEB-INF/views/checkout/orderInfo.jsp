@@ -23,7 +23,19 @@
                     <div class="number">${row.goodsCode}</div>
                     <div class="color" >${row.goodsItemDomain.name}<span >${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</span></div>
                     <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp;<font class="coinSymbol">&nbsp;</font>&nbsp;<span class="only-price true-price">${row.goodsPrice}</span></div>
+                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp;<font class="coinSymbol">
+                        <c:choose>
+                            <c:when test="${order.currentCode=='CNY'}">
+                                &nbsp;<spring:message code="coin.ZH"/>
+                            </c:when>
+                            <c:when test="${order.currentCode=='USD'}">
+                                &nbsp;<spring:message code="coin.USA"/>
+                            </c:when>
+                            <c:when test="${order.currentCode=='EUR'}">
+                                &nbsp;<spring:message code="coin.EU"/>
+                            </c:when>
+                        </c:choose>
+                       </font>&nbsp;<span class="true-price">${row.goodsPrice}</span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -81,10 +93,60 @@
     <div class="total">
         <div class="title">结算</div>
         <div class="wrap">
-            <div class="subtotal">小计 <span><span id="subtotal" class="do-pro-price" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span> </div>
-            <div class="discount" style="color: red">优惠 <span><font class="coinSymbol">&nbsp;</font>&nbsp;<span id="discount" class="only-price">0</span></span></div>
-            <div class="express">快递 <span><font class="coinSymbol">&nbsp;</font>&nbsp;<span id="express" class="only-price">${order.shipFee==null?0:order.shipFee}</span></span> </div>
-            <div class="predict">预计订单总额<span><font class="coinSymbol" style="margin-right: 0">&nbsp;</font>&nbsp;<span id="ordertotal" class="only-price">${order.orderTotal}</span></span></div>
+            <div class="subtotal">小计 <span><font class="coinSymbol">
+                <font class="coinSymbol">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                </c:choose>
+            </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span> </div>
+            <div class="discount" style="color: red">优惠 <span><font class="coinSymbol">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                 </c:choose>
+            </font>&nbsp;<span id="discount" class="">0</span></span></div>
+            <div class="express">快递 <span><font class="coinSymbol">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                </c:choose>
+            </font>&nbsp;<span id="express" class="">${order.shipFee==null?0:order.shipFee}</span></span> </div>
+            <div class="predict">预计订单总额<span><font class="coinSymbol" style="margin-right: 0">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                </c:choose>
+
+            </font>&nbsp;<span id="ordertotal" class="">${order.orderTotal}</span></span></div>
         </div>
     </div>
     <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn">结账</a>
@@ -104,9 +166,9 @@
         $(".goods").find(".goods-right").each(function () {
             var num =  ($(this).find(".quantity").attr("data-value"))*1;
             var price  = ($(this).find(".true-price").text())*1;
-            total +=num * price;
+            total += num * price;
             $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
-
+            console.log("total:"+total);
         });
         var fee = ($("#express").text())*1;
         var dis = ($("#discount").text())*1;
@@ -118,8 +180,8 @@
 
     $(function(){
         commonApp.init();
-        setPrice();
-        clsTotal();
+        //setPrice();
+        //clsTotal();
         //修改弹窗
         $(".j_alter").on("click",function () {
 
@@ -248,9 +310,7 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('使用优惠码成功');
-                    var rate = $(".do-pro-price").attr("data-rate");
-                    console.log("rate;"+rate);
-                    $("#discount").text((data.data/rate).toFixed(2));
+                    $("#discount").text((data.data).toFixed(2));
                     clsTotal();
                 }else{
                     $('.showInfo').text(data.message);

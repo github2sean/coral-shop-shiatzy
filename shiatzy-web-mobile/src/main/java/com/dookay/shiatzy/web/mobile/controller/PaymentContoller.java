@@ -507,6 +507,9 @@ public class PaymentContoller extends BaseController{
         requestData.put(IpayLinksStatics.BILL_ADDRESS,orderDomain.getShipAddress());
         requestData.put(IpayLinksStatics.BILL_EMAIL,accountDomain.getEmail());
         requestData.put(IpayLinksStatics.BILL_PHONE_NUMBER,orderDomain.getShipPhone());
+        if(StringUtils.isBlank(orderDomain.getShipPostalCode())) {
+            throw new ServiceException("邮编为空无法使用IpayLinks支付");
+        }
         requestData.put(IpayLinksStatics.BILL_POSTAL_CODE,orderDomain.getShipPostalCode());//邮编暂无
         requestData.put(IpayLinksStatics.BILL_CITY,orderDomain.getShipCity());
         requestData.put(IpayLinksStatics.BILL_STATE,orderDomain.getShipProvince());
@@ -519,7 +522,7 @@ public class PaymentContoller extends BaseController{
         //requestData.put(IpayLinksStatics.SHIPPING_NAME,orderDomain.getShipFirstName()+orderDomain.getShipLastName());
         requestData.put(IpayLinksStatics.SHIPPING_ADDRESS,orderDomain.getShipAddress());
         requestData.put(IpayLinksStatics.SHIPPING_CITY,orderDomain.getShipCity());
-        requestData.put(IpayLinksStatics.SHIPPING_POSTAL_CODE,orderDomain.getShipPostalCode());//邮编暂无
+        requestData.put(IpayLinksStatics.SHIPPING_POSTAL_CODE,orderDomain.getShipPostalCode());//邮编暂无会报错
         requestData.put(IpayLinksStatics.SHIPPING_MAIL,accountDomain.getEmail());
         requestData.put(IpayLinksStatics.SHIPPING_STATE,orderDomain.getShipProvince());
         requestData.put(IpayLinksStatics.SHIPPING_COUNTRY_CODE,"CHN");
@@ -567,14 +570,17 @@ public class PaymentContoller extends BaseController{
         String resultMsg =  request.getParameter("resultMsg");
         String orderAmount =  request.getParameter("orderAmount");
         Double amt = Double.parseDouble(orderAmount);
+        System.out.println("amt:"+amt);
         String signMsg =  request.getParameter("signMsg");//验证证书 需要加密验证
         System.out.println("signMsg:"+signMsg);
         Map<String,String> map = getAllRequestParam(request);
         String safe  =  content2MD5(map);
         System.out.println("异步 map:"+map +"\n safe:"+safe);
         if("0000".equals(resultCode) && safe.equals(signMsg)){
+
             //验证成功
             OrderDomain orderDomain = orderService.getOrder(orderId);
+            System.out.println("ordertotal:"+orderDomain.getOrderTotal());
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal()) ){
                 orderService.updateOrderStatus(orderDomain);
