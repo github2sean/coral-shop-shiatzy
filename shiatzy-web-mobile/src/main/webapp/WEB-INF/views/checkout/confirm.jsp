@@ -36,7 +36,7 @@
                 <p style="display: initial;"></p>
                 <a href="/checkout/listShipAddress">选择 ></a>
             </div>
-            <div class="delivery-message" style="height: 100px;background-color: #cccccc;">
+            <div class="delivery-message" style="background-color: #cccccc;">
                 <p>门店取货</p>
                     <p>${order.storeDomain.name}</p>
                     <p>${order.storeDomain.address}</p>
@@ -67,9 +67,9 @@
     </div>
     <div class="delivery">
         <h3>3. 支付选项</h3>
-        <ul>
+            <ul>
             <li class=" payMethod" data-value="1">支付宝</li>
-            <li class=" payMethod" data-value="2">信用卡（接受VISA，银联XXXX）</li>
+            <li class=" payMethod" data-value="2">银联在线</li>
             <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>

@@ -6,10 +6,12 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-
+<div class="order">
+    <p style="float: left">订单详情</p>
+    <a style="float: right;" href="/u/account/index" >< <spring:message code="goBack"/></a>
+</div>
 <div class="dx-orderList clearfix">
-    <div class="dx-title">我的账户 / 订单详情<a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a></div>
-    <div class="content" style="padding-top: 3rem;">
+    <div class="content" >
         <c:if test="${empty orderList.list}">
             <div class="content dx-wish dx-shopping">
                 <div id="toggleDiv2">

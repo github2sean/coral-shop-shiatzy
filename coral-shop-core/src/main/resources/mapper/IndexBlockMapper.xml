@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.index.mapper.IndexBlockMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`rank` as 'rank',
+		    	a.`is_valid` as 'isValid',
+		    	a.`group_id` as 'groupId',
+		    	a.`position` as 'position',
+		    	a.`image` as 'image',
+		    	a.`title` as 'title',
+		    	a.`en_title` as 'enTitle',
+		    	a.`sub_title` as 'subTitle',
+		    	a.`en_sub_title` as 'enSubTitle',
+		    	a.`link` as 'link',
+		    	a.`create_time` as 'createTime',
+		    	a.`update_time` as 'updateTime',
+		    </trim>
+	   	from 
+	    	`t_index_block` as a
+	</sql>
+  
+</mapper>

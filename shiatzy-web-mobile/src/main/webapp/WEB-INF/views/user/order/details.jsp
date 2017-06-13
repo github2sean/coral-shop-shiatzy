@@ -6,17 +6,27 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
+<style>
+    h3.title {
+        height: 4.2rem;
+        margin-left: 1rem;
+        font-size: 1.4rem;
+        line-height: 4.2rem;
+        text-align: left;
+    }
+    .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
+</style>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left">订单详情</p>
     <a style="float: right;" href="/order/list" >< <spring:message code="goBack"/></a>
 </div>
 <div class="unfinished">
-    <div class="order-num clearfix">
-        <h3>订单詳情</h3>
-        <p>订单编号<span>${orderDomain.orderNo}</span></p>
+    <h3 class="title">订单詳情</h3>
+    <div class="order-group">
+       订单编号：${orderDomain.orderNo}
     </div>
-    <div class="order-date">
+    <div class="order-group">
         <p>订单日期：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
         <p>订单状态：
             <c:choose>
@@ -29,27 +39,32 @@
                 <c:when test="${orderDomain.status==-1}">已取消</c:when>
             </c:choose>
         </p>
-        <c:if test="${orderDomain.status==1}">
-            <p><a id="rePay" href="javascript:void(0);">重新支付<span style="float:right;" class="rotateicon">></span></a></p>
-            <p style="display: none" class="rePayWay">
-                选择支付方式: <br>
-                <label><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i>支付宝</label>
-                <label><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>银联</label>
-                <label><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>ipaylinks</label>
-                <div class="text-right">
-                    <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="margin-left:20px;background-color: #2b2b2b;color: white">支付</a>
-                </div>
-            </p>     
-        </c:if>
-        <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
-            <p><a id="queryExpress" href="javascript:void(0);">查看配送状态<span style="float:right;" class="rotateicon">></span></a></p>
-            <div class="logisticInfo" style="display: none;width: 100%;overflow: hidden;background-color: #F1F1F1">
-                <div></div>
-            </div>
-        </c:if>
     </div>
+    <c:if test="${orderDomain.status==1}">
+    <div class="order-group">
+        <a id="rePay" style="display: block" href="javascript:void(0);">重新支付<span style="float:right;" class="rotateicon">></span></a>
+        <div style="display: none;margin-bottom: 15px;" class="rePayWay">
+            选择支付方式: <br>
+            <p><label class="radiobox"><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i>支付宝</label></p>
+            <p> <label class="radiobox"><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>银联</label></p>
+            <p> <label class="radiobox"><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i>ipaylinks</label></p>
+            <div class="text-left">
+                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="background-color: #2b2b2b;color: white">支付</a>
+            </div>
+        </div>
+    </div>
+    </c:if>
+    <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
+    <div class="order-group">
+        <p><a id="queryExpress" href="javascript:void(0);">查看配送状态<span style="float:right;" class="rotateicon">></span></a></p>
+        <div class="logisticInfo" style="display: none;width: 100%;overflow: hidden;background-color: #F1F1F1">
+            <div></div>
+        </div>
+    </div>
+    </c:if>
+
     <div class="verify-message-middle">
-        <h2>商品详情<span style="float: right">v</span></h2>
+        <h2>商品详情</h2>
         <c:forEach var="item" items="${orderItemList}">
             <div class="verify-main">
                 <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
@@ -81,7 +96,7 @@
         </c:forEach>
     </div>
     <div class="order-details">
-        <h4>帐单详情<span>v</span></h4>
+        <h4>帐单详情</h4>
         <ul>
             <li>优惠前<span>
              &nbsp;<font class="coinSymbol">
@@ -161,7 +176,7 @@
          ${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}</span></p>
     </div>
     <div class="information">
-        <h4>配送信息<span>v</span></h4>
+        <h4>配送信息</h4>
         <p>${orderDomain.shipAddress}</p>
         <p>${orderDomain.shipTitle}</p>
         <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">

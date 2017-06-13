@@ -1,7 +1,7 @@
 package com.dookay.coral.shop.order.query;
 
 import com.dookay.coral.common.persistence.Query;
-import com.dookay.coral.common.persistence.criteria.Criteria;
+import tk.mybatis.mapper.entity.Example;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import lombok.Data;

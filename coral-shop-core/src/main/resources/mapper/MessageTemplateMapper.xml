@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.content.mapper.MessageTemplateMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`create_time` as 'createTime',
+		    	a.`title` as 'title',
+		    	a.`en_title` as 'enTitle',
+		    	a.`content` as 'content',
+		    	a.`en_content` as 'enContent',
+		    	a.`is_valid` as 'isValid',
+		    	a.`type` as 'type',
+		    	a.`code` as 'code',
+		    </trim>
+	   	from 
+	    	`t_content_message_template` as a
+	</sql>
+  
+</mapper>
