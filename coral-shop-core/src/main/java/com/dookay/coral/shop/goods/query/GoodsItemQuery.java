@@ -21,6 +21,7 @@ public class GoodsItemQuery extends Query {
 	private Integer isValid;
 	private List<Long> ids;
 	private Integer isSale;
+	private List<Long> colorIds;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsItemDomain.class);
@@ -34,6 +35,9 @@ public class GoodsItemQuery extends Query {
 		}
 		if(valid(ids)){
 			criteria.andIn("id",ids);
+		}
+		if(valid(colorIds)){
+			criteria.andIn("colorId",colorIds);
 		}
 		if(valid(goodsIds)){
 			criteria.andIn("goodsId",goodsIds);

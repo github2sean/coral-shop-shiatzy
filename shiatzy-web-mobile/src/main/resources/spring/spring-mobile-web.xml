@@ -160,4 +160,14 @@
         <property name="dataType" value="2"/>
         <property name="requestType" value="1002"/>
     </bean>
+
+    <!--短信配置 -->
+    <bean name="sendToPhoneConfig" class="com.dookay.coral.adapter.sendmsg.config.SendToPhoneConfig">
+
+        <property name="account" value="chuangzi"/>
+        <property name="pswd" value="Tch123456"/>
+        <property name="needstatus" value="true"/>
+        <property name="product" value="349312826"/>
+        <property name="url" value="http://222.73.117.158/msg/HttpBatchSendSM"/>
+    </bean>
 </beans>

@@ -174,7 +174,9 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 
 		GoodsItemQuery itemQuery = new GoodsItemQuery();
 		itemQuery.setGoodsIds(parmaId);
+		itemQuery.setColorIds(parmaId);
 		List<GoodsItemDomain> itemDomainList = goodsItemService.getList(itemQuery);
+
 		List<Long> itemIds = new ArrayList<>();
 		for(GoodsItemDomain goodsItemDomain :itemDomainList){
 			itemIds.add(goodsItemDomain.getId());
