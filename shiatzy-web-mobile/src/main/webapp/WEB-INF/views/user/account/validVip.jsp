@@ -17,7 +17,7 @@
     }
 </style>
 <div class="back-up clearfix">
-    <a style="float: right;" href=”#” onClick="javascript :history.go(-1);"><h3>< 返回上页</h3></a>
+    <a style="float: right;" href='/u/account/details' ><h3>< <spring:message code="goBack"/></h3></a>
 </div>
 <div class="club">
     <form action="/u/account/validVip" class="j_ajaxForm" method="post" data-next="/u/account/vipDetail">
@@ -31,7 +31,7 @@
                    data-rule="手机号码:required;mobile">
         </div>
         <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
-        <button type="submit" class="btn btn-default">认证</button>
+        <button type="button" class="btn btn-default">认证</button>
         <div class="club-bottom" style="margin-top: 30px;">
             <p>ART CLUB会员，线上同尊享线下购物礼遇。</p>
         </div>
@@ -41,3 +41,21 @@
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+<script>
+
+    $(function () {
+
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
+        $("button[type=button]").click(function () {
+            var data = $(".j_ajaxForm").serializeArray();
+            $.post("/u/account/validVip",data,function(data){
+                console.log(data);
+                if(data.code==200){
+                    location.href = "${ctx}/u/account/vipDetail";
+                }else{
+                    layer.msg(data.message);
+                }
+            });
+        });
+    });
+</script>

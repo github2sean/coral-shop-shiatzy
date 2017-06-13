@@ -81,7 +81,7 @@
 <script>
 
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         console.log('${user_context}');
 
 

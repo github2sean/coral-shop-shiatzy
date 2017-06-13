@@ -46,7 +46,8 @@
         var backUrl;
 
         if(way=='index'){
-            backUrl = "/u/account/index"
+            backUrl = "/u/account/index";
+            $(".top-right-nav").find("li:eq(2)").addClass("active");
         }else{
             backUrl = '/checkout/confirm?page=/checkout/orderInfo';
             $(".addressDiv").find(".iconfont").show();

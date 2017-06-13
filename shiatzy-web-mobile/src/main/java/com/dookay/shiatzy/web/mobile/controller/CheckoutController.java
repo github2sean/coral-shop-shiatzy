@@ -129,11 +129,15 @@ public class CheckoutController  extends BaseController{
         OrderDomain order = new OrderDomain();
         String countryId = session.getAttribute(HomeController.SHIPPING_COUNTRY_ID)+"";
         ShippingCountryDomain shippingCountryDomain = null;
+        String currentCode = "CNY";
         if(StringUtils.isNotBlank(countryId)){
             shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+            //根据国家选择结算币种
+            //currentCode =
         }
         //根据国家获取值
         order.setShipFee(shippingCountryDomain==null?0D:shippingCountryDomain.getShippingCost());
+        order.setCurrentCode(currentCode);
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
@@ -177,6 +181,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
+        shoppingCartService.withSizeDomain(cartList);
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
@@ -258,6 +263,7 @@ public class CheckoutController  extends BaseController{
         //购物车
         List<ShoppingCartItemDomain> cartList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         shoppingCartService.withGoodsItem(cartList);
+        shoppingCartService.withSizeDomain(cartList);
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
@@ -539,6 +545,9 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        if(order==null){
+            return errorResult("订单失效");
+        }
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
         order.setStoreDomain(storeService.get(storeId));
@@ -607,12 +616,36 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         CouponDomain couponDomain = couponService.checkCoupon(couponCode);
+        Double trueDiscountPrice = 0D;
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
-            order.setCouponDiscount(couponDomain.getDiscountPrice());
+            Double orderTotal = order.getOrderTotal();
+            switch (couponDomain.getRuleType()) {
+                case 0://全单打折 无限次
+                    trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
+                    System.out.println(0);
+                    break;
+                case 1://全单满减 无限次
+                    if(couponDomain.getSatisfyTop()>=orderTotal){
+                        trueDiscountPrice = couponDomain.getDiscountPrice();
+                    }else{
+                        return errorResult("优惠条件不符");
+                    }
+                    System.out.println(1);
+                    break;
+                case 2://抵扣券 1次
+                    trueDiscountPrice = couponDomain.getDiscountPrice();
+                    System.out.println(2);
+                    break;
+                case 3://折扣券 1次
+                    trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
+                    System.out.println(3);
+                    break;
+            }
+            order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }
-        return successResult("操作成功",couponDomain.getDiscountPrice());
+        return successResult("操作成功",trueDiscountPrice);
     }
 
     /**

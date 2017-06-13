@@ -52,13 +52,13 @@
                     <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                       <spring:message code="shoppingCart.size"/>: ${JSONObject.fromObject(row.skuSpecifications).getString("size")}
+                       <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                     </span></div>
                     <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
                     <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
                 </div>
                 <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
+                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg style="margin-left: 3px"><use xlink:href="#bag"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_appointment toBoutique" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href="" class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
@@ -106,7 +106,7 @@
 <script>
 
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         setPrice();
 
         $(".j_collapse>a").on("click", function (e) {

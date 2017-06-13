@@ -13,19 +13,19 @@
         <a href="/home/index" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
         <div class="content" style="margin-top: 20px">
-            <div style="margin-top: 20px;font-size:1.83rem;text-transform:uppercase">配送地区</div>
-            <div style="margin-top: 20px;font-size: .75rem">请选择你所在地区</div>
+            <div style="margin-top: 20px;font-size:1.83rem;text-transform:uppercase;text-align: center">配送地区</div>
+            <div style="margin-top: 20px;font-size: .75rem;text-align: center">请选择你所在地区</div>
             <div style="margin: auto;width: 20%;height: 5px;background-color: black;margin-top: 20px">
             </div>
             <div class="model-select-box">
                     <div style="margin: auto;height: 2rem;line-height:2rem;border: #cccccc solid 1px;width:50%;text-align: center;font-size: 14px;margin-top: 20px;margin-bottom: 5px" id="chooseCountry">最终订单配送地区<span class="pull-right">v</span></div>
-                    <ul class="text-center model-select-option" style="display: none;">
+                    <ul class="text-center model-select-option" style="display: none;text-align: center">
                         <c:forEach var="row" items="${countryList}">
                             <li data-option="${row.id}" value="${row.id}" class="option <c:if test="${row.id==1}">active</c:if>">${row.name}</li>
                         </c:forEach>
                     </ul>
             </div>
-            <div class="checked" style="font-size: 1.0821rem;border: 2px solid #cccccc;border-left: none;border-right: none;line-height: 2.5507rem;background-color: #cccccc">
+            <div class="checked" style="font-size: 1.0821rem;border: 2px solid #cccccc;border-left: none;border-right: none;line-height: 2.5507rem;background-color: #cccccc;text-align: center">
                 <c:if test="${not empty sessionScope.shippingCountryId}">
                     <c:forEach var="row" items="${countryList}">
                         <c:if test="${sessionScope.shippingCountryId ==row.id}">${row.name}</c:if>

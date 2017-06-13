@@ -76,6 +76,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	/*尺寸*/
 	@Transient
 	private String size;
+	/*尺寸对象*/
+	@Transient
+	private PrototypeSpecificationOptionDomain sizeDomain;
 
 	/*同类商品尺寸*/
 	@Transient

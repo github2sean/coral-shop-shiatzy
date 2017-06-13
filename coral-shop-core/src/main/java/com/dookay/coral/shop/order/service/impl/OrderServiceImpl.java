@@ -1,11 +1,19 @@
 package com.dookay.coral.shop.order.service.impl;
 
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
+import com.dookay.coral.shop.order.enums.OrderStatusEnum;
+import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.OrderQuery;
+import com.dookay.coral.shop.order.service.IOrderItemService;
+import com.dookay.coral.shop.promotion.domain.CouponDomain;
+import com.dookay.coral.shop.promotion.service.ICouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +22,9 @@ import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.order.mapper.OrderMapper;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.service.IOrderService;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,6 +43,15 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	private OrderMapper orderMapper;
 	@Autowired
 	private IGoodsItemService goodsItemService;
+	@Autowired
+	private IOrderItemService orderItemService;
+	@Autowired
+	private ISkuService skuService;
+	@Autowired
+	private ICouponService couponService;
+	@Autowired
+	private IOrderService orderService;
+
 
 	@Override
 	public void withGoodItme(List<OrderItemDomain> cartList) {
@@ -52,5 +71,57 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 		OrderQuery orderQuery = new OrderQuery();
 		orderQuery.setOrderNo(orderNo);
 		return super.getOne(orderQuery);
+	}
+
+	@Override
+	public void updateSkuStock(OrderDomain orderDomain) {
+		if(orderDomain==null){
+			throw new ServiceException("订单为空");
+		}
+		OrderItemQuery query = new OrderItemQuery();
+		query.setOrderId(orderDomain.getId());
+		List<OrderItemDomain> orderItemDomainList = orderItemService.getList(query);
+		for (OrderItemDomain orderItem :orderItemDomainList){
+			SkuDomain skuDomain = skuService.get(orderItem.getSkuId());
+			skuDomain.setQuantity(skuDomain.getQuantity()-orderItem.getNum());
+			skuService.update(skuDomain);
+		}
+	}
+
+	@Override
+	@Transactional("transactionManager")
+	public void updateOrderStatus(OrderDomain orderDomain){
+		orderDomain.setPaidTime(new Date());
+		orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
+		//优惠券次数减少
+		if(orderDomain.getCouponId()!=null){
+			CouponDomain couponDomain = couponService.get(orderDomain.getCouponId());
+			switch (couponDomain.getRuleType()) {
+				case 0://全单打折 无限次
+					couponService.checkCoupon(couponDomain.getCode());
+					System.out.println(0);
+					break;
+				case 1://全单满减 无限次
+					couponService.checkCoupon(couponDomain.getCode());
+					System.out.println(1);
+					break;
+				case 2://抵扣券 1次
+					couponService.checkCoupon(couponDomain.getCode());
+					couponDomain.setIsValid(0);
+					couponDomain.setLeftTimes(couponDomain.getLeftTimes()-1);
+					System.out.println(2);
+					break;
+				case 3://折扣券 1次
+					couponService.checkCoupon(couponDomain.getCode());
+					couponDomain.setIsValid(0);
+					couponDomain.setLeftTimes(couponDomain.getLeftTimes()-1);
+					System.out.println(3);
+					break;
+			}
+			couponService.update(couponDomain);
+		}
+		//商品库存减少
+		orderService.updateSkuStock(orderDomain);
+		orderService.update(orderDomain);
 	}
 }

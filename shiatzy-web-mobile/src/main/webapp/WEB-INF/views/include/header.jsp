@@ -203,12 +203,16 @@
         </symbol></svg>
 </div>
 
+<div class="site-notice">
+    #情人節這樣過# 愛情，本該甘於平淡，卻又不平淡；出於平凡，卻又不平凡。即日起至2月11日23：59分，夏姿•陳邀請你來講述你平凡又不平淡的愛情故事。
+    <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
+</div>
 <header class="relative">
     <div class="top-bar">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">
-        <li class="active"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num">${cartNumber==null?0:cartNumber}</span></a></li>
+        <li class=""><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num">${cartNumber==null?0:cartNumber}</span></a></li>
         <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg><span class="do-num boutique_num">0</span></a></li>
         <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
@@ -273,4 +277,4 @@
     </div>
 
 </div>
-<div class="main-content j_scroll_body">
+<div class="main-content j_scroll_body" style="position: relative">

@@ -29,7 +29,7 @@
         <p class="product-name">${sessionScope.language=='en_US'?row.leftItem.goodsEnName:row.leftItem.goodsName}</p>
         <div class="color-size">
             <p>${sessionScope.language=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
-            <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
+            <p><spring:message code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.leftItem.sizeDomain.enName:row.leftItem.sizeDomain.name}</p>
         </div>
         <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span></p>
         <ul class="do-list-icon">
@@ -45,7 +45,7 @@
         <p class="product-name">${sessionScope.language=='en_US'?row.rightItem.goodsEnName:row.rightItem.goodsName}</p>
         <div class="color-size">
             <p>${sessionScope.language=='en_US'?row.rightItem.goodsItemDomain.enName:row.rightItem.goodsItemDomain.name}</p>
-            <p><spring:message code="shoppingCart.size"/>:&nbsp;${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
+            <p><spring:message code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.rightItem.sizeDomain.enName:row.rightItem.sizeDomain.name}</p>
         </div>
         <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.rightItem.goodsPrice}">&nbsp;</span></p>
         <ul class="do-list-icon">
@@ -84,6 +84,7 @@
 <script>
 
     $(function () {
+        $(".top-right-nav").find("li:eq(1)").addClass("active");
         //console.log('${goodsList}');
         setPrice();
         $(".choose-store").find("a").click(function(){

@@ -15,6 +15,7 @@ public class ReturnReasonModel {
     private ReturnReasonTypeModel type1;
     private ReturnReasonTypeModel type2;
     private ReturnReasonTypeModel type3;
+    private ReturnReasonTypeModel type4;
 
     public  Boolean isChooseReason(){
         Boolean result = false;
@@ -25,6 +26,9 @@ public class ReturnReasonModel {
             result = true;
         }
         if(type3NotNull()){
+            result = true;
+        }
+        if(type4NotNull()){
             result = true;
         }
         return result;
@@ -38,6 +42,9 @@ public class ReturnReasonModel {
     public  Boolean type3NotNull(){
         return this.getType3().isChooseReason();
     }
+    public  Boolean type4NotNull(){
+        return this.getType4().isChooseReason();
+    }
 
     public String allReason(){
         String result = "{";
@@ -49,6 +56,9 @@ public class ReturnReasonModel {
         }
         if(type3NotNull()){
             result += type1NotNull()||type2NotNull()?","+this.getType3().allReason():this.getType3().allReason();
+        }
+        if(type4NotNull()){
+            result += type1NotNull()||type2NotNull()||type3NotNull()?","+this.getType4().allReason():this.getType4().allReason();
         }
         result +="}";
         System.out.println("result："+result);

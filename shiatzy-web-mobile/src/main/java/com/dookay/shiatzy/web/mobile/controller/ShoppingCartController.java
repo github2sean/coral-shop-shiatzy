@@ -16,10 +16,7 @@ import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
-import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
-import com.dookay.coral.shop.goods.service.IGoodsItemService;
-import com.dookay.coral.shop.goods.service.IGoodsService;
-import com.dookay.coral.shop.goods.service.ISkuService;
+import com.dookay.coral.shop.goods.service.*;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
@@ -61,6 +58,8 @@ public class ShoppingCartController extends BaseController{
     private IGoodsItemService goodsItemService;
     @Autowired
     private IGoodsCategoryService goodsCategoryService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
 
     //Session 购物车
@@ -277,6 +276,7 @@ public class ShoppingCartController extends BaseController{
                         shoppingCartItemDomain.setNum(form.getNum());
                         shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
                         shoppingCartItemDomain.setFormId(form.getId());
+                        shoppingCartItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(form.getSizeId()));
                         cartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(cartList);
                         shoppingCartService.withSku(cartList);
@@ -289,6 +289,7 @@ public class ShoppingCartController extends BaseController{
             cartList= shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
             shoppingCartService.withGoodsItem(cartList);
             shoppingCartService.withSku(cartList);
+            shoppingCartService.withSizeDomain(cartList);
         }
         ModelAndView mv = new ModelAndView("shoppingcart/list");
         mv.addObject("cartList",cartList);
@@ -302,7 +303,7 @@ public class ShoppingCartController extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
         shoppingCartService.withGoodsItem(wishList);
-
+        shoppingCartService.withSizeDomain(wishList);
         GoodsQuery query = new GoodsQuery();
         List<Long> goodsIds = new ArrayList<>();
         List<Long> categoryIds = new ArrayList<>();
@@ -435,7 +436,6 @@ public class ShoppingCartController extends BaseController{
         ShoppingCartItemQuery query = new ShoppingCartItemQuery();
         query.setCustomerId(customerDomain.getId());
         query.setShoppingCartType(type);
-        query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
         Integer num = shoppingCartService.count(query);
         session.setAttribute("cartNumber",num);
         System.out.println("cartNumber"+num);

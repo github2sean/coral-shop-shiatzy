@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.order.domain;
 
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -69,6 +70,9 @@ public class ReturnRequestItemDomain implements Serializable {
 	private Long itemId;
 	@Transient
 	private GoodsItemDomain goodsItemDomain;
+
+	@Transient
+	private PrototypeSpecificationOptionDomain sizeDomain;
 
 	
 	

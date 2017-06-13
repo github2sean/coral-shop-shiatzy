@@ -33,6 +33,7 @@
             </div>
         </c:if>
     </div>
+
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -42,6 +43,11 @@
 <script>
     var noMore = true;
     $(function () {
+
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
+        $(".moreList").click(function () {
+
+        });
         var count = 1;
         var turnLen = 9;
         //浏览器屏幕的高度

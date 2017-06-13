@@ -11,6 +11,7 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
@@ -25,6 +26,7 @@ import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.ReturnInfoForm;
 import com.dookay.shiatzy.web.mobile.model.ChooseGoodsModel;
 import com.dookay.shiatzy.web.mobile.model.ReturnReasonModel;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,8 @@ public class ReturnOrderController extends BaseController {
     private IStoreService storeService;
     @Autowired
     private IStoreCountryService storeCountryService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
     private static String CART_LIST = "cartList";
     private static String RETURN_ORDER = "return_order";
@@ -93,6 +97,7 @@ public class ReturnOrderController extends BaseController {
         dis = dis==null?0D:dis;
         for(ReturnRequestItemDomain line:returnOrderItemList){
             preBackMoney += line.getGoodsPrice()*line.getNum();
+            line.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+ JSONObject.fromObject(line.getSkuSpecifications()).get("size"))));
         }
         preBackMoney = preBackMoney-dis;
         returnRequestItemService.withGoodsItem(returnOrderItemList);

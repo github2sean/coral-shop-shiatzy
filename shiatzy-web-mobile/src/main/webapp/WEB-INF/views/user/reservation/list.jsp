@@ -42,7 +42,7 @@
 
 <script>
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         /*$(".status").each(function () {
             var status = $(this).attr("data-value");
             if(status == '1'){

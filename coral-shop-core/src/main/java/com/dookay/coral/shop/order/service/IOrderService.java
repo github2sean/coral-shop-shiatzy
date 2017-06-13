@@ -18,4 +18,8 @@ public interface IOrderService extends IBaseService<OrderDomain> {
 
 
     OrderDomain getOrder(String orderNo);
+
+    void updateSkuStock(OrderDomain orderDomain);
+
+    void updateOrderStatus(OrderDomain orderDomain);
 }

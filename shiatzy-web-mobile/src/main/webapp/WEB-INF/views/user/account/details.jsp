@@ -47,21 +47,21 @@
                 </ol>
             </li>
 
-            <c:if test="${not empty customerDomain.isArtClubMember}">
+            <c:if test="${not empty customerDomain.tempMemberDomain}">
                 <li>
                     <a href="#">
                         <span><spring:message code="account.personal.level"/>：
                         <c:choose>
-                            <c:when test="${customerDomain.customerLevel==1}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='普通会员'}">
                                 普通会员
                             </c:when>
-                            <c:when test="${customerDomain.customerLevel==2}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='兰花卡会员'}">
                                 兰花卡会员
                             </c:when>
-                            <c:when test="${customerDomain.customerLevel==3}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='墨竹卡会员'}">
                                 墨竹卡会员
                             </c:when>
-                            <c:when test="${customerDomain.customerLevel==4}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='牡丹卡会员'}">
                                 牡丹卡会员
                             </c:when>
                         </c:choose>
@@ -97,7 +97,7 @@
             </li>
         </ul>
     </div>
-    <div class="privacy">
+    <div class="privacy privacyNotice">
         <a href="#">
             <span style="float:left;">>　</span>
             <span style="float:left;"><spring:message code="account.personal.secret"/></span>
@@ -112,6 +112,6 @@
 </jsp:include>
 <script>
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
     });
 </script>

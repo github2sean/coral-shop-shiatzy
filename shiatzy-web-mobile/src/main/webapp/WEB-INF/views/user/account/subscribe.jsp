@@ -56,7 +56,7 @@
 <script>
 
     $(function () {
-
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         var haveCheck = '${customerDomain.subscribeType}';
         console.log("list:" + haveCheck);
         var array;

@@ -12,6 +12,7 @@ import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
@@ -64,6 +65,8 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	private IGoodsItemService goodsItemService;
 	@Autowired
 	private  IShoppingCartService shoppingCartService;
+	@Autowired
+	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
 	@Autowired
 	private ISkuService skuService;
@@ -305,6 +308,16 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			SkuQuery query = new SkuQuery();
 			SkuDomain skuDomain = 	skuService.get(line.getSkuId());
 			line.setQuantity(skuDomain.getQuantity());
+		}
+	}
+
+	@Override
+	public void withSizeDomain(List<ShoppingCartItemDomain> cartList) {
+		Long sizeId = null;
+		for(ShoppingCartItemDomain line:cartList){
+			JSONObject jsonObject = JSONObject.fromObject(line.getSkuSpecifications());
+			sizeId = Long.parseLong(""+jsonObject.get("size"));
+			line.setSizeDomain(prototypeSpecificationOptionService.get(sizeId));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
@@ -16,6 +17,7 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -65,6 +67,8 @@ public class BoutiqueController extends BaseController{
     private ISkuService skuService;
     @Autowired
     private IGoodsItemService goodsItemService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
 
 
@@ -104,6 +108,7 @@ public class BoutiqueController extends BaseController{
                         shoppingCartItemDomain.setNum(form.getNum());
                         shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
                         shoppingCartItemDomain.setFormId(form.getId());
+                        shoppingCartItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(form.getSizeId()));
                         System.out.println("shoppingCartItemDomain:"+shoppingCartItemDomain);
                         sessionCartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(sessionCartList);
@@ -117,6 +122,10 @@ public class BoutiqueController extends BaseController{
         shoppingCartService.withGoodsItem(cartList);
         List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
         for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
+           // List<Long> sizeList = JsonUtils.toLongArray("["+cartList.get(i).getSkuSpecifications()+"]");
+            JSONObject json = JSONObject.fromObject(cartList.get(i).getSkuSpecifications());
+            Long sizeId = Long.parseLong(""+json.get("size"));
+            cartList.get(i).setSizeDomain(prototypeSpecificationOptionService.get(sizeId));
             if(i!=0&&i%2!=0){
                 continue;
             }

@@ -66,4 +66,7 @@ public class CustomerDomain implements Serializable {
 	@Transient
 	private List<CustomerAddressDomain> customerAddressList;
 
+	@Transient
+	private TempMemberDomain tempMemberDomain;
+
 }

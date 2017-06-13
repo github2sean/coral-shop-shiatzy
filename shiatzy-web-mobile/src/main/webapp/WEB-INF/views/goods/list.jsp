@@ -76,8 +76,12 @@
             <div class="cat-t link-down">颜色</div>
             <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
-                <div class="do-color-show"></div>
-                <input type="checkbox" name="colorIds" id="color${item.id}" value="${item.id}">
+                <div class="do-color-show" style="background-color: ${item.color}"></div>
+                <input type="checkbox" name="colorIds"
+                <c:forEach var="row" items="${colorIds}">
+                       <c:if test="${row==item.id}">checked="checked"</c:if>
+                </c:forEach>
+                       id="color${item.id}" value="${item.id}">
                 <label for="color${item.id}">${item.name}(10)</label>
             </div>
             </c:forEach>
@@ -86,7 +90,11 @@
             <div class="cat-t link-down">材质</div>
             <c:forEach var="item" items="${attributeList}">
                 <div class="do-sort-group">
-                    <input type="checkbox" name="attributeIds" id="color${item.id}" value="${item.id}">
+                    <input type="checkbox" name="attributeIds"
+                    <c:forEach var="row" items="${attrIds}">
+                        <c:if test="${row==item.id}">checked="checked"</c:if>
+                    </c:forEach>
+                           id="color${item.id}" value="${item.id}">
                     <label for="color${item.id}">${item.value}(10)</label>
                 </div>
             </c:forEach>
@@ -95,7 +103,11 @@
             <div class="cat-t link-down">尺寸</div>
             <c:forEach var="item" items="${sizeList}">
                 <div class="do-sort-group">
-                    <input type="checkbox" name="sizeIds" id="size${item.id}" value="${item.id}">
+                    <input type="checkbox" name="sizeIds"
+                    <c:forEach var="row" items="${sizeIds}">
+                           <c:if test="${row==item.id}">checked="checked"</c:if>
+                    </c:forEach>
+                           id="size${item.id}" value="${item.id}">
                     <label for="size${item.id}">${item.name}(10)</label>
                 </div>
             </c:forEach>
@@ -179,11 +191,11 @@
             console.log(newHref);
             location.href = newHref;
         });
-
-
-
-
-            //加载更多商品
+        //reset
+        $("button[type=reset]").click(function () {
+            $("input[type=checkbox]:checked").removeAttr("checked");
+        });
+        //加载更多商品
         var offset = '${goodsDomainPageList.list.size()}'*1-1;
         var page = 2;
         console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');

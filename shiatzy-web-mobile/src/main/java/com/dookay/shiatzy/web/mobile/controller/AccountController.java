@@ -9,8 +9,11 @@ import com.dookay.coral.host.user.query.AccountQuery;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.domain.TempMemberDomain;
+import com.dookay.coral.shop.customer.query.TempMemberQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.customer.service.ITempMemberService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
@@ -47,6 +50,8 @@ public class AccountController extends MobileBaseController {
     private ICustomerAddressService customerAddressService;
     @Autowired
     private IShippingCountryService shippingCountryService;
+    @Autowired
+    private ITempMemberService tempMemberService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -67,7 +72,11 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
-
+        if(customerDomain.getIsArtClubMember()==1) {
+            TempMemberQuery query = new TempMemberQuery();
+            query.setMobile(customerDomain.getPhone());
+            customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
+        }
         ModelAndView mv = new ModelAndView("user/account/details");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
@@ -232,8 +241,16 @@ public class AccountController extends MobileBaseController {
     @RequestMapping(value = "vipDetail", method = RequestMethod.GET)
     public ModelAndView vipDetail(){
         //TODO 查询会员卡号
-
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        TempMemberQuery query = new TempMemberQuery();
+        query.setMobile(customerDomain.getPhone());
+        TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
+        if(tempMemberDomain==null){
+            return new ModelAndView("redirect:toValidVip");
+        }
         ModelAndView mv = new ModelAndView("user/account/vipDetail");
+        mv.addObject("tempMemberDomain",tempMemberDomain);
         return mv;
     }
 

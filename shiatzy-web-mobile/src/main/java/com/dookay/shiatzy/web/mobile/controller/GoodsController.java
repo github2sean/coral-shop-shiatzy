@@ -334,7 +334,7 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "onSale" ,method = RequestMethod.GET)
     public ModelAndView onSale(){
-        ModelAndView mv = new ModelAndView("goods/saleList");
+        ModelAndView mv = new ModelAndView("goods/salelist");
 
         Integer onSale =1;
         GoodsQuery goodsQuery = new GoodsQuery();
@@ -377,8 +377,6 @@ public class GoodsController extends BaseController{
         List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
         mv.addObject("attributeList",prototypeAttributeOptionDomainList);
         System.out.println("attributeList:"+JsonUtils.toJSONString(prototypeAttributeOptionDomainList));
-
-
 
         //颜色列表
         List<Long> colorIds = new ArrayList<>();

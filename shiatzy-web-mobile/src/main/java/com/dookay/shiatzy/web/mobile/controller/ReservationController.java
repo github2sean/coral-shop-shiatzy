@@ -2,7 +2,6 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
@@ -11,6 +10,7 @@ import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -32,6 +32,7 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,6 +74,8 @@ public class ReservationController extends BaseController{
     private IStoreCountryService storeCountryService;
     @Autowired
     private IShoppingCartService shoppingCartService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
     public static int RESERVATION_TYPE=3;
 
@@ -106,6 +109,12 @@ public class ReservationController extends BaseController{
         ReservationItemQuery query = new ReservationItemQuery();
         query.setReservationId(reservationId);
         List<ReservationItemDomain> reservationList  = reservationItemService.getList(query);
+        Long sizeId = null;
+        for (ReservationItemDomain returnItem:reservationList){
+            JSONObject jsonObject = JSONObject.fromObject(returnItem.getSpecifications());
+            sizeId = Long.parseLong(""+jsonObject.get("size"));
+            returnItem.setSizeDomain(prototypeSpecificationOptionService.get(sizeId));
+        }
         shoppingCartService.withReservationItem(reservationList);
         reservationDomain.setReservationItemDomainList(reservationList);
         ModelAndView mv  =  new ModelAndView("user/reservation/details");
