@@ -143,7 +143,7 @@ public class CheckoutController  extends BaseController{
             }
             fee = shippingCountryDomain.getShippingCost()/rate;
         }
-        order.setShipFee(fee);
+        order.setShipFee(new BigDecimal(fee).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
         //根据国家获取值
         order.setShippingCountryId(Long.parseLong(countryId));
         order.setCurrentCode(currentCode);

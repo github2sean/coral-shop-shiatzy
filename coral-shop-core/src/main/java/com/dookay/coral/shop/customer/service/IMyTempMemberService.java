@@ -6,5 +6,5 @@ import com.dookay.coral.shop.customer.domain.TempMemberDomain;
 /**
  * Created by admin on 2017/6/12.
  */
-public interface ITempMemberService extends IBaseService<TempMemberDomain> {
+public interface IMyTempMemberService extends IBaseService<TempMemberDomain> {
 }

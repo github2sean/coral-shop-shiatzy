@@ -10,7 +10,7 @@ import com.dookay.coral.shop.customer.domain.TempMemberDomain;
  * @since : 2017年04月24日
  * @version : v0.0.1
  */
-public interface TempMemberMapper extends Mapper<TempMemberDomain> {
+public interface MyTempMemberMapper extends Mapper<TempMemberDomain> {
 	
 	
 }

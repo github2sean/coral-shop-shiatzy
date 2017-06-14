@@ -175,7 +175,7 @@
         controlNav: true,               // 是否显示图片导航控制按钮（,2,3... ）
         controlNavThumbs: false,        // 是否使用图片的缩略图做为导航控制按钮
         pauseOnHover: true,             // 鼠标县浮时是否停止动画
-        manualAdvance: false,           // 是否手动切换
+        manualAdvance: true,           // 是否手动切换
         prevText: 'Prev',               // 上一页方向切换按钮的显示文本
         nextText: 'Next',               // 下一页方向切换按钮的显示文本
         randomStart: false,             // 开始图片是否随机
@@ -186,6 +186,18 @@
         afterLoad: function(){}         // 图片加载完毕后触发函数
     });
     $(function () {
+
+        $("#sendSMS").click(function () {
+
+            var phone = '8615068614497';
+            var data ={"phone":phone,"content":"你好！测试短信"};
+            $.post("${ctx}/send/sendMsg",data,function (data) {
+
+                console.log(data)
+            });
+
+        });
+
         $("#j_back_top").click(function () {
             var speed=500;//滑动的速度
             $('body,html').animate({ scrollTop: 0 }, speed);

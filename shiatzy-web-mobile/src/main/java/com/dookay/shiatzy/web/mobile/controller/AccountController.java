@@ -13,7 +13,7 @@ import com.dookay.coral.shop.customer.domain.TempMemberDomain;
 import com.dookay.coral.shop.customer.query.TempMemberQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
-import com.dookay.coral.shop.customer.service.ITempMemberService;
+import com.dookay.coral.shop.customer.service.IMyTempMemberService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -50,8 +51,8 @@ public class AccountController extends MobileBaseController {
     private ICustomerAddressService customerAddressService;
     @Autowired
     private IShippingCountryService shippingCountryService;
-    @Autowired
-    private ITempMemberService tempMemberService;
+    @Resource(name="myTempMemberService")
+    private IMyTempMemberService myTempMemberService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -75,7 +76,7 @@ public class AccountController extends MobileBaseController {
         if(customerDomain.getIsArtClubMember()==1) {
             TempMemberQuery query = new TempMemberQuery();
             query.setMobile(customerDomain.getPhone());
-            customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
+            customerDomain.setTempMemberDomain(myTempMemberService.getFirst(query));
         }
         ModelAndView mv = new ModelAndView("user/account/details");
         mv.addObject("accountDomain",accountDomain);
@@ -245,7 +246,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
         query.setMobile(customerDomain.getPhone());
-        TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
+        TempMemberDomain tempMemberDomain = myTempMemberService.getFirst(query);
         if(tempMemberDomain==null){
             return new ModelAndView("redirect:toValidVip");
         }
