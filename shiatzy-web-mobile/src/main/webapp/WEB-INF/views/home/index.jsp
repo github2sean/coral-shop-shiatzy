@@ -50,7 +50,7 @@
             </c:if>
         </a>
     </div>
-    <div class="col-2-w clearfix">
+    <div class="col-2-w clearfix" style="margin-top: 2rem;">
         <a href="/goods/list?categoryId=16" style="padding-right: 5px">
             <p class="guide-link-before"><spring:message code="womenClothing"/></p>
             <div><img src="${ctx}/static/images/Banner-5.jpg" alt=""></div>
@@ -61,12 +61,12 @@
         </a>
     </div>
 
-    <a href="#" class="do-block img-cover " style="margin-top: 10px">
+    <a href="#" class="do-block img-cover">
         <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
         <img src="${ctx}/static/images/Banner-8.jpg" alt="">
     </a>
 
-    <a href="#" class="do-block img-cover " style="margin-top: 10px">
+    <a href="#" class="do-block img-cover" >
         <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
         <img src="${ctx}/static/images/Banner-9.jpg" alt="">
     </a>

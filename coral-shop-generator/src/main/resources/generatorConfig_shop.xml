@@ -242,4 +242,17 @@
 		<dto packageName="com.dookay.coral.shop.index.query" />
 	</table>
 	<!--首页模块 结束-->
+
+	<!--临时模块 开始-->
+	<table tableName="t_temp_member" domainObjectName="TempMember"
+		   packageName="com.dookay.coral.shop.temp" desc="临时会员" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.temp.query" />
+	</table>
+	<table tableName="t_temp_stock" domainObjectName="TempStock"
+		   packageName="com.dookay.coral.shop.temp" desc="临时库存" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.temp.query" />
+	</table>
+	<!--临时模块 结束-->
 </context>

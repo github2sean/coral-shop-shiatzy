@@ -1309,7 +1309,7 @@ body {
     font-family: 'TrajanProRegular', 'SpectrumMT', 'Myriad Pro', 'PingFang TC', 'MHei', 'STHeitiTC-Light', 'Helvetica', '微軟正黑體', 'Microsoft JhengHei', Arial, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    font-size: 1.3rem
+    font-size: 1.4rem
 }
 
 .container {
@@ -1688,8 +1688,8 @@ h3 {
     width: 100%
 }
 
-.img-cover + .img-cover{
-    margin-top:1.2rem;
+.img-cover{
+    margin-top:1.6rem;
 }
 
 .do-title{
@@ -1723,6 +1723,7 @@ h3 {
     background-color: rgba(0,0,0,0.3);
     color:#fff;
     text-align: center;
+    width: 100%;
 }
 
 .do-cover-start{
@@ -1908,7 +1909,6 @@ h3 {
 .guide-link-before {
     padding-top:5px;
     padding-bottom:5px;
-    font-size: 1.0rem;
     margin-bottom:0;
 }
 
