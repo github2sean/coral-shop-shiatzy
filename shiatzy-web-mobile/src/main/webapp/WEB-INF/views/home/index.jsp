@@ -6,11 +6,25 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
+<style>
+    .
+</style>
 
 <div class="index-w text-center">
+
+
+    <div class="theme-default">
+        <div id="slider" class="nivoSlider">
+            <img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" />
+            <img src="${ctx}/static/images/Banner-2.jpg" alt="" title="" />
+            <img src="${ctx}/static/images/Banner-3.jpg" alt="" title="" />
+            <img src="${ctx}/static/images/Banner-4.jpg" alt="" title="" />
+            <img src="${ctx}/static/images/Banner-5.jpg" alt="" title="" />
+        </div>
+    </div>
+
     <c:forEach items="${groupList}" var="row">
         <c:if test="${row.type==1 && not empty row.indexBlockDomainList}">
-
             <c:if test="${row.indexBlockDomainList[0].isCover==0}">
                 <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover"><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></a>
                 <div class="do-title ${row.indexBlockDomainList[0].position}">

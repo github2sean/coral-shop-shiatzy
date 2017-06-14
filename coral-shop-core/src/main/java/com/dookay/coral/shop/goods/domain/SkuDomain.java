@@ -50,6 +50,9 @@ public class SkuDomain implements Serializable {
 	/*是否有效*/
 	private Integer isValid;
 
+	/*能否预约*/
+	private Integer isPre;
+
 	/*商品*/
 	@Transient
 	private GoodsDomain goods;

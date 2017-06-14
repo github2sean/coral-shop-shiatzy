@@ -73,6 +73,16 @@ public class ShoppingCartController extends BaseController{
         UserContext userContext = UserContext.current();
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
+
+        Integer shoppingCartType = addShoppingCartForm.getType();
+         /*获取SKU*/
+        Long itemId = addShoppingCartForm.getItemId();
+        Long sizeId = addShoppingCartForm.getSizeId();
+        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
+        SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
+        if(skuDomain == null) {
+            return  errorResult("无此商品");
+        }
         if(userContext.isGuest()){//游客先保存到session中
             addShoppingCartForm.setId(RandomUtils.buildNo());
             List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
@@ -86,27 +96,20 @@ public class ShoppingCartController extends BaseController{
                 listCart = new ArrayList<>();
                 listCart.add(addShoppingCartForm);
             }
+            if(shoppingCartType==ShoppingCartTypeEnum.RESERVATION.getValue()&&skuDomain.getIsPre()==0){
+                return  errorResult("该商品无法预约");
+            }
             session.setAttribute(SESSION_CART,listCart);
             return successResult("添加成功");
         }
         Long accountId = userContext.getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
-
-        Integer shoppingCartType = addShoppingCartForm.getType();
-         /*获取SKU*/
-        Long itemId = addShoppingCartForm.getItemId();
-        Long sizeId = addShoppingCartForm.getSizeId();
-        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
-        SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
-        if(skuDomain == null) {
-            throw new ServiceException("无此商品");
-        }
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         if(shoppingCartType==2){
             ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
             if(queryShoppingCart!=null){
-                return  successResult("心愿单中已经存在");
+                return  errorResult("心愿单中已经存在");
             }
         }
         shoppingCartService.addToCart(customerDomain, skuDomain, shoppingCartType,num);

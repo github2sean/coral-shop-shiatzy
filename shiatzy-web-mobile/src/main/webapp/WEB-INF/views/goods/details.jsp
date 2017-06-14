@@ -150,7 +150,9 @@
                 console.log(result);
                 if(result.code==200){
                     console.log(result.message);
-                    location.href="/cart/list";
+                    layer.msg("加入购物车成功");
+                    setCartNum();
+                    //location.href="/cart/list";
                 }else{
                     layer.msg("没有库存");
                 }
@@ -165,7 +167,11 @@
                 console.log(result);
                 if(result.code==200){
                     console.log(result.message);
-                    location.href="/boutique/list";
+                    layer.msg("加入精品店成功");
+                    setCartNum();
+                    //location.href="/boutique/list";
+                }else{
+                    layer.msg(result.message);
                 }
             });
         });
