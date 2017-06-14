@@ -120,21 +120,9 @@ public class BoutiqueController extends BaseController{
         List<ShoppingCartItemDomain> cartList = userContext.isGuest()?
                 sessionCartList:shoppingCartService.listShoppingCartItemByCustomerId(customerService.getAccount(userContext.getAccountDomain().getId()).getId(),SHOPPINGCART_TYPE);
         shoppingCartService.withGoodsItem(cartList);
-        List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
-        for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
-           // List<Long> sizeList = JsonUtils.toLongArray("["+cartList.get(i).getSkuSpecifications()+"]");
-            JSONObject json = JSONObject.fromObject(cartList.get(i).getSkuSpecifications());
-            Long sizeId = Long.parseLong(""+json.get("size"));
-            cartList.get(i).setSizeDomain(prototypeSpecificationOptionService.get(sizeId));
-            if(i!=0&&i%2!=0){
-                continue;
-            }
-            PreOderItem preOderItem = i+1<cartList.size()?new PreOderItem(cartList.get(i),cartList.get(i+1)):new PreOderItem(cartList.get(i),null);
-            preOderItemList.add(preOderItem);
-        }
-        System.out.println("cartList:"+JsonUtils.toJSONString(cartList));
+
         ModelAndView mv = new ModelAndView("boutique/list");
-        mv.addObject("preOderItemList",preOderItemList);
+        mv.addObject("cartList",cartList);
         return mv;
     }
 

@@ -6,13 +6,16 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<div class="dx-shopping">
 <div class="dx-title" style="background-color: #999999">
-    <p style="float: left"><spring:message code="reservation"/></p>
-    <a style="float: right;" onclick="history.go(-1)">X</a>
+
+    <div class="member"><span><svg><use xlink:href="#appointment-nav"></use></svg></span><spring:message
+            code="reservation"/></div>
+
+    <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
 </div>
 
-<c:if test="${empty preOderItemList}">
+<c:if test="${empty cartList}">
     <div class="content dx-wish dx-shopping">
         <div id="toggleDiv2">
           <a href="/home/index"> <div class="message"><p><spring:message code="reservation.list"/>(0)</p></div></a>
@@ -20,43 +23,66 @@
     </div>
 </c:if>
 
+    <style>
+        .goods-item:nth-of-type(even) {
+            border-right: 0;
+        }
+        .goods-item:nth-of-type(odd) {
 
-<c:forEach var="row" items="${preOderItemList}">
-<div class="order-main clearfix">
-    <div class="order-main-left goodsDiv">
-        <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.leftItem.goodsCode}</p>
-        <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
-        <p class="product-name">${sessionScope.language=='en_US'?row.leftItem.goodsEnName:row.leftItem.goodsName}</p>
-        <div class="color-size">
-            <p>${sessionScope.language=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
-            <p><spring:message code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.leftItem.sizeDomain.enName:row.leftItem.sizeDomain.name}</p>
-        </div>
-        <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span></p>
-        <ul class="do-list-icon">
-            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
-            <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if>  ><svg><use xlink:href="#heart"></use></svg></a></li>
-            <li><a href="" class="deleteBtn" data-value="${row.leftItem.id}" <c:if test="${not empty row.leftItem.formId}">data-formid='${row.leftItem.formId}'</c:if> ><svg><use xlink:href="#close"></use></svg></a></li>
-        </ul>
+        }
+.goods-item{
+    float: left;
+    padding: 1rem 0;
+    border-right: 1px solid #ccc;
+    text-align: center;
+    font-size: 1rem;
+    width: 50%;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+}
+        .goods-item .do-list-icon{ top: 6rem;}
+        .goods-item .pic {text-align: center;}
+        .goods-item .pic img{    max-height: 100%;width: 10rem;}
+    </style>
+    <div class="goods-list clearfix">
+        <c:forEach var="row" items="${cartList}">
+            <div class="goods-item">
+                <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</p>
+                <div class="pic">
+                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
+                </div>
+                <p class="product-name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</p>
+                <div class="color-size">
+                    <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
+                    <span><spring:message
+                            code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
+                </div>
+                <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                    <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
+                </p>
+                <ul class="do-list-icon">
+                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"
+                           <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >
+                        <svg>
+                            <use xlink:href="#bag"></use>
+                        </svg>
+                    </a></li>
+                    <li><a href="javascript:;" class="j_collect" data-value="${row.id}"
+                           <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>  >
+                        <svg>
+                            <use xlink:href="#heart"></use>
+                        </svg>
+                    </a></li>
+                    <li><a href="" class="deleteBtn" data-value="${row.id}"
+                           <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >
+                        <svg>
+                            <use xlink:href="#close"></use>
+                        </svg>
+                    </a></li>
+                </ul>
+            </div>
+        </c:forEach>
     </div>
-    <c:if test="${not empty row.rightItem}">
-    <div class="order-main-right goodsDiv">
-        <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.rightItem.goodsCode}</p>
-        <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;">
-        <p class="product-name">${sessionScope.language=='en_US'?row.rightItem.goodsEnName:row.rightItem.goodsName}</p>
-        <div class="color-size">
-            <p>${sessionScope.language=='en_US'?row.rightItem.goodsItemDomain.enName:row.rightItem.goodsItemDomain.name}</p>
-            <p><spring:message code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.rightItem.sizeDomain.enName:row.rightItem.sizeDomain.name}</p>
-        </div>
-        <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="do-pro-price" data-value="${row.rightItem.goodsPrice}">&nbsp;</span></p>
-        <ul class="do-list-icon">
-            <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#bag"></use></svg></a></li>
-            <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#heart"></use></svg></a></li>
-            <li><a href="" class="deleteBtn" data-value="${row.rightItem.id}" <c:if test="${not empty row.rightItem.formId}">data-formid='${row.rightItem.formId}'</c:if> ><svg><use xlink:href="#close"></use></svg></a></li>
-        </ul>
-    </div>
-    </c:if>
-</div>
-</c:forEach>
 <div class="explain">
 
     <c:if test="${empty preOderItemList}">
@@ -75,7 +101,7 @@
         <li><a href="#" class="whatBoutique"><spring:message code="reservation.what"/>?<span>></span></a></li>
     </ul>
 </div>
-
+</div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

@@ -1253,7 +1253,7 @@ a {
     outline: 0;
     color: #333;
     text-decoration: none;
-    -webkit-tap-highlight-color: rgba(119,136,153,0.5);
+    -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
@@ -1663,8 +1663,9 @@ h3 {
 }
 
 .main-content {
-    position: relative;
-
+    position: absolute;
+    top: 5rem;
+    bottom: 0;
     width: 100%;
     color: #333;
     -webkit-overflow-scrolling: touch;

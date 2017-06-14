@@ -10,7 +10,8 @@
 
 <div class="dx-shopping">
     <div class="dx-title clearfix">
-        <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="shoppingCart"/></div>
+        <div class="member"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message
+                code="shoppingCart"/></div>
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 <c:if test="${cartList.size()>0}">
@@ -21,7 +22,7 @@
                 <div class="goods-left">
                     <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
-                <div class="goods-right" style="width: 200px;word-break: break-all">
+                <div class="goods-right" style="word-break: break-all">
                     <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
@@ -42,11 +43,11 @@
     </div>
     <div class="shopping-start">
         <a data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
-        <div class="dx-clause">
+        <div class="explain">
             <ul>
-                <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/></a></li>
-                <li><a href="#" class="deliveryTime"><spring:message code="shoppingCart.deliveryTime"/></a></li>
-                <li class="last hide"><a href="#"><spring:message code="shoppingCart.rule"/></a></li>
+                <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/><span>></span></a></li>
+                <li><a href="#" class="deliveryTime"><spring:message code="shoppingCart.deliveryTime"/><span>></span></a></li>
+                <li class="last hide"><a href="#"><spring:message code="shoppingCart.rule"/><span>></span></a></li>
             </ul>
         </div>
     </div>
