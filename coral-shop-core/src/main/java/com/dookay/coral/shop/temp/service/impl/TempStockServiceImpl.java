@@ -1,10 +1,10 @@
 package com.dookay.coral.shop.temp.service.impl;
 
+import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lyd.common.persistence.Mapper;
-import com.lyd.common.service.impl.BaseServiceImpl;
+
 import com.dookay.coral.shop.temp.mapper.TempStockMapper;
 import com.dookay.coral.shop.temp.domain.TempStockDomain;
 import com.dookay.coral.shop.temp.service.ITempStockService;
