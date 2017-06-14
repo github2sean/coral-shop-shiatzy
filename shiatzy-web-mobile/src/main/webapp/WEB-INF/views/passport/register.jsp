@@ -11,8 +11,8 @@
     <div class="dx-title"><spring:message code="register"/> <a href="/passport/toLogin"><spring:message
             code="goBack"/></a></div>
     <form class="j_ajaxForm" action="/passport/register.do" method="post" data-next="${ctx}/u/account/index">
-        <div class="content">
-            <div class="title"><spring:message code="register.titleInfo"/></div>
+        <div class="dx-form">
+            <div class="form-item text-center"><spring:message code="register.titleInfo"/></div>
             <div class="form-item">
                 <input type="email" placeholder='<spring:message code="register.holderEmail"/>' name="email"
                        id="userName"
@@ -31,8 +31,7 @@
                        name="confirm_password"
                        id="confirm_password" onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="register.holderRePass"/>'"
-                       data-rule="确认密码:required;password;match(password)"
-                      >
+                       data-rule="确认密码:required;password;match(password)">
             </div>
             <div class="form-item">
                 <div class="dx-verify clearfix">
@@ -43,8 +42,10 @@
                     <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-default"><spring:message code="register"/></button>
-            <div class="notice"><spring:message code="register.endInfo"/></div>
+            <div class="form-item button">
+                <button type="submit" class="btn btn-default"><spring:message code="register"/></button>
+            </div>
+            <div class="form-item text-center"><spring:message code="register.endInfo"/></div>
         </div>
     </form>
 </div>

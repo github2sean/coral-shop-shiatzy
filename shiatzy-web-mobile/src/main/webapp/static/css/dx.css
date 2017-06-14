@@ -413,18 +413,13 @@ i {
     height: 4.2rem;
 }
 
-.dx-login .dx-title .member {
-    float: left;
-    font-size: 1.2rem;
-    line-height: 4.2rem;
-}
 
 .dx-login .dx-title .member span {
     margin-right: .7rem;
 }
 
 .dx-login .dx-title .member span img {
-    margin-top:-0.15rem;
+    margin-top:-1.2rem;
 }
 
 .dx-login .dx-title a {
@@ -446,11 +441,6 @@ i {
     border-bottom: 2px solid #d9d9d9;
 }
 
-.dx-login .title {
-    font-size: 1rem;
-    line-height: 2rem;
-    margin-top: 1.4rem;
-}
 
 .dx-login .content input {
     font-size: 1.1rem;
@@ -466,7 +456,7 @@ i {
     text-align: center;
     margin-bottom: 1.4rem;
 }
-
+/*
 .dx-login .btn {
     width: 23rem;
     height: 2.8rem;
@@ -477,7 +467,7 @@ i {
     border: none;
     margin: 0 auto;
     display: block;
-}
+}*/
 
 .dx-login .register {
     font-size: 1.1rem;
@@ -1741,4 +1731,12 @@ i {
     width: 1rem;
     height: 1rem;
     border: 1px solid #ccc;
+}
+
+
+/*商品列表页*/
+.goods-filter{
+    padding: 1rem 0 .2rem;
+    border-bottom: 1px solid #000;
+    margin-bottom: 2.5rem;
 }

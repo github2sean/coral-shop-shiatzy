@@ -6,18 +6,16 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-<div class="dx-login">
-    <div class="dx-title clearfix">
-        <div class="member">
-            <span> <img src="${ctx}/static/images/icon-member.png" alt=""></span>
-            <spring:message code="vip"/>
-            </div>
-        <a href="" class="icon iconfont" type="button">&#xe67d;</a>
+<div class="dx-login dx-shopping">
+    <div class="dx-title clearfix" style="background-color: #666">
+        <div class="member"><span><img src="/static/images/icon-member.png" alt=""></span> <spring:message code="vip"/></div>
+        <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
+
     <form class="j_ajaxForm" method="post" action="/passport/login" data-next="${ctx}/home/index">
-        <div class="content">
-            <div class="login"><spring:message code="login"/></div>
-            <div class="title"><spring:message code="login.tips"/></div>
+        <div class="dx-form">
+            <h3 class="title"><spring:message code="login"/></h3>
+            <div class="tips"><spring:message code="login.tips"/></div>
             <div class="form-item">
                 <input type="email" placeholder='<spring:message code="login.holderAccount"/>' name="userName"
                        id="userName"
@@ -31,12 +29,13 @@
                        onblur="this.placeholder='<spring:message code="login.holderPassword"/>'"
                        data-rule="密码:required;password">
             </div>
-            <div class="remind"><a href="${ctx}/passport/toForget"><spring:message code="login.forgotPassword"/>？</a>
+            <div class="form-item text-center"><a href="${ctx}/passport/toForget"><spring:message code="login.forgotPassword"/>？</a>
             </div>
-            <div class="remind loginInfo"></div>
-            <!--添加的a标签用来演示-->
+
+            <div class="form-item button">
             <button type="submit" class="btn btn-default"><spring:message code="login"/></button>
-            <div class="register"><spring:message code="login.noneAccount"/>？ <a
+            </div>
+            <div class="form-item text-center"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
         </div>
     </form>

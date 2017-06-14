@@ -1253,7 +1253,7 @@ a {
     outline: 0;
     color: #333;
     text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(119,136,153,0.5);
 }
 
 a:hover {
@@ -2173,7 +2173,7 @@ h3 {
     display: inline-block;
     margin-left: 3px;
     position: relative;
-    top: -.2rem
+    top: 0rem;
 }
 
 .link-down:active:after ,
@@ -2335,7 +2335,7 @@ h3 {
 }
 
 .pro-filter-panel .do-sort {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
 }
 
 .pro-filter-panel .do-sort:before {
@@ -2357,11 +2357,12 @@ h3 {
     position: absolute;
     right: 6rem;
     top: 1.6rem;
-    outline: 0
+    outline: 0;
 }
 
 .do-sort-cat .cat-t {
-    margin: 1.5rem 0
+    margin: 1.5rem 0;
+    font-size: 1.2rem;
 }
 
 .panel-filter .btn-submit {
@@ -2531,6 +2532,48 @@ svg {
     margin: 0
 }
 
+
+.btn-default {
+    width: 23rem;
+    display: block;
+    background-color: #333;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 2.7826rem;
+    border: none;
+    padding: 0;
+    border-Radius:0px;
+    color: #FFFFFF;
+    margin: 0 auto;
+}
+
+
+.dx-form{
+    padding: 2rem 1.9rem 0;
+    font-size: 1.2rem;
+}
+
+.dx-form input{
+    font-size: 1.2rem;
+    width: 100%;
+    height: 2.8rem;
+    border: none;
+    border: 2px solid #b2b2b2;
+    padding-left: .6rem;
+}
+
+.dx-form .title{
+    font-size: 1.4rem;
+    line-height: 2rem;
+    border-bottom: 2px solid #d9d9d9;
+    margin-bottom: 1.4rem;
+}
+
+.dx-form .tips{
+    font-size: 1.2rem;
+}
+
+.dx-form .button {margin-top: 5rem;}
 .form-item {
     margin-bottom: 1.7rem;
     position: relative;
@@ -2569,4 +2612,11 @@ textarea {
     width: .8rem;
     height: .8rem;
     background-color:#000;
+}
+
+.layui-layer-setwin .layui-layer-close1{
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-top: 15px;
+    margin-top: -10px;
 }
