@@ -1,6 +1,6 @@
 package com.dookay.coral.shop.temp.mapper;
 
-import com.lyd.common.persistence.Mapper;
+import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 
 /**

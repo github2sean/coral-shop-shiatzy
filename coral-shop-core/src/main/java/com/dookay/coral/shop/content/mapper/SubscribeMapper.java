@@ -1,6 +1,6 @@
 package com.dookay.coral.shop.content.mapper;
 
-import com.lyd.common.persistence.Mapper;
+import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.shop.content.domain.SubscribeDomain;
 
 /**

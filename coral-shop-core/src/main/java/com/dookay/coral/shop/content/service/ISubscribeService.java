@@ -1,6 +1,6 @@
 package com.dookay.coral.shop.content.service;
 
-import com.lyd.common.service.IBaseService;
+import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.content.domain.SubscribeDomain;
 
 /**
