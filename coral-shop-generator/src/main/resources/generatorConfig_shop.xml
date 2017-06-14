@@ -179,6 +179,11 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.content.query" />
 	</table>
+	<table tableName="t_content_subscribe" domainObjectName="Subscribe"
+		   packageName="com.dookay.coral.shop.content" desc="订阅" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.content.query" />
+	</table>
 	<!--内容模块 结束-->
 
 	<!--店铺模块 开始-->

@@ -213,6 +213,10 @@
     <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
 </div>
 </c:if>
+<%--<div class="site-notice">
+    #情人節這樣過# 愛情，本該甘於平淡，卻又不平淡；出於平凡，卻又不平凡。即日起至2月11日23：59分，夏姿•陳邀請你來講述你平凡又不平淡的愛情故事。
+    <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
+</div>--%>
 <header class="relative" >
     <div class="top-bar" style="position: relative">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
@@ -283,4 +287,4 @@
     </div>
 
 </div>
-<div class="main-content j_scroll_body" style="position: relative">
+<div class="main-content j_scroll_body">
