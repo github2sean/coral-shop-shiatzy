@@ -1511,21 +1511,13 @@ i {
 }
 
 .dx-commodity .dx-bag-slide {
-    width: 18.5rem;
+    width: 20rem;
     margin: 0 auto;
 }
 
 .dx-commodity .magnify {
     float: right;
-    margin-right: 15%;
-}
-
-.dx-commodity .dx-bag-slide .bx-wrapper .bx-prev {
-    left: -20%;
-}
-
-.dx-commodity .dx-bag-slide .bx-wrapper .bx-next {
-    right: -21%;
+    margin-top: 4px;
 }
 
 .dx-commodity .content .price {
@@ -1538,7 +1530,7 @@ i {
 
 .dx-commodity .content .price a {
     float: right;
-    margin-right: 1.5rem;
+
 }
 
 .dx-commodity .content .color .title {

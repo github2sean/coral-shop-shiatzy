@@ -6,20 +6,25 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
+<script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 <div class="dx-commodity">
     <div class="content" >
         <div class="title">${goodsDomain.name}</div>
-        <div class="number">产品编号 ${goodsItemDomain.goodsNo}</div>
+        <span class="number">产品编号 ${goodsItemDomain.goodsNo}</span>
         <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
         <div class="dx-bag-slide">
             <ul class="j_s_slider">
                 <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
                     <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                    <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                    <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                    <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
                 </c:forEach>
             </ul>
         </div>
-        <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span><a href="javascript:;" class="j_collect active"><svg><use xlink:href="#heart"></use></svg></a></div>
+        <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span>
+            <a href="javascript:;" class="j_collect active"><svg transform="scale(1.5) "><use xlink:href="#heart-red" ></use></svg></a></div>
 
         <div class="color">
             <div class="title j_choose">${goodsItemDomain.goodsColor.name}(还有${goodsDomain.goodsItemList.size()-1}款颜色)</div>
@@ -87,11 +92,7 @@
         commonApp.init();
 
         setPrice();
-        $(".j_s_slider").bxSlider({
-            auto:false,
-            pager:false,
-            controls:true
-        });
+        $(".j_s_slider").bxSlider();
 
         $("#js_size").find("li").each(function () {
             $(this).on("click",function () {

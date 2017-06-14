@@ -202,7 +202,7 @@
             <g> <polygon style="fill:none;stroke:#333333;stroke-width:0.5;" points="11.099,8.25 8.349,5.5 5.599,7.7 5.599,11 11.099,16.5
 		16.599,11 16.599,7.7 13.849,5.5 	"/> </g> <g> <circle style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" cx="132.76" cy="180.545" r="6.45"/> <line style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" x1="137.32" y1="185.105" x2="141.311" y2="189.096"/> </g>
         </symbol>
-        <symbol id="heart-red" viewBox="0 0 22 22">
+        <symbol id="heart-red" viewBox="0 0 30 30">
             <g> <polygon style="fill:#80393f;stroke:#333333;stroke-width:0.5;" points="11.099,8.25 8.349,5.5 5.599,7.7 5.599,11 11.099,16.5
             16.599,11 16.599,7.7 13.849,5.5 	"/> </g> <g> <circle style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" cx="132.76" cy="180.545" r="6.45"/> <line style="fill:none;stroke:#FFFFFF;stroke-linecap:round;" x1="137.32" y1="185.105" x2="141.311" y2="189.096"/> </g>
         </symbol></svg>

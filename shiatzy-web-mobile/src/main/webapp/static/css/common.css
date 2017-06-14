@@ -1024,7 +1024,7 @@ ul.bxslider {
 .bx-wrapper .bx-pager,
 .bx-wrapper .bx-controls-auto {
     position: absolute;
-    bottom: -30px;
+    bottom: 0px;
     width: 100%;
 }
 
@@ -1085,9 +1085,7 @@ ul.bxslider {
 
 /* DIRECTION CONTROLS (NEXT / PREV) */
 
-.bx-wrapper .bx-prev {
-    left: 12%;
-}
+
 
 .bx-wrapper .bx-prev:hover,
 .bx-wrapper .bx-prev:focus {
@@ -1095,7 +1093,7 @@ ul.bxslider {
 }
 
 .bx-wrapper .bx-next {
-    right: 12%;
+    right:  0rem;
 }
 
 .bx-wrapper .bx-next:hover,
@@ -1184,11 +1182,13 @@ ul.bxslider {
 .bx-wrapper .bx-prev:before {
     content: "<";
     left: 0;
+    font-size:2rem;
 }
 
 .bx-wrapper .bx-next:before {
     content: ">";
     right: 0;
+    font-size:2rem;
 }
 
 * {
