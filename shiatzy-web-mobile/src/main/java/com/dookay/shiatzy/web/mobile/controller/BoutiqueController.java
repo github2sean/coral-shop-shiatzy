@@ -144,15 +144,17 @@ public class BoutiqueController extends BaseController{
         List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
         System.out.println("skuDomainList:"+JsonUtils.toJSONString(skuDomainList));
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
-        if(skuDomain == null)
-        {
-            throw new ServiceException("参数错误");
+        if(skuDomain == null){
+            return errorResult("没有对应颜色和尺寸的商品");
+        }else if(skuDomain.getIsPre()==0){
+            return errorResult("该商品不能预约");
         }
+
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain,skuDomain,SHOPPINGCART_TYPE);
         if(shoppingCartItemDomain!=null){
-            return  successResult("精品店已存在此商品");
+            return  errorResult("精品店已存在此商品");
         }else{
             shoppingCartService.addToCart(customerDomain, skuDomain, SHOPPINGCART_TYPE,num);
         }

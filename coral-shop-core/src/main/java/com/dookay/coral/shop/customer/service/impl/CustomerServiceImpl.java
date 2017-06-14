@@ -16,7 +16,14 @@ import com.dookay.coral.shop.temp.service.ITempMemberService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.dookay.coral.common.service.impl.BaseServiceImpl;
+import com.dookay.coral.shop.customer.mapper.CustomerMapper;
+import com.dookay.coral.shop.customer.domain.CustomerDomain;
+import com.dookay.coral.shop.customer.service.ICustomerService;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * 客户的业务实现类

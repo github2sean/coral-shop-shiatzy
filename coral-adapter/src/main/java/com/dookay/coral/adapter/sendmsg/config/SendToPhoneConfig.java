@@ -10,7 +10,7 @@ public class SendToPhoneConfig {
 
     public String account;
     public String pswd;
-    public String needstatus;
+    public Boolean needstatus;
     public String product;
     public String url;
 

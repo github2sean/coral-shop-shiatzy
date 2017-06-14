@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="${ctx}/static/js/plugins/validator/css/jquery.validator.css">
     <!-- 页面样式 结束 -->
 
+    <!-- 轮播 开始 -->
+    <link rel="stylesheet" href="${ctx}/static/css/nivo_slider.css">
+    <link rel="stylesheet" href="${ctx}/static/css/default.css">
+    <!-- 轮播 结束 -->
+
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {
