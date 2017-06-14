@@ -8,34 +8,40 @@
 </jsp:include>
 
 <div class="index-w text-center">
-    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-1.jpg" alt=""></a>
-    <div class="do-title text-right">
-        <div class="title-main">大标题</div>
-        <div class="title-sub">小标题</div>
-    </div>
-    <a href="#" class="do-block img-cover"><img src="${ctx}/static/images/Banner-2.jpg" alt=""></a>
-    <div class="do-title text-center">
-        <div class="title-main">大标题</div>
-        <div class="title-sub">小标题</div>
-    </div>
-    <a href="#" class="do-block img-cover">
-        <img src="${ctx}/static/images/Banner-3.jpg" alt="">
-        <span class="do-cover-title do-cover-start">
-            <span class="cover-title-main">标题标题</span>
-        </span>
-    </a>
-    <a href="#" class="do-block img-cover">
-        <img src="${ctx}/static/images/Banner-4.jpg" alt="">
-        <span class="do-cover-title do-cover-center">
-            <span class="cover-title-main">标题标题</span>
-        </span>
-    </a>
-    <a href="#" class="do-block img-cover">
-        <img src="${ctx}/static/images/Banner-4.jpg" alt="">
-        <span class="do-cover-title do-cover-end">
-            <span class="cover-title-main">标题标题</span>
-        </span>
-    </a>
+    <c:forEach items="${groupList}" var="row">
+        <c:if test="${row.type==1 && not empty row.indexBlockDomainList}">
+
+            <c:if test="${row.indexBlockDomainList[0].isCover==0}">
+                <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover"><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></a>
+                <div class="do-title ${row.indexBlockDomainList[0].position}">
+                    <div class="title-main">${row.indexBlockDomainList[0].title}</div>
+                    <div class="title-sub">${row.indexBlockDomainList[0].subTitle}</div>
+                </div>
+            </c:if>
+            <c:if test="${row.indexBlockDomainList[0].isCover==1}">
+                <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover">
+                    <img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt="">
+                    <span class="do-cover-title ${row.indexBlockDomainList[0].position}" >
+                        <span class="cover-title-main">${row.indexBlockDomainList[0].title}</span>
+                    </span>
+                </a>
+            </c:if>
+
+        </c:if>
+        <c:if test="${row.type==2 && row.indexBlockDomainList.size()>1}">
+            <div class="col-2-w clearfix" style="margin-top: 2rem;">
+                <a href="${row.indexBlockDomainList[0].link}" style="padding-right: 5px">
+                    <c:if test="${not empty row.indexBlockDomainList[0].title}"><p class="guide-link-before">${row.indexBlockDomainList[0].title}</p></c:if>
+                    <div><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></div>
+                </a>
+                <a href="${row.indexBlockDomainList[1].link}" style="padding-left: 5px">
+                    <c:if test="${not empty row.indexBlockDomainList[1].title}"><p class="guide-link-before">${row.indexBlockDomainList[1].title}</p></c:if>
+                    <div><img src="${ImageModel.toFirst(row.indexBlockDomainList[1].image).file}" alt=""></div>
+                </a>
+            </div>
+        </c:if>
+    </c:forEach>
+
     <div class="index-se font-16 hide">
         <a href="/home/index">
             <c:if test="${ not empty coupon}">
@@ -50,7 +56,7 @@
             </c:if>
         </a>
     </div>
-    <div class="col-2-w clearfix" style="margin-top: 2rem;">
+    <div class="col-2-w clearfix hide" style="margin-top: 2rem;">
         <a href="/goods/list?categoryId=16" style="padding-right: 5px">
             <p class="guide-link-before"><spring:message code="womenClothing"/></p>
             <div><img src="${ctx}/static/images/Banner-5.jpg" alt=""></div>
@@ -60,16 +66,6 @@
             <div><img src="${ctx}/static/images/Banner-7.jpg" alt=""></div>
         </a>
     </div>
-
-    <a href="#" class="do-block img-cover">
-        <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
-        <img src="${ctx}/static/images/Banner-8.jpg" alt="">
-    </a>
-
-    <a href="#" class="do-block img-cover" >
-        <p class="guide-link-before hide"><spring:message code="menClothing"/></p>
-        <img src="${ctx}/static/images/Banner-9.jpg" alt="">
-    </a>
     <%--<a href="/goods/list?categoryId=21" class="do-block img-cover index-cat">
         <p class="guide-link-before"><spring:message code="bags"/></p>
         <img src="${ctx}/static/images/index-list1.jpg" alt="">

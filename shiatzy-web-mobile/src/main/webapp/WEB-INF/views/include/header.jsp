@@ -208,8 +208,8 @@
     <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
 </div>
 </c:if>
-<header class="relative">
-    <div class="top-bar">
+<header class="relative" >
+    <div class="top-bar" style="position: relative">
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">

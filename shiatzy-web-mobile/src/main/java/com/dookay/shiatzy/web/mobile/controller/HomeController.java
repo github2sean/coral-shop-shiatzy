@@ -20,6 +20,12 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
+import com.dookay.coral.shop.index.domain.IndexBlockDomain;
+import com.dookay.coral.shop.index.domain.IndexBlockGroupDomain;
+import com.dookay.coral.shop.index.query.IndexBlockGroupQuery;
+import com.dookay.coral.shop.index.query.IndexBlockQuery;
+import com.dookay.coral.shop.index.service.IIndexBlockGroupService;
+import com.dookay.coral.shop.index.service.IIndexBlockService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.query.CouponQuery;
 import com.dookay.coral.shop.promotion.service.ICouponService;
@@ -37,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,13 +63,13 @@ public class HomeController extends MobileBaseController {
     @Autowired
     private IShippingCountryService shippingCountryService;
     @Autowired
-    private ICustomerAddressService customerAddressService;
-    @Autowired
-    private ICustomerService customerService;
-    @Autowired
     private IContentCategoryService contentCategoryService;
     @Autowired
     private IPushContentService pushContentService;
+    @Autowired
+    private IIndexBlockGroupService indexBlockGroupService;
+    @Autowired
+    private IIndexBlockService indexBlockService;
 
 
     private static final String PUSH_HISTORY = "push_history";
@@ -94,6 +101,7 @@ public class HomeController extends MobileBaseController {
         //查询推送内容
         //先查询cookie中是否以查看过内容查看过无需再显示
         String pushId = CookieUtil.getCookieValue(request,PUSH_HISTORY);
+        System.out.println("pushId:"+JsonUtils.toJSONString(pushId));
         if(StringUtils.isBlank(pushId)){
             PushContentQuery pushContentQuery = new PushContentQuery();
             pushContentQuery.setIsValid(1);
@@ -110,10 +118,30 @@ public class HomeController extends MobileBaseController {
                 }
             }
             if(result!=null){
+                System.out.println("pushContent:"+JsonUtils.toJSONString(result));
                 CookieUtil.setCookieValue(HttpContext.current().getResponse(),PUSH_HISTORY,result.getId()+"",MAX_COOKIE_AGE);
                 mv.addObject("pushContent",result);
             }
         }
+
+
+        //查询首页布局样式
+        IndexBlockGroupQuery groupQuery = new IndexBlockGroupQuery();
+        groupQuery.setIsValid(1);
+        groupQuery.setDesc(false);
+        groupQuery.setOrderBy("rank");
+        List<IndexBlockGroupDomain> groupList = indexBlockGroupService.getList(groupQuery);
+        IndexBlockQuery blockQuery = new IndexBlockQuery();
+
+        for(IndexBlockGroupDomain line:groupList){
+            blockQuery.setGroupId(line.getId());
+            blockQuery.setDesc(false);
+            blockQuery.setOrderBy("rank");
+            blockQuery.setIsValid(1);
+            List<IndexBlockDomain> indexBlockDomainList  = indexBlockService.getList(blockQuery);
+            line.setIndexBlockDomainList(indexBlockDomainList);
+        }
+        mv.addObject("groupList",groupList);
         return mv;
     }
 

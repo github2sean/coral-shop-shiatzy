@@ -42,7 +42,7 @@
                 </ul>
             </a>
             <!--Todo:收藏按钮-->
-            <i class="icon-collect j_collect" data-value="${firstItem.id}" data-ids="${goods.sizeDomainList[0].id}" >
+            <i class="icon-collect j_collect hide" data-value="${firstItem.id}" data-ids="${goods.sizeDomainList[0].id}" >
                 <svg class="do-heart"><use xlink:href="#heart"></use></svg>
             </i>
         </li>
