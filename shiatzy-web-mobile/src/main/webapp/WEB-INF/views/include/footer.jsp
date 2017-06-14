@@ -187,18 +187,10 @@
         lastSlide: function(){},        // 在最后一张图片显示完毕后触发函数
         afterLoad: function(){}         // 图片加载完毕后触发函数
     });
+
+
+
     $(function () {
-
-        $("#sendSMS").click(function () {
-
-            var phone = '8615068614497';
-            var data ={"phone":phone,"content":"你好！测试短信"};
-            $.post("${ctx}/send/sendMsg",data,function (data) {
-
-                console.log(data)
-            });
-
-        });
 
         $("#j_back_top").click(function () {
             var speed=500;//滑动的速度
@@ -253,7 +245,7 @@
             }else{
                 $.post("/commom/subscribe",{"email":email},function (data) {
                     if (data.code==200){
-                        layer.msg("订阅成功");
+                        layer.msg("已发送邮件，请在邮件中点击订阅");
                     }else{
                         layer.msg("订阅失败");
                     }

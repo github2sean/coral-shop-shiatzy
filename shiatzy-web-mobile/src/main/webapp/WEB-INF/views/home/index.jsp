@@ -12,8 +12,6 @@
 
 <div class="index-w text-center">
 
-
-    <div class="btn btn-default" id="sendSMS">发短信</div>
     <div class="theme-default">
         <div id="slider" class="nivoSlider">
             <img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" />

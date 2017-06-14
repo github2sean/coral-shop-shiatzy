@@ -13,7 +13,6 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import com.dookay.coral.shop.temp.query.TempMemberQuery;
 import com.dookay.coral.shop.temp.service.ITempMemberService;
-import com.dookay.coral.shop.customer.service.IMyTempMemberService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +47,8 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	@Autowired
 	private ICustomerAddressService customerAddressService;
 
-	@Resource(name = "myTempMemberService")
-	private IMyTempMemberService tempMemberService;
+	@Autowired
+	private ITempMemberService tempMemberService;
 
 
 	/**

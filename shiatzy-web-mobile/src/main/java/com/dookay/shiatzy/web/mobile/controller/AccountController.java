@@ -12,7 +12,6 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
-import com.dookay.coral.shop.customer.service.IMyTempMemberService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
@@ -53,8 +52,8 @@ public class AccountController extends MobileBaseController {
     private ICustomerAddressService customerAddressService;
     @Autowired
     private IShippingCountryService shippingCountryService;
-    @Resource(name="myTempMemberService")
-    private IMyTempMemberService myTempMemberService;
+    @Autowired
+    private ITempMemberService tempMemberService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -78,7 +77,7 @@ public class AccountController extends MobileBaseController {
         if(customerDomain.getIsArtClubMember()==1) {
             TempMemberQuery query = new TempMemberQuery();
             query.setMobile(customerDomain.getPhone());
-            customerDomain.setTempMemberDomain(myTempMemberService.getFirst(query));
+            customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
         }
         ModelAndView mv = new ModelAndView("user/account/details");
         mv.addObject("accountDomain",accountDomain);
@@ -248,7 +247,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
         query.setMobile(customerDomain.getPhone());
-        TempMemberDomain tempMemberDomain = myTempMemberService.getFirst(query);
+        TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
         if(tempMemberDomain==null){
             return new ModelAndView("redirect:toValidVip");
         }
