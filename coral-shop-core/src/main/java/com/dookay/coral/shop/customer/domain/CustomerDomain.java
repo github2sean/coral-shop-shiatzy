@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.customer.domain;
 
 import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import lombok.Data;
 
 import java.io.Serializable;

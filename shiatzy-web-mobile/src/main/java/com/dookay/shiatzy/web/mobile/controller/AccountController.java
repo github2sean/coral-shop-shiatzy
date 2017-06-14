@@ -9,14 +9,16 @@ import com.dookay.coral.host.user.query.AccountQuery;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
-import com.dookay.coral.shop.customer.domain.TempMemberDomain;
-import com.dookay.coral.shop.customer.query.TempMemberQuery;
+
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.customer.service.IMyTempMemberService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
+import com.dookay.coral.shop.temp.domain.TempMemberDomain;
+import com.dookay.coral.shop.temp.query.TempMemberQuery;
+import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;

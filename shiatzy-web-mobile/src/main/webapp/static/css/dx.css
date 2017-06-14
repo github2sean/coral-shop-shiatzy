@@ -900,6 +900,7 @@ i {
     float: left;
     text-align: left;
     font-size:1rem;
+    width: 16rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right .name {
@@ -951,7 +952,11 @@ i {
     margin-left: 1.8rem;
     font-size: 1.5rem;
 }
-
+.dx-shopping .dx-GoodsDetails  .do-list-icon{
+    position: absolute;
+    right: 1.5rem;
+     top: 1.3rem;
+}
 
 /*14_结算页1_无优惠代码*/
 

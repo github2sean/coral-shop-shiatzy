@@ -836,10 +836,9 @@
 }
 
 .explain {
-    margin-top: 2.7053rem;
+    margin-top: 2rem;
     text-align: center;
     background-color: #cccccc;
-    padding-top: 1.3913rem;
 }
 
 .explain a {
@@ -856,6 +855,7 @@
 }
 
 .choose-store {
+    padding-top: 2rem;
     margin-bottom: 1.9rem;
 }
 

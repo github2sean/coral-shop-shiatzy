@@ -11,8 +11,7 @@ public enum SubscribeTypeEnum implements IEnum {
 
     TYPE1(1, "快递及邮件"),
     TYPE2(2, "短信"),
-    TYPE3(3, "彩信"),
-    TYPE4(4, "我希望收到夏姿电商產品信息");
+    TYPE3(3, "彩信");
 
     private int value;
     private String description;

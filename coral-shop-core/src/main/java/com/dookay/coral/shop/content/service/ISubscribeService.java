@@ -10,5 +10,5 @@ import com.dookay.coral.shop.content.domain.SubscribeDomain;
  * @version : v0.0.1
  */
 public interface ISubscribeService extends IBaseService<SubscribeDomain> {
-
+    void createSubscribe(String email);
 }

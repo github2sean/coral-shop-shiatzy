@@ -128,6 +128,7 @@
             $.post("/cart/querySessionCartNum",{"type":1},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    $(".cart_num").removeClass("hide");
                     $(".cart_num").text(cartNum);console.log(cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -136,6 +137,7 @@
             $.post("/cart/querySessionCartNum",{"type":3},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    $(".boutique_num").removeClass("hide");
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                     console.log("boutique:"+cartNum)
                 }else{
@@ -248,8 +250,15 @@
             }else if(!reg.test(email)){
                 layer.msg("请输入正确的邮件地址");
                 return false;
+            }else{
+                $.post("/commom/subscribe",{"email":email},function (data) {
+                    if (data.code==200){
+                        layer.msg("订阅成功");
+                    }else{
+                        layer.msg("订阅失败");
+                    }
+                });
             }
-
         });
 
 
