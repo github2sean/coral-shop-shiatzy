@@ -133,7 +133,8 @@
                         $(".cart_num").removeClass("hide");
                     }
 
-                    $(".cart_num").text(cartNum);console.log(cartNum);
+                    $(".cart_num").text(cartNum);
+                    console.log("cart:"+cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -145,7 +146,7 @@
                         $(".boutique_num").removeClass("hide");
                     }
 
-                    $(".boutique_num").text(cartNum);console.log(cartNum);
+                    $(".boutique_num").text(cartNum);
                     console.log("boutique:"+cartNum)
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -155,7 +156,11 @@
             $.post("/cart/getCartNum",{"type":1},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    if(cartNum>0){
+                        $(".cart_num").removeClass("hide");
+                    }
                     $(".cart_num").text(cartNum);
+                    console.log("cart:"+cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -163,6 +168,9 @@
             $.post("/cart/getCartNum",{"type":3},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    if(cartNum>0){
+                        $(".boutique_num").removeClass("hide");
+                    }
                     console.log("bou:"+cartNum);
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{
