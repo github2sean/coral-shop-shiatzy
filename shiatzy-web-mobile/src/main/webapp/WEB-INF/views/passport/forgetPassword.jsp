@@ -12,29 +12,32 @@
         <div class="member"><spring:message code="forgetPassword"/></div>
         <a href="/passport/toLogin" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
-    <div class="content">
+
         <form class="j_ajaxForm" action="/passport/sendPassword.do" method="post" data-next="${ctx}/passport/toLogin">
-            <div class="title" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
+            <div class="dx-form">
+            <div class="tips" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
             <div class="form-item">
             <input type="email" placeholder="<spring:message code="login.holderAccount"/>" class="userName"
                    name="userName" id="userName" onfocus="this.placeholder=''"
                    onblur="this.placeholder='<spring:message code="login.holderAccount"/>'"
                    data-rule="电子邮箱:required;email">
             </div>
-            <div class="form-item">
-            <div class="dx-verify clearfix">
-                <input type="text" class="verify" placeholder="<spring:message code="register.holderValidCode"/>"
-                       name="validCode"
-                       data-rule="验证码:required;">
-                <div class="dx-verify-pic"><img src="/captcha" alt=""></div>
-            </div>
-            </div>
+                <div class="form-item">
+                    <div class="dx-verify clearfix" style="width: 100%">
+                        <input type="text" class="verify" placeholder='<spring:message code="register.holderValidCode"/>'
+                               name="validCode" id="validCode" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'"
+                               data-rule="验证码:required;" style="float: left;width: 60%">
+                        <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
+                    </div>
+                </div>
             <div class="remind"></div>
             <button type="submit" class="btn btn-default"><spring:message code="send"/></button>
             <div class="register"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
+            </div>
         </form>
-    </div>
+
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

@@ -1801,8 +1801,7 @@ h3 {
     font-size: 1.4rem
 }
 
-.guide-nav>li>a:hover,
-.guide-nav>li>a:active{
+.guide-nav>li.active>a{
     background-color: #2b2b2b;
 }
 

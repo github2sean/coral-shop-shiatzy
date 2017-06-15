@@ -13,12 +13,13 @@
 <div class="index-w text-center">
 
     <div class="theme-default">
-        <div id="slider" class="nivoSlider">
-            <img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" />
-            <img src="${ctx}/static/images/Banner-2.jpg" alt="" title="" />
-            <img src="${ctx}/static/images/Banner-3.jpg" alt="" title="" />
-            <img src="${ctx}/static/images/Banner-4.jpg" alt="" title="" />
-            <img src="${ctx}/static/images/Banner-8.jpg" alt="" title="" />
+        <div>
+            <ul class="slider">
+                <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
+                <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
+                <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
+                <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
+            </ul>
         </div>
     </div>
 
