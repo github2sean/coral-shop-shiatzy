@@ -40,6 +40,6 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 
 	/*库存*/
 	@Transient
-	private int stock;
+	private Long stock;
 
 }

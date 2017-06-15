@@ -8,6 +8,10 @@ import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.*;
 import com.dookay.coral.shop.goods.service.*;
+import com.dookay.coral.shop.temp.domain.TempStockDomain;
+import com.dookay.coral.shop.temp.query.TempMemberQuery;
+import com.dookay.coral.shop.temp.query.TempStockQuery;
+import com.dookay.coral.shop.temp.service.ITempStockService;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +49,11 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	private IGoodsItemService goodsItemService;
 	@Autowired
 	private ISkuService skuService;
+	@Autowired
+	private ITempStockService tempStockService;
+	@Autowired
+	private IGoodsColorService goodsColorService;
+
 	@Override
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
 		return getPageList(query);
@@ -148,7 +157,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> net.sf.json.JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
 			if(skuDomain == null)
 			{
-				throw new ServiceException("参数错误");
+				throw new ServiceException("此商品无库存");
 			}
 			int quantity = skuDomain.getQuantity();
 			System.out.println("库存："+quantity);
@@ -167,6 +176,16 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 				goods.setSizeDomainList(sizeList);
 				System.out.println("goodId:"+goods.getId()+" sizeList:"+sizeList);
 			}
+	}
+
+	@Override
+	public Long getTempStock(String goodsNo, String sizeValue, Long colorId) {
+		TempStockQuery query = new TempStockQuery();
+		query.setProductNo(goodsNo);
+		query.setSize(sizeValue);
+		query.setColor(goodsColorService.get(colorId).getName());
+		TempStockDomain tempStockDomain = tempStockService.getFirst(query);
+		return tempStockDomain==null?0L:Long.parseLong(tempStockDomain.getNum()+"");
 	}
 
 	@Override
@@ -204,7 +223,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			Long sizeId = jsonObject.getLong("size");
 			for(PrototypeSpecificationOptionDomain line:sizeDomainList){
 				if(line.getId().equals(sizeId)){
-					line.setStock(skuDomain.getQuantity());
+					line.setStock(Long.parseLong(skuDomain.getQuantity()+""));
 				}
 			}
 		}

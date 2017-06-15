@@ -26,7 +26,10 @@
                     <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
-                    <div class="quantity"><spring:message code="shoppingCart.number"/>: <a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.quantity}" data-value="${row.id}">+</a></div>
+                    <div class="quantity"><spring:message code="shoppingCart.number"/>:
+                        <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a></c:if>
+                        <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="0"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a>(已售罄)</c:if>
+                    </div>
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
                 </div>
                 <ul class="do-list-icon">

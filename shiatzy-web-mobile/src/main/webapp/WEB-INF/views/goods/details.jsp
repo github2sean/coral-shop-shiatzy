@@ -43,7 +43,7 @@
             <div class="title j_choose"><spring:message code="shoppingCart.size"/> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice">查看尺寸指南</span></div>
             <ul class="hide" id="js_size">
                 <c:forEach var="item" items="${sizeList}" varStatus="status" >
-                <li class="<c:if test="${status.first}">active</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}<span></span></a> </li>
+                <li class="<c:if test="${status.first && item.stock>0}">active</c:if> <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(已售罄)</c:if><span></span></a> </li>
                 </c:forEach>
             </ul>
         </div>
@@ -94,23 +94,31 @@
         setPrice();
         $(".j_s_slider").bxSlider();
 
+        var isSelected = false;
         $("#js_size").find("li").each(function () {
-            $(this).on("click",function () {
-                $(this).siblings().removeClass("active");
-                $(this).addClass("active");
+            if($(this).hasClass("active")){
+                selectSizeId = $(this).attr("data-value");
+                isSelected = true;
+            }
+        });
+
+        $("#js_size").find("li").on("click",function () {
+                if($(this).hasClass("disabled")){
+                    layer.msg("该商品已售罄");
+                    return false;
+                }
+                $(this).parent("ul").addClass("hide");
+                var size = $(this).find('a').text();
+                $(".sizeChecked").text(size);
+                $(this).addClass("active").siblings().removeClass("active");
                 selectSizeId = $(this).data("value");
-            })
-        })
+                isSelected = true;
+        });
 
         $(".j_choose").on("click",function () {
             $(this).siblings().toggleClass("hide");
         });
 
-        $("#js_size").find(".sizeIds").click(function () {
-            $(this).parent("ul").addClass("hide");
-           var size = $(this).find('a').text();
-           $(".sizeChecked").text(size);
-        });
         var isLogin = '${isGuest}'=='onLine'?true:false;
         $(".j_collect").click(function () {
             var url ="";
@@ -122,7 +130,6 @@
                   sizeId = $(this).attr("data-value");
               }
            });
-
             var data = {"itemId":'${goodsItemDomain.id}',"num":1,"sizeId":sizeId,"type":2};
             console.log(isAdd);
             var url = "";
@@ -143,6 +150,10 @@
             });
         });
         $(".addToCart").click(function () {
+            if(!isSelected){
+                layer.msg("请选择选择商品尺寸");
+                return false;
+            }
             //setCartNum("add");
             var skuId = ${goodsItemDomain.id};
             var url = "/cart/addToCart";
@@ -160,6 +171,10 @@
             });
         });
         $(".addToBoutique").click(function () {
+            if(!isSelected){
+                layer.msg("请选择选择商品尺寸");
+                return false;
+            }
             var skuId = ${goodsItemDomain.id};
             var url = !isLogin?"/cart/addToCart":"/boutique/addToBoutique";
             var data = {"itemId":skuId,"num":1,"sizeId":selectSizeId,"type":3};

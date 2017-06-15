@@ -21,6 +21,7 @@
 
 <div class="setting">
     <form class="j_ajaxForm" method="post" action="/u/account/update">
+        <input type="hidden"  value="${accountDomain.id}"/>
         <div class="data-setting">
             <h3><spring:message code="account.personal.update.info"/></h3>
             <ul>
@@ -57,7 +58,10 @@
                            data-rule="${customerDomain.birthday}:required;"/>
                 </li>
                 <li class="form-item2"><spring:message code="account.personal.phoneNum"/>*
-                    <input type="text"
+                    <select name="customerDomain.phone">
+                        <option value="86">86</option>
+                        <option value="88">88</option>
+                    </select>&nbsp;+<input type="text"
                            value="${customerDomain.phone}"
                            name="customerDomain.phone" id="phone"
                            data-rule="${customerDomain.phone}:required;"/>
@@ -98,8 +102,9 @@
                            data-rule="${customerAddressDomain.address}:required;">
                     </input>
                 </li>
-                <li><spring:message code="account.personal.update.postalCode"/><input type="text"
-                                                                                      value="${customerAddressDomain.postalCode}"/>
+                <li><spring:message code="account.personal.update.postalCode"/>
+                    <input type="text" name="customerAddressDomain.postalCode"
+                           value="${customerAddressDomain.postalCode}"/>
                     <input type="hidden" value="${customerAddressDomain.id}" name="addressId"/></li>
             </ul>
         </div>

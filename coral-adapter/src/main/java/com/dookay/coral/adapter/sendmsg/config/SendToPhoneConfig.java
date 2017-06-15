@@ -14,4 +14,5 @@ public class SendToPhoneConfig {
     public String product;
     public String url;
 
+
 }

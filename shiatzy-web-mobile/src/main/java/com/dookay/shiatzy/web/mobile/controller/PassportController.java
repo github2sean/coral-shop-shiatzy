@@ -18,6 +18,7 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
@@ -66,6 +67,8 @@ public class PassportController extends MobileBaseController{
     private IGoodsItemService goodsItemService;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private ISmsService smsService;
 
     public static final String CRAT_NUM = "cartNumber";
 
@@ -203,13 +206,9 @@ public class PassportController extends MobileBaseController{
 
         AccountDomain accountDomain = accountService.getAccount(userName);
         UserContext.signIn(accountDomain);
-        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
-        ShoppingCartItemQuery query = new ShoppingCartItemQuery();
-        query.setCustomerId(customerDomain.getId());
-        query.setShoppingCartType(ShoppingCartTypeEnum.SHOPPING_CART.getValue());
-        HttpSession session = request.getSession();
-        int cartNum = shoppingCartService.count(query);
-        session.setAttribute(CRAT_NUM,cartNum);
+
+        // 发邮件通知 TODO: 2017/6/15
+
         return successResult("注册成功");
     }
 

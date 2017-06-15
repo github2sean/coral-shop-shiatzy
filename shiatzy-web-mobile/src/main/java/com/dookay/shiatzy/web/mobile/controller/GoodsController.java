@@ -431,6 +431,9 @@ public class GoodsController extends BaseController{
         prototypeSpecificationOptionQuery.setIds(sizeIds);
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         System.out.println("sizeIds"+sizeIds);
+        for(PrototypeSpecificationOptionDomain sizeDomain:sizeList){
+            sizeDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeDomain.getName(),goodsItemDomain.getColorId()));
+        }
 
         ModelAndView mv = new ModelAndView("goods/details");
         mv.addObject("goodsItemDomain",goodsItemDomain);

@@ -43,31 +43,10 @@ public class SendMessageController extends BaseController {
 
     @RequestMapping(value = "sendToSMS",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult sendToSMS(String phone, String content) {
-        HttpClientUtil httpClientUtil = new HttpClientUtil();
-        String url = sendToPhoneConfig.getUrl();
-        HashMap<String,Object> map = new HashMap();
-        map.put("account",sendToPhoneConfig.account);
-        map.put("pswd",sendToPhoneConfig.getPswd());
-        map.put("mobile",phone);
-        map.put("needstatus",sendToPhoneConfig.getNeedstatus());
-        map.put("msg",content);
-        map.put("product",sendToPhoneConfig.getProduct());
-        Object obj = null;
-        try {
-            obj = httpClientUtil .sendPostRequest(url,map);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return errorResult("发送失败");
-        }
-        //加入发送历史
-        SmsDomain smsDomain = new SmsDomain();
-        smsDomain.setBody(content);
-        smsDomain.setMobile(phone);
-        smsDomain.setMobile(new Date().toString());
-        smsService.create(smsDomain);
+    public JsonResult sendToSMS(String phone, Integer contentCode) {
 
-        return successResult("操作完成",obj);
+        smsService.sendToSms(phone,contentCode);
+        return successResult("操作完成");
     }
 
     @RequestMapping(value = "sendToEmail",method = RequestMethod.POST)

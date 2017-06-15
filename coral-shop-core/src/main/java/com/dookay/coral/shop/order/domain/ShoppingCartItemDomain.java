@@ -1,9 +1,6 @@
 package com.dookay.coral.shop.order.domain;
 
-import com.dookay.coral.shop.goods.domain.GoodsColorDomain;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
-import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
+import com.dookay.coral.shop.goods.domain.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -61,8 +58,12 @@ public class ShoppingCartItemDomain implements Serializable {
 	private String skuSpecifications;
 
 	@Transient
-	/*库存数量*/
+	/*sku库存数量*/
 	private Integer quantity;
+
+	@Transient
+	/*temp库存数量*/
+	private Long stock;
 
 	@Transient
 	private GoodsItemDomain goodsItemDomain;
@@ -91,5 +92,8 @@ public class ShoppingCartItemDomain implements Serializable {
 	/*与seseion中的数据绑定*/
 	@Transient
 	private String formId;
+
+	@Transient
+	private SkuDomain skuDomain;
 	
 }

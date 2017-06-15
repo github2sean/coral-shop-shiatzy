@@ -305,9 +305,9 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	@Override
 	public void withSku(List<ShoppingCartItemDomain> shoppingCartItemDomainList) {
 		for(ShoppingCartItemDomain line:shoppingCartItemDomainList){
-			SkuQuery query = new SkuQuery();
 			SkuDomain skuDomain = 	skuService.get(line.getSkuId());
 			line.setQuantity(skuDomain.getQuantity());
+			line.setSkuDomain(skuDomain);
 		}
 	}
 

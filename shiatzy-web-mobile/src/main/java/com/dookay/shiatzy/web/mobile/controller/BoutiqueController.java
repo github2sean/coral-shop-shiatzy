@@ -148,6 +148,8 @@ public class BoutiqueController extends BaseController{
             return errorResult("没有对应颜色和尺寸的商品");
         }else if(skuDomain.getIsPre()==0){
             return errorResult("该商品不能预约");
+        }else if(skuDomain.getQuantity()<1){
+            return errorResult("该商品已售罄");
         }
 
         skuDomain.setItemId(itemId);

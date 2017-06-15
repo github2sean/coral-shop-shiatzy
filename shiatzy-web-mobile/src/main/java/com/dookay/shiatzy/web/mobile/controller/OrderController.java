@@ -14,6 +14,8 @@ import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.*;
 import com.dookay.coral.shop.order.service.*;
@@ -56,6 +58,8 @@ public class OrderController extends BaseController {
     private KdniaoSubscribeAPI kdniaoSubscribeAPI;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private ISmsService smsService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -160,6 +164,10 @@ public class OrderController extends BaseController {
         //修改状态
         orderDomain.setStatus(-1);
         orderService.update(orderDomain);
+        //发送短信
+        smsService.sendToSms(orderDomain.getShipPhone(), MessageTypeEnum.CANCEL_ORDER.getValue());
+        //发送邮件  TODO: 2017/6/15
+
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
         orderLogDomain.setOrderId(orderId);

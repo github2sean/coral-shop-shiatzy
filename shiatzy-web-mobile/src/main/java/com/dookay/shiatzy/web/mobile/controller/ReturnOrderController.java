@@ -12,6 +12,8 @@ import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
@@ -74,6 +76,8 @@ public class ReturnOrderController extends BaseController {
     private IStoreCountryService storeCountryService;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private ISmsService smsService;
 
     private static String CART_LIST = "cartList";
     private static String RETURN_ORDER = "return_order";
@@ -382,6 +386,11 @@ public class ReturnOrderController extends BaseController {
         session.setAttribute("returnJsonReason", null);
         session.setAttribute("shipName",null);
         session.setAttribute("returnAddress",null);
+
+        //发送短信
+        smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
+        //发送邮件  TODO: 2017/6/15
+
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
         orderLogDomain.setOrderId(orderId);

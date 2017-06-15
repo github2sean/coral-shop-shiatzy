@@ -11,6 +11,8 @@ import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -76,6 +78,8 @@ public class ReservationController extends BaseController{
     private IShoppingCartService shoppingCartService;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private ISmsService smsService;
 
     public static int RESERVATION_TYPE=3;
 
@@ -220,6 +224,9 @@ public class ReservationController extends BaseController{
         }
         //清空session
         session.setAttribute("submitCartList",null);
+        //发送短信
+        smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+
         return successResult("提交成功",reservationDomain.getId());
     }
 

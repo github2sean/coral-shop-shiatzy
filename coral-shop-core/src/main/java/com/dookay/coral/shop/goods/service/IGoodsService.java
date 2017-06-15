@@ -40,6 +40,7 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
 
     void withSizeDomain(List<GoodsDomain> goodsList);
 
+    Long getTempStock(String goodsNo,String sizeValue,Long colorId);
 
     void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId,List<Long> parmaId);
     void sizeWithStock(List<PrototypeSpecificationOptionDomain> sizeDomainList, List<Long> goodsId, List<Long> parmaId);

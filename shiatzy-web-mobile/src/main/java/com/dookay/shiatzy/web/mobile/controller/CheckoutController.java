@@ -25,6 +25,8 @@ import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -112,6 +114,8 @@ public class CheckoutController  extends BaseController{
     private IGoodsService goodsService;
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private ISmsService smsService;
 
 
     private static String CART_LIST = "cartList";
@@ -354,6 +358,9 @@ public class CheckoutController  extends BaseController{
         for(int i=0 ;i<cartList.size();i++){
             shoppingCartService.removeFromCart(cartList.get(i).getId());
         }
+        //发送短信通知
+        smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
+        //发送邮件通知 TODO: 2017/6/15
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){

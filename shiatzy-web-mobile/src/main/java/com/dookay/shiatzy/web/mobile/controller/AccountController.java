@@ -12,6 +12,8 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
@@ -54,6 +56,8 @@ public class AccountController extends MobileBaseController {
     private IShippingCountryService shippingCountryService;
     @Autowired
     private ITempMemberService tempMemberService;
+    @Autowired
+    private ISmsService smsService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){
@@ -74,11 +78,12 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
-        if(customerDomain.getIsArtClubMember()==1) {
+        if(customerDomain.getIsArtClubMember()!=null&&customerDomain.getIsArtClubMember()==1) {
             TempMemberQuery query = new TempMemberQuery();
             query.setMobile(customerDomain.getPhone());
             customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
         }
+
         ModelAndView mv = new ModelAndView("user/account/details");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
@@ -91,7 +96,10 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
-
+        String phone = customerDomain.getPhone();
+        if(StringUtils.isNotBlank(phone)){
+            customerDomain.setPhone(phone.substring(2,phone.length()));
+        }
         ModelAndView mv = new ModelAndView("user/account/update");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
@@ -116,13 +124,23 @@ public class AccountController extends MobileBaseController {
         String lastName = getCustomer.getLastName();
         //生日...
         String phone = getCustomer.getPhone();
+        if (phone.contains(",")){
+            phone = phone.replaceAll("\\,","");
+        }
+        System.out.println("up-phone:"+phone);
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        AccountDomain updateAccount = accountService.get(accountId);
+        CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());
+        //第一次填写手机号发送短信通知
+        if(StringUtils.isNotBlank(phone)&& oldCustomer!=null && StringUtils.isBlank(oldCustomer.getPhone())){
+            smsService.sendToSms(phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
+        }
 
         Long countryId = getCustomeAddress.getCountryId();
 
         String address = getCustomeAddress.getAddress();
 
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        AccountDomain updateAccount = accountService.get(accountId);
+
         updateAccount.setCellphone(phone);
         accountService.update(updateAccount);
 

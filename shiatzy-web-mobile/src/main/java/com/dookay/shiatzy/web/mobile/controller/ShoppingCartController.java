@@ -82,7 +82,10 @@ public class ShoppingCartController extends BaseController{
         SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
         if(skuDomain == null) {
             return  errorResult("无此商品");
+        }else if(skuDomain.getQuantity()<1){
+            return  errorResult("此商品已售罄");
         }
+
         if(userContext.isGuest()){//游客先保存到session中
             addShoppingCartForm.setId(RandomUtils.buildNo());
             List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
@@ -279,7 +282,11 @@ public class ShoppingCartController extends BaseController{
                         shoppingCartItemDomain.setNum(form.getNum());
                         shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
                         shoppingCartItemDomain.setFormId(form.getId());
-                        shoppingCartItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(form.getSizeId()));
+                        PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(form.getSizeId());
+                        shoppingCartItemDomain.setSizeDomain(sizeDomain);
+                        String sizeValue = sizeDomain.getName();
+                        Long colorId = goodsItemDomain.getColorId();
+                        shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
                         cartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(cartList);
                         shoppingCartService.withSku(cartList);
@@ -290,6 +297,11 @@ public class ShoppingCartController extends BaseController{
             Long accountId = userContext.getAccountDomain().getId();
             CustomerDomain customerDomain = customerService.getAccount(accountId);
             cartList= shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
+            for (ShoppingCartItemDomain cartItemDomain:cartList){
+                Long colorId = goodsItemService.get(cartItemDomain.getItemId()).getColorId();
+                String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(cartItemDomain.getSkuSpecifications()).getLong("size")).getName();
+                cartItemDomain.setStock(goodsService.getTempStock(cartItemDomain.getGoodsCode(),sizeValue,colorId));
+            }
             shoppingCartService.withGoodsItem(cartList);
             shoppingCartService.withSku(cartList);
             shoppingCartService.withSizeDomain(cartList);
