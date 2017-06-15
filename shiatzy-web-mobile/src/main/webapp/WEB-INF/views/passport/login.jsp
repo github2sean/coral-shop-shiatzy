@@ -69,6 +69,7 @@
 <script>
 
     $(function () {
+        $(".top-right-nav").find("li:eq(2)").addClass("active");
         var backUrl = document.referrer;
         console.log(backUrl);
         if(backUrl.indexOf("toLogin")>0 || backUrl.indexOf("toRegister")>0){

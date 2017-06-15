@@ -3,6 +3,7 @@ package com.dookay.coral.common.model;
 import com.dookay.coral.common.config.ConfigManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class ImageModel {
     }
 
     public static ImageModel toFirst(String json){
+        if(StringUtils.isBlank(json)){
+            return new ImageModel();
+        }
         ImageModel imageModel = new ImageModel();
         JSONArray jsonArray =  JSONArray.fromObject(json);
         JSONObject jsonObject = jsonArray.getJSONObject(0);

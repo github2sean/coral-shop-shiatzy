@@ -6,7 +6,6 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-<script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 <div class="dx-commodity">
     <div class="content" >

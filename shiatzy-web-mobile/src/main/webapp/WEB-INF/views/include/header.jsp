@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-
+<%@ page import="com.dookay.coral.common.model.ImageModel" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -245,13 +245,11 @@
             </form>
         </div>
         <div class="search-rec-img active">
-            <a href=""><img src="${ctx}/static/images/search-img1.jpg" alt=""></a>
-            <a href=""><img src="${ctx}/static/images/search-img2.jpg" alt=""></a>
-            <a href=""><img src="${ctx}/static/images/search-img3.jpg" alt=""></a>
+           <img src="${ctx}/static/images/Banner-1.jpg" alt="" style="height:150px;width: 100%">
         </div>
         <ul class="guide-nav j_drop_down">
             <c:forEach var="level1" items="${web:categoryList()}" begin="1">
-            <li>
+            <li data-image="${ImageModel.toFirst(level1.thumb).file}">
                 <a>${sessionScope.language=='en_US'?level1.enName:level1.name}
                     <ul class="guide-sub-nav">
                     <c:forEach var="level2" items="${level1.children}">
