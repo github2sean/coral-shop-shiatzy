@@ -42,7 +42,7 @@
             <div class="title j_choose"><spring:message code="shoppingCart.size"/> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice">查看尺寸指南</span></div>
             <ul class="hide" id="js_size">
                 <c:forEach var="item" items="${sizeList}" varStatus="status" >
-                <li class="<c:if test="${status.first && item.stock>0}">active</c:if> <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(已售罄)</c:if><span></span></a> </li>
+                <li class="<c:if test="${status.first && item.stock>0}"></c:if> <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#" >${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(已售罄)</c:if><span></span></a> </li>
                 </c:forEach>
             </ul>
         </div>

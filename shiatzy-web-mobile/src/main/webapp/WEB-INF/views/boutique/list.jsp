@@ -46,7 +46,7 @@
     </style>
     <div class="goods-list clearfix">
         <c:forEach var="row" items="${cartList}">
-            <div class="goods-item">
+            <div class="goods-item goodsDiv">
                 <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</p>
                 <div class="pic">
                     <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
@@ -56,6 +56,7 @@
                     <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
                     <span><spring:message
                             code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
+                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span>（已售罄）</span></c:if>
                 </div>
                 <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
@@ -85,12 +86,12 @@
     </div>
 <div class="explain">
 
-    <c:if test="${empty preOderItemList}">
+    <c:if test="${empty cartList}">
         <div class="choose-store">
             <a href="javascript:void(0)"><spring:message code="register"/>&nbsp;/&nbsp;<spring:message code="login"/></a>
         </div>
     </c:if>
-    <c:if test="${not empty preOderItemList}">
+    <c:if test="${not empty cartList}">
     <div class="choose-store">
         <a href="${isGuest!='onLine'?'/passport/toLogin':'/reservation/initChoose'}"><spring:message code="reservation.findstore"/></a>
     </div>
@@ -160,7 +161,7 @@
         $(".j_bag").on("click",function () {
             var $self = $(this);
             var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
-            var url = isLogin?"/cart/boutiqueToWish":"/cart/changeFromSessionCartType";
+            var url = isLogin?"/cart/boutiqueToCart":"/cart/changeFromSessionCartType";
             var data = isLogin?{"shoppingCartItemId":id}:{"formId":id,"goalType":1};
             $.post(url,data,function (data) {
                 if(data.code==200){

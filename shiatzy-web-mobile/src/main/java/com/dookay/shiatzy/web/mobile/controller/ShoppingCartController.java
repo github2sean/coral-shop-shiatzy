@@ -326,6 +326,9 @@ public class ShoppingCartController extends BaseController{
             SkuDomain skuDomain = skuService.get(line.getSkuId());
             goodsIds.add(skuDomain.getGoodsId());
             line.setCategoryId((goodsService.get(skuDomain.getGoodsId())).getCategoryId());
+            Long colorId = goodsItemService.get(line.getItemId()).getColorId();
+            String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")).getName();
+            line.setStock(goodsService.getTempStock(line.getGoodsCode(),sizeValue,colorId));
         }
         query.setIds(goodsIds);
         List<GoodsDomain> goodsList =  goodsService.getList(query);
