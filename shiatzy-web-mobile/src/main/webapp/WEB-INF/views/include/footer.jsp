@@ -36,7 +36,7 @@
         <p><spring:message code="subscribeForUpdate"/></p>
         <div class="do-subscribe-from">
             <form action="">
-                <input type="text" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
+                <input type="text" style="width: 65%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
                 <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
         </div>
@@ -62,7 +62,12 @@
 <!-- 页面插件开始 -->
 <script src="${ctx}/static/js/common.js"></script>
 <script src="${ctx}/static/js/plugins/validator/jquery.validator.min.js"></script>
-<script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
+<c:if test="${sessionScope.language=='en_US'}">
+    <script src="${ctx}/static/js/plugins/validator/local/en_US.js"></script>
+</c:if>
+<c:if test="${sessionScope.language!='en_US'}">
+    <script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
+</c:if>
 <script src="${ctx}/static/js/backend.js"></script>
 <!-- 页面插件结束 -->
 

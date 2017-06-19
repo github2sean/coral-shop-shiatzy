@@ -31,7 +31,7 @@
                                value="${customerAddressDomain.title}"
                                name="customerAddressDomain.title"
                                id="title"
-                               data-rule="${customerAddressDomain.title}:required;"/></span>
+                               data-rule="<spring:message code="account.personal.update.title"/>:required;"/></span>
                     <span style="float:right;"></span>
                 </li>
                 <li class="form-item2">
@@ -41,7 +41,7 @@
                                value="${customerDomain.firstName}"
                                name="customerDomain.firstName"
                                id="lastName"
-                               data-rule="${customerDomain.firstName}:required;"/></span>
+                               data-rule="<spring:message code="account.personal.firstName"/>:required;"/></span>
                     <span style="float:right;"></span>
 
                 </li>
@@ -50,28 +50,28 @@
                            value="${customerDomain.lastName}"
                            name="customerDomain.lastName"
                            id="firstName"
-                           data-rule="${customerDomain.lastName}:required;"/></li>
+                           data-rule="<spring:message code="account.personal.lastName"/>:required;"/></li>
                 <li class="form-item2">
                     <spring:message code="account.personal.update.birthday"/>
                     <input type="date" name="customerDomain.birthday"
                            value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
-                           data-rule="${customerDomain.birthday}:required;"/>
+                           data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
                 </li>
-                <li class="form-item2"><spring:message code="account.personal.phoneNum"/>*
+                <li class="form-item2 form-item3"><spring:message code="account.personal.phoneNum"/>*
                     <select name="customerDomain.phone">
                         <option value="86">86</option>
                         <option value="88">88</option>
                     </select>&nbsp;+<input type="text"
                            value="${customerDomain.phone}"
                            name="customerDomain.phone" id="phone"
-                           data-rule="${customerDomain.phone}:required;"/>
+                           data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile"/>
                 </li>
             </ul>
         </div>
         <div class="data-setting">
             <h3><spring:message code="account.personal.update.shipAddress"/></h3>
             <ul>
-                <li>
+                <li class="form-item2">
                     <span><spring:message code="account.personal.update.country"/>*</span>
                     <label style="margin-left: 10px;border: 1px;">
                         <select name="customerAddressDomain.countryId" style="border: 1px;margin-bottom: 5px;"
@@ -84,27 +84,29 @@
                         </select>
                     </label>
                 </li>
-                <li>
+                <li class="form-item2">
                     <span><spring:message code="account.personal.update.state"/>*</span>
                     <input type="text" name="customerAddressDomain.province" id="province"
                            value="${customerAddressDomain.province}"
-                           data-rule="${customerAddressDomain.province}:required;">
+                           data-rule="<spring:message code="account.personal.update.state"/>:required;">
                 </li>
-                <li>
+                <li class="form-item2">
                     <span><spring:message code="account.personal.update.city"/>*</span>
                     <input type="text" name="customerAddressDomain.city" id="city"
                            value="${customerAddressDomain.city}"
-                           data-rule="${customerAddressDomain.city}:required;">
+                           data-rule="<spring:message code="account.personal.update.city"/>:required;">
                 </li>
-                <li><span style="margin-top: 0"><spring:message code="account.personal.address"/>*</span>
+                <li class="form-item2"><span style="margin-top: 0"><spring:message code="account.personal.address"/>*</span>
                     <input style="width: 70%;" type="text" name="customerAddressDomain.address"
                            value="${customerAddressDomain.address}"
-                           data-rule="${customerAddressDomain.address}:required;">
+                           data-rule="<spring:message code="account.personal.address"/>:required;">
                     </input>
                 </li>
-                <li><spring:message code="account.personal.update.postalCode"/>
+                <li class="form-item2"><spring:message code="account.personal.update.postalCode"/>*
                     <input type="text" name="customerAddressDomain.postalCode"
-                           value="${customerAddressDomain.postalCode}"/>
+                           value="${customerAddressDomain.postalCode}"
+                            data-rule="<spring:message code="account.personal.update.postalCode"/>:required;"
+                    />
                     <input type="hidden" value="${customerAddressDomain.id}" name="addressId"/></li>
             </ul>
         </div>
@@ -193,7 +195,7 @@
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
 
-        $('#firstName').focus(function () {
+        /*$('#firstName').focus(function () {
 
         }).blur(firstName);
         $('#lastName').focus(function () {
@@ -213,7 +215,7 @@
         }).blur(city);
         $('#phone').focus(function () {
 
-        }).blur(phone);
+        }).blur(phone);*/
 
       /*  $(".updateBtn").click(function () {
             var $updateAccountForm = $(".updateAccountForm");

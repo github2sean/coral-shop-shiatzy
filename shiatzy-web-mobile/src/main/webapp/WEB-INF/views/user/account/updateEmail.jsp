@@ -30,14 +30,13 @@
             <p><spring:message code="account.personal.updateEmailOrPass.nowEmail"/>：</p>
             <p style="margin-bottom: 2rem;">${accountDomain.email}</p>
             <p><spring:message code="account.personal.updateEmailOrPass.email"/>：</p>
-
             <div class="input form-item">
                 <i>*</i>
                 <input id="email" name="email" type="text"
                        placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewEmail"/>"
                        onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
                         code="account.personal.updateEmailOrPass.holderNewEmail"/>'"
-                       data-rule="邮箱:required;email"/>
+                       data-rule="<spring:message code="email"/>:required;email"/>
             </div>
             <div class="input form-item">
                 <i>*</i>
@@ -45,12 +44,11 @@
                        placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewEmail"/>"
                        onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
                         code="account.personal.updateEmailOrPass.holderReNewEmail"/>'"
-                       data-rule="确认邮箱:required;email;match(email)"/>
+                       data-rule="<spring:message code="email"/>:required;email;match(email)"/>
             </div>
             <div class="emailInfo"></div>
             <button type="submit" class="btn-default"><spring:message
-                    code="account.personal.updateEmailOrPass.validEmail"/></button>
-
+                    code="account.personal.updateEmailOrPass.confirmChange"/></button>
         </div>
     </form>
 </div>

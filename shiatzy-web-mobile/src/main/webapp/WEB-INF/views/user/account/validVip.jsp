@@ -25,16 +25,16 @@
 <div class="club">
     <form action="/u/account/validVip" class="j_ajaxForm" method="post" data-next="/u/account/vipDetail">
         <div class="content">
-        <h3>ART CLUB会员认证 </h3>
-        <p>请输入您加入ART CLUB时留存的手机号码</p>
+        <h3>ART CLUB<spring:message code="vip.valid"/> </h3>
+        <p><spring:message code="vip.valid.tips"/></p>
         <div class="form-item">
             <input type="text" class="phoneNum" name="phoneNumber"
-                   data-rule="手机号码:required;mobile">
+                   data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile">
         </div>
         <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
-        <button type="button" class="btn btn-default">认证</button>
+        <button type="button" class="btn btn-default"><spring:message code="vip.valid.enter"/></button>
         <div class="club-bottom" style="margin-top: 30px;">
-            <p>ART CLUB会员，线上同尊享线下购物礼遇。</p>
+            <p><spring:message code="vip.valid.footer"/></p>
         </div>
         </div>
     </form>
