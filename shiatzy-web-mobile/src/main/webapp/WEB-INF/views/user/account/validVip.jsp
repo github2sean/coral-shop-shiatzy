@@ -15,6 +15,9 @@
         border: 2px solid #b2b2b2;
         padding-left: .6rem;
     }
+    .club p{
+        border-bottom:0;
+    }
 </style>
 <div class="back-up clearfix">
     <a style="float: right;" href='/u/account/details' ><h3>< <spring:message code="goBack"/></h3></a>
@@ -23,9 +26,7 @@
     <form action="/u/account/validVip" class="j_ajaxForm" method="post" data-next="/u/account/vipDetail">
         <div class="content">
         <h3>ART CLUB会员认证 </h3>
-        <p>请输入您加入ART CLUB时留存的手机号码
-
-        </p>
+        <p>请输入您加入ART CLUB时留存的手机号码</p>
         <div class="form-item">
             <input type="text" class="phoneNum" name="phoneNumber"
                    data-rule="手机号码:required;mobile">

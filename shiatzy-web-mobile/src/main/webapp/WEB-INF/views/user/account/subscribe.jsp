@@ -25,17 +25,17 @@
         <div style="margin-top: 15px;">
            <span class="mr-2"><label class="radiobox">
                <input type="checkbox" class="subscribeType" name="subscribeType0" value="0" data-value="0">
-               <i class="i-radiobox"></i>快递及邮件</label></span>
+               <i class="i-radiobox iconfont icon-duigou"></i>快递及邮件</label></span>
         </div>
         <div style="margin-top: 15px;">
             <span class="mr-2"><label class="radiobox">
                 <input type="checkbox" class="subscribeType" name="subscribeType1" value="1" data-value="1">
-                <i class="i-radiobox"></i>短信</label></span>
+                <i class="i-radiobox iconfont icon-duigou"></i>短信</label></span>
         </div>
         <div style="margin-top: 15px;">
               <span class="mr-2"><label class="radiobox">
                   <input type="checkbox" class="subscribeType" name="subscribeType2" value="2" data-value="2">
-                  <i class="i-radiobox"></i>彩信</label></span>
+                  <i class="i-radiobox iconfont icon-duigou"></i>彩信</label></span>
         </div>
     </div>
     <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>

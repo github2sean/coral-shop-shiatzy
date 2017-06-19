@@ -466,14 +466,6 @@
     margin-bottom: 0;
 }
 
-.mail-change .register-mail input,
-.password-change .register-mail input {
-    width: 100%;
-    font-size: 1.1821rem;
-    line-height: 3.942rem;
-    padding-left: 2.3188rem;
-    border: 2px solid #999999;
-}
 
 .mail-change a,
 .password-change a {
@@ -489,10 +481,9 @@
 
 .register-mail i {
     position: absolute;
-    top: -0.6184rem;
-    right: 0;
+    left:-10px;
+    top:1rem;
     color: #b5272d;
-    width: 16px;
 }
 
 .my-account .contact h3 {
