@@ -7,17 +7,13 @@
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
 <style>
-    i {
-        line-height: 5.942rem;
-        left: -10px;
-    }
     .content input {
         font-size: 1.1rem;
+        line-height:1;
+        padding:0.4rem 0.6rem 0;
         width: 100%;
         height: 2.8rem;
-        border: none;
         border: 2px solid #b2b2b2;
-        padding-left: .6rem;
     }
 </style>
 
