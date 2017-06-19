@@ -42,7 +42,7 @@
                    placeholder="<spring:message code="account.personal.updateEmailOrPass.holderPassword"/>"
                    onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
                     code="account.personal.updateEmailOrPass.holderPassword"/>'"
-                   data-rule="旧密码:required;password"/>
+                   data-rule="<spring:message code="oldPassword"/>:required;password"/>
         </div>
         <div class="input form-item">
             <i>*</i>
@@ -50,7 +50,7 @@
                    placeholder="<spring:message code="account.personal.updateEmailOrPass.holderNewPassword"/>"
                    onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
                     code="account.personal.updateEmailOrPass.holderNewPassword"/>'"
-                   data-rule="新密码:required;password"/>
+                   data-rule="<spring:message code="newPassword"/>:required;password"/>
         </div>
         <div class="input form-item">
             <i>*</i>
@@ -58,11 +58,11 @@
                    placeholder="<spring:message code="account.personal.updateEmailOrPass.holderReNewPassword"/>"
                    onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
                     code="account.personal.updateEmailOrPass.holderReNewPassword"/>'"
-                   data-rule="确认密码:required;password;match(newPassword)">
+                   data-rule="<spring:message code="newPassword"/>:required;password;match(newPassword)">
         </div>
         <div class="emailInfo2"></div>
         <button type="submit" class="btn-default"><spring:message
-                code="account.personal.updateEmailOrPass.validEmail"/></button>
+                code="account.personal.updateEmailOrPass.confirmChange"/></button>
 
     </div>
     </form>

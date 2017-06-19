@@ -13,7 +13,7 @@
    .first-title.active .second-title li.active .answer{display: block}
 </style>
 <div class="dx-CommonProblems">
-    <div class="dx-title">常见问题 <a href="javascript:history.go(-1)">返回上页</a></div>
+    <div class="dx-title"><spring:message code="commonQuestion"/> <a href="javascript:history.go(-1)"><spring:message code="goBack"/></a></div>
     <div class="content">
         <ul>
             <c:forEach var="itemDomain" items="${domainList}">
@@ -21,8 +21,8 @@
                     <a href="#">${sessionScope.language=='en_US'?itemDomain.en_title:itemDomain.title}</a>
                     <ul class="second-title">
                         <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
-                            <li class="j_collapse"><a
-                                    href="#">${sessionScope.language=='en_US'?domainlist.en_title:domainlist.title}</a>
+                            <li class="j_collapse">
+                                <a href="#">${sessionScope.language=='en_US'?domainlist.en_title:domainlist.title}</a>
                                 <p class="answer">${sessionScope.language=='en_US'?domainlist.en_content:domainlist.content}</p>
                             </li>
                         </c:forEach>

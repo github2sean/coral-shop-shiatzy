@@ -123,14 +123,18 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 	@Transactional("transactionManager")
 	public CustomerDomain validVip(CustomerDomain customerDomain,String phoneNumber) {
 		if(StringUtils.isBlank(phoneNumber)||customerDomain==null){
-			throw new ServiceException("参数为空");
+			throw new ServiceException("输入为空");
 		}
 		TempMemberQuery tempMemberQuery = new TempMemberQuery();
 		TempMemberDomain tempMemberDomain = tempMemberService.getFirst(tempMemberQuery);
 		if(tempMemberDomain==null){
 			throw new ServiceException("验证会员失败");
 		}else{
-			if(phoneNumber.equals(customerDomain.getPhone())){
+			String record  = customerDomain.getPhone();
+			if(StringUtils.isNotBlank(record)&&record.length()>2){
+				record = record.substring(2,record.length());
+			}
+			if(phoneNumber.equals(record)){
 				customerDomain.setIsArtClubMember(1);
 				customerDomain.setTempMemberDomain(tempMemberDomain);
 				update(customerDomain);
