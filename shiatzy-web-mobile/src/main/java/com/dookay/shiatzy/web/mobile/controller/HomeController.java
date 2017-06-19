@@ -85,16 +85,18 @@ public class HomeController extends MobileBaseController {
         CouponQuery query = new CouponQuery();
         query.setIndexShow(1);
         CouponDomain couponDomain = couponService.getFirst(query);
+        mv.addObject("coupon",couponDomain);
+        //查询页尾内容
         ContentCategoryQuery querys=new ContentCategoryQuery();
         querys.setLevel(1);
         List<ContentCategoryDomain> domainList=contentCategoryService.getList(querys);
-        mv.addObject("coupon",couponDomain);
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         session.setAttribute("domainList",domainList);
 
         //显示语言
         String checked = CookieUtil.getCookieValue(request,LANGUAGE_HISTORY);
+        System.out.println("old-checked-index:"+checked);
         if(StringUtils.isBlank(checked)){
             CookieUtil.setCookieValue(HttpContext.current().getResponse(),LANGUAGE_HISTORY,"zh_CN",MAX_COOKIE_AGE);
         }
