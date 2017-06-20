@@ -2546,7 +2546,19 @@ svg {
     margin: 0 auto;
 }
 
-
+.btn-gray{
+    width: 23rem;
+    display: block;
+    background-color: #e6e6e6;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 2.7826rem;
+    border: none;
+    padding: 0;
+    border-Radius:0px;
+    color: #666666;
+    margin: 0 auto;
+}
 .dx-form{
     padding: 2rem 1.9rem 0;
     font-size: 1.2rem;

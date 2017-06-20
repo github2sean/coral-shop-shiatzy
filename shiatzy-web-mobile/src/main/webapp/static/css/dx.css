@@ -1645,14 +1645,13 @@ i {
 
 .dx-commodity .dx-GoodsDetails .title:after {
     content: ">";
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
+
     float: right;
     margin-right: 2rem;
 }
 
 .dx-commodity .dx-GoodsDetails .text {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.6rem;
     padding-top: .5rem;
     padding-left: 1rem;
@@ -1674,7 +1673,7 @@ i {
 .dx-commodity .maybeLike .title {
     font-size: 1.4rem;
     line-height: 2rem;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 1px solid #ccc;
     padding-left: 2rem;
 }
 
@@ -1705,6 +1704,7 @@ i {
 .dx-commodity .maybeLike .name {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
+    height: 2rem;
 }
 
 .dx-commodity .maybeLike .price {
@@ -1713,8 +1713,9 @@ i {
 }
 
 .dx-commodity .maybeLike .color {
-    margin: 0 auto;
-    width: 6rem;
+    display: inline-block;
+    width: .8rem;
+    height: .8rem;
 }
 
 .dx-commodity .maybeLike .color li {

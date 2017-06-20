@@ -24,7 +24,6 @@
         </div>
         <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span>
             <a href="javascript:;" class="j_collect active"><svg transform="scale(1.5) "><use xlink:href="#heart-red" ></use></svg></a></div>
-
         <div class="color">
             <div class="title j_choose">${goodsItemDomain.goodsColor.name}(还有${goodsDomain.goodsItemList.size()-1}款颜色)</div>
             <c:if test="${goodsDomain.goodsItemList.size()>1}">
@@ -46,8 +45,12 @@
                 </c:forEach>
             </ul>
         </div>
-        <a type="button" class="addition addToCart">添加到购物袋</a>
-        <a type="button" class="order addToBoutique">精品店预约</a>
+        <div style="margin: 2rem;">
+            <a type="button" class="btn btn-default addToCart">添加到购物袋</a>
+        </div>
+        <div style="margin: 2rem;">
+            <a type="button" class="btn btn-default btn-gray addToBoutique">精品店预约</a>
+        </div>
         <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span>什么是精品店预约</div>
     </div>
     <div class="dx-GoodsDetails">
@@ -64,7 +67,7 @@
         <div class="title">您也许也喜欢</div>
          <c:forEach var="goods" items="${historyList}" begin="0" end="3">
              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-             <div class="left">
+             <div class="left" style="border-bottom: 1px solid #ccc; ">
                  <a href="/goods/details/${firstItem.id}">
                  <div class="pic">
                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
@@ -88,7 +91,6 @@
 <script>
     var selectSizeId='${sizeList[0].id}';
     $(function(){
-        commonApp.init();
 
         setPrice();
         $(".j_s_slider").bxSlider();

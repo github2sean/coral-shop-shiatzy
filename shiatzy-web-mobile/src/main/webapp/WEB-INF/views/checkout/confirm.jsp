@@ -68,9 +68,9 @@
     <div class="delivery">
         <h3>3. 支付选项</h3>
             <ul>
+            <li class=" payMethod" data-value="3">信用卡</li>
             <li class=" payMethod" data-value="1">支付宝</li>
             <li class=" payMethod" data-value="2">银联在线</li>
-            <li class=" payMethod" data-value="3">iPayLinks</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>
         <div class="clearfix dx-shopping moreGoods" style="display:none;">
@@ -108,19 +108,23 @@
                 </c:forEach>
             </div>
         </div>
-
-
     </div>
     <div class="order-pay">
         <a href="#" class="submitBtn">订购付款</a>
         <span>提交订单即表示您同意接受 SHIATZY CHEN 公司条款 和 隐私权政策。</span>
     </div>
+
+    <style>
+        .way-img img{width:80px;}
+    </style>
     <div class="pay-way">
         <p>付款方式</p>
         <div class="way-img">
             <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
-            <a href="#"><img src="${ctx}/static/images/way_03.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/alipay.png" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/online.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/jcb.jpg"  alt=""></a>
         </div>
     </div>
     <div class="order-safe">
