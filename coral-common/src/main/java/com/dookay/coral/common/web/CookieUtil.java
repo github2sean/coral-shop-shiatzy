@@ -1,5 +1,6 @@
 package com.dookay.coral.common.web;
 
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.security.Cryptos;
 
 import javax.servlet.http.Cookie;
@@ -23,6 +24,14 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
+    public static void setCookieValueByKey(HttpServletResponse response, String key, String value, int maxAge) {
+
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
     public static String getCookieValue(HttpServletRequest request, String key) {
         if (request.getCookies() == null)
             return "";
@@ -34,6 +43,18 @@ public class CookieUtil {
         }
         return "";
     }
+
+    public static String getCookieValueByKey(HttpServletRequest request, String key) {
+        if (request.getCookies() == null)
+            return "";
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals(key)) {
+                return cookie.getValue();
+            }
+        }
+        return "";
+    }
+
 
     public static void removeCookie(HttpServletResponse response, String key) {
         setCookieValue(response, key, "", -1);

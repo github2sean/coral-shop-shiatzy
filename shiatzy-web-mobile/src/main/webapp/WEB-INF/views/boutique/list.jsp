@@ -56,7 +56,7 @@
                     <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
                     <span><spring:message
                             code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
-                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span>（已售罄）</span></c:if>
+                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span>（<spring:message code="sellout" />）</span></c:if>
                 </div>
                 <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
@@ -151,7 +151,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入心愿单成功");
+                    layer.msg("<spring:message code="success.towish" />");
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
@@ -167,7 +167,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入购物车成功");
+                    layer.msg('<spring:message code="success.tocart" />');
                     setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();

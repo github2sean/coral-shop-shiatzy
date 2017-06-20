@@ -1,3 +1,4 @@
+<%@ taglib prefix="sping" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
@@ -9,8 +10,8 @@
 
       <div class="dx-commodity">
         <div class="content">
-          <div class="title">${goodsDomain.name}</div>
-          <span class="number">产品编号 ${goodsItemDomain.goodsNo}</span>
+          <div class="title">${sessionScope.language=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
+          <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
           <div class="dx-bag-slide">
             <ul class="j_s_slider">
@@ -31,7 +32,7 @@
           </div>
 
           <div class="color">
-            <div class="title j_choose">${goodsItemDomain.goodsColor.name}(还有${goodsDomain.goodsItemList.size()-1}款颜色)</div>
+            <div class="title j_choose">${sessionScope.language=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
             <c:if test="${goodsDomain.goodsItemList.size()>1}">
               <ul class="clearfix hide">
                 <c:forEach var="item" items="${goodsDomain.goodsItemList}">
@@ -45,21 +46,21 @@
 
           <div class="size">
             <div class="title j_choose">
-              <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice">查看尺寸指南</span></div>
+              <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></div>
             <ul class="hide" id="js_size">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
-                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(已售罄)</c:if><span></span></a>                  </li>
+                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
               </c:forEach>
             </ul>
           </div>
-          <a type="button" class="addition addToCart">添加到购物袋</a>
-          <a type="button" class="order addToBoutique">精品店预约</a>
-          <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span>什么是精品店预约</div>
+          <a type="button" class="addition addToCart"><spring:message code="goods.detail.add2cart"/></a>
+          <a type="button" class="order addToBoutique"><spring:message code="goods.detail.add2reservation"/></a>
+          <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
         </div>
         <div class="dx-GoodsDetails">
-          <div class="title j_choose">产品详细信息</div>
-          <p class="text hide">${goodsDomain.description}</p>
+          <div class="title j_choose"><spring:message code="goods.detail.details"/></div>
+          <p class="text hide">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
           <%--<ul class="list hide">
             <li>贴布刺绣，玉镯提手</li>
             <li>100% 成牛皮</li>
@@ -68,7 +69,7 @@
         </ul>--%>
         </div>
         <div class="maybeLike clearfix">
-          <div class="title">您也许也喜欢</div>
+          <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
           <c:forEach var="goods" items="${historyList}" begin="0" end="3">
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
             <div class="left">
@@ -76,7 +77,7 @@
                 <div class="pic">
                   <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
-                <div class="name">${goods.name}</div>
+                <div class="name">${sessionScope.language=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
                 <div class="price do-pro-price" data-value="${firstItem.price}">&nbsp;</div>
                 <ul class="color clearfix">
                   <c:forEach var="goodsItem" items="${goods.goodsItemList}">
@@ -95,6 +96,8 @@
       <script>
         var selectSizeId = '${sizeList[0].id}';
         $(function () {
+
+          console.log('lan：'+'${sessionScope.language}')
           commonApp.init();
           setPrice();
           $(".j_s_slider").bxSlider();
@@ -139,7 +142,7 @@
 
           $("#js_size").find("li").on("click", function () {
             if ($(this).hasClass("disabled")) {
-              layer.msg("该商品已售罄");
+              layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
               return false;
             }
             $(this).parent("ul").addClass("hide");
@@ -191,13 +194,11 @@
           });
           $(".addToCart").click(function () {
             if (!isSelected) {
-              layer.msg("请选择选择商品尺寸");
+              layer.msg("<spring:message code="goods.detail.pleaseSelectSize" />");
               return false;
             }
             //setCartNum("add");
-            var skuId = $ {
-              goodsItemDomain.id
-            };
+            var skuId = ${goodsItemDomain.id};
             var url = "/cart/addToCart";
             var data = {
               "itemId": skuId,
@@ -209,22 +210,20 @@
               console.log(result);
               if (result.code == 200) {
                 console.log(result.message);
-                layer.msg("加入购物车成功");
+                layer.msg("<spring:message code="success.tocart" />");
                 setCartNum();
                 //location.href="/cart/list";
               } else {
-                layer.msg("没有库存");
+                layer.msg('<spring:message code="sellout"/>');
               }
             });
           });
           $(".addToBoutique").click(function () {
             if (!isSelected) {
-              layer.msg("请选择选择商品尺寸");
+              layer.msg("<spring:message code="goods.detail.pleaseSelectSize" />");
               return false;
             }
-            var skuId = $ {
-              goodsItemDomain.id
-            };
+            var skuId = ${goodsItemDomain.id};
             var url = !isLogin ? "/cart/addToCart" : "/boutique/addToBoutique";
             var data = {
               "itemId": skuId,
@@ -237,7 +236,7 @@
               console.log(result);
               if (result.code == 200) {
                 console.log(result.message);
-                layer.msg("加入精品店成功");
+                layer.msg("<spring:message code="success.toboutique" />");
                 setCartNum();
                 //location.href="/boutique/list";
               } else {
@@ -251,7 +250,7 @@
           $(".sizeNotice").click(function () {
             layer.open({
               type: 2,
-              title: '<spring:message code="shoppingCart.size"/>' + '指南',
+              title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
               area: ['90%', '75%'],

@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -70,12 +71,13 @@ public class HomeController extends MobileBaseController {
     private IIndexBlockGroupService indexBlockGroupService;
     @Autowired
     private IIndexBlockService indexBlockService;
-
+    @Autowired
+    private CookieLocaleResolver resolver;
 
     private static final String PUSH_HISTORY = "push_history";
 
     private final static String SHIPPING_COUNTRY_ID="shippingCountryId";
-    private final static String LANGUAGE_HISTORY = "language_history";
+    private final static String LANGUAGE_HISTORY = "Language";
     private final static int MAX_COOKIE_AGE = 24*60*60;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
@@ -94,13 +96,7 @@ public class HomeController extends MobileBaseController {
         HttpSession session = request.getSession();
         session.setAttribute("domainList",domainList);
 
-        //显示语言
-        String checked = CookieUtil.getCookieValue(request,LANGUAGE_HISTORY);
-        System.out.println("old-checked-index:"+checked);
-        if(StringUtils.isBlank(checked)){
-            CookieUtil.setCookieValue(HttpContext.current().getResponse(),LANGUAGE_HISTORY,"zh_CN",MAX_COOKIE_AGE);
-        }
-        session.setAttribute("language",checked);
+
         //查询推送内容
         //先查询cookie中是否以查看过内容查看过无需再显示
         String pushId = CookieUtil.getCookieValue(request,PUSH_HISTORY);
@@ -174,14 +170,15 @@ public class HomeController extends MobileBaseController {
     @ResponseBody
     public JsonResult selectLanguage(String nowLanguage){
         //判断当前语言环境
+        String cookieName = resolver.getCookieName();
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         if("zh_CN".equals(nowLanguage)){
             session.setAttribute("language",nowLanguage);
-            CookieUtil.setCookieValue(HttpContext.current().getResponse(),LANGUAGE_HISTORY,"zh_CN",MAX_COOKIE_AGE);
+            CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }else if("en_US".equals(nowLanguage)){
             session.setAttribute("language",nowLanguage);
-            CookieUtil.setCookieValue(HttpContext.current().getResponse(),LANGUAGE_HISTORY,"en_US",MAX_COOKIE_AGE);
+            CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"en_US",MAX_COOKIE_AGE);
         }else{
             return errorResult("参数有错");
         }
