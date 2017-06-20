@@ -2,12 +2,16 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.jcaptcha.JCaptcha;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
+import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
+import com.dookay.coral.shop.content.query.ContentCategoryQuery;
+import com.dookay.coral.shop.content.service.IContentCategoryService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
@@ -69,12 +73,16 @@ public class PassportController extends MobileBaseController{
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private IContentCategoryService contentCategoryService;
 
     public static final String CRAT_NUM = "cartNumber";
 
     //Session 购物车
     private static final String SESSION_CART ="session_cart";
     private static final String IS_GUEST ="isGuest";
+    private final static String LANGUAGE_HISTORY = "language_history";
+    private final static int MAX_COOKIE_AGE = 24*60*60;
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
@@ -91,6 +99,13 @@ public class PassportController extends MobileBaseController{
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
+
+        //查询页尾内容
+        ContentCategoryQuery querys=new ContentCategoryQuery();
+        querys.setLevel(1);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(querys);
+        session.setAttribute("domainList",domainList);
+
         //判断session购物中是否有商品
         List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
         List<SkuDomain> skuDomainList = new ArrayList<>();

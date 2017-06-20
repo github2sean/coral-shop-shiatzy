@@ -36,7 +36,7 @@
         <p><spring:message code="subscribeForUpdate"/></p>
         <div class="do-subscribe-from">
             <form action="">
-                <input type="text" style="width: 65%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
+                <input type="text" style="width: 64%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
                 <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
         </div>

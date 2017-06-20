@@ -3,7 +3,12 @@ package com.dookay.shiatzy.web.mobile.filter;
 
 
 
+import com.dookay.coral.common.web.CookieUtil;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.host.user.context.UserContext;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +29,6 @@ public class UserContextFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
-
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
