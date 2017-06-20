@@ -1055,6 +1055,7 @@ ul.bxslider {
 
 .bx-wrapper .bx-pager.bx-default-pager a {
     background: #666;
+    border-color:#666;
     text-indent: -9999px;
     display: block;
     width: 10px;
