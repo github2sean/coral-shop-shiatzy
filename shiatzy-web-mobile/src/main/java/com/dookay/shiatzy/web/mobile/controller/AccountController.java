@@ -264,7 +264,12 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
-        query.setMobile(customerDomain.getPhone());
+
+        String record = customerDomain.getPhone();
+        if(StringUtils.isNotBlank(record)&&record.length()>2){
+            record = record.substring(2,record.length());
+        }
+        query.setMobile(record);
         TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
         if(tempMemberDomain==null){
             return new ModelAndView("redirect:toValidVip");

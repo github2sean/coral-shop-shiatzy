@@ -20,8 +20,8 @@
     <div class="do-list-header">
         <a href="javascript:;" class="link-down font-14 j_panel_trigger" data-panel="j_panel_cat">${sessionScope.language=='en_US'?goodsCategoryDomain.enName:goodsCategoryDomain.name}</a>
         <div class="pull-right font-14">
-            <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_filter">筛选</a>
-            <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort">排序</a>
+            <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_filter"><spring:message code="goods.list.filter"/></a>
+            <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort"><spring:message code="goods.list.sort"/></a>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
                 <div class="do-img">
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
-                <p class="do-pro-t ellipsis-25" name="goodsName">${goods.name}</p>
+                <p class="do-pro-t ellipsis-25" name="goodsName">${sessionScope.language=='en_US'?goods.enName:goods.name}</p>
                 <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
@@ -48,14 +48,14 @@
         </li>
         </c:forEach>
         <c:if test="${ empty goodsDomainPageList.list}" >
-            <h4 style="margin-top: 2rem;text-align: center">没有商品信息</h4>
+            <h4 style="margin-top: 2rem;text-align: center"><spring:message code="goods.list.noneGoods"/></h4>
         </c:if>
 
     </ul>
     <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>19}" >
     <div class="font-12 text-center do-load-list">
-        <span class="link-down-before moreGoods">向下自动载入</span>
-        <span class="overGoods" style="display: none">-已到底部-</span>
+        <span class="link-down-before moreGoods"><spring:message code="goods.list.autoLoad"/></span>
+        <span class="overGoods" style="display: none">-<spring:message code="goods.list.downOver"/>-</span>
     </div>
     </c:if>
 </div>
@@ -63,7 +63,7 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
         <c:forEach var="item" items="${categoryList}">
-            <li><a href="/goods/list?categoryId=${item.id}">${item.name}</a></li>
+            <li><a href="/goods/list?categoryId=${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</a></li>
         </c:forEach>
     </ul>
 </div>
@@ -71,9 +71,9 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <form action="" class="filterForm">
         <input type="hidden" name="categoryId" value="${categoryId}">
-        <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
+        <div class="do-sort link-down"><spring:message code="goods.list.filter"/><button type="reset" class="btn-reset"><spring:message code="goods.list.reset"/></button></div>
         <div class="do-sort-cat j_sort_cat">
-            <div class="cat-t link-down">颜色</div>
+            <div class="cat-t link-down"><spring:message code="goods.detail.colors"/></div>
             <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
                 <div class="do-color-show" style="background-color: ${item.color}"></div>
@@ -82,12 +82,12 @@
                        <c:if test="${row==item.id}">checked="checked"</c:if>
                 </c:forEach>
                        id="color${item.id}" value="${item.id}">
-                <label for="color${item.id}">${item.name}(10)</label>
+                <label for="color${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
             </div>
             </c:forEach>
         </div>
         <div class="do-sort-cat j_sort_cat">
-            <div class="cat-t link-down">材质</div>
+            <div class="cat-t link-down"><spring:message code="goods.list.attr"/></div>
             <c:forEach var="item" items="${attributeList}">
                 <div class="do-sort-group">
                     <input type="checkbox" name="attributeIds"
@@ -95,12 +95,12 @@
                         <c:if test="${row==item.id}">checked="checked"</c:if>
                     </c:forEach>
                            id="color${item.id}" value="${item.id}">
-                    <label for="color${item.id}">${item.value}(10)</label>
+                    <label for="color${item.id}">${sessionScope.language=='en_US'?item.enValue:item.value}</label>
                 </div>
             </c:forEach>
         </div>
         <div class="do-sort-cat j_sort_cat">
-            <div class="cat-t link-down">尺寸</div>
+            <div class="cat-t link-down"><spring:message code="shoppingCart.size"/></div>
             <c:forEach var="item" items="${sizeList}">
                 <div class="do-sort-group">
                     <input type="checkbox" name="sizeIds"
@@ -108,19 +108,19 @@
                            <c:if test="${row==item.id}">checked="checked"</c:if>
                     </c:forEach>
                            id="size${item.id}" value="${item.id}">
-                    <label for="size${item.id}">${item.name}(10)</label>
+                    <label for="size${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
                 </div>
             </c:forEach>
         </div>
-        <div class="text-center"><button type="button" class="btn-submit">完成</button></div>
+        <div class="text-center"><button type="button" class="btn-submit"><spring:message code="subscription.complete"/></button></div>
     </form>
 </div>
 <div id="j_panel_sort" class="pro-filter-panel">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
-    <div class="do-sort">排序</div>
+    <div class="do-sort"><spring:message code="goods.list.sort"/></div>
     <ul class="do-sort-list">
-            <li class="j_price_order" data-order="0">售价（高-低)</li>
-            <li class="j_price_order" data-order="1">售价（低-高)</li>
+            <li class="j_price_order" data-order="0"><spring:message code="goods.list.price.hign2low"/></li>
+            <li class="j_price_order" data-order="1"><spring:message code="goods.list.price.low2hign"/></li>
     </ul>
 </div>
 
@@ -229,6 +229,7 @@
 
                 if(moreList!=''){
                     console.log("exe")
+                    var isEn = ${sessionScope.language=='en_US'};
                     for(var i=0;i<nowSize;i++){
                         var firstItem = moreList[i].goodsItemList[0];
                         var srcJson = eval(firstItem.thumb);
@@ -247,8 +248,10 @@
                         colorStr += "</ul>";
                         // var colorStr = "<ul class='do-list-color' name='skuId' data-value=''><li style='background: #000000'></li> </ul>";
                         var firstSizeid = moreList[i].firstSizeDomain.id;
-                        console.log("firstSizeid:"+firstSizeid);
-
+                        var goodsName = moreList[i].name;
+                        if(isEn){
+                            goodsName = moreList[i].enName;
+                        }
                         var now = 't'+'h'+'i'+'s';
                         var str = " <li>" +
                                 " <a href='/goods/details/"
@@ -257,14 +260,14 @@
                                 +src+
                                 " alt='' style='height: 120px;'/></div>  " +
                                 " <p class='do-pro-t ellipsis-25' name='goodsName'>"
-                                +moreList[i].name+
+                                +goodsName+
                                 " </p> " +
                                 " <p class='do-pro-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
                                 +"&nbsp;"+
                                 " </p> " +
                                 colorStr +
                                 "</a> " +
-                                "<i class='icon-collect j_collect' onclick='addToWish("+now+","+2+")'  data-value="
+                                "<i class='icon-collect j_collect hide' onclick='addToWish("+now+","+2+")'  data-value="
                                 +firstItem.id+
                                 " data-ids="+firstSizeid+"> <svg class='do-heart'><use xlink:href='#heart'></use></svg> </i> </li>";
                         //console.log(str);
@@ -278,7 +281,7 @@
                     $(".moreGoods").hide().siblings(".overGoods").show();
                 }
             }else {
-                layer.msg("加载失败");
+                layer.msg('<spring:message  code="goods.list.loadFailed"/>');
             }
         });
     };

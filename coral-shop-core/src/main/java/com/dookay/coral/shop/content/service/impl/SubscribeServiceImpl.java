@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.content.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.shop.content.query.SubscribeQuery;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class SubscribeServiceImpl extends BaseServiceImpl<SubscribeDomain> imple
 		SubscribeDomain subscribeDomain = new SubscribeDomain();
 		subscribeDomain.setCreateTime(new Date());
 		subscribeDomain.setEmail(email);
+		System.out.println("subscribeDomain:"+ JsonUtils.toJSONString(subscribeDomain));
 		super.create(subscribeDomain);
 	}
 }

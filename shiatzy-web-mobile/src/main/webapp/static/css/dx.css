@@ -1304,6 +1304,10 @@ i {
     padding: 1.4rem .8rem 0;
 }
 
+.dx-shipping .content .address + .address{
+    border-top:0;
+}
+
 .dx-shipping .content .address .title {
     font-size: 1rem;
     line-height: 2rem;
@@ -1511,7 +1515,6 @@ i {
 }
 
 .dx-commodity .dx-bag-slide {
-    width: 20rem;
     margin: 0 auto;
 }
 
@@ -1732,4 +1735,55 @@ i {
     padding: 1rem 0 .2rem;
     border-bottom: 1px solid #000;
     margin-bottom: 2.5rem;
+}
+
+
+.top-right-nav > li{
+    position:relative;
+}
+
+.top-right-nav > li.active:after{
+    content:"";
+    position: absolute;
+    bottom:0;
+    left:50%;
+    width:0;
+    height:0;
+    border-style:solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #999 transparent;
+}
+
+/*相册*/
+.gallery-block{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    z-index:99;
+    background-color:rgba(0,0,0,0.8);
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center
+}
+
+.gallery-block img{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.gallery-block .iconfont{
+    position:absolute;
+    right:30px;
+    top:30px;
+    color:#fff;
+    font-size:36px;
 }

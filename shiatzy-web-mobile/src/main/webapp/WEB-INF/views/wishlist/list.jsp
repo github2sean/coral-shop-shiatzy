@@ -53,7 +53,7 @@
                     <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                        <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
-                    </span></div>
+                    </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></div>
                     <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
                     <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
                 </div>
@@ -68,7 +68,7 @@
         </div>
     <c:if test="${empty wishList}">
     <div class="maybeLike clearfix" style="border-top: 2px solid #cccccc">
-        <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%">推荐商品</div>
+        <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%"><spring:message code="wish.recommends"/></div>
         <c:forEach var="goods" items="${historyList}" begin="0" end="1">
             <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
                 <div class="left">
@@ -152,7 +152,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入精品店成功");
+                    layer.msg("<spring:message code="success.toboutique"/>");
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
@@ -167,7 +167,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入购物车成功");
+                    layer.msg("<spring:message code="success.tocart"/>");
                     setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();

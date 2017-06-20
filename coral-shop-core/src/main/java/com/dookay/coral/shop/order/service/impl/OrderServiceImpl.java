@@ -1,10 +1,13 @@
 package com.dookay.coral.shop.order.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
+import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -49,6 +52,8 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	private ISkuService skuService;
 	@Autowired
 	private ICouponService couponService;
+	@Autowired
+	private IGoodsService goodsService;
 
 	@Override
 	public void withGoodItme(List<OrderItemDomain> cartList) {
@@ -56,6 +61,9 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setIds(ids);
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		for(GoodsItemDomain itemDomain:goodsItemDomainList){
+			itemDomain.setGoods(goodsService.get(itemDomain.getGoodsId()));
+		}
 		for (OrderItemDomain orderItemDomain:cartList){
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
 					.filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());

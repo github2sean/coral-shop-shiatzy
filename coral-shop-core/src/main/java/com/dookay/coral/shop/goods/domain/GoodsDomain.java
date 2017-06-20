@@ -50,6 +50,9 @@ public class GoodsDomain implements Serializable {
 
 	/*商品详情*/
 	private String details;
+
+	/*商品详情*/
+	private String enDetails;
 	
 	/*原型id*/
 	private Long prototypeId;

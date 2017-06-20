@@ -1055,6 +1055,7 @@ ul.bxslider {
 
 .bx-wrapper .bx-pager.bx-default-pager a {
     background: #666;
+    border-color:#666;
     text-indent: -9999px;
     display: block;
     width: 10px;
@@ -2600,8 +2601,18 @@ svg {
     line-height: 1;
     padding-top: 4px;
     position: absolute;
-    right: 8rem;
-    top: 0;
+    right: 10rem;
+    top: 0rem;
+    left: inherit;
+}
+.form-item3 .msg-box {
+    color: #ffffff;
+    font-size: .9rem;
+    line-height: 1;
+    padding-top: 4px;
+    position: absolute;
+    right: 17rem;
+    top: 2rem;
     left: inherit;
 }
 

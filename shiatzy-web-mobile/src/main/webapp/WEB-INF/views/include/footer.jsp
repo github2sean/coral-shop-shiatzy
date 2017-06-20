@@ -36,7 +36,7 @@
         <p><spring:message code="subscribeForUpdate"/></p>
         <div class="do-subscribe-from">
             <form action="">
-                <input type="text" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='输入您的电子邮箱'">
+                <input type="text" style="width: 64%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
                 <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
         </div>
@@ -62,7 +62,12 @@
 <!-- 页面插件开始 -->
 <script src="${ctx}/static/js/common.js"></script>
 <script src="${ctx}/static/js/plugins/validator/jquery.validator.min.js"></script>
-<script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
+<c:if test="${sessionScope.language=='en_US'}">
+    <script src="${ctx}/static/js/plugins/validator/local/en_US.js"></script>
+</c:if>
+<c:if test="${sessionScope.language!='en_US'}">
+    <script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
+</c:if>
 <script src="${ctx}/static/js/backend.js"></script>
 <!-- 页面插件结束 -->
 
@@ -133,7 +138,8 @@
                         $(".cart_num").removeClass("hide");
                     }
 
-                    $(".cart_num").text(cartNum);console.log(cartNum);
+                    $(".cart_num").text(cartNum);
+                    console.log("cart:"+cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -145,7 +151,7 @@
                         $(".boutique_num").removeClass("hide");
                     }
 
-                    $(".boutique_num").text(cartNum);console.log(cartNum);
+                    $(".boutique_num").text(cartNum);
                     console.log("boutique:"+cartNum)
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -155,7 +161,11 @@
             $.post("/cart/getCartNum",{"type":1},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    if(cartNum>0){
+                        $(".cart_num").removeClass("hide");
+                    }
                     $(".cart_num").text(cartNum);
+                    console.log("cart:"+cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -163,6 +173,9 @@
             $.post("/cart/getCartNum",{"type":3},function (data) {
                 if (data.code==200){
                     cartNum = data.data;
+                    if(cartNum>0){
+                        $(".boutique_num").removeClass("hide");
+                    }
                     console.log("bou:"+cartNum);
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{

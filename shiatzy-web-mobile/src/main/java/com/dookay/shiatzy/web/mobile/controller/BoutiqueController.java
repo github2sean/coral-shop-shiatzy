@@ -13,6 +13,7 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
+import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
@@ -108,7 +109,12 @@ public class BoutiqueController extends BaseController{
                         shoppingCartItemDomain.setNum(form.getNum());
                         shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
                         shoppingCartItemDomain.setFormId(form.getId());
-                        shoppingCartItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(form.getSizeId()));
+                        PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(form.getSizeId());
+                        shoppingCartItemDomain.setSizeDomain(sizeDomain);
+                        shoppingCartItemDomain.setSizeDomain(sizeDomain);
+                        String sizeValue = sizeDomain.getName();
+                        Long colorId = goodsItemDomain.getColorId();
+                        shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
                         System.out.println("shoppingCartItemDomain:"+shoppingCartItemDomain);
                         sessionCartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(sessionCartList);
@@ -117,10 +123,20 @@ public class BoutiqueController extends BaseController{
                 }
             }
         }
-        List<ShoppingCartItemDomain> cartList = userContext.isGuest()?
-                sessionCartList:shoppingCartService.listShoppingCartItemByCustomerId(customerService.getAccount(userContext.getAccountDomain().getId()).getId(),SHOPPINGCART_TYPE);
+        List<ShoppingCartItemDomain> cartList = null;
+        if(!userContext.isGuest()) {
+            List<ShoppingCartItemDomain> allList = shoppingCartService.listShoppingCartItemByCustomerId(customerService.getAccount(userContext.getAccountDomain().getId()).getId(), SHOPPINGCART_TYPE);
+            for(ShoppingCartItemDomain line :allList){
+            line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
+                Long colorId = goodsItemService.get(line.getItemId()).getColorId();
+                String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")).getName();
+                line.setStock(goodsService.getTempStock(line.getGoodsCode(),sizeValue,colorId));
+            }
+            cartList = allList;
+        }else{
+            cartList = sessionCartList;
+        }
         shoppingCartService.withGoodsItem(cartList);
-
         ModelAndView mv = new ModelAndView("boutique/list");
         mv.addObject("cartList",cartList);
         return mv;

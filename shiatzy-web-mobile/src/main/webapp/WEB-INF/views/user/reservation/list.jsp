@@ -34,6 +34,7 @@
         </a>
         </c:forEach>
     </div>
+    <p class="text-center" id="auto_load"><span style="display:inline-block;transform:rotate(90deg);-webkit-transform:rotate(90deg)">&gt;</span>向下自动载入</p>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -43,6 +44,22 @@
 <script>
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
+        $(".dx-reservaList:gt(7)").hide();
+        var num = 7;
+        var base = $(window).height()/2;
+        $(window).on("scroll",function(){
+            var top1 = $(this).scrollTop();
+            var top2 = $("#auto_load").offset().top;
+            if(top1+base>top2){
+                    num+=7;
+                  if(num>=$(".dx-reservaList").length) {
+                         $("#auto_load").fadeOut();    
+                  } else{
+                      $(".dx-reservaList:lt("+num+")").fadeIn();
+                  } 
+            }
+        })
+
         /*$(".status").each(function () {
             var status = $(this).attr("data-value");
             if(status == '1'){

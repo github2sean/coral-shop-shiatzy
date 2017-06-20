@@ -12,7 +12,7 @@
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
-    <form class="j_ajaxForm" method="post" action="/passport/login" data-next="${ctx}/home/index">
+    <form class="j_ajaxForm"  data-next="${ctx}/home/index">
         <div class="dx-form">
             <h3 class="title"><spring:message code="login"/></h3>
             <div class="tips"><spring:message code="login.tips"/></div>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="form-item button">
-            <button type="submit" class="btn btn-default"><spring:message code="login"/></button>
+            <button type="button"  class="btn btn-default login"><spring:message code="login"/></button>
             </div>
             <div class="form-item text-center"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
@@ -71,11 +71,23 @@
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
         var backUrl = document.referrer;
-        console.log(backUrl);
-        if(backUrl.indexOf("toLogin")>0 || backUrl.indexOf("toRegister")>0){
+        console.log("backUrl:"+backUrl);
+        var dataNext = '';
+        if(backUrl.indexOf("toLogin")>-1 || backUrl.indexOf("toRegister")>-1){
             $(".j_ajaxForm").attr("data-next","${ctx}/u/account/index");
+            dataNext = "${ctx}/u/account/index";
         }else{
             $(".j_ajaxForm").attr("data-next",backUrl);
+            dataNext = backUrl;
         }
+        $(".login").click(function () {
+            var data = $(".j_ajaxForm").serializeArray();
+            $.post("/passport/login",data,function(data){
+               if(data.code==200){
+                   console.log("dataNext："+dataNext);
+                   location.href = dataNext;
+               }
+            });
+        });
     });
 </script>

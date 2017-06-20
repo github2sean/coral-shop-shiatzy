@@ -16,36 +16,36 @@
     .btn-default{font-size: 1.2rem;}
 </style>
 <div class="order">
-    <p style="float: left">我的订阅 </p>
-    <a style="float: right;" href="/u/account/details" >< 返回上页</a>
+    <p style="float: left"><spring:message code="account.personal.subscriptions"/> </p>
+    <a style="float: right;" href="/u/account/details" >< <spring:message code="goBack"/></a>
 </div>
-<div class="my-account">.
+<div class="my-account">
     <div class="contact">
-        <h3>我同意 夏资陈 通过以下方式与我联系</h3>
+        <h3><spring:message code="subscription.title"/></h3>
         <div style="margin-top: 15px;">
            <span class="mr-2"><label class="radiobox">
                <input type="checkbox" class="subscribeType" name="subscribeType0" value="0" data-value="0">
-               <i class="i-radiobox"></i>快递及邮件</label></span>
+               <i class="i-radiobox iconfont icon-duigou"></i><spring:message code="subscription.option1"/></label></span>
         </div>
         <div style="margin-top: 15px;">
             <span class="mr-2"><label class="radiobox">
                 <input type="checkbox" class="subscribeType" name="subscribeType1" value="1" data-value="1">
-                <i class="i-radiobox"></i>短信</label></span>
+                <i class="i-radiobox iconfont icon-duigou"></i><spring:message code="subscription.option2"/></label></span>
         </div>
         <div style="margin-top: 15px;">
               <span class="mr-2"><label class="radiobox">
                   <input type="checkbox" class="subscribeType" name="subscribeType2" value="2" data-value="2">
-                  <i class="i-radiobox"></i>彩信</label></span>
+                  <i class="i-radiobox iconfont icon-duigou"></i><spring:message code="subscription.option3"/></label></span>
         </div>
     </div>
-    <div id="showInfo" style='text-align: center;color: red;display: none'>请先选择类型</div>
+    <div id="showInfo" style='text-align: center;color: red;display: none'><spring:message code="subscription.tips"/></div>
     <div style="margin-top: 30px;margin-bottom: 30px;">
-        <a href="#" class="btn-default" id="saveBtn">完成</a>
+        <a href="#" class="btn-default" id="saveBtn"><spring:message code="subscription.complete"/></a>
     </div>
     <div class="privacy">
         <a href="#">
             <span style="float:left;">>　</span>
-            <span style="float: left;">隐私政策</span>
+            <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
 </div>
@@ -98,7 +98,7 @@
                 if (data.code == 200) {
                     location.href = "/u/account/details";
                 } else {
-                    layer.msg("订阅失败");
+                    layer.msg("<spring:message code="subscription.erroinfo"/>");
                 }
             });
         });
