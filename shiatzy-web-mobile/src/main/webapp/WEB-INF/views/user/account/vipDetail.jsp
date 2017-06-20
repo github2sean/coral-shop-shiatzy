@@ -20,16 +20,16 @@
 <div class="club-card" >
     <c:choose>
         <c:when test="${tempMemberDomain.cardType=='普通会员'}">
-            <img src="${ctx}/static/images/Banner-1.jpg" alt="">
+            <img src="${ctx}/static/images/SC_other1.png" alt="">
         </c:when>
         <c:when test="${tempMemberDomain.cardType=='墨竹卡会员'}">
-            <img src="${ctx}/static/images/Banner-1.jpg" alt="">
+            <img src="${ctx}/static/images/SC_bamboo1.png" alt="">
         </c:when>
         <c:when test="${tempMemberDomain.cardType=='兰花卡会员'}">
-            <img src="${ctx}/static/images/Banner-1.jpg" alt="">
+            <img src="${ctx}/static/images/SC_fish1.png" alt="">
         </c:when>
         <c:when test="${tempMemberDomain.cardType=='牡丹卡会员'}">
-            <img src="${ctx}/static/images/Banner-1.jpg" alt="">
+            <img src="${ctx}/static/images/SC_peony1.png" alt="">
         </c:when>
     </c:choose>
     <p class="card-title "><spring:message code="vip.valid.card.title"/></p>
