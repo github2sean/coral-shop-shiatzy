@@ -78,7 +78,7 @@ public class HomeController extends MobileBaseController {
 
     private final static String SHIPPING_COUNTRY_ID="shippingCountryId";
     private final static String LANGUAGE_HISTORY = "Language";
-    private final static int MAX_COOKIE_AGE = 24*60*60;
+    private final static int MAX_COOKIE_AGE = 24*60*60*7;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(){

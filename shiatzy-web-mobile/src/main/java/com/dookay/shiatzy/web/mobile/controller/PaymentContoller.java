@@ -25,12 +25,14 @@ import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
+import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
 import com.dookay.shiatzy.web.mobile.xml.IpayLinksReturnXml;
 import lombok.Data;
+import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -596,7 +598,6 @@ public class PaymentContoller extends BaseController{
 
     @RequestMapping(value = "ipayLinkReturnUrl",method = RequestMethod.POST)
     public ModelAndView ipayLinkReturnUrl(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        ModelAndView mv = new ModelAndView("payment/returnUrl");
 
         String message = "支付成功";
         String orderId =  request.getParameter(IpayLinksStatics.ORDER_ID);
@@ -626,11 +627,50 @@ public class PaymentContoller extends BaseController{
         }else{
             //验证失败
             message= "验证失败";
+            return new ModelAndView("redirect:payfailed?orderId="+orderId);
         }
-        mv.addObject("message",message);
+        ModelAndView mv = new ModelAndView("redirect:paysuccess?orderId="+orderId);
+        return mv;
+    }
+
+    @RequestMapping(value = "payfailed",method = RequestMethod.GET)
+    public ModelAndView payfailed(String  orderId){
+        ModelAndView mv = new ModelAndView("payment/payfailed");
+        if(orderId==null){
+            throw new ServiceException("订单为空");
+        }
+        OrderQuery orderQuery= new OrderQuery();
+        orderQuery.setOrderNo(orderId);
+        OrderDomain orderDomain = orderService.getFirst(orderQuery);
+        System.out.println("orderId:"+orderId+" orderDomain:"+orderDomain);
+        OrderItemQuery query = new OrderItemQuery();
+        query.setOrderId(orderDomain.getId());
+        List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
+        orderService.withGoodItme(itemDomainList);
+        orderDomain.setOrderItemDomainList(itemDomainList);
         mv.addObject("order",orderDomain);
         return mv;
     }
+    @RequestMapping(value = "paysuccess",method = RequestMethod.GET)
+    public ModelAndView paysuccess(String  orderId){
+        ModelAndView mv = new ModelAndView("payment/paysuccess");
+        if(orderId==null){
+            throw new ServiceException("订单为空");
+        }
+        OrderQuery orderQuery= new OrderQuery();
+        orderQuery.setOrderNo(orderId);
+        OrderDomain orderDomain = orderService.getFirst(orderQuery);
+        System.out.println("orderId:"+orderId+" orderDomain:"+orderDomain);
+        OrderItemQuery query = new OrderItemQuery();
+        query.setOrderId(orderDomain.getId());
+        List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
+        orderService.withGoodItme(itemDomainList);
+        orderDomain.setOrderItemDomainList(itemDomainList);
+        mv.addObject("order",orderDomain);
+        return mv;
+    }
+
+
 
     /**
      * 获取请求参数中所有的信息
