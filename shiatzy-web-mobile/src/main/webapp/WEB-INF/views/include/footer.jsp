@@ -244,7 +244,7 @@
                     if (data.code==200){
                         layer.msg("已发送邮件，请在邮件中点击订阅");
                     }else{
-                        layer.msg("订阅失败");
+                        layer.msg(data.message);
                     }
                 });
             }

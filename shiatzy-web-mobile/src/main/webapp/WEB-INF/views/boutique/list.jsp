@@ -56,7 +56,7 @@
                     <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
                     <span><spring:message
                             code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
-                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span>（<spring:message code="sellout" />）</span></c:if>
+                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span class="sellOut">（<spring:message code="sellout" />）</span></c:if>
                 </div>
                 <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
@@ -88,12 +88,12 @@
 
     <c:if test="${empty cartList}">
         <div class="choose-store">
-            <a href="javascript:void(0)"><spring:message code="register"/>&nbsp;/&nbsp;<spring:message code="login"/></a>
+            <a class="toRegister" href="javascript:void(0)"><spring:message code="register"/>&nbsp;/&nbsp;<spring:message code="login"/></a>
         </div>
     </c:if>
     <c:if test="${not empty cartList}">
     <div class="choose-store">
-        <a href="${isGuest!='onLine'?'/passport/toLogin':'/reservation/initChoose'}"><spring:message code="reservation.findstore"/></a>
+        <a class="findStore" data-href="${isGuest!='onLine'?'/passport/toLogin':'/reservation/initChoose'}"><spring:message code="reservation.findstore"/></a>
     </div>
     </c:if>
     <ul>
@@ -114,7 +114,18 @@
         $(".top-right-nav").find("li:eq(1)").addClass("active");
         //console.log('${goodsList}');
         setPrice();
-        $(".choose-store").find("a").click(function(){
+
+
+        $(".choose-store").find(".findStore").click(function(){
+            var $sellOut = $(".goodsDiv").find(".sellOut");
+            if($sellOut.length>0){
+                layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
+                return false;
+            }
+            location.href = $(this).attr("data-href");
+        });
+
+        $(".choose-store").find(".toRegister").click(function(){
             var href = "${ctx}/passport/toLogin";
             var user = '${sessionScope.user_context}';
             if(user!=''){

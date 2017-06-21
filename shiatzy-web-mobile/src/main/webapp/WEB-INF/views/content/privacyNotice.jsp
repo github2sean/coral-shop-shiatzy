@@ -42,12 +42,12 @@
 <div class="dx-CommonProblems">
     <div class="content">
         <h2 style="text-align: center;">隐私声明</h2>
-        <p class="" style=" font-size: 14px"><a href="#">感谢您的信任，我们了解您十分关心我们如何使用和分享您的个人信息。我们将谨慎小心地处理您的个人信息。 此声明描述了我们的隐私政策。访问网站表明您已经同意隐私声明中所描述的条例。</a></p>
+        <p class="" style=" font-size: 14px"><a href="javascript:void(0)">感谢您的信任，我们了解您十分关心我们如何使用和分享您的个人信息。我们将谨慎小心地处理您的个人信息。 此声明描述了我们的隐私政策。访问网站表明您已经同意隐私声明中所描述的条例。</a></p>
 
-        <p class="" style=" font-size: 14px"><a href="#">本网站为SHIATZY CHEN（夏姿▪陈）品牌所属创姿服饰（上海）有限公司（以下称“我们”、“我们的”）所有并运营。 “在线服务”指在线精品店： ONLINEBOUTIQUE.SHIATZYCHEN.COM 、我们在包括 Instagram、Facebook、Twitter、Pinterest 、微博和微信在内的其它网站或app等第三方社交媒体平台上所运营的页面。“我们的服务”意指我们所提供的在线服务。如果您使用了我们的任何服务，我们将在这份政策中把您称为“用户”或者“访客”。</a></p>
-        <p class="" style=" font-size: 14px"><a href="#">我们尊重访客的隐私权，并清楚对收集到的有关访客信息进行保护的重要性。此份“隐私政策”将说明我们如何收集、存储和使用您提供给我们的个人信息。</a></p>
+        <p class="" style=" font-size: 14px"><a href="javascript:void(0)">本网站为SHIATZY CHEN（夏姿▪陈）品牌所属创姿服饰（上海）有限公司（以下称“我们”、“我们的”）所有并运营。 “在线服务”指在线精品店： ONLINEBOUTIQUE.SHIATZYCHEN.COM 、我们在包括 Instagram、Facebook、Twitter、Pinterest 、微博和微信在内的其它网站或app等第三方社交媒体平台上所运营的页面。“我们的服务”意指我们所提供的在线服务。如果您使用了我们的任何服务，我们将在这份政策中把您称为“用户”或者“访客”。</a></p>
+        <p class="" style=" font-size: 14px"><a href="javascript:void(0)">我们尊重访客的隐私权，并清楚对收集到的有关访客信息进行保护的重要性。此份“隐私政策”将说明我们如何收集、存储和使用您提供给我们的个人信息。</a></p>
         <p style="margin-bottom: 20px;margin-top: 10px;font-size: 16px;font-weight: 100"><strong>此份隐私政策将向您解释 :</strong></p>
-        <p class="first-title j_toggle"><a href="#">我们收集哪些个人信息以及如何收集？</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">我们收集哪些个人信息以及如何收集？</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#"> 当您注册或订阅注册我们提供的服务或是进行下列行为时，我们将会收集您的个人信息：下订单、会员账号登录、使用我们的在线服务或通过任何方式与我们互动（比如通过社交媒体、点击我们在本网站或是其它网站投放的广告、咨询信息或寻求帮助、在其它撰写与我们的服务相关的博客或文章给予评论或其它反馈、参与我们或赞助商举办的活动、参加抽奖活动或特别促销活动、订阅我们的优惠提醒或其它通知、参与调查小组或填写调查问卷等）。当您注册、订阅或使用我们的服务时，即表示您同意我们在此份政策的规定内使用您的个人信息。我们可能还会与我们有业务往来的第三方合作伙伴获取您的相关信息。</p>
             </li>
@@ -56,7 +56,7 @@
             <li><p href="#"> 我们可能会对拨打给您的电话或您拨打给我们的电话进行录音或监听。这是出于安全以及内部培训的目的，并旨在为您带来更好的服务。</p>
             </li>
         </ul>
-        <p class="first-title j_toggle"><a href="#">我们将收集哪些类型的用户信息？</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">我们将收集哪些类型的用户信息？</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">从用户处了解的信息可帮助我们进行个性化定制服务，并持续不断地提高您的购物体验。 以下是我们所收集的信息类型。 您提供的信息: 我们将接收和储存您在我们网站输入或以任何方式给予我们的信息。 这些信息包括您通过搜索、加入愿望清单、购买、参与比赛或问卷调查或者与客服沟通提供的信息。 例如，您会在以下情况提供您的个人信息：搜索产品、在本网站下订单、在我的帐号内提供信息（如果您通过多个电子邮件地址购物，您可能拥有多个帐户）、通过Art Club会员账号线上认证、通过手机、电子邮件或其他方式与我们沟通；完成问卷调查或比赛报名表、编辑愿望清单或购物车。 由于上述行为，您可能会向我们提供以下信息，例如姓名、地址和电话号码等信息、银行卡信息、所购产品收货人信息（包括地址和电话号码）、您的朋友和其他人的电子邮件地址；以及评价和发送给我们的电子邮件的内容。 您可选择不提供特定信息，但这样您可能无法使用我们的许多功能。 我们将出于响应您的请求、为您量身打造今后的购物体验、改善我们的在线精品店以及与您沟通联络等此类目的而使用您所提供的信息。</p>
             </li>
@@ -69,7 +69,7 @@
             </li>
 
         </ul>
-        <p class="first-title j_toggle"><a href="#">我们会分享所收到的信息吗？</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">我们会分享所收到的信息吗？</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">客户信息是我们业务的重要组成部分，我们并不从事出售客户信息的业务。 我们仅会按照以下所述条件公司内与集团内分享客户信息，即接收方须遵守本隐私声明，或实施的实践规范至少可提供与本隐私声明所述同等程度的保护。</p>
             </li>
@@ -84,7 +84,7 @@
             <li><p href="#">征得您的同意: 除了以上所述，当您的信息可能被发往第三方时，您将收到通知，您将有机会选择不共享该信息。</p>
             </li>
         </ul>
-        <p class="first-title j_toggle"><a href="#">我的个人信息的安全性如何？</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">我的个人信息的安全性如何？</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">我们使用安全套接层 (SSL) 软件来对您输入的信息进行加密，从而确保您的信息在传输过程中的安全性。
                 确认订单时我们只会显示你的信用卡号码的最后四位数字。</p>
@@ -93,7 +93,7 @@
             </li>
         </ul>
 
-        <p class="first-title j_toggle"><a href="#">如何查看和更新您的个人信息？可访问哪些信息？</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">如何查看和更新您的个人信息？可访问哪些信息？</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">您有权查看并更新个人资料。如果出于任何原因您担心我们保留的个人信息不正确，请访问本网站。登录后，使用主页上的“登录”菜单，您的个人信息将显示在“我的帐号”内，供您查看和更改。只有您，或应您的请求，客户服务团队代表您，才可以使用您的密码和用户 ID 通过我们的在线服务查看您的个人数据。每次购物时您都可以更改或删除已保存的银行卡的详细信息。您也可以通过添加或编辑账单地址，删除已保存的信用卡/借记卡详细信息。如果您愿意，可以发送电邮至 customercare@shiatzychen.com 电话是：4008 213 760 与我们联系，我们将为您修改个人详细信息。</p>
             </li>
@@ -102,7 +102,7 @@
             </li>
         </ul>
 
-        <p class="first-title j_toggle"><a href="#">市场营销订阅和退订</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">市场营销订阅和退订</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">您可以随时订阅/退订我们的品牌资讯和电商信息。如果您参加了促销活动或者参加了由我们举办或赞助的活动，我们或者我们的第三方合作伙伴可能会询问您是否愿意订阅市场营销内容。</p>
             </li>
@@ -111,7 +111,7 @@
             </li>
         </ul>
 
-        <p class="first-title j_toggle"><a href="#">隐私条款、通知及修改</a></p>
+        <p class="first-title j_toggle"><a href="javascript:void(0)">隐私条款、通知及修改</a></p>
         <ul class="second-title j_toggle2 hide">
             <li><p href="#">我们可能会不定期更新这份隐私政策。建议您在向我们提供个人信息或使用我们网站之前仔细检查。</p>
             </li>
@@ -134,9 +134,9 @@
             //常见问题页面JS
             //下拉菜单展开收起
             $(".j_toggle").on("click",function () {
+                $(this).siblings(".j_toggle").next().addClass("hide");
                 $(this).next().toggleClass("hide");
             });
-
             $(".j_toggle2>li").on("click",function () {
                 $(this).find(".answer").toggleClass("hide");
             });

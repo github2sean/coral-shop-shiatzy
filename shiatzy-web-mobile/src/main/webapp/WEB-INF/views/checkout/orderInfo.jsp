@@ -9,7 +9,7 @@
 </jsp:include>
 
 <div class="dx-accounts">
-    <div class="dx-title">结账 <a href="/cart/list">回上页</a></div>
+    <div class="dx-title"><spring:message code="orderinfo.checkoutTitle"/> <a href="/cart/list"><spring:message code="goBack"/></a></div>
     <div class="content">
         <c:forEach var="row" items="${cartList}" varStatus="num">
 
@@ -19,11 +19,11 @@
                     <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
-                    <div class="name">${row.goodsName}</div>
+                    <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="color" >${row.goodsItemDomain.name}<span >${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</span></div>
-                    <div class="quantity" data-value="${row.num}">数量: <span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsPrice}">单价&nbsp;<font class="coinSymbol">
+                    <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span >${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
+                    <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/> : <span>${row.num}</span></div>
+                    <div class="price" data-value="${row.goodsPrice}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
                         <c:choose>
                             <c:when test="${order.currentCode=='CNY'}">
                                 &nbsp;<spring:message code="coin.ZH"/>
@@ -43,7 +43,7 @@
                     <li><a href="javascript:;" class="deleteBtn" data-value="${row.id}"><svg><use xlink:href="#close"></use></svg></a></li>
                 </ul>
             </div>
-            <div class="alter j_alter"  data-value="${num.count-1}"><a href="javascript:;">修改</a></div>
+            <div class="alter j_alter"  data-value="${num.count-1}"><a href="javascript:;"><spring:message code="orderinfo.update"/></a></div>
         </div>
             <div class="alter-popup alter-popup${num.count-1}">
                 <div class="dx-goods clearfix">
@@ -51,13 +51,13 @@
                         <span></span><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;">
                     </div>
                     <div class="goods-details">
-                        <div class="name">${row.goodsName}</div>
-                        <div class="number">${row.goodsCode}</div>
+                        <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                        <div class="number"><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</div>
                         <div class="color">
-                            <div class="title">${row.goodsItemDomain.name}(还有款颜色)</div>
+                            <div class="title">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}(<spring:message code="goods.detail.thereAre"/>&nbsp;${row.goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
                             <ul>
                                 <c:forEach var="colorRow" items="${row.goodsDomain.goodsItemList}" varStatus="status">
-                                    <li data-id="${colorRow.id}" class=" <c:if test="${status.first}">active</c:if> "><a href="#">${colorRow.name}</a></li>
+                                    <li data-id="${colorRow.id}" class=" <c:if test="${colorRow.id==row.goodsItemDomain.id}">active</c:if> "><a href="#">${sessionScope.language=='en_US'?colorRow.enName:colorRow.name}</a></li>
                                 </c:forEach>
                                     <%--<li class="active"><a href="">紅色</a></li>
                                     <li><a href="">藍色</a></li>
@@ -65,35 +65,35 @@
                             </ul>
                         </div>
                         <div class="size">
-                            <div class="title">选择尺寸</div>
+                            <div class="title"><spring:message code="shoppingCart.size"/></div>
                             <ul>
                                 <c:forEach var="sizeRow" items="${row.sizeDomins}"  varStatus="line">
                                     <c:set var="sizeQuantity" value="${row.goodsDomain.goodsItemList[line.count-1].quantity}"></c:set>
-                                    <li class="active"  data-value="${sizeQuantity}" data-id="${sizeRow.id}"><a href="#">${sizeRow.name} <c:if test="${row.goodsDomain.goodsItemList[num.count-1].quantity<=0}"><span>(已售完)</span></c:if></a></li>
+                                    <li class="<c:if test="${sizeRow.id == row.sizeDomain.id}">active</c:if> "  data-value="${sizeQuantity}" data-id="${sizeRow.id}"><a href="#">${sizeRow.name} <c:if test="${row.goodsDomain.goodsItemList[num.count-1].quantity<=0}"><span>(<spring:message code="sellout"/>)</span></c:if></a></li>
                                 </c:forEach>
                                     <%--<li><a href="">S</a> <span></span></li>
                                     <li class="active"><a href="">M</a> <span></span></li>
                                     <li><a href="">L</a> <span>(已售完)</span></li>--%>
                             </ul>
                         </div>
-                        <div class="quantity" data-value="${row.goodsDomain.goodsItemList[num.count-1].quantity}">数量 <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
+                        <div class="quantity" data-value="${row.goodsDomain.goodsItemList[num.count-1].quantity}"><spring:message code="shoppingCart.number"/> <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
                     </div>
                 </div>
-                <button type="button" class="btn j_x_close" data-value="${row.id}">确认</button>
+                <button type="button" class="btn j_x_close" data-value="${row.id}"><spring:message code="orderinfo.enter"/></button>
             </div>
         </c:forEach>
         <div class="privilege">
-            <div class="title">优惠码输入 <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
+            <div class="title"><spring:message code="orderinfo.discountInput"/> <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" placeholder="请输入优惠代码" class="text couponCode"><button type="button" class="btn couponBtn">确定</button><button type="button" class="btn cancelCouponBtn hide">移除代码</button>
+                <input type="text" style="width: 69%" placeholder="<spring:message code="orderinfo.pleaseInputCode"/>" class="text couponCode"><button type="button" class="btn couponBtn"><spring:message code="orderinfo.enter"/></button><button type="button" class="btn cancelCouponBtn hide"><spring:message code="orderinfo.cancleCoupon"/></button>
             </form>
         </div>
         <div class="showInfo" style="text-align: center;color: red"></div>
     </div>
     <div class="total">
-        <div class="title">结算</div>
+        <div class="title"><spring:message code="orderinfo.checkout"/></div>
         <div class="wrap">
-            <div class="subtotal">小计 <span><font class="coinSymbol">
+            <div class="subtotal"><spring:message code="orderinfo.subtotal"/> <span>
                 <font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
@@ -106,8 +106,9 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span> </div>
-            <div class="discount" style="color: red">优惠 <span><font class="coinSymbol">
+            </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span>
+            </div>
+            <div class="discount" style="color: red"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -120,7 +121,7 @@
                     </c:when>
                  </c:choose>
             </font>&nbsp;<span id="discount" class="">0</span></span></div>
-            <div class="express">快递 <span><font class="coinSymbol">
+            <div class="express"><spring:message code="orderinfo.freight"/> <span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -133,7 +134,7 @@
                     </c:when>
                 </c:choose>
             </font>&nbsp;<span id="express" class="">${order.shipFee==null?0:order.shipFee}</span></span> </div>
-            <div class="predict">预计订单总额<span><font class="coinSymbol" style="margin-right: 0">
+            <div class="predict"><spring:message code="orderinfo.preTotal"/><span><font class="coinSymbol" style="margin-right: 0">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -149,7 +150,7 @@
             </font>&nbsp;<span id="ordertotal" class="">${order.orderTotal}</span></span></div>
         </div>
     </div>
-    <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn">结账</a>
+    <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn"><spring:message code="orderinfo.checkoutTitle"/></a>
 </div>
 
 <!-------修改弹窗开始------->
@@ -208,12 +209,12 @@
             });*/
             //自定页
             layer.open({
-                title:'优惠券',
+                title:'<spring:message code="orderinfo.coupon"/>',
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
                 closeBtn:1,
                 shadeClose: true, //开启遮罩关闭
-                content: '<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 14px">输入相应的“优惠代码/优惠券号”，点击“应用”，即刻享有相应优惠礼遇。请注意使用时间和相应条款。</span>',
+                content: '<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 14px"><spring:message code="orderinfo.coupon.content"/></span>',
                 area:['25rem','12rem']
             });
         });
@@ -266,7 +267,7 @@
                     }
                 });
             }else{
-                layer.msg("颜色与尺寸必选");
+                layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
             }
         });
 
@@ -284,7 +285,7 @@
             var t = $(this).parent().find(".quantitys");
             var addNum =  parseInt(t.val())+1;
             if(addNum>num){
-                layer.msg("不能超出库存");
+                layer.msg('<spring:message code="orderinfo.lessthanstock"/>');
             }
             t.val(addNum>num?num:addNum);
             $(".minus").removeAttr("disabled");
@@ -303,13 +304,13 @@
 
            var couponCode = $(".couponCode").val();
             if(couponCode==''){
-                $('.showInfo').text("请先输入优惠券码");
+                $('.showInfo').text('<spring:message code="orderinfo.pleaseInputCode"/>');
                 return false;
             }
             $('.showInfo').text("");
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
-                    layer.msg('使用优惠码成功');
+                    layer.msg('<spring:message code="orderinfo.coupon.success"/>');
                     $("#discount").text((data.data).toFixed(2));
                     clsTotal();
                 }else{
@@ -356,7 +357,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入心愿单成功");
+                    layer.msg('<spring:message code="success.towish"/>');
                     setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";
@@ -372,7 +373,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入精品店成功");
+                    layer.msg('<spring:message code="success.toboutique"/>');
                     setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";

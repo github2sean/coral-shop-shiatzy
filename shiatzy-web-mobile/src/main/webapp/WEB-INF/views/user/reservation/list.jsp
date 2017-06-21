@@ -58,7 +58,7 @@
                       $(".dx-reservaList:lt("+num+")").fadeIn();
                   } 
             }
-        })
+        });
 
         /*$(".status").each(function () {
             var status = $(this).attr("data-value");

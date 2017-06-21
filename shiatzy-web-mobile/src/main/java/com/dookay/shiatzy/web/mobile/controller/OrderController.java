@@ -67,7 +67,6 @@ public class OrderController extends BaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         OrderQuery query = new OrderQuery();
         query.setCustomerId(customerDomain.getId());
-        query.setPageSize(8);
         PageList<OrderDomain> orderList = orderService.getPageList(query);
         ModelAndView mv = new ModelAndView("user/order/list");
         mv.addObject("orderList",orderList);

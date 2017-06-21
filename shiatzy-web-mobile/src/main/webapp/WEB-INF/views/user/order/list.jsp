@@ -28,7 +28,7 @@
         </c:forEach>
         <c:if test="${orderList.list.size()>9}" >
             <div class="font-12 text-center do-load-list">
-                <span class="link-down-before moreList">向下自动载入</span>
+                <span class="link-down-before moreList" id="auto_load">向下自动载入</span>
                 <span class="overGoods" style="display: none">-已到底部-</span>
             </div>
         </c:if>
@@ -49,7 +49,25 @@
         $(".moreList").click(function () {
 
         });
-        var count = 1;
+
+
+        var num = 9;
+        var base = $(window).height()/2;
+        $(window).on("scroll",function(){
+            var top1 = $(this).scrollTop();
+            var top2 = $("#auto_load").offset().top;
+            if(top1+base>top2){
+                num+=9;
+                if(num>=$(".dx-reservaList").length) {
+                    $("#auto_load").hide();
+                    $(".overGoods").show();
+                } else{
+                    $(".dx-reservaList:lt("+(num+1)+")").removeClass("hide");
+                }
+            }
+        });
+
+       /* var count = 1;
         var turnLen = 9;
         //浏览器屏幕的高度
         var h=window.innerHeight
@@ -74,27 +92,27 @@
                 console.log("底部");
                 count++;
             }
-        };
+        };*/
 
-        function loadMoreOrder() {
-            var size = '${orderList.list.size()}';
-            var lastStr = ".clearfix"+(size-1);
-            if(size<=9){
-                return false;
-            }
-            $(".content").find("a").each(function (index) {
-                for(var i=0;i<turnLen;i++){
-                    var str = ".clearfix"+(count*turnLen+i);
-                    console.log(str+" "+index);
-                    $(str).removeClass("hide");
-                }
-                if(!$(lastStr).hasClass("hide")){
-                    noMore = false;
-                }
-                if(!noMore){
-                    $(".do-load-list").find(".moreList").hide().siblings(".overGoods").show();
-                }
-            });
-        }
     });
+    function loadMoreOrder() {
+        var size = '${orderList.list.size()}';
+        var lastStr = ".clearfix"+(size-1);
+        if(size<=9){
+            return false;
+        }
+        $(".content").find("a").each(function (index) {
+            for(var i=0;i<turnLen;i++){
+                var str = ".clearfix"+(count*turnLen+i);
+                console.log(str+" "+index);
+                $(str).removeClass("hide");
+            }
+            if(!$(lastStr).hasClass("hide")){
+                noMore = false;
+            }
+            if(!noMore){
+                $(".do-load-list").find(".moreList").hide().siblings(".overGoods").show();
+            }
+        });
+    }
 </script>

@@ -28,7 +28,7 @@
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>:
                         <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a></c:if>
-                        <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="0"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a>(已售罄)</c:if>
+                        <c:if test="${row.stock<1}"><a href="#" class="minus hasOut" data-value="${row.id}">-</a><input class="quantitys" type="text" value="0"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a>(已售罄)</c:if>
                     </div>
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
                 </div>
@@ -117,8 +117,18 @@
         setPrice();
         var isLogin = '${isGuest}'=='onLine'?true:false;
         //
-        var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
-        $(".checkout").attr("href",href);
+
+        $(".checkout").on("click",function(){
+           if($(".minus").hasClass("hasOut")){
+               layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
+               return false;
+           }
+            var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
+            location.href = href;
+            //$(".checkout").attr("href",href);
+        });
+
+
 
         //初始化购物车数量
         var cartNum = '${cartList.size()}'*1;
@@ -202,7 +212,7 @@
                     if(data.code==200){
                         $self.parents(".goodsDiv").remove();
                         var  isNull= $(".goodsDiv").attr("class");
-                        layer.msg("加入心愿单成功");
+                        layer.msg('<spring:message code="success.towish"/>');
                         setCartNum();
                         if(typeof (isNull)=="undefined"){
                             window.location.reload();
@@ -217,7 +227,7 @@
                     if(data.code==200){
                         $self.parents(".goodsDiv").remove();
                         var  isNull= $(".goodsDiv").attr("class");
-                        layer.msg("加入心愿单成功");
+                        layer.msg('<spring:message code="success.towish"/>');
                         setCartNum();
                         if(typeof (isNull)=="undefined"){
                             window.location.reload();
@@ -239,7 +249,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入精品店成功");
+                    layer.msg('<spring:message code="success.toboutique"/>');
                     setCartNum();
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();

@@ -162,12 +162,16 @@
             var url = "";
             var isAdd = $(this).find("use").attr("xlink:href");
             var sizeId = '';
-
             $(".sizeIds").each(function () {
               if ($(this).hasClass("active")) {
                 sizeId = $(this).attr("data-value");
               }
             });
+            if(sizeId==''){
+              layer.msg('<spring:message code="goods.detail.pleaseSelectSize"/>');
+              return false;
+            }
+
             var data = {
               "itemId": '${goodsItemDomain.id}',
               "num": 1,
@@ -188,7 +192,9 @@
             $.post(url, data, function (result) {
               console.log(result);
               if (result.code == 200) {
-                console.log(result.message);
+                layer.msg('<spring:message code="success.towish"/>');
+              }else{
+                layer.msg(result.message);
               }
             });
           });

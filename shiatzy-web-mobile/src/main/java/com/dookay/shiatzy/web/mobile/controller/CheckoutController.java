@@ -50,6 +50,9 @@ import com.dookay.coral.shop.store.query.StoreQuery;
 import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
+import com.dookay.coral.shop.temp.domain.TempStockDomain;
+import com.dookay.coral.shop.temp.query.TempStockQuery;
+import com.dookay.coral.shop.temp.service.ITempStockService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -116,6 +119,8 @@ public class CheckoutController  extends BaseController{
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private ITempStockService tempStockService;
 
 
     private static String CART_LIST = "cartList";
@@ -173,6 +178,23 @@ public class CheckoutController  extends BaseController{
         //跳转到结算页面
         return "redirect:orderInfo";
     }
+
+
+    @RequestMapping(value = "getStockBySizeAndColor",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult getStockBySizeAndColor(String goodsNo,String color,String size){
+        Integer num = 0;
+        TempStockQuery query = new TempStockQuery();
+        query.setProductNo(goodsNo);
+        query.setColor(color);
+        query.setSize(size);
+        TempStockDomain tempStockDomain = tempStockService.getFirst(query);
+        if(tempStockDomain!=null){
+            num = tempStockDomain.getNum();
+        }
+        return successResult("查询成功",num);
+    }
+
 
     /**
      * 结算页面
