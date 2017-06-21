@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <a href="javascript:;" id="j_back_top" class="back-top"><spring:message code="toTop"/></a>
 <footer class="footer font-12">
     <ul class="do-list-btm">
@@ -24,7 +25,14 @@
         </li>
     </ul>
     <ul class="do-list-lang j_drop_down">
-        <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
+        <li>
+            <a href="/home/listShippingCountry" id="trigger_select_country"><spring:message code="selectOtherCountriesORRegions"/></a>
+            <select id="select_country" style="display: none">
+            <c:forEach var="country" items="${web:countryList()}" begin="1">
+                <option value="${country.id}">${country.name}</option>
+            </c:forEach>
+            </select>
+        </li>
         <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
                 <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
@@ -84,6 +92,10 @@
         <%--关闭提示--%>
         $(".j_cls_notice").on("click touchstart",function(){
             $(this).parent().fadeOut();
+        })
+        $("#trigger_select_country").click(function (e) {
+            e.preventDefault();
+            $("#select_country").trigger("change");
         })
     });
 </script>

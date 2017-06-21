@@ -10,6 +10,9 @@ import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 
 import java.util.List;
 
@@ -21,12 +24,7 @@ import java.util.List;
  */
 public class DefaultTags {
 	
-	/**
-	 * 获取用户信息
-	 * @return
-	 * @author : kezhan	
-	 * @since : 2016年12月11日
-	 */
+
 	public static List<GoodsCategoryDomain> getGoodsCategoryList() {
 		IGoodsCategoryService goodsCategoryService = SpringContextHolder.getBean("goodsCategoryService");
 		GoodsCategoryQuery query = new GoodsCategoryQuery();
@@ -34,6 +32,14 @@ public class DefaultTags {
 		query.setDesc(false);
 		query.setLevel(1);
 		return   goodsCategoryService.listCategory(query);
+	}
+
+	public static List<ShippingCountryDomain> getShippingCountryList() {
+		IShippingCountryService shippingCountryService = SpringContextHolder.getBean("shippingCountryService");
+		ShippingCountryQuery query = new ShippingCountryQuery();
+		query.setDesc(false);
+		query.setOrderBy("rank");
+		return  shippingCountryService.getList(query);
 	}
 
 }

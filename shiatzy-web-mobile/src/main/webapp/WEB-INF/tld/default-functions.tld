@@ -15,4 +15,10 @@
         <function-signature>java.util.List getGoodsCategoryList()</function-signature>
     </function>
 
+    <function>
+        <description>获取配送国家列表</description>
+        <name>countryList</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.util.List getShippingCountryList()</function-signature>
+    </function>
 </taglib>
