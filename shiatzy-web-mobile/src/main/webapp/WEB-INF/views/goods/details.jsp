@@ -25,16 +25,18 @@
           </div>
           <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span>
             <a href="javascript:;" class="j_collect active">
-              <svg transform="scale(1.5) ">
+              <svg transform="scale(2) ">
                 <use xlink:href="#heart-red"></use>
               </svg>
             </a>
           </div>
 
-          <div class="color">
-            <div class="title j_choose">${sessionScope.language=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
+          <div class="color j_collapse">
+            <h3 class="title">
+            ${sessionScope.language=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)
+            </h3>
             <c:if test="${goodsDomain.goodsItemList.size()>1}">
-              <ul class="clearfix hide">
+              <ul class="clearfix">
                 <c:forEach var="item" items="${goodsDomain.goodsItemList}">
                   <c:if test="${item.id!=goodsItemDomain.id}">
                     <li><a href="/goods/details/${item.id}"><img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 10px;"></a></li>
@@ -44,10 +46,10 @@
             </c:if>
           </div>
 
-          <div class="size">
-            <div class="title j_choose">
-              <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></div>
-            <ul class="hide" id="js_size">
+          <div class="size j_collapse">
+            <h3 class="title">
+              <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></h3>
+            <ul  id="js_size">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
                   <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
@@ -57,12 +59,15 @@
           <a type="button" class="addition addToCart"><spring:message code="goods.detail.add2cart"/></a>
           <a type="button" class="order addToBoutique"><spring:message code="goods.detail.add2reservation"/></a>
           <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
-        </div>
-        <div class="dx-GoodsDetails">
-          <div class="title j_choose"><spring:message code="goods.detail.details"/></div>
-          <p class="text hide">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
+
+          <div class="dx-GoodsDetails j_collapse">
+            <h3 class="title"><spring:message code="goods.detail.details"/></h3>
+            <p class="text">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
+          </div>
 
         </div>
+
+        <!--也许喜欢-->
         <div class="maybeLike clearfix">
           <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
           <c:forEach var="goods" items="${historyList}" begin="0" end="3">
@@ -91,11 +96,11 @@
       <script>
         var selectSizeId = '${sizeList[0].id}';
         $(function () {
-
-
           setPrice();
           $(".j_s_slider").bxSlider();
-
+            $(".j_collapse").on("click",'h3', function () {
+                $(this).parent().toggleClass("active");
+            });
           // 添加相册
           function galleryAppend() {
             var htmlBefore =

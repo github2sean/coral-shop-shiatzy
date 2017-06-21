@@ -1526,13 +1526,13 @@ i {
 
 .dx-commodity .content .price a {
     float: right;
-
 }
 
 .dx-commodity .content .color .title {
     font-size: 1.2rem;
     line-height: 2rem;
     color: #000;
+    height: 2rem;
 }
 
 .dx-commodity .content .color .title:after,
@@ -1542,19 +1542,22 @@ i {
     margin-right: 2rem;
 }
 
-.dx-commodity .content .color .title:hover:after,
-.dx-commodity .content .color .title:active:after,
-.dx-commodity .content .size .title:active:after,
-.dx-commodity .content .size .title:hover:after{
+.dx-commodity .content .color.active .title:after,
+.dx-commodity .content .size.active .title:after
+{
      -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
 
-
 .dx-commodity .content .color ul {
     padding-top: 1.6rem;
     border-bottom: 2px solid #ccc;
+    display: none;
+}
+
+.dx-commodity .content .color.active ul{
+    display: block;
 }
 
 .dx-commodity .content .color li {
@@ -1562,14 +1565,12 @@ i {
     margin-right: 1.2rem;
 }
 
-.dx-commodity .content .size {
-    margin-top: 1rem;
-}
 
 .dx-commodity .content .size .title {
     font-size: 1.2rem;
     line-height: 1.9rem;
     color: #000;
+    height: 2rem;
 }
 
 .dx-commodity .content .size .title span{
@@ -1578,7 +1579,15 @@ i {
 
 .dx-commodity .content .size ul {
     border-bottom: 2px solid #d2d2d2;
+    display: none;
 }
+
+
+.dx-commodity .content .size.active ul {
+
+    display: block;
+}
+
 
 .dx-commodity .content .size ul li a {
     font-size: .8rem;
@@ -1628,8 +1637,11 @@ i {
 }
 
 .dx-commodity .dx-GoodsDetails {
-    padding: 0 1.2rem;
-    margin-bottom: 7.7rem;
+    height: 44px;
+    overflow: hidden;
+
+    background-color: #fff;
+    margin-bottom: 2rem;
 }
 
 .dx-commodity .dx-GoodsDetails .title {
@@ -1644,6 +1656,13 @@ i {
 
     float: right;
     margin-right: 2rem;
+}
+.dx-commodity .dx-GoodsDetails.active{
+    height: auto;
+}
+.dx-commodity .dx-GoodsDetails.active .title:after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .dx-commodity .dx-GoodsDetails .text {
