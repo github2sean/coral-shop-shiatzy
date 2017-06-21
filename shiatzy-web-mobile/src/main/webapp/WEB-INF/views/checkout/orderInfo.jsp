@@ -35,7 +35,7 @@
                                 &nbsp;<spring:message code="coin.EU"/>
                             </c:when>
                         </c:choose>
-                       </font>&nbsp;<span class="true-price">${row.goodsPrice}</span></div>
+                       </font>&nbsp;<span class="true-price"><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="goods-details">
                         <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
-                        <div class="number"><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</div>
+                        <div class="number checkedNo"  data-value="${row.goodsCode}"><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</div>
                         <div class="color">
                             <div class="title">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}(<spring:message code="goods.detail.thereAre"/>&nbsp;${row.goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
                             <ul>
@@ -106,7 +106,7 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}">${order.goodsTotal}</span></span>
+            </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}"><fmt:formatNumber value="${order.goodsTotal}" pattern="#,###"/></span></span>
             </div>
             <div class="discount" style="color: red"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
                 <c:choose>
@@ -133,7 +133,7 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="express" class="">${order.shipFee==null?0:order.shipFee}</span></span> </div>
+            </font>&nbsp;<span id="express" class=""><fmt:formatNumber value="${order.shipFee==null?0:order.shipFee}" pattern="#,###"/></span></span> </div>
             <div class="predict"><spring:message code="orderinfo.preTotal"/><span><font class="coinSymbol" style="margin-right: 0">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
@@ -147,7 +147,7 @@
                     </c:when>
                 </c:choose>
 
-            </font>&nbsp;<span id="ordertotal" class="">${order.orderTotal}</span></span></div>
+            </font>&nbsp;<span id="ordertotal" class=""><fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/></span></span></div>
         </div>
     </div>
     <a href="/checkout/confirm?page=/checkout/orderInfo" type="button" class="accounts-btn"><spring:message code="orderinfo.checkoutTitle"/></a>
@@ -166,16 +166,16 @@
         var total = 0;
         $(".goods").find(".goods-right").each(function () {
             var num =  ($(this).find(".quantity").attr("data-value"))*1;
-            var price  = ($(this).find(".true-price").text())*1;
+            var price  = rmoney($(this).find(".true-price").text())*1;
             total += num * price;
-            $("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
+            //$("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
             console.log("total:"+total);
         });
-        var fee = ($("#express").text())*1;
-        var dis = ($("#discount").text())*1;
+        var fee = rmoney($("#express").text())*1;
+        var dis = rmoney($("#discount").text())*1;
         var final_amt = total+fee-dis;
         console.log("fee:"+fee+" dis "+ dis+" "+final_amt);
-        $("#ordertotal").html("&nbsp;"+final_amt.toFixed(2));
+        $("#ordertotal").html("&nbsp;"+fmoney(final_amt.toFixed(0),0));
 
     }
 
@@ -254,42 +254,80 @@
                     goodsItemId = $(this).attr("data-id");
                 }
             });
-
-            var num = $(this).siblings(".dx-goods").find(".quantitys").val();
-            var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$(this).attr("data-value"),"num":num};
-            console.log(sendData);
-            if(goodsItemId!=''&& sizeId!=''&&num!=null){
-                //移除原来商品，把新的商品加入购物车，更新下当前的session
-                $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
-                    console.log(data);
-                    if(data.code==200){
-                        location.href = "${ctx}/checkout/initOrder";
+            var checkedNo = $(".alter-popup").find(".checkedNo").attr("data-value");
+            //查询当前选择的商品的库存
+            var $now = $(this);
+            var data = {"goodsNo":checkedNo,"colorId":goodsItemId,"sizeId":sizeId};
+            console.log("data:"+data);
+            $.post("/checkout/getStockBySizeAndColor",data,function (data) {
+                if(data.code==200 && data.data>0){
+                    var num = $(this).siblings(".dx-goods").find(".quantitys").val();
+                    var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$(this).attr("data-value"),"num":num};
+                    console.log(sendData);
+                    if(goodsItemId!=''&& sizeId!=''&&num!=null){
+                        //移除原来商品，把新的商品加入购物车，更新下当前的session
+                        $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
+                            console.log(data);
+                            if(data.code==200){
+                                location.href = "${ctx}/checkout/initOrder";
+                            }
+                        });
+                    }else{
+                        layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
                     }
-                });
-            }else{
-                layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
-            }
+                }else{
+                    layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
+                }
+            });
+
         });
 
 
         //点击数量增加减少
         $(".add").on("click",function () {
-            var num ;
-            var $checked = $(this).parents(".quantity").siblings(".size").find("li").each(function () {
+
+            var colorId;
+            var sizeId;
+            var checkedNo = $(".alter-popup").find(".checkedNo").attr("data-value");
+            $(this).parents(".quantity").siblings(".size").find("li").each(function () {
                 if($(this).hasClass("active")){
-                    num = $(this).attr("data-value");
+                    sizeId = $(this).attr("data-id");
                 }
             });
-            console.log(num);
-            num = num==''?0:num;
-            var t = $(this).parent().find(".quantitys");
-            var addNum =  parseInt(t.val())+1;
-            if(addNum>num){
-                layer.msg('<spring:message code="orderinfo.lessthanstock"/>');
+            $(this).parents(".quantity").siblings(".color").find("li").each(function () {
+                if($(this).hasClass("active")){
+                    colorId = $(this).attr("data-id");
+                }
+            });
+            if(colorId==''||sizeId==''){
+                layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
+                return false;
             }
-            t.val(addNum>num?num:addNum);
-            $(".minus").removeAttr("disabled");
+
+            //查询当前选择的商品的库存
+            var $now = $(this);
+            var data = {"goodsNo":checkedNo,"colorId":colorId,"sizeId":sizeId};
+            console.log("data:"+data);
+            $.post("/checkout/getStockBySizeAndColor",data,function (data) {
+               if(data.code==200){
+                   var num  = data.data;
+                   console.log("num:"+num);
+                   num = num==''?0:num;
+                   var t = $now.parent().find(".quantitys");
+                   var addNum =  parseInt(t.val())+1;
+                   if(addNum>num && num>0){
+                       layer.msg('<spring:message code="orderinfo.lessthanstock"/>');
+                   }else if(addNum>num && num==0){
+                       layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
+                   }
+                   t.val(addNum>num?num:addNum);
+                   $(".minus").removeAttr("disabled");
+               }else{
+
+               }
+            });
         });
+
         $(".minus").on("click",function () {
             var t = $(this).parent().find(".quantitys");
             if (parseInt(t.val())>1){
@@ -311,7 +349,7 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('<spring:message code="orderinfo.coupon.success"/>');
-                    $("#discount").text((data.data).toFixed(2));
+                    $("#discount").text(fmoney((data.data).toFixed(0),0));
                     clsTotal();
                 }else{
                     $('.showInfo').text(data.message);

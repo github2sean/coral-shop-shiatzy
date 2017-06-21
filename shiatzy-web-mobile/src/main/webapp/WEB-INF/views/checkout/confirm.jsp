@@ -26,7 +26,7 @@
                 </c:when>
             </c:choose>
         </font>&nbsp;
-        <span class="">${order.orderTotal}</span></h3>
+        <span class=""><fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/></span></h3>
     <div class="delivery content">
         <h3>1. 配送</h3>
         <c:if test="${not empty order.storeDomain}">
@@ -102,7 +102,7 @@
                                         </c:when>
                                     </c:choose>
                                 </font>&nbsp;
-                                <span>${row.goodsPrice}</span></div>
+                                <span><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
                         </div>
                     </div>
                 </c:forEach>
