@@ -435,13 +435,6 @@ i {
     padding: 2rem 1.9rem 0;
 }
 
-.dx-login .login {
-    font-size: 1.1rem;
-    line-height: 2rem;
-    border-bottom: 2px solid #d9d9d9;
-}
-
-
 .dx-login .content input {
     font-size: 1.1rem;
     width: 100%;
@@ -1685,6 +1678,7 @@ i {
     padding:2rem 0;
     float: left;
     border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     text-align: center;
 }
 

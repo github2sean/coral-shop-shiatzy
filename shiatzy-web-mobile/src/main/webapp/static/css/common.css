@@ -2248,7 +2248,8 @@ h3 {
 .do-pro-list .do-img {
     height: 18rem;
     position: relative;
-    overflow: hidden
+    overflow: hidden;
+    margin-top: 1.2rem;
 }
 
 .do-pro-list .do-img img {
@@ -2273,7 +2274,7 @@ h3 {
             justify-content: center;
     -webkit-box-align: center;
         -ms-flex-align: center;
-            align-items: center
+
 }
 
 .do-pro-list:after {

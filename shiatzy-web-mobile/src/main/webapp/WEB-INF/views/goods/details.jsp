@@ -61,12 +61,7 @@
         <div class="dx-GoodsDetails">
           <div class="title j_choose"><spring:message code="goods.detail.details"/></div>
           <p class="text hide">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
-          <%--<ul class="list hide">
-            <li>贴布刺绣，玉镯提手</li>
-            <li>100% 成牛皮</li>
-            <li>意大利制造</li>
-            <li>产品尺寸：24.5厘米/9.6英寸（长），16厘米/6.3英寸（宽），20厘米/7.9英寸（高）</li>
-        </ul>--%>
+
         </div>
         <div class="maybeLike clearfix">
           <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
@@ -97,8 +92,7 @@
         var selectSizeId = '${sizeList[0].id}';
         $(function () {
 
-          console.log('lan：'+'${sessionScope.language}')
-          commonApp.init();
+
           setPrice();
           $(".j_s_slider").bxSlider();
 
