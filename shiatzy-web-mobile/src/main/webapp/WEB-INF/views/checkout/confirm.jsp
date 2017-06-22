@@ -8,11 +8,11 @@
 </jsp:include>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
-    <p style="float: left">结 帐 / 详细</p>
+    <p style="float: left"><spring:message code="orderinfo.checkoutTitle"/> / <spring:message code="orderinfo.confirm.detail"/></p>
     <a style="float: right;" href="/checkout/orderInfo">< <spring:message code="goBack"/></a>
 </div>
 <div class="order-finish">
-    <h3>订单总额：
+    <h3><spring:message code="orderinfo.confirm.total"/>：
         <font class="coinSymbol">
             <c:choose>
                 <c:when test="${order.currentCode=='CNY'}">
@@ -26,53 +26,53 @@
                 </c:when>
             </c:choose>
         </font>&nbsp;
-        <span class="">${order.orderTotal}</span></h3>
+        <span class=""><fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/></span></h3>
     <div class="delivery content">
-        <h3>1. 配送</h3>
+        <h3>1. <spring:message code="orderinfo.confirm.shipping"/></h3>
         <c:if test="${not empty order.storeDomain}">
             <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
-                <span>快递运送</span>
+                <span><spring:message code="orderinfo.confirm.expressDelivery"/></span>
                 <p></p>
                 <p style="display: initial;"></p>
-                <a href="/checkout/listShipAddress">选择 ></a>
+                <a href="/checkout/listShipAddress"><spring:message code="orderinfo.confirm.select"/> ></a>
             </div>
             <div class="delivery-message" style="background-color: #cccccc;">
-                <p>门店取货</p>
-                    <p>${order.storeDomain.name}</p>
-                    <p>${order.storeDomain.address}</p>
-                <a href="/checkout/listStore">选择 ></a>
+                <p><spring:message code="orderinfo.confirm.storePickup"/></p>
+                    <p>${sessionScope.language=='en_US'?order.storeDomain.enTitle:order.storeDomain.name}</p>
+                    <p>${sessionScope.language=='en_US'?order.storeDomain.enAddress:order.storeDomain.address}</p>
+                <a href="/checkout/listStore"><spring:message code="orderinfo.confirm.select"/> ></a>
             </div>
         </c:if>
         <c:if test="${empty order.storeDomain}">
             <div class="delivery-message" style="margin-top: 2px">
-                <span>快递运送</span>
+                <span><spring:message code="orderinfo.confirm.expressDelivery"/></span>
                 <p>${order.customerAddressDomain.title}</p>
                 <p style="display: initial;">${order.customerAddressDomain.address}</p>
-                <a href="/checkout/listShipAddress">选择 ></a>
+                <a href="/checkout/listShipAddress"><spring:message code="orderinfo.confirm.select"/> ></a>
             </div>
             <div class="drugstore">
-                <p>门店取货</p>
-                <a href="/checkout/listStore">选择 ></a>
+                <p><spring:message code="orderinfo.confirm.storePickup"/></p>
+                <a href="/checkout/listStore"><spring:message code="orderinfo.confirm.select"/> ></a>
             </div>
         </c:if>
     </div>
     <div class="delivery">
-        <h3>2. 发票信息</h3>
+        <h3>2. <spring:message code="orderinfo.confirm.billinfo"/></h3>
         <div>
-            <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox iconfont icon-duigou"></i>不需要发票</label></span>
-            <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox iconfont icon-duigou"></i>需要发票</label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" checked="checked" name="isNeed" id="noNeed"><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.billinfo.noneed"/></label></span>
+            <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.billinfo.need"/></label></span>
         </div>
         <p id="showBill" style="display: none;margin-left: 2.3rem;font-size: 1.0821rem;margin-top: 2.7rem;border-bottom: 2px solid #cccccc;">
-            发票抬头*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
+            <spring:message code="orderinfo.confirm.billinfo.title"/>*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
     </div>
     <div class="delivery">
-        <h3>3. 支付选项</h3>
+        <h3>3. <spring:message code="orderinfo.confirm.payway"/></h3>
             <ul>
-            <li class=" payMethod" data-value="3">信用卡</li>
-            <li class=" payMethod" data-value="1">支付宝</li>
-            <li class=" payMethod" data-value="2">银联在线</li>
+            <li class=" payMethod" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
+            <li class=" payMethod" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
+            <li class=" payMethod" data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
         </ul>
-        <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}件商品　v</p>
+        <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}&nbsp;<spring:message code="orderinfo.confirm.numofgoods"/>　v</p>
         <div class="clearfix dx-shopping moreGoods" style="display:none;">
             <div class="dx-GoodsDetails">
                 <c:forEach var="row" items="${cartList}">
@@ -102,7 +102,7 @@
                                         </c:when>
                                     </c:choose>
                                 </font>&nbsp;
-                                <span>${row.goodsPrice}</span></div>
+                                <span><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
                         </div>
                     </div>
                 </c:forEach>
@@ -110,15 +110,15 @@
         </div>
     </div>
     <div class="order-pay">
-        <a href="#" class="submitBtn">订购付款</a>
-        <span>提交订单即表示您同意接受 SHIATZY CHEN 公司条款 和 隐私权政策。</span>
+        <a href="#" class="submitBtn"><spring:message code="orderinfo.confirm.dopay"/></a>
+        <span><spring:message code="orderinfo.confirm.endinfo"/></span>
     </div>
 
     <style>
         .way-img img{width:80px;}
     </style>
     <div class="pay-way">
-        <p>付款方式</p>
+        <p><spring:message code="payment.failed.paymentWay"/></p>
         <div class="way-img">
             <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
@@ -128,7 +128,7 @@
         </div>
     </div>
     <div class="order-safe">
-        <p>安全购物</p>
+        <p><spring:message code="orderinfo.confirm.safe"/></p>
         <div class="safe-img">
             <a style="margin-right: 1.5rem;" href="#"><img src="${ctx}/static/images/way_10.jpg" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/way_07.jpg" alt=""></a>
@@ -189,10 +189,10 @@
             console.log(isCheckPayWay+""+isCheckSendWay);
             //校验 运送方式 支付方式 发票信息
             if(!isCheckPayWay){
-                layer.msg("请选择支付方式");
+                layer.msg('<spring:message code="orderinfo.confirm.tip1"/>');
                 return false;
             }else if(!isCheckSendWay){
-                layer.msg("请选择配送方式");
+                    layer.msg('<spring:message code="orderinfo.confirm.tip2"/>');
                 return false;
             }
             $.post("/checkout/submitOrder",function (data) {

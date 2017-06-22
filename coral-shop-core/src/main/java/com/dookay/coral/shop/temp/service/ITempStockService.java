@@ -11,4 +11,7 @@ import com.dookay.coral.shop.temp.domain.TempStockDomain;
  */
 public interface ITempStockService extends IBaseService<TempStockDomain> {
 
+
+    Integer getStockBySizeAndColor(String goodsNo,Long colorId,Long sizeId);
+
 }

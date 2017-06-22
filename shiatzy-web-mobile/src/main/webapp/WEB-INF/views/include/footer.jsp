@@ -70,6 +70,7 @@
 <!-- 页面插件开始 -->
 <script src="${ctx}/static/js/common.js"></script>
 <script src="${ctx}/static/js/plugins/validator/jquery.validator.min.js"></script>
+<script src="${ctx}/static/js/jquery.formatCurrency-1.4.0.js"></script>
 <c:if test="${sessionScope.language=='en_US'}">
     <script src="${ctx}/static/js/plugins/validator/local/en_US.js"></script>
 </c:if>
@@ -100,6 +101,26 @@
     });
 </script>
 <script>
+
+    function fmoney(s, n) {
+        var parma = n;
+        n = n > 0 && n <= 20 ? n : 2;
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+        var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+        t = "";
+        for (i = 0; i < l.length; i++) {
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+        }
+        if(parma==0){
+            return t.split("").reverse().join("");
+        }else{
+            return t.split("").reverse().join("") + "." + r;
+        }
+    }
+    function rmoney(s) {
+        return parseFloat(s.replace(/[^\d\.-]/g, ""));
+    }
+
     function setPrice() {
         $.post("/home/queryCurrentRate",function (data) {
             var coinSymbol = '￥';
@@ -114,15 +135,18 @@
                     coinSymbol = '<spring:message code="coin.EU"/>';
                 }
                 rate = obj.rate;
-                console.log("rate"+rate);
+                console.log("rate1:"+rate);
             }
+
+            console.log("rate2:"+rate);
             $(".do-pro-price").each(function () {
                 var oldPri = $(this).attr("data-value")*1;
-                $(this).text(coinSymbol+" "+((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+                $(this).text(coinSymbol+" "+fmoney((oldPri/rate).toFixed(0),0)).attr("data-rate",rate);
+
             }) ;
             $(".only-price").each(function () {
                 var oldPri = $(this).text()*1;
-                $(this).text(((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+                $(this).text(fmoney((oldPri/rate).toFixed(0),0)).attr("data-rate",rate);
             }) ;
 
             $(".coinSymbol").text(coinSymbol);

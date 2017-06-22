@@ -51,7 +51,7 @@
                     <img style="width:80px;height: 100px;" src="${ImageModel.toFirst(row.goodsItem.thumb).file}" alt="">
                 </div>
                 <div class="name" style="text-align: center">${row.goods.name}</div>
-                <div class="price">${row.goodsItem.price}</div>
+                <div class="price do-pro-price" data-value="${row.goodsItem.price}"></div>
                 <ul class="color clearfix">
                         <li style="background: ${row.goodsItem.colorValue}"></li>
                 </ul>
@@ -69,6 +69,9 @@
 <script>
 
     $(function () {
+
+        setPrice();
+
         $(".top-right-nav").find("li:eq(2)").addClass("active");
         var backUrl = document.referrer;
         console.log("backUrl:"+backUrl);

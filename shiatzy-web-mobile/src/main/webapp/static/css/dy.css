@@ -392,7 +392,7 @@
 .card-title {
     position: absolute;
     top: 3.401rem;
-    left: 15%;
+    left: 25%;
     color: #fff;
     border-bottom: 1px solid #999999;
     padding: 0 2.5507rem;
@@ -408,8 +408,9 @@
 .card-num {
     position: absolute;
     top: 15.5rem;
-    left: 15%;
+    left: 14%;
     color: #fff;
+    font-size: 16px;
 }
 
 .anew {

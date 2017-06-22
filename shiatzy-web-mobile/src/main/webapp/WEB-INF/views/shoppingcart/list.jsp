@@ -82,9 +82,9 @@
         var total = 0;
         $(".goods").find(".goods-right").each(function () {
            var num =  ($(this).find(".quantitys").val())*1;
-           var price  = ($(this).find(".js_price").text())*1;
+           var price  = rmoney($(this).find(".js_price").text())*1;
             total +=num * price;
-            $("#js_total").html(total.toFixed(2));
+            $("#js_total").html(fmoney(total.toFixed(0),0));
         })
     }
     function setPrice() {
@@ -105,7 +105,7 @@
             }
             $(".do-pro-price").each(function () {
                 var oldPri = $(this).attr("data-value")*1;
-                $(this).text(((oldPri/rate).toFixed(2))).attr("data-rate",rate);
+                $(this).text(fmoney((oldPri/rate).toFixed(0),0)).attr("data-rate",rate);
             });
             $(".coinSymbol").text(coinSymbol);
             clsTotal();

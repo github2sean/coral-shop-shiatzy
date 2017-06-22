@@ -80,7 +80,8 @@ public class AccountController extends MobileBaseController {
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
         if(customerDomain.getIsArtClubMember()!=null&&customerDomain.getIsArtClubMember()==1) {
             TempMemberQuery query = new TempMemberQuery();
-            query.setMobile(customerDomain.getPhone());
+            String phone = customerDomain.getPhone();
+            query.setMobile(StringUtils.isNotBlank(phone)&&phone.length()>2?phone.substring(2,phone.length()):"");
             customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
         }
 

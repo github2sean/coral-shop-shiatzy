@@ -32,8 +32,22 @@
             <img src="${ctx}/static/images/SC_peony1.png" alt="">
         </c:when>
     </c:choose>
-    <p class="card-title "><spring:message code="vip.valid.card.title"/></p>
-    <p class="card-name ">${tempMemberDomain.cardType}</p>
+    <p class="card-title ">ART CLUB <spring:message code="vip.valid.card.title"/></p>
+
+    <c:choose>
+        <c:when test="${tempMemberDomain.cardType=='普通会员'}">
+            <p class="card-name "> <spring:message code="account.personal.card.common"/></p>
+        </c:when>
+        <c:when test="${tempMemberDomain.cardType=='墨竹卡会员'}">
+            <p class="card-name "> <spring:message code="account.personal.card.bamboo"/></p>
+        </c:when>
+        <c:when test="${tempMemberDomain.cardType=='兰花卡会员'}">
+            <p class="card-name "> <spring:message code="account.personal.card.fish"/></p>
+        </c:when>
+        <c:when test="${tempMemberDomain.cardType=='牡丹卡会员'}">
+            <p class="card-name "> <spring:message code="account.personal.card.peony"/></p>
+        </c:when>
+    </c:choose>
     <p class="card-num "><spring:message code="vip.valid.card.number"/>：${tempMemberDomain.cardNo}</p>
 </div>
 <div class="anew">
@@ -42,8 +56,7 @@
     </a>
 </div>
 <div class="club-bottom" >
-    <p><spring:message code="vip.valid.card.footer.line1"/></p>
-    <p><spring:message code="vip.valid.card.footer.line2"/></p>
+    <p><spring:message code="account.personal.card.point"/>：${tempMemberDomain.point}</p>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

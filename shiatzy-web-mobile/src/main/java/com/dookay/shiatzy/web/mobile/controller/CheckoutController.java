@@ -152,7 +152,7 @@ public class CheckoutController  extends BaseController{
             }
             fee = shippingCountryDomain.getShippingCost()/rate;
         }
-        order.setShipFee(new BigDecimal(fee).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        order.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
         //根据国家获取值
         order.setShippingCountryId(Long.parseLong(countryId));
         order.setCurrentCode(currentCode);
@@ -182,17 +182,8 @@ public class CheckoutController  extends BaseController{
 
     @RequestMapping(value = "getStockBySizeAndColor",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult getStockBySizeAndColor(String goodsNo,String color,String size){
-        Integer num = 0;
-        TempStockQuery query = new TempStockQuery();
-        query.setProductNo(goodsNo);
-        query.setColor(color);
-        query.setSize(size);
-        TempStockDomain tempStockDomain = tempStockService.getFirst(query);
-        if(tempStockDomain!=null){
-            num = tempStockDomain.getNum();
-        }
-        return successResult("查询成功",num);
+    public JsonResult getStockBySizeAndColor(String goodsNo,Long colorId,Long sizeId){
+        return successResult("查询成功",tempStockService.getStockBySizeAndColor(goodsNo,colorId,sizeId));
     }
 
 
@@ -242,7 +233,7 @@ public class CheckoutController  extends BaseController{
             line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
             Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
-            line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
             System.out.println("goodsDomain:"+goodsDomain+"\n sizeList:"+sizeList);
         }
         //商品金额
@@ -405,7 +396,7 @@ public class CheckoutController  extends BaseController{
         Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
         Double orderTotal = goodsTotal + shipFee -couponDiscount/rate - memberDiscount/rate;
         BigDecimal bd = new BigDecimal(orderTotal);
-        orderDomain.setOrderTotal(bd.setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        orderDomain.setOrderTotal(bd.setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
     }
 
     /**
@@ -669,7 +660,7 @@ public class CheckoutController  extends BaseController{
                     System.out.println(3);
                     break;
             }
-            trueDiscountPrice = new BigDecimal(trueDiscountPrice).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue();
+            trueDiscountPrice = new BigDecimal(trueDiscountPrice).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue();
             order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }
