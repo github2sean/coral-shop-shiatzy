@@ -121,10 +121,10 @@
     <div class="pay-way">
         <p><spring:message code="payment.failed.paymentWay"/></p>
         <div class="way-img">
-            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
-            <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/alipay.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/online.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/jcb.jpg"  alt=""></a>
         </div>
     </div>
