@@ -1762,6 +1762,7 @@ i {
     height: 0;
     border-style: solid;
     border-width: 0 6px 6px 6px;
+    border-color:transparent;
 }
 
 .top-right-nav>li.active.cart:after {
