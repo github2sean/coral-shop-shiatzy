@@ -1608,13 +1608,13 @@ i {
 .dx-commodity .content .order {
     display: block;
     text-align: center;
-    margin: 3.4rem auto .5rem;
+    margin: 3.4rem auto 1rem;
     background-color: #e6e6e6;
     width: 100%;
     font-size: 1.2rem;
     line-height: 2.6rem;
     height: 2.6rem;
-    border: 2px solid #999;
+    border: 2px solid #e6e6e6;
 }
 
 .dx-commodity .content .order {
@@ -1762,18 +1762,17 @@ i {
     height: 0;
     border-style: solid;
     border-width: 0 6px 6px 6px;
-    border-color: transparent transparent #999 transparent;
 }
 
-.top-right-nav>li.cart:after {
+.top-right-nav>li.active.cart:after {
     border-color: transparent transparent #333 transparent;
 }
 
-.top-right-nav>li.boutique:after {
+.top-right-nav>li.active.boutique:after {
     border-color: transparent transparent #999 transparent;
 }
 
-.top-right-nav>li.account:after {
+.top-right-nav>li.active.account:after {
     border-color: transparent transparent #666 transparent;
 }
 
