@@ -56,7 +56,9 @@
                     <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
                     <span><spring:message
                             code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
-                    &nbsp;&nbsp;<c:if test="${row.stock<1}"><span class="sellOut">（<spring:message code="sellout" />）</span></c:if>
+                    &nbsp;&nbsp;
+                    <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
+                    <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
                 </div>
                 <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
@@ -110,6 +112,46 @@
 
 <script>
 
+    function checkout() {
+        var isLogin = '${isGuest}'=='onLine'?true:false;
+        var seconds = 0;
+        $(".color-size").find(".sellOut").each(function () {
+            var $self = $(this);
+            if($self.hasClass("hasOut")){
+                seconds = 3000;
+                var index = layer.load(2, {
+                    shade: [0.4,'#000'] //0.1透明度的白色背景
+                });
+                var id  = isLogin?$self.attr("data-value"):$self.parents(".color-size").siblings(".do-list-icon").find(".deleteBtn").attr("data-formid");
+                var url = isLogin?"/cart/removeFromCart":"/cart/removeFromSessionCart";
+                var data = isLogin?{"shoppingCartItemId":id}:{"formId":id};
+                $.post(url,data,function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        isDelete = true;
+                        console.log("isDelete1:"+isDelete);
+                        var  isNull= $(".goodsDiv").length<=0?true:false;
+                        setCartNum();
+                        if(isNull){
+                            setTimeout('window.location.reload();',800);
+                        }else{
+                            clsTotal();
+                        }
+                    }
+                });
+            }
+        });
+
+        var href = $(".choose-store").find(".findStore").attr("data-href");
+        setTimeout(function(){
+            layer.closeAll('loading');
+            goTo(href);
+        },seconds);
+    }
+    function goTo(href) {
+        location.href=href;
+    }
     $(function () {
         $(".top-right-nav").find("li:eq(1)").addClass("active");
         //console.log('${goodsList}');
@@ -118,11 +160,11 @@
 
         $(".choose-store").find(".findStore").click(function(){
             var $sellOut = $(".goodsDiv").find(".sellOut");
-            if($sellOut.length>0){
+            if($sellOut.hasClass("hasOut")){
                 layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
-                return false;
             }
-            location.href = $(this).attr("data-href");
+            setTimeout(checkout,500);
+            //location.href = $(this).attr("data-href");
         });
 
         $(".choose-store").find(".toRegister").click(function(){
