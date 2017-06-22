@@ -2155,7 +2155,7 @@ h3 {
     transition: max-height .5s
 }
 
-.search-rec-img.active {
+.active  .search-rec-img{
     max-height: 400px;
 }
 
