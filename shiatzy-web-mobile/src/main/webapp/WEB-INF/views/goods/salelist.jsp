@@ -74,33 +74,39 @@
         <div class="do-sort link-down">筛选<button type="reset" class="btn-reset">重置筛选</button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">颜色</div>
-            <c:forEach var="item" items="${colorList}">
-            <div class="do-sort-group">
-                <div class="do-color-show"></div>
-                <input type="checkbox" name="colorIds" id="color${item.id}" value="${item.id}">
-                <label for="color${item.id}">${item.name}(10)</label>
-            </div>
-            </c:forEach>
+           <div class="do-sort-group-wrap">
+                <c:forEach var="item" items="${colorList}">
+               <div class="do-sort-group">
+                   <div class="do-color-show"></div>
+                   <input type="checkbox" name="colorIds" id="color${item.id}" value="${item.id}">
+                   <label for="color${item.id}">${item.name}(10)</label>
+               </div>
+               </c:forEach>
+           </div>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">材质</div>
-            <c:forEach var="item" items="${attributeList}">
-                <div class="do-sort-group">
-                    <input type="checkbox" name="attributeIds" id="color${item.id}" value="${item.id}">
-                    <label for="color${item.id}">${item.value}(10)</label>
-                </div>
-            </c:forEach>
+            <div class="do-sort-group-wrap">
+                <c:forEach var="item" items="${attributeList}">
+                    <div class="do-sort-group">
+                        <input type="checkbox" name="attributeIds" id="color${item.id}" value="${item.id}">
+                        <label for="color${item.id}">${item.value}(10)</label>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down">尺寸</div>
-            <c:forEach var="item" items="${sizeList}">
-                <div class="do-sort-group">
-                    <input type="checkbox" name="sizeIds" id="size${item.id}" value="${item.id}">
-                    <label for="size${item.id}">${item.name}(10)</label>
-                </div>
-            </c:forEach>
+          <div class="do-sort-group-wrap">
+                <c:forEach var="item" items="${sizeList}">
+                  <div class="do-sort-group">
+                      <input type="checkbox" name="sizeIds" id="size${item.id}" value="${item.id}">
+                      <label for="size${item.id}">${item.name}(10)</label>
+                  </div>
+              </c:forEach>
+          </div>
         </div>
-        <div class="text-center"><button type="button" class="btn-submit">完成</button></div>
+        <div class="text-center"><button type="button" class="btn-submit">应用</button></div>
     </form>
 </div>
 <div id="j_panel_sort" class="pro-filter-panel">

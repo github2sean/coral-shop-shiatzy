@@ -221,7 +221,11 @@
         }
     }
 
-    $('.slider').bxSlider();
+    $('.slider').bxSlider({
+        pager:false,
+        controls:false,
+        auto:true
+    });
 
     $(function () {
 

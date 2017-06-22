@@ -222,9 +222,9 @@
     <a class="btn-left iconfont" id="j_show_nav" href="#">&#xe76d;</a>
     <span class="do-logo-w"><a href="/home/index"><img src="${ctx}/static/images/logo.png" alt=""></a></span>
     <ul class="top-right-nav">
-        <li class=""><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num hide">${cartNumber==null?0:cartNumber}</span></a></li>
-        <li><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg><span class="do-num boutique_num hide">0</span></a></li>
-        <li><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
+        <li class="cart"><a href="/cart/list"><svg><use xlink:href="#cart-nav"></use></svg><span class="do-num cart_num hide">${cartNumber==null?0:cartNumber}</span></a></li>
+        <li class="boutique"><a href="/boutique/list"><svg><use xlink:href="#appointment-nav"></use></svg><span class="do-num boutique_num hide">0</span></a></li>
+        <li class="account"><a href="/u/account/index"><svg><use xlink:href="#account"></use></svg></a></li>
     </ul>
     </div>
 </header>
@@ -245,7 +245,7 @@
             </form>
         </div>
         <div class="search-rec-img active">
-           <img src="${ctx}/static/images/Banner-1.jpg" alt="" style="height:150px;width: 100%">
+           <img src="${ctx}/static/images/Banner-1.jpg" alt="">
         </div>
         <ul class="guide-nav j_drop_down">
             <c:forEach var="level1" items="${web:categoryList()}" begin="1">
