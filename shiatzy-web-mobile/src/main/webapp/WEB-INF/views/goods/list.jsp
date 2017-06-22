@@ -74,6 +74,7 @@
         <div class="do-sort link-down"><spring:message code="goods.list.filter"/><button type="reset" class="btn-reset"><spring:message code="goods.list.reset"/></button></div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down"><spring:message code="goods.detail.colors"/></div>
+            <div class="do-sort-group-wrap">
             <c:forEach var="item" items="${colorList}">
             <div class="do-sort-group">
                 <div class="do-color-show" style="background-color: ${item.color}"></div>
@@ -85,32 +86,37 @@
                 <label for="color${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
             </div>
             </c:forEach>
+            </div>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down"><spring:message code="goods.list.attr"/></div>
-            <c:forEach var="item" items="${attributeList}">
-                <div class="do-sort-group">
-                    <input type="checkbox" name="attributeIds"
-                    <c:forEach var="row" items="${attrIds}">
-                        <c:if test="${row==item.id}">checked="checked"</c:if>
-                    </c:forEach>
-                           id="color${item.id}" value="${item.id}">
-                    <label for="color${item.id}">${sessionScope.language=='en_US'?item.enValue:item.value}</label>
-                </div>
-            </c:forEach>
+            <div class="do-sort-group-wrap">
+                <c:forEach var="item" items="${attributeList}">
+                    <div class="do-sort-group">
+                        <input type="checkbox" name="attributeIds"
+                        <c:forEach var="row" items="${attrIds}">
+                            <c:if test="${row==item.id}">checked="checked"</c:if>
+                        </c:forEach>
+                               id="color${item.id}" value="${item.id}">
+                        <label for="color${item.id}">${sessionScope.language=='en_US'?item.enValue:item.value}</label>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down"><spring:message code="shoppingCart.size"/></div>
-            <c:forEach var="item" items="${sizeList}">
-                <div class="do-sort-group">
-                    <input type="checkbox" name="sizeIds"
-                    <c:forEach var="row" items="${sizeIds}">
-                           <c:if test="${row==item.id}">checked="checked"</c:if>
-                    </c:forEach>
-                           id="size${item.id}" value="${item.id}">
-                    <label for="size${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
-                </div>
-            </c:forEach>
+            <div class="do-sort-group-wrap">
+                <c:forEach var="item" items="${sizeList}">
+                    <div class="do-sort-group">
+                        <input type="checkbox" name="sizeIds"
+                        <c:forEach var="row" items="${sizeIds}">
+                               <c:if test="${row==item.id}">checked="checked"</c:if>
+                        </c:forEach>
+                               id="size${item.id}" value="${item.id}">
+                        <label for="size${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
         <div class="text-center"><button type="button" class="btn-submit"><spring:message code="subscription.complete"/></button></div>
     </form>
