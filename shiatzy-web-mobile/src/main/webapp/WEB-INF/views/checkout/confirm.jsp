@@ -115,7 +115,8 @@
     </div>
 
     <style>
-        .way-img img{width:80px;}
+        .way-img img{height:30px;}
+        .way-img a+a{margin-left: 5px;}
     </style>
     <div class="pay-way">
         <p><spring:message code="payment.failed.paymentWay"/></p>
