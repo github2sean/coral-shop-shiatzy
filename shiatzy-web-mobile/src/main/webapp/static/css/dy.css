@@ -510,6 +510,7 @@
     border-radius: 50%;
     border:1px solid #333;
     text-indent: 0;
+    font-size:1.2rem;
 }
 
 .i-radiobox.iconfont{

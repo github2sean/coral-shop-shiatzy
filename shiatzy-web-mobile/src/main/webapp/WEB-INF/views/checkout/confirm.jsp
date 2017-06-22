@@ -115,15 +115,16 @@
     </div>
 
     <style>
-        .way-img img{width:80px;}
+        .way-img img{height:30px;}
+        .way-img a+a{margin-left: 5px;}
     </style>
     <div class="pay-way">
         <p><spring:message code="payment.failed.paymentWay"/></p>
         <div class="way-img">
-            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
-            <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/alipay.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/online.jpg" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
+            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/jcb.jpg"  alt=""></a>
         </div>
     </div>
