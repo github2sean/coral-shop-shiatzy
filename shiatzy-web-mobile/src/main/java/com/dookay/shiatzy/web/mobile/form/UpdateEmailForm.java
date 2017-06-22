@@ -14,4 +14,7 @@ public class UpdateEmailForm {
 
     @NotBlank(message = "确认邮箱不能为空")
     private String confirmEmail;
+
+    @NotBlank(message = "密码不能为空")
+    private String password;
 }

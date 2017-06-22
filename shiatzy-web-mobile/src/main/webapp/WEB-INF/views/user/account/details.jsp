@@ -49,7 +49,7 @@
 
             <c:if test="${not empty customerDomain.tempMemberDomain}">
                 <li>
-                    <a href="#">
+                    <a href="/u/account/vipDetail">
                         <span><spring:message code="account.personal.level"/>：
                         <c:choose>
                             <c:when test="${customerDomain.tempMemberDomain.cardType=='普通会员'}">
@@ -66,6 +66,7 @@
                             </c:when>
                         </c:choose>
                         </span>
+                        <span style="float: right;">></span>
                         <span style="float: right;"> <spring:message code="account.personal.card.point"/>：${customerDomain.tempMemberDomain.point}</span>
                     </a>
                 </li>

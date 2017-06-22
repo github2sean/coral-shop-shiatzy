@@ -244,12 +244,13 @@
                 <button class="iconfont" id="searchBtn">&#xe610;</button>
             </form>
         </div>
-        <div class="search-rec-img active">
-           <img src="${ctx}/static/images/Banner-1.jpg" alt="">
-        </div>
+
         <ul class="guide-nav j_drop_down">
-            <c:forEach var="level1" items="${web:categoryList()}" begin="1">
+            <c:forEach var="level1" items="${web:categoryList()}" begin="0">
             <li data-image="${ImageModel.toFirst(level1.thumb).file}">
+                <div class="search-rec-img">
+                    <img src="${ImageModel.toFirst(level1.thumb).file}" alt="">
+                </div>
                 <a>${sessionScope.language=='en_US'?level1.enName:level1.name}
                     <ul class="guide-sub-nav">
                     <c:forEach var="level2" items="${level1.children}">
