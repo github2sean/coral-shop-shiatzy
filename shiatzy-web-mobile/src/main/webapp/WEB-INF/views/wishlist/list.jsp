@@ -35,7 +35,7 @@
             <ul class="body">
                 <c:forEach var="row" items="${categoryList}">
                     <li class="category-item <c:if test='${categoryDomain.id==row.id}'>active</c:if>" >
-                        <a href="/cart/wishlist?categoryId=${row.id}">${row.name}</a>
+                        <a href="/cart/wishlist?categoryId=${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a>
                     </li>
                 </c:forEach>
             </ul>
@@ -76,7 +76,7 @@
                     <div class="pic" style="height: 100px">
                         <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
-                    <div class="name">${goods.name}</div>
+                    <div class="name">${sessionScope.language=='en_US'?goods.enName:goods.name}</div>
                     <div class="price do-pro-price" data-value="${goods.price}">&nbsp;</div>
                     <ul class="color clearfix">
                         <c:forEach var="goodsItem" items="${goods.goodsItemList}">
