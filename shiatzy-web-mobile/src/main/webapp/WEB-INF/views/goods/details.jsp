@@ -13,10 +13,10 @@
           <div class="title">${sessionScope.language=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
           <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
-          <div class="dx-bag-slide">
+          <div class="dx-bag-slide" style="height: 28rem;">
             <ul class="j_s_slider">
               <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 25rem;"></a></li>
                 <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
                 <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
                 <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
@@ -24,7 +24,7 @@
             </ul>
           </div>
           <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span>
-            <a href="javascript:;" class="j_collect active">
+            <a href="javascript:;" class="j_collect ">
               <svg transform="scale(2) ">
                 <use xlink:href="#heart-red"></use>
               </svg>
@@ -56,8 +56,11 @@
               </c:forEach>
             </ul>
           </div>
-          <a type="button" class="addition addToCart"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
-          <a type="button" class="order addToBoutique"><span><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
+          <div style="margin-top: 2rem;">
+          <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
+          <br>
+          <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
+          </div>
           <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
 
           <div class="dx-GoodsDetails j_collapse">
@@ -97,7 +100,7 @@
         var selectSizeId = '${sizeList[0].id}';
         $(function () {
           setPrice();
-          $(".j_s_slider").bxSlider();
+          $(".j_s_slider").bxSlider({pager:null});
             $(".j_collapse").on("click",'h3', function () {
                 $(this).parent().toggleClass("active");
             });
@@ -158,8 +161,9 @@
 
           var isLogin = '${isGuest}' == 'onLine' ? true : false;
           $(".j_collect").click(function () {
+
             var url = "";
-            var isAdd = $(this).find("use").attr("xlink:href");
+            //var isAdd = $(this).find("use").attr("xlink:href");
             var sizeId = '';
             $(".sizeIds").each(function () {
               if ($(this).hasClass("active")) {
@@ -179,14 +183,15 @@
             };
             console.log(isAdd);
             var url = "";
-            if (isAdd == "#heart-red") {
               url = "/cart/addToCart";
+           /* if (isAdd == "#heart-red") {
+                url = "/cart/addToCart";
             } else if (isLogin && isAdd == "#heart") {
               // $(this).find("use").attr("xlink:href","#heart");
               url = "/cart/removeFromWish";
             } else if (!isLogin && isAdd == "#heart") {
               url = "/cart/removeFromSessionCart";
-            }
+            }*/
             console.log(url);
             $.post(url, data, function (result) {
               console.log(result);

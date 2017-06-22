@@ -56,7 +56,7 @@ var commonApp = function () {
     }
 
     var btn = $('.j_collect');
-    clickStyle(btn, '#heart', '#heart-red');
+    //clickStyle(btn, '#heart', '#heart-red');
 
     var apbtn = $('.j_appointment');
     clickStyle(apbtn, '#ap-small', '#ap-active');
