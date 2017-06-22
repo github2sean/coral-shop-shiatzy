@@ -1,9 +1,9 @@
 package com.dookay.coral.common.model;
 
 import com.dookay.coral.common.config.ConfigManager;
+import com.dookay.coral.common.utils.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,17 @@ import java.util.List;
  */
 public class ImageModel {
 
+    private  String imageDomain =  ConfigManager.getProperty("imageDomain");
+
     private String alt;
 
     private String file;
 
     //todo 域名配置
-    public String getFile() {
+    public String getFile() throws Exception {
+        if(StringUtils.isNotBlank(imageDomain)){
+            return StringUtils.trimEnd(imageDomain,"/")+file;
+        }
         return this.file;
     }
 

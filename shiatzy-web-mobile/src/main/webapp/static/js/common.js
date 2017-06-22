@@ -22,10 +22,7 @@ var commonApp = function () {
     $('.j_drop_down>li').on('click', function () {
       $(this).siblings().removeClass("active");
       $(this).toggleClass('active');
-      var img = $(this).attr("data-image");
-      if($(this).hasClass("active")){
-        $(".search-rec-img").find("img").attr("src", img);
-      }
+
     });
     //点击栏目后显示图片
     $('.guide-nav>li>a').on('click', function () {

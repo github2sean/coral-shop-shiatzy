@@ -56,8 +56,8 @@
               </c:forEach>
             </ul>
           </div>
-          <a type="button" class="addition addToCart"><spring:message code="goods.detail.add2cart"/></a>
-          <a type="button" class="order addToBoutique"><spring:message code="goods.detail.add2reservation"/></a>
+          <a type="button" class="addition addToCart"><span><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
+          <a type="button" class="order addToBoutique"><span><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
           <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
 
           <div class="dx-GoodsDetails j_collapse">
