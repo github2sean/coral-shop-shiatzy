@@ -114,9 +114,14 @@
     
     function checkout() {
         var isLogin = '${isGuest}'=='onLine'?true:false;
+        var seconds = 0;
         $(".minus").siblings("span").each(function () {
             var $self = $(this);
             if($self.hasClass("hasOut")){
+                seconds = 3000;
+                var index = layer.load(2, {
+                    shade: [0.4,'#000'] //0.1透明度的白色背景
+                });
                 var id  = isLogin?$self.attr("data-value"):$self.parents(".goods-right").siblings(".do-list-icon").find(".deleteBtn").attr("data-formid");
                 var url = isLogin?"/cart/removeFromCart":"/cart/removeFromSessionCart";
                 var data = isLogin?{"shoppingCartItemId":id}:{"formId":id};
@@ -142,7 +147,7 @@
         setTimeout(function(){
             layer.closeAll('loading');
             goTo(href);
-        },1500);
+        },seconds);
     }
     function goTo(href) {
         location.href=href;
@@ -158,9 +163,6 @@
 
         $(".checkout").on("click",function(){
 
-            var index = layer.load(2, {
-                shade: [0.4,'#fff'] //0.1透明度的白色背景
-            });
             if($(".minus").siblings("span").hasClass("hasOut")){
                 layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
             }
