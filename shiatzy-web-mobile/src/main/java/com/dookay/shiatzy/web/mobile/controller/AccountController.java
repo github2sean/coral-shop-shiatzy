@@ -24,6 +24,7 @@ import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
+import com.dookay.shiatzy.web.mobile.util.I18NReverse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,10 +168,10 @@ public class AccountController extends MobileBaseController {
 
         Boolean isSuccess = customerService.updateCustomer(updateAccount,updateCustomer,updaCustomerAddress);
         if(!isSuccess){
-            return successResult("修改失败");
+            return successResult(getI18N().getUpdateFailed());
         }
 
-        return successResult("修改成功");
+        return successResult(getI18N().getUpdateSuccess());
     }
 
     @RequestMapping(value = "toUpdateEmail", method = RequestMethod.GET)
@@ -196,15 +197,22 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         String email = updateEmailForm.getEmail();
-        accountDomain.setEmail(email);
-        accountDomain.setUserName(email);
-        customerDomain.setEmail(email);
-        if(accountService.getAccountByEmail(email)!=null){
-            return errorResult("邮箱已存在");
+        String password = updateEmailForm.getPassword();
+
+        Boolean checkAccount = accountService.validateAccount(accountDomain.getUserName(),password);
+        if(checkAccount){
+            accountDomain.setEmail(email);
+            accountDomain.setUserName(email);
+            customerDomain.setEmail(email);
+            if(accountService.getAccountByEmail(email)!=null){
+                return errorResult(getI18N().getEmailIsExsit());
+            }
+            accountService.update(accountDomain);
+            customerService.update(customerDomain);
+            return successResult(getI18N().getUpdateSuccess());
+        }else {
+            return errorResult(getI18N().getPasswordAndUserNameErro());
         }
-        accountService.update(accountDomain);
-        customerService.update(customerDomain);
-        return successResult("修改成功");
     }
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
@@ -215,9 +223,9 @@ public class AccountController extends MobileBaseController {
            // accountService.updateEmailOrPassword(accountDomain, accountDomain.getEmail(), updatePasswordForm.getNewPassword());
             accountService.changePassword(accountDomain,updatePasswordForm.getOldPassword(),updatePasswordForm.getNewPassword());
         }else{
-            return errorResult("旧密码不正确");
+            return errorResult(getI18N().getOldPasswordErro());
         }
-        return successResult("修改成功");
+        return successResult(getI18N().getUpdateSuccess());
     }
 
 
@@ -245,7 +253,7 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerService.validVip(customerDomain,phoneNumber);
-        return successResult("验证成功");
+        return successResult(getI18N().getVlaidSuccess());
     }
 
     @RequestMapping(value = "validUserName", method = RequestMethod.POST)
@@ -254,9 +262,9 @@ public class AccountController extends MobileBaseController {
         AccountQuery query = new AccountQuery();
         query.setUserName(userName);
         if(accountService.getOne(query)!=null){
-            return errorResult("邮箱已存在");
+            return errorResult(getI18N().getEmailIsExsit());
         }
-        return successResult("验证成功");
+        return successResult(getI18N().getVlaidSuccess());
     }
 
     @RequestMapping(value = "vipDetail", method = RequestMethod.GET)
@@ -307,7 +315,14 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerDomain.setSubscribeType(subscribeType);
         customerService.update(customerDomain);
-        return successResult("操作成功");
+        return successResult(getI18N().getOperateSuccess());
     }
 
+    public I18NReverse getI18N() {
+        HttpSession session = HttpContext.current().getRequest().getSession();
+        int type = 0;
+        String  lang = (String)session.getAttribute("language");
+        type = "en_US".equals(lang)?1:0;
+        return new I18NReverse(type);
+    }
 }

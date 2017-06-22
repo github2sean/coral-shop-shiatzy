@@ -46,6 +46,15 @@
                         code="account.personal.updateEmailOrPass.holderReNewEmail"/>'"
                        data-rule="<spring:message code="email"/>:required;email;match(email)"/>
             </div>
+            <div class="input form-item">
+                <i>*</i>
+                <input id="password" name="password" type="password"
+                       placeholder="<spring:message code="account.personal.updateEmailOrPass.holderPassword"/>"
+                       onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message
+                        code="account.personal.updateEmailOrPass.holderPassword"/>'"
+                       data-rule="<spring:message code="oldPassword"/>:required;password"/>
+            </div>
+
             <div class="emailInfo"></div>
             <button type="submit" class="btn-default"><spring:message
                     code="account.personal.updateEmailOrPass.confirmChange"/></button>

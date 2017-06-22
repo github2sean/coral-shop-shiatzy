@@ -28,7 +28,7 @@
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>:
                         <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="${row.num}"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a></c:if>
-                        <c:if test="${row.stock<1}"><a href="#" class="minus hasOut" data-value="${row.id}">-</a><input class="quantitys" type="text" value="0"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a>(已售罄)</c:if>
+                        <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="text" value="0"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a><span class="hasOut" data-value="${row.id}">(已售罄)</span></c:if>
                     </div>
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
                 </div>
@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="shopping-start">
-        <a data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
+        <a href="javascript:void(0)" data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
         <div class="explain">
             <ul>
                 <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/><span>></span></a></li>
@@ -111,6 +111,44 @@
             clsTotal();
         });
     }
+    
+    function checkout() {
+        var isLogin = '${isGuest}'=='onLine'?true:false;
+        $(".minus").siblings("span").each(function () {
+            var $self = $(this);
+            if($self.hasClass("hasOut")){
+                var id  = isLogin?$self.attr("data-value"):$self.parents(".goods-right").siblings(".do-list-icon").find(".deleteBtn").attr("data-formid");
+                var url = isLogin?"/cart/removeFromCart":"/cart/removeFromSessionCart";
+                var data = isLogin?{"shoppingCartItemId":id}:{"formId":id};
+                $.post(url,data,function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $self.parents(".goodsDiv").remove();
+                        isDelete = true;
+                        console.log("isDelete1:"+isDelete);
+                        var  isNull= $(".goodsDiv").length<=0?true:false;
+                        setCartNum();
+                        if(isNull){
+                            setTimeout('window.location.reload();',800);
+                        }else{
+                            clsTotal();
+                        }
+                    }
+                });
+            }
+        });
+
+        var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
+        setTimeout(function(){
+            layer.closeAll('loading');
+            goTo(href);
+        },1500);
+    }
+    function goTo(href) {
+        location.href=href;
+    }
+    
+    
     $(function(){
 
         $(".top-right-nav").find("li:first").addClass("active");
@@ -119,13 +157,14 @@
         //
 
         $(".checkout").on("click",function(){
-           if($(".minus").hasClass("hasOut")){
-               layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
-               return false;
-           }
-            var href = !isLogin?"${ctx}/passport/toLogin":$(".checkout").attr("data-href");
-            location.href = href;
-            //$(".checkout").attr("href",href);
+
+            var index = layer.load(2, {
+                shade: [0.4,'#fff'] //0.1透明度的白色背景
+            });
+            if($(".minus").siblings("span").hasClass("hasOut")){
+                layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
+            }
+            setTimeout(checkout,500);
         });
 
 
