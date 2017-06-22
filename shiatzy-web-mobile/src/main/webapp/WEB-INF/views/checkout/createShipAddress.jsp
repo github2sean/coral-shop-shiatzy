@@ -24,44 +24,46 @@
     }
 </style>
 
-<form class="addressForm" method="post" action="/checkout/addAddress">
+<form class="addressForm" method="post" action="#" >
     <div class="dx-EditAddress">
         <div class="content">
-            <div class="title">新增地址 <a href="javascript:" onclick="self.location=document.referrer;">回上一步</a></div>
+            <div class="title"><spring:message code="add.delivery.title"/> <a href="javascript:" onclick="self.location=document.referrer;"><spring:message code="goBack"/></a></div>
             <div class="recipients">
-                <div class="title">联系人*</div>
-                <div class="name" >姓* <input type="text" value="${address.firstName}" name="firstName" id="firstName"></div>
-                <div class="name" >名* <input type="text" value="${address.lastName}" name="lastName" id="lastName"></div>
-                <div class="appellation ">称谓*
+                <div class="title"><spring:message code="add.delivery.shippingman"/></div>
+                <div class="name form-item2" ><spring:message code="account.personal.firstName"/>*
+                    <input type="text"  name="firstName" id="firstName" data-rule="<spring:message code='account.personal.firstName'/>:required;"></div>
+                <div class="name form-item2" ><spring:message code="account.personal.lastName"/>* <input type="text"  name="lastName" id="lastName" data-rule="<spring:message code='account.personal.lastName'/>:required;"></div>
+                <div class="appellation form-item2"><spring:message code="account.personal.update.title"/>
                     <select name="title" id="title" class="">
-                            <option value="女士">女士</option>
-                            <option value="先生">先生</option>
-                            <option value="小姐">小姐</option>
-                            <option value="无">无</option>
+                            <option value="女士"><spring:message code="add.delivery.ms"/></option>
+                            <option value="先生"><spring:message code="add.delivery.mr"/></option>
+                            <option value="小姐"><spring:message code="add.delivery.miss"/></option>
+                            <option value="无"><spring:message code="add.delivery.none"/></option>
                     </select>
                     <%--<input type="text" value="${address.title}" name="title" id="title"> <span> ></span></div>--%>
                  </div>
-                <div class="tel">电话号码* <input type="tel" value="${address.phone}" name="phone" id="phone"></div>
+                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel"  name="phone" id="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
             </div>
 
             <div class="address">
-                <div class="title">地址*</div>
-                <div class="country">国别 / 区域*
+                <div class="title"><spring:message code="account.personal.address"/></div>
+                <div class="country"><spring:message code="add.delivery.country"/>/ <spring:message code="add.delivery.zone"/>*
 
                     <select name="countryId" id="countryId" class="">
                         <c:forEach var="row" items="${countryList}">
-                        <option value="${row.id}">${row.name}</option>
+                        <option value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</option>
                         </c:forEach>
                     </select>
 
                     </div>
-                <div class="province">省/州* <input type="text" value="${address.province}" name="province" id="province"> </div>
-                <div class="city">城区* <input type="text" value="${address.city}" name="city" id="city"> </div>
-                <div class="detailedAddress">详细地址 <input type="text" value="${address.address}" name="address"></div>
-                <div class="more">更多信息（地址） <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="province form-item2"><spring:message code="account.personal.update.state"/>* <input type="text" value="${address.province}" name="province" id="province" data-rule="<spring:message code='account.personal.update.state'/>:required;" /> </div>
+                <div class="city form-item2"><spring:message code="account.personal.update.city"/>* <input type="text" value="${address.city}" name="city" id="city" data-rule="<spring:message code='account.personal.update.city'/>:required;"> </div>
+                <div class="detailedAddress form-item2"><spring:message code="add.delivery.detialAddress"/>* <input type="text" value="${address.address}" name="address" data-rule="<spring:message code='add.delivery.detialAddress'/>:required;"></div>
+                <div class="more "><spring:message code="add.delivery.moreinfo"/> <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="more form-item2"><spring:message code="account.personal.update.postalCode"/>* <input type="text" value="${address.postalCode}" name="postalCode" data-rule="<spring:message code='account.personal.update.postalCode'/>:required;"></div>
             </div>
             <div class="remind"></div>
-            <a href="#"  class="btn completeBtn">完成</a>
+            <input class="btn completeBtn" type="button" value="<spring:message code="subscription.complete"/>"/>
         </div>
     </div>
 </form>
@@ -80,113 +82,9 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    //姓氏验证
-    function firstName()
-    {
-        var firstName=$('#firstName').val();
-        if(firstName == '')
-        {
-            $(".remind").show().css("color","red").text("姓氏不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //名字验证
-    function lastName()
-    {
-        var lastName=$('#lastName').val();
-        if(lastName == '')
-        {
-            $(".remind").show().css("color","red").text("名字不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //称谓验证
-    function title()
-    {
-        var title=$('#title').val();
-        if(title == '')
-        {
-            $(".remind").show().css("color","red").text("称谓不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //电话验证
-    function phone()
-    {
-        var phone=$('#phone').val();
-        if(phone == '')
-        {
-            $(".remind").show().css("color","red").text("电话不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //国家验证
-    function countryId()
-    {
-        var countryId=$('#countryId').val();
-        if(countryId == '')
-        {
-            $(".remind").show().css("color","red").text("国家/区域不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //省州验证
-    function province()
-    {
-        var province=$('#province').val();
-        if(province == '')
-        {
-            $(".remind").show().css("color","red").text("省州不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
-    //地区验证
-    function city()
-    {
-        var city=$('#city').val();
-        if(city == '')
-        {
-            $(".remind").show().css("color","red").text("地区不能为空！");
-            return false;
-        }
-        $(".remind").hide();
-        return true;
-    }
 
     $(function(){
-        $('#firstName').focus(function(){
 
-        }).blur(firstName);
-        $('#lastName').focus(function(){
-
-        }).blur(lastName);
-        $('#title').focus(function(){
-
-        }).blur(title);
-        $('#countryId').focus(function(){
-
-        }).blur(countryId);
-        $('#province').focus(function(){
-
-        }).blur(province);
-        $('#city').focus(function(){
-
-        }).blur(city);
-        $('#phone').focus(function(){
-
-        }).blur(phone);
 
         $('.appellation-popup').children("li:not(:first-child)").click(function (){
             var li=$(this).text();
@@ -212,17 +110,33 @@
             layer.close(layer.index);
         });
 
-        //校验暂未做
+
+        //
+
+
+
         $(".completeBtn").click(function () {
-            var $form = $(".addressForm");
-            var data = $form.serialize();
-            $.post("/checkout/createShipAddress",data,function (data) {
-                console.log(data);
-                if(data.code==200){
-                    layer.msg("添加成功");
-                    setTimeout('self.location=document.referrer;',2000);
+            var len  = $(".form-item2").find("input").next("span").length;
+            var isNull = false;
+            $(".form-item2").find("input").each(function () {
+                if($(this).val()==''){
+                    isNull =true;
                 }
-            },"json");
+            });
+
+            if(!isNull){
+                var $form = $(".addressForm");
+                var data = $form.serialize();
+                $.post("/checkout/createShipAddress",data,function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        layer.msg('<spring:message code="add.delivery.success"/>');
+                        setTimeout('self.location=document.referrer;',2000);
+                    }
+                },"json");
+            }else{
+                $(".addressForm").submit();
+            }
         });
 
     });
