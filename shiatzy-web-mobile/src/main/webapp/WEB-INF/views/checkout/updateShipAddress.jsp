@@ -26,38 +26,39 @@
 <form class="addressForm" method="post" action="/checkout/addAddress">
     <div class="dx-EditAddress">
         <div class="content">
-            <div class="title">编辑地址 <a href="javascript:" onclick="self.location=document.referrer;">返回上页</a></div>
+            <div class="title"><spring:message code="update.delivery"/> <a href="javascript:" onclick="self.location=document.referrer;"><spring:message code="goBack"/></a></div>
             <div class="recipients">
                 <input type="hidden" value="${address.id}" name="id">
-                <div class="title">联系人*</div>
-                <div class="name" >名* <input type="text" value="${address.firstName}" name="firstName"></div>
-                <div class="name" >姓* <input type="text" value="${address.lastName}" name="lastName"></div>
-                <div class="appellation ">称谓*
+                <div class="title"><spring:message code="add.delivery.shippingman"/>*</div>
+                <div class="name form-item2" ><spring:message code="account.personal.firstName"/>* <input type="text" value="${address.firstName}" name="firstName" data-rule="<spring:message code='account.personal.firstName'/>:required;"></div>
+                <div class="name form-item2" ><spring:message code="account.personal.lastName"/>* <input type="text" value="${address.lastName}" name="lastName" data-rule="<spring:message code='account.personal.lastName'/>:required;"></div>
+                <div class="appellation "><spring:message code="account.personal.update.title"/>
                     <select name="title" id="title" class="" value="${address.title}">
-                        <option value="女士">女士</option>
-                        <option value="先生">先生</option>
-                        <option value="小姐">小姐</option>
-                        <option value="无">无</option>
+                        <option value="女士"><spring:message code="add.delivery.ms"/></option>
+                        <option value="先生"><spring:message code="add.delivery.mr"/></option>
+                        <option value="小姐"><spring:message code="add.delivery.miss"/></option>
+                        <option value="无"><spring:message code="add.delivery.none"/></option>
                     </select>
                 </div>
-                <div class="tel">电话* <input type="tel" value="${address.phone}" name="phone"></div>
+                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel" value="${address.phone}" name="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
             </div>
             <div class="address">
-                <div class="title">地址信息*</div>
-                <div class="country">地区*
+                <div class="title"><spring:message code="account.personal.address"/></div>
+                <div class="country"><spring:message code="add.delivery.country"/>/ <spring:message code="add.delivery.zone"/>*
 
                     <select name="countryId" id="countryId" class="">
                         <c:forEach var="row" items="${countryList}">
-                            <option value="${row.id}" <c:if test="${row.id==address.countryId}">selected="selected"</c:if> >${row.name}</option>
+                            <option value="${row.id}" <c:if test="${row.id==address.countryId}">selected="selected"</c:if> >${sessionScope.language=='en_US'?row.enName:row.name}</option>
                         </c:forEach>
                     </select>
                     </div>
-                <div class="province">省/州* <input type="text" value="${address.province}" name="provinceId"> </div>
-                <div class="city">区* <input type="text" value="${address.city}" name="cityId"> </div>
-                <div class="detailedAddress">详细地址: <input type="text" value="${address.address}" name="address"></div>
-                <div class="more">更多信息（地址）: <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="province form-item2"><spring:message code="account.personal.update.state"/>* <input type="text" value="${address.province}" name="province" data-rule="<spring:message code='account.personal.update.state'/>:required;"> </div>
+                <div class="city form-item2"><spring:message code="account.personal.update.city"/>* <input type="text" value="${address.city}" name="city" data-rule="<spring:message code='account.personal.update.city'/>:required;"> </div>
+                <div class="detailedAddress form-item2"><spring:message code="add.delivery.detialAddress"/>* <input type="text" value="${address.address}" name="address" data-rule="<spring:message code='add.delivery.detialAddress'/>:required;"></div>
+                <div class="more"><spring:message code="add.delivery.moreinfo"/> <input type="text" value="${address.memo}" name="memo"></div>
+                <div class="more form-item2"><spring:message code="account.personal.update.postalCode"/>* <input type="text" value="${address.postalCode}" name="postalCode" data-rule="<spring:message code='account.personal.update.postalCode'/>:required;"></div>
             </div>
-            <a href="#"  class="btn completeBtn">保存</a>
+            <a href="#"  class="btn completeBtn"><spring:message code="orderinfo.update"/></a>
         </div>
     </div>
 </form>
@@ -105,16 +106,27 @@
 
         $(".completeBtn").click(function () {
 
-            var $form = $(".addressForm");
-            var data = $form.serializeArray();
-            $.post("/checkout/updateShipAddress",data,function (data) {
-                if(data.code==200){
-                    layer.msg(data.message);
-                    setTimeout('self.location=document.referrer;',2000);
-                }else{
-                    layer.msg(data.message);
+            var isNull = false;
+            $(".form-item2").find("input").each(function () {
+                if($(this).val()==''){
+                    isNull =true;
                 }
             });
+            if(!isNull){
+                var $form = $(".addressForm");
+                var data = $form.serializeArray();
+                $.post("/checkout/updateShipAddress",data,function (data) {
+                    if(data.code==200){
+                        layer.msg('<spring:message code="update.delivery.success"/>');
+                        setTimeout('self.location=document.referrer;',2000);
+                    }else{
+                        layer.msg(data.message);
+                    }
+                });
+            }else {
+                $(".addressForm").submit();
+            }
+
         });
 
     });

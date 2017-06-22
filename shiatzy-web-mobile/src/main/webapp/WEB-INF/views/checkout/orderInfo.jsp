@@ -259,12 +259,18 @@
             var $now = $(this);
             var data = {"goodsNo":checkedNo,"colorId":goodsItemId,"sizeId":sizeId};
             console.log("data:"+data);
+
+            if(goodsItemId==''||sizeId==''){
+                layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
+                return false;
+            }
+
             $.post("/checkout/getStockBySizeAndColor",data,function (data) {
                 if(data.code==200 && data.data>0){
-                    var num = $(this).siblings(".dx-goods").find(".quantitys").val();
-                    var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$(this).attr("data-value"),"num":num};
+                    var num = $now.siblings(".dx-goods").find(".quantitys").val();
+                    var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$now.attr("data-value"),"num":num};
                     console.log(sendData);
-                    if(goodsItemId!=''&& sizeId!=''&&num!=null){
+                    if(goodsItemId!=''&& sizeId!=''&& num!=null){
                         //移除原来商品，把新的商品加入购物车，更新下当前的session
                         $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
                             console.log(data);
@@ -272,8 +278,6 @@
                                 location.href = "${ctx}/checkout/initOrder";
                             }
                         });
-                    }else{
-                        layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
                     }
                 }else{
                     layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
