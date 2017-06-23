@@ -11,6 +11,8 @@ import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
@@ -78,6 +80,8 @@ public class ReturnOrderController extends BaseController {
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private IGoodsService goodsService;
 
     private static String CART_LIST = "cartList";
     private static String RETURN_ORDER = "return_order";
@@ -131,6 +135,10 @@ public class ReturnOrderController extends BaseController {
             if(!(line.getStatus()==1 && line.getReturnNum()>=line.getNum())){
                 cartList.add(line);
             }
+            GoodsQuery goodsQuery = new GoodsQuery();
+            goodsQuery.setCode(line.getGoodsCode());
+            line.setGoodsDomain(goodsService.getFirst(goodsQuery));
+            line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
         if(cartList.size()==0){
             return "redirect:order/list";

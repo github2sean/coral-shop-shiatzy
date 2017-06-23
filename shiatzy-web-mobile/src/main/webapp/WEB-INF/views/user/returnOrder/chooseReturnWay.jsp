@@ -7,16 +7,16 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">选择退货方式</p>
-    <a style="float: right;" href="/returnOrder/returnOrderConsigneeInfo">< 上一页</a>
+    <p style="float: left"><spring:message code="consignee.selectBackWay"/></p>
+    <a style="float: right;" href="/returnOrder/returnOrderConsigneeInfo">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
-        <h3>选择退货方式</h3>
-        <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
+        <h3><spring:message code="consignee.selectBackWay"/></h3>
+        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
     </div>
-    <p>订单编号：<span>${order.orderNo}</span></p>
-    <p>订单日期：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
+    <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
+    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <div class="order-finish">
         <div class="delivery">
             <%--<div class="delivery-message" style="position: relative;margin-top: 2px">
@@ -33,58 +33,58 @@
             </div>--%>
                 <c:if test="${backWay==2}">
                     <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
-                        <span>快递运送</span>
+                        <span><spring:message code="consignee.shippingbackWay"/></span>
                         <p class="shipName"></p>
                         <p style="display: initial;" class="shipAddress"></p>
-                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
+                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
                     </div>
-                    <div class="delivery-message" style="height: 100px;background-color: #cccccc;">
-                        <p>门店退货</p>
-                        <p>${return_order.storeDomain.name}</p>
-                        <p>${return_order.storeDomain.address}</p>
-                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                    <div class="delivery-message" style="height: 120px;background-color: #cccccc;">
+                        <p><spring:message code="consignee.storebackWay"/></p>
+                        <p>${sessionScope.language=='en_US'?return_order.storeDomain.enTitle:return_order.storeDomain.name}</p>
+                        <p>${sessionScope.language=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}</p>
+                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
                 <c:if test="${backWay==1}">
                     <div class="delivery-message" style="margin-top: 2px">
-                        <span>快递运送</span>
+                        <span><spring:message code="consignee.shippingbackWay"/></span>
                         <p class="shipName">${sessionScope.shipName}</p>
                         <p style="display: initial;" class="shipAddress">${sessionScope.returnAddress}</p>
-                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
+                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
                     </div>
                     <div class="drugstore">
-                        <p>门店退货</p>
-                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                        <p><spring:message code="consignee.storebackWay"/></p>
+                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
                 <c:if test="${backWay!=1 &&backWay!=2}">
                     <div class="delivery-message" style="margin-top: 2px">
-                        <span>快递运送</span>
+                        <span><spring:message code="consignee.shippingbackWay"/></span>
                         <p class="shipName"></p>
                         <p style="display: initial;" class="shipAddress"></p>
-                        <a href="javascript:void(0)" class="fillAddress">编辑 ></a>
+                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
                     </div>
                     <div class="drugstore">
-                        <p>门店退货</p>
-                        <a href="/returnOrder/listStoreCountry">选择 ></a>
+                        <p><spring:message code="consignee.storebackWay"/></p>
+                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
 
         </div>
     </div>
     <div class="return-btn">
-        <a href="#" class="sureBtn">< 確認</a>
+        <a href="#" class="sureBtn">< <spring:message code="orderinfo.enter"/></a>
     </div>
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+            <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;" class="privacyNotice">隐私权政策</span>
+            <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
 </div>
@@ -102,23 +102,22 @@
         console.log('backWay '+'${backWay}');
         $(".sureBtn").click(function () {
             if('${backWay}'==''&&${return_order.storeDomain==null}){
-             layer.msg("请先选择退货方式");
+             layer.msg("<spring:message code="consignee.selectBackWay"/>");
              return false;
              }
             location.href="/returnOrder/returnOrderConsigneeInfo";
         });
 
         $(".fillAddress").on("click",function () {
-            var html = '<div style="overflow: hidden;text-align: center"><div style="width: 100%"><div style="width: 30%;text-align: right">收货人：</div><input type="text" id="shipName" style="width: 70%"/></div><div style="width: 100%;overflow: hidden"> <div style="width: 30%;text-align: right">收货人地址：</div><input id="shipAddress" type="text" style="width: 70%"/></div><div style="text-align: center;margin-top: 5px"><button onclick="hideLayer()" class="btn btn-default fillBtn" style="margin: auto;width: 40%;border-radius: 0">确认</button></div></div>';
+            var html = '<div style="overflow: hidden;text-align: center"><div style="width: 100%"><div style="width: 50%;text-align: left"><spring:message code="consignee.chooseway.consignee"/>：</div><input type="text" id="shipName" style="width: 70%"/></div><div style="width: 100%;overflow: hidden"> <div style="width: 50%;text-align: left"><spring:message code="consignee.chooseway.consigneeAddress"/>：</div><input id="shipAddress" type="text" style="width: 70%"/></div><div style="text-align: center;margin-top: 5px"><button onclick="hideLayer()" class="btn btn-default fillBtn" style="margin: auto;width: 40%;border-radius: 0"><spring:message code="orderinfo.enter"/></button></div></div>';
             //页面层
             layer.open({
                 type: 1,
-                title:"收货人信息",
-                area: ['400px', '190px'], //宽高
+                title:"<spring:message code="consignee.chooseway.renturnInfo"/>",
+                area: ['400px',' 30%'], //宽高
                 content: html
             });
         });
-
 
     });
 
@@ -127,7 +126,7 @@
         var name = $("#shipName").val();
         var shipAddress = $("#shipAddress").val();
         if(name==''||shipAddress==''){
-            layer.msg('收货信息必填');
+            layer.msg('<spring:message code="consignee.chooseway.mustrenturnInfo"/>');
             return false;
         }else {
             $.post("/returnOrder/fillReturnAddress",{"address":shipAddress,"name":name},function (data) {

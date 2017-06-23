@@ -13,6 +13,7 @@ import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
@@ -60,6 +61,8 @@ public class OrderController extends BaseController {
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private IGoodsService goodsService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -87,6 +90,7 @@ public class OrderController extends BaseController {
         //退货数量等于订单的数量不可再退货
         Integer orderNum = 0;
         Integer returnNum = 0;
+        GoodsQuery goodsQuery = new GoodsQuery();
         for (OrderItemDomain orderItemDomain:orderItemList){
             GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
                     .filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(null);
@@ -95,6 +99,8 @@ public class OrderController extends BaseController {
             returnNum += orderItemDomain.getReturnNum();
             JSONObject jsonObject  = JSONObject.fromObject(orderItemDomain.getSkuSpecifications());
             orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+jsonObject.get("size"))));
+            goodsQuery.setCode(orderItemDomain.getGoodsCode());
+            orderItemDomain.setGoodsDomain(goodsService.getFirst(goodsQuery));
         }
         //判断该订单是否有对应退货单
         ReturnRequestQuery backQuery = new ReturnRequestQuery();

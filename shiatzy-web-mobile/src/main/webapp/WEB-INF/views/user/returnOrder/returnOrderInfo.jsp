@@ -8,16 +8,16 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">退货</p>
+    <p style="float: left"><spring:message code="returnOrderInfo.return"/></p>
     <a style="float: right;" href="/order/details?orderId=${order.id}">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
-        <h3>选择退货商品和理由</h3>
-        <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
+        <h3><spring:message code="returnOrderInfo.chooseReason"/></h3>
+        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
     </div>
-    <p>订单编号：<span>${order.orderNo}</span></p>
-    <p>订单日期：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
+    <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
+    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <form method="post" class="goodsForm" action="/returnOrder/chooseGoodsAndReason">
     <c:forEach var="row" items="${cartList}" varStatus="num">
     <div class="return-commodity clearfix">
@@ -30,14 +30,26 @@
                 </label>
                 <div class="verify-main" style="float: right;width: 70%;border-bottom: none;height: auto">
                     <div class="img-message">
-                        <h3>${row.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                        <h3>${sessionScope.language=='en_US'?row.goodsDomain.enName:row.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                         <h6><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</h6>
-                        <div style="display: inline-block;" class="size hide">
-                            <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
-                            <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
+                        <div style="display: inline-block;" class="size">
+                            <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</p>
+                            <p> <spring:message code="shoppingCart.size"/> &nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</p>
                         </div>
-                        <p class="hide">数量：${row.num}</p>
-                        <p class="hide">单价　¥ ${row.goodsPrice}</p>
+                        <div class=""><spring:message code="shoppingCart.number"/>：${row.num} &nbsp; </div>
+                        <div class=""><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;<fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></div>
                     </div>
                 </div>
             </span>
@@ -45,86 +57,86 @@
         </div>
     </div>
    <div class="return-list clearfix" style="display: none">
-        <p style="">请勾选退货理由（可复选）</p>
+        <p style=""><spring:message code="returnOrderInfo.selectTips"/></p>
        <ul>
-           <li>尺寸</li>
+           <li><spring:message code="shoppingCart.size"/></li>
            <li>
                <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="太大"><i class="i-radiobox"></i>太大</label></span>
+                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="太大"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toobig"/></label></span>
                </div>
            </li>
            <li>
                <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="太小"><i class="i-radiobox"></i>太小</label></span>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="太小"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toosmall"/></label></span>
                </div>
            </li>
            <li>
                <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason3" value="太长"><i class="i-radiobox"></i>太长</label></span>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason3" value="太长"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toolong"/></label></span>
                </div>
            </li>
            <li>
                <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason4" value="太短"><i class="i-radiobox"></i>太短</label></span>
+                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason4" value="太短"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.tooshort"/></label></span>
                </div>
            </li>
        </ul>
         <ul>
-            <li>服务</li>
+            <li><spring:message code="returnOrderInfo.service"/></li>
             <li>
                 <div>
                     <input type="hidden" name="skuId" value="${row.skuId}">
                     <input type="hidden" name="orderId" value="${row.skuId}">
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i>错误商品</label></span>
+                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.service.erroGoods"/></label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason2" value="货运过长"><i class="i-radiobox"></i>货运过长</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason2" value="货运过长"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.service.longDelivery"/></label></span>
                 </div>
             </li>
         </ul>
         <ul>
-            <li>品质</li>
+            <li><spring:message code="returnOrderInfo.quality"/></li>
             <li>
                 <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i>瑕紙品</label></span>
+                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.quality.defectiveGoods"/></label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason2" value="与图片不符"><i class="i-radiobox"></i>与图片不符</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason2" value="与图片不符"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.quality.picErro"/></label></span>
                 </div>
             </li>
         </ul>
         <ul>
-            <li>其它</li>
+            <li><spring:message code="returnOrderInfo.other"/></li>
             <li>
                 <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i class="i-radiobox"></i>色差</label></span>
+                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.colorErro"/></label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason2" value="面料"><i class="i-radiobox"></i>面料</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason2" value="面料"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.skin"/></label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason3" value="风格不合适"><i class="i-radiobox"></i>风格不合适</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason3" value="风格不合适"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.styleErro"/></label></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason4" value="改变心意"><i class="i-radiobox"></i>改变心意</label></span>
+                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason4" value="改变心意"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.changeHeart"/></label></span>
                 </div>
             </li>
         </ul>
@@ -139,18 +151,18 @@
         </div>
     </div>--%>
     <div class="return-btn">
-        <a href="#" class="submitBtn">< 確認</a>
+        <a href="#" class="submitBtn">< <spring:message code="orderinfo.enter"/></a>
     </div>
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+            <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#">
             <span style="float:left;">> </span>
-            <span style="float: left;" class="privacyNotice">隐私权政策</span>
+            <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
 </div>

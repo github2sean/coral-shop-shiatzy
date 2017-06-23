@@ -7,13 +7,13 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title">精品店预约详情 <a style="float: right;" href="/u/account/index"><spring:message code="goBack"/></a></div>
+    <div class="dx-title"><spring:message code="reservation.list.title"/> <a style="float: right;" href="/u/account/index"><spring:message code="goBack"/></a></div>
     <div class="content">
-        <div class="dx-reservation">预约订单</div>
+        <div class="dx-reservation"><spring:message code="reservation.list.reservationorders"/></div>
         <c:if test="${empty reservationList}">
             <div class="content ">
                 <div id="toggleDiv3">
-                    <div class="dx-collect">预约单（0）</div>
+                    <div class="dx-collect"><spring:message code="reservation.list.reservationorder"/>（0）</div>
                 </div>
             </div>
         </c:if>
@@ -24,17 +24,17 @@
             <div class="status">
                 <c:choose>
                     <c:when test="${row.status==0}">
-                        已提交
+                        <spring:message code="reservation.list.submit"/>
                     </c:when>
                     <c:when test="${row.status==1}">
-                        已完成
+                        <spring:message code="reservation.list.finish"/>
                     </c:when>
                 </c:choose>
                 </div>
         </a>
         </c:forEach>
     </div>
-    <p class="text-center" id="auto_load"><span style="display:inline-block;transform:rotate(90deg);-webkit-transform:rotate(90deg)">&gt;</span>向下自动载入</p>
+    <p class="text-center" id="auto_load"><span style="display:inline-block;transform:rotate(90deg);-webkit-transform:rotate(90deg)">&gt;&nbsp;</span><spring:message code="order.list.loadmore"/></p>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

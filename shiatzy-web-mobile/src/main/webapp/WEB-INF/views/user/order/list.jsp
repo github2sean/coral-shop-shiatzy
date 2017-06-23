@@ -7,7 +7,7 @@
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
 <div class="order">
-    <p style="float: left">订单详情</p>
+    <p style="float: left"><spring:message code="order.detail"/></p>
     <a style="float: right;" href="/u/account/index" >< <spring:message code="goBack"/></a>
 </div>
 <div class="dx-orderList clearfix">
@@ -15,7 +15,7 @@
         <c:if test="${empty orderList.list}">
             <div class="content dx-wish dx-shopping">
                 <div id="toggleDiv2">
-                    <a href="/home/index"> <div class="message"><p>订单(0)</p></div></a>
+                    <a href="/home/index"> <div class="message"><p><spring:message code="order.order"/>(0)</p></div></a>
                 </div>
             </div>
         </c:if>
@@ -23,13 +23,31 @@
         <a href="/order/details?orderId=${row.id}" class="dx-reservaList clearfix clearfix${num.count-1} <c:if test='${num.count>9}'>hide</c:if>">
             <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd " type="date" dateStyle="long" /></div>
             <div class="orderNumber" style="padding-left: 5%">${row.orderNo}</div>
-            <div class="status" style="padding-right: 1rem" >${OrderStatusEnum.valueOf(row.status).description}</div>
+            <div class="status" style="padding-right: 1rem" >
+            <c:choose>
+                <c:when test="${row.status==1}">
+                    <spring:message code="order.status.waitPay"/>
+                </c:when>
+                <c:when test="${row.status==2}">
+                    <spring:message code="order.status.paid"/>
+                </c:when>
+                <c:when test="${row.status==3}">
+                    <spring:message code="order.status.send"/>
+                </c:when>
+                <c:when test="${row.status==4}">
+                    <spring:message code="order.status.reach"/>
+                </c:when>
+                <c:when test="${row.status==-1}">
+                    <spring:message code="order.status.cancel"/>
+                </c:when>
+            </c:choose>
+            </div>
         </a>
         </c:forEach>
         <c:if test="${orderList.list.size()>9}" >
             <div class="font-12 text-center do-load-list">
-                <span class="link-down-before moreList" id="auto_load">向下自动载入</span>
-                <span class="overGoods" style="display: none">-已到底部-</span>
+                <span class="link-down-before moreList" id="auto_load"><spring:message code="order.list.loadmore"/></span>
+                <span class="overGoods" style="display: none">-<spring:message code="order.list.nomore"/>-</span>
             </div>
         </c:if>
     </div>
