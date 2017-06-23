@@ -8,7 +8,7 @@
 </jsp:include>
 <div class="dx-login dx-shopping">
     <div class="dx-title clearfix" style="background-color: #666">
-        <div class="member"><span><img src="/static/images/icon-member.png" alt=""></span> <spring:message code="vip"/></div>
+        <div class="member"><span><svg><use xlink:href="#account"></use></svg></span> <spring:message code="vip"/></div>
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
