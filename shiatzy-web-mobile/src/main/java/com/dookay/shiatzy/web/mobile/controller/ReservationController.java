@@ -186,6 +186,9 @@ public class ReservationController extends BaseController{
         if(storeDomain==null){
             return errorResult("无此门店");
         }
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        String en_US = (String)session.getAttribute("language");
         ReservationDomain reservationDomain = new ReservationDomain();
         reservationDomain.setCreateTime(new Date());
         reservationDomain.setRank(1);
@@ -195,22 +198,21 @@ public class ReservationController extends BaseController{
         reservationDomain.setReservationNo(RandomUtils.buildNo());
         reservationDomain.setStoreTitle(storeDomain.getId()+"");
         reservationDomain.setTel(storeDomain.getTel());
-        reservationDomain.setAddress(storeDomain.getAddress());
+        reservationDomain.setAddress("en_US".equals(en_US)?storeDomain.getEnAddress():storeDomain.getAddress());
         reservationDomain.setTime(storeDomain.getTime());
         reservationDomain.setNote("");
         reservationDomain.setUpdateTime(new Date());
         reservationService.create(reservationDomain);
 
         //判断传入商品ID是否在精品店中
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
+
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
         for (ShoppingCartItemDomain line:cartList){
             ReservationItemDomain reservationItemDomain = new ReservationItemDomain();
             reservationItemDomain.setRank(1);
             reservationItemDomain.setIsVisible(1);
             reservationItemDomain.setReservationId(reservationDomain.getId());
-            reservationItemDomain.setGoodsName(line.getGoodsName());
+            reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
             reservationItemDomain.setSkuCode(line.getSkuId()+"");
             reservationItemDomain.setNum(line.getNum());
             reservationItemDomain.setItemId(line.getItemId());

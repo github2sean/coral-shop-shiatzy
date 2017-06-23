@@ -7,49 +7,49 @@
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
 <div class="dx-orderDetails clearfix">
-    <div class="dx-title">精品店预约订单详情<a href="/reservation/list">返回上页</a></div>
+    <div class="dx-title"><spring:message code="reservation.detail.title"/><a href="/reservation/list"><spring:message code="goBack"/></a></div>
     <div class="content">
-        <div class="dx-reservation">预约单详情</div>
-        <div class="orderNumber">预约单编号 ${reservationDomain.reservationNo}</div>
+        <div class="dx-reservation"><spring:message code="reservation.detail"/></div>
+        <div class="orderNumber"><spring:message code="reservation.detail.no"/>：${reservationDomain.reservationNo}</div>
         <div class="dx-details">
-            <div class="date">订单日期 : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
-            <div class="retail">预约门店 : <span>${reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap">地图</a></div>
-            <div class="site">地址 : <span>${reservationDomain.storeDomain.address}</span></div>
-            <div class="telephone">电话 : ${reservationDomain.tel}<span></span></div>
-            <div class="time">营业时间 : ${reservationDomain.storeDomain.time}<span></span></div>
-            <div class="status">订单状态 : <span>
+            <div class="date"><spring:message code="order.details.time"/> : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
+            <div class="retail"><spring:message code="reservation.detail.store"/> : <span>${sessionScope.language=='en_US'?reservationDomain.storeDomain.enTitle:reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap"><spring:message code="reservation.detail.map"/></a></div>
+            <div class="site"><spring:message code="account.personal.address"/>: <span>${reservationDomain.storeDomain.address}</span></div>
+            <div class="telephone"><spring:message code="account.personal.phoneNum"/> : ${reservationDomain.tel}<span></span></div>
+            <div class="time"><spring:message code="reservation.detail.openTime"/> : ${reservationDomain.storeDomain.time}<span></span></div>
+            <div class="status"><spring:message code="order.details.status"/>  : <span>
             <c:choose>
-                <c:when test="${reservationDomain.status==0}">已提交</c:when>
+                <c:when test="${reservationDomain.status==0}"><spring:message code="reservation.list.submit"/> </c:when>
             </c:choose>
             </span></div>
-            <div class="retentionTime">订单保留至: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
-            <div class="remake">备注栏位 : <span>${reservationDomain.note}</span></div>
+            <div class="retentionTime"><spring:message code="reservation.detail.saveEndTime"/>: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
+            <div class="remake"><spring:message code="reservation.detail.mem"/> : <span>${reservationDomain.note}</span></div>
         </div>
         <div class="dx-GoodsDetails">
-            <div class="title">商品详情</div>
+            <div class="title"><spring:message code="goods.detail.details"/></div>
             <c:forEach var="row" items="${reservationDomain.reservationItemDomainList}">
             <div class="goods clearfix">
                 <div class="goods-left">
                     <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
-                   <div class="status">状态 : <c:choose>
-                       <c:when test="${row.status==0}"><span>已提交</span></c:when>
-                       <c:when test="${row.status==1}"><span>预约成功</span></c:when>
+                   <div class="status"><spring:message code="return.detail.status"/> : <c:choose>
+                       <c:when test="${row.status==0}"><span><spring:message code="reservation.list.submit"/></span></c:when>
+                       <c:when test="${row.status==1}"><span><spring:message code="reservation.detail.success"/></span></c:when>
                    </c:choose></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsItemDomain.goodsNo}</div>
-                    <div class="color">${row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</span></div>
-                    <div class="quantity" data-value="${row.num}">数量:<span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsItemDomain.price}">单价&nbsp; &yen; <span>${row.goodsItemDomain.price}</span></div>
+                    <div class="color">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
+                    <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/>:<span>${row.num}</span></div>
+                    <div class="price" data-value="${row.goodsItemDomain.price}"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span><fmt:formatNumber value="${row.goodsItemDomain.price}" pattern="#,###"/></span></div>
                 </div>
             </div>
             </c:forEach>
 
         </div>
-        <div class="dx-total" style="text-align: right;font-size: 1.2rem;margin-top: 15px;">订单总额 : &yen; <span id="js_total"></span></div>
-        <div class="dx-explain">您的订单将于1-3个工作日内尽快配送至指定门店，请耐心等待。精品店预约订单遵循门店销售规则，不享有在线购物的“7天轻松退货”政策。</div>
-        <div class="dx-instructions"><a href="#do-online-service">在线客户服务</a></div>
+        <div class="dx-total" style="text-align: right;font-size: 1.2rem;margin-top: 15px;"><spring:message code="payment.failed.orderTotal"/> : &yen; <span id="js_total"></span></div>
+        <div class="dx-explain"><spring:message code="reservation.detail.endinfo"/></div>
+        <div class="dx-instructions"><a href="#do-online-service"><spring:message code="customerServiceLine"/></a></div>
         <!--<div class="dx-privacy"><a href="#">隐私权政策</a></div>-->
     </div>
 
@@ -67,7 +67,7 @@
             var num =  ($(this).find(".quantity").attr("data-value"))*1;
             var price  = ($(this).find(".price").attr("data-value"))*1;
             total +=num * price;
-            $("#js_total").html(" &nbsp;"+total.toFixed(2));
+            $("#js_total").html(" &nbsp;"+fmoney(total.toFixed(0),0));
         })
     };
     $(function () {
@@ -79,7 +79,7 @@
             var html = "<div id='allmap' style='width: 100%;height: 500px'></div>";
             layer.open({
                 type: 1,
-                title:'百度地图',
+                title:'<spring:message code="reservation.detail.baidumap"/>',
                 skin: 'layui-layer-rim', //加上边框
                 area: ['420px', '555px'], //宽高
                 content: html
