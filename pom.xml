@@ -643,7 +643,7 @@
                 <configuration>
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                     <httpConnector>
-                        <port>80</port>
+                        <port>8080</port>
                     </httpConnector>
                     <webApp>
                         <contextPath>/</contextPath>

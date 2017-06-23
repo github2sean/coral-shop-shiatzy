@@ -354,7 +354,8 @@ public class CheckoutController  extends BaseController{
             orderItemDomain.setSkuId(items.getSkuId());
             orderItemDomain.setNum(items.getNum());
             orderItemDomain.setItemId(items.getItemId());
-            orderItemDomain.setGoodsName(items.getGoodsName());
+            String en_US = (String)session.getAttribute("language");
+            orderItemDomain.setGoodsName("en_US".equals(en_US)?items.getGoodsEnName():items.getGoodsName());
             orderItemDomain.setGoodsCode(items.getGoodsCode());
             orderItemDomain.setGoodsPrice(items.getGoodsPrice());
             orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());

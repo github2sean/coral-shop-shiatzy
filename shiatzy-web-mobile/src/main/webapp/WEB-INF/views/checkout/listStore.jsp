@@ -39,8 +39,7 @@
             <span class="pull-right">v</span>
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
-
-                    <li data-option="${row.id}" value="${row.id}" >${sessionScope.language=='en_US'?row.enName:row.name}</li>
+                    <li data-option="${row.id}" value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</li>
                 </c:forEach>
             </ul>
         </div>

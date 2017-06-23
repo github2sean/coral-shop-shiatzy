@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import lombok.Data;
@@ -56,6 +57,8 @@ public class OrderItemDomain implements Serializable {
 	/*已退数量*/
 	private Integer returnNum;
 
+	@Transient
+	private GoodsDomain goodsDomain;
 
 	@Transient
 	private GoodsItemDomain goodsItemDomain;

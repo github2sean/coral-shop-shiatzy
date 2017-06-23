@@ -8,75 +8,111 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">确认退货</p>
-    <a style="float: right;" href="/returnOrder/returnOrderInfo?orderId=${order.id}" >< 上一页</a>
+    <p style="float: left"><spring:message code="consignee.confirmBack"/></p>
+    <a style="float: right;" href="/returnOrder/returnOrderInfo?orderId=${order.id}" >< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
-        <h3>确认退货</h3>
-        <p><a href="#"><img src="images/questionMark.png" alt="">退货说明</a></p>
+        <h3><spring:message code="consignee.confirmBack"/></h3>
+        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
     </div>
-    <p>订单编号：<span>${order.orderNo}</span></p>
-    <p>订单日期：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
+    <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
+    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <div class="verify-message-middle">
-        <h2>退货商品*</h2>
+        <h2><spring:message code="consignee.returnGoods"/></h2>
         <c:forEach var="row" items="${cartList}">
         <div style="padding-left: 3rem;position:relative;" class="verify-main">
             <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height: 100px;float: left">
             <div style="margin-left: 6rem;" class="img-message">
-                <h3>${row.goodsName}</h3>
+                <h3>${sessionScope.language=='en_US'?row.goodsDomain.enName:row.goodsDomain.name}</h3>
                 <h6>${row.goodsCode}</h6>
                 <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
-                    <p>${JSONObject.fromObject(row.skuSpecifications).getString("size")}号</p>
+                    <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</p>
+                    <p><spring:message code="shoppingCart.size"/> &nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</p>
                 </div>
-                <p>数量：${row.num}</p>
-                <p>单价　${row.goodsPrice}</p>
+                <p><spring:message code="shoppingCart.number"/>：${row.num}</p>
+                <p><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
+                    <c:choose>
+                        <c:when test="${order.currentCode=='CNY'}">
+                            &nbsp;<spring:message code="coin.ZH"/>
+                        </c:when>
+                        <c:when test="${order.currentCode=='USD'}">
+                            &nbsp;<spring:message code="coin.USA"/>
+                        </c:when>
+                        <c:when test="${order.currentCode=='EUR'}">
+                            &nbsp;<spring:message code="coin.EU"/>
+                        </c:when>
+                    </c:choose>
+                </font>&nbsp;<fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></p>
             </div>
         </div>
         </c:forEach>
     </div>
-    <p style="padding-left: 3rem;padding-right: 1.5rem;font-size: 0.9rem;margin-bottom: 0;">快遞費用<span style="float: right;">¥ 0</span></p>
+    <p style="padding-left: 3rem;padding-right: 1.5rem;font-size: 0.9rem;margin-bottom: 0;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
+                    <c:choose>
+                        <c:when test="${order.currentCode=='CNY'}">
+                            &nbsp;<spring:message code="coin.ZH"/>
+                        </c:when>
+                        <c:when test="${order.currentCode=='USD'}">
+                            &nbsp;<spring:message code="coin.USA"/>
+                        </c:when>
+                        <c:when test="${order.currentCode=='EUR'}">
+                            &nbsp;<spring:message code="coin.EU"/>
+                        </c:when>
+                    </c:choose>
+                </font>&nbsp;<fmt:formatNumber value="${empty row.shipFee?0:row.shipFee}" pattern="#,###"/></span></p>
     <div class="verify-message-bottom">
-        <h2 style="text-align: right;padding-right: 1.5rem;">預計退回总额：¥ ${preBackMoney}</h2>
+        <h2 style="text-align: right;padding-right: 1.5rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
+            <c:choose>
+                <c:when test="${order.currentCode=='CNY'}">
+                    &nbsp;<spring:message code="coin.ZH"/>
+                </c:when>
+                <c:when test="${order.currentCode=='USD'}">
+                    &nbsp;<spring:message code="coin.USA"/>
+                </c:when>
+                <c:when test="${order.currentCode=='EUR'}">
+                    &nbsp;<spring:message code="coin.EU"/>
+                </c:when>
+            </c:choose>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney}" pattern="#,###"/></h2>
     </div>
     <div class="returnWay" style="height: 20px">
-        <a href="/returnOrder/chooseReturnWay"><h4>选择退貨方式*<span style="float: right;">></span></h4></a>
-        <p>退貨方式：<span data-value="${sessionScope.backWay}" id="backWay">
+        <a href="/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
+        <p><spring:message code="consignee.backWay"/>：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
             <c:when test="${backWay==1}">
-                快递退货
+                <spring:message code="consignee.shippingbackWay"/>
             </c:when>
             <c:when test="${backWay==2}">
-                门店退货
+                <spring:message code="consignee.storebackWay"/>
             </c:when>
         </c:choose>
         </span></p>
-        <p>取件地址：<span class="addressInfo">
+        <p><spring:message code="consignee.backAddress"/>：<span class="addressInfo">
         <c:choose>
             <c:when test="${backWay==1}">
                 ${return_order.shipAddress}
             </c:when>
             <c:when test="${backWay==2}">
-                ${return_order.storeDomain.address}
+                ${sessionScope.language=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}
             </c:when>
         </c:choose>
         </span></p>
     </div>
 
     <div class="return-btn">
-        <a href="#" class="returnBtn" data-value="${order.id}">確認退货</a>
+        <a href="#" class="returnBtn" data-value="${order.id}"><spring:message code="consignee.sureBack"/></a>
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
-            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+            <span style="float:left;margin-left: -10px">> </span>
+            <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
-            <span style="float: left;">隐私权政策</span>
+            <span style="float:left;margin-left: -10px">> </span>
+            <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
 </div>

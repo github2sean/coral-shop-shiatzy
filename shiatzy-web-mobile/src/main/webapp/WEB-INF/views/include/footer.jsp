@@ -303,7 +303,7 @@
                 shade: [0],
                 area: ['100%', '80%'],
                 content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
-                shade: [0.5,'#000'] //0.1透明度的白色背景
+                shade: [0.3,'#000'] //0.1透明度的白色背景
             });
         });
 

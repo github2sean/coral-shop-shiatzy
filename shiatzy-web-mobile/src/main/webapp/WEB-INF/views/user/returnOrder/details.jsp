@@ -9,20 +9,51 @@
 
 
 <div class="order">
-    <p style="float: left">退货详情</p>
+    <p style="float: left"><spring:message code="return.detail.tiltle"/></p>
     <a style="float: right;" href="/order/list">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="verify-message-top">
-        <h2>退货单号：${returnRequestDomain.orderNo}</h2>
+        <h2><spring:message code="return.detail.no"/>：${returnRequestDomain.orderNo}</h2>
         <div class="return-time" style="border-top:2px solid #cccccc">
-            <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
-            提交，总计¥${preBackMoney-fee}的退款申请。
-            </p>
+            <c:if test="${sessionScope.language=='en_US'}">
+                <p>
+                    The return application was submitted at <fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />. A total of &nbsp;<font class="coinSymbol">
+                    <c:choose>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
+                            &nbsp;<spring:message code="coin.ZH"/>
+                        </c:when>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='USD'}">
+                            &nbsp;<spring:message code="coin.USA"/>
+                        </c:when>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='EUR'}">
+                            &nbsp;<spring:message code="coin.EU"/>
+                        </c:when>
+                    </c:choose>
+                </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/> refund.
+                </p>
+            </c:if>
+            <c:if test="${sessionScope.language!='en_US'}">
+                <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
+                    提交，总计&nbsp;<font class="coinSymbol">
+                        <c:choose>
+                            <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
+                                &nbsp;<spring:message code="coin.ZH"/>
+                            </c:when>
+                            <c:when test="${returnRequestDomain.orderDomain.currentCode=='USD'}">
+                                &nbsp;<spring:message code="coin.USA"/>
+                            </c:when>
+                            <c:when test="${returnRequestDomain.orderDomain.currentCode=='EUR'}">
+                                &nbsp;<spring:message code="coin.EU"/>
+                            </c:when>
+                        </c:choose>
+                    </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/>的退款申请。
+                </p>
+            </c:if>
         </div>
     </div>
     <div class="verify-message-middle">
-        <h2>退货详情<span style="float: right">v</span></h2>
+        <h2><spring:message code="return.detail.tiltle"/><span style="float: right">v</span></h2>
         <c:forEach var="row" items="${returnOrderItemList}">
         <div style="padding-left: 3rem;" class="verify-main">
             <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
@@ -30,30 +61,42 @@
                 <h3>${row.goodsName}</h3>
                 <h6>${row.goodsCode}</h6>
                 <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;">${row.goodsItemDomain.name}</p>
-                    <p>${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}号</p>
+                    <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</p>
+                    <p><spring:message code="shoppingCart.size"/>&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</p>
                 </div>
-                <p>数量：${row.num}</p>
-                <p>单价　¥ ${row.goodsPrice}</p>
+                <p><spring:message code="shoppingCart.number"/>：${row.num}</p>
+                <p><spring:message code="shoppingCart.unitPrice"/>　&nbsp;<font class="coinSymbol">
+                    <c:choose>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
+                            &nbsp;<spring:message code="coin.ZH"/>
+                        </c:when>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='USD'}">
+                            &nbsp;<spring:message code="coin.USA"/>
+                        </c:when>
+                        <c:when test="${returnRequestDomain.orderDomain.currentCode=='EUR'}">
+                            &nbsp;<spring:message code="coin.EU"/>
+                        </c:when>
+                    </c:choose>
+                </font>&nbsp; <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></p>
             </div>
         </div>
-        <p style="padding-left: 3rem;" class="order-state">状态：
+        <p style="padding-left: 3rem;" class="order-state"><spring:message code="return.detail.status"/>：
 
         <c:choose>
             <c:when test="${row.status==1}">
-                待收货
+                <spring:message code="return.detail.status.waitReseive"/>
             </c:when>
             <c:when test="${row.status==2}">
-                已收货
+                <spring:message code="return.detail.status.Reseived"/>
             </c:when>
             <c:when test="${row.status==3}">
-                接受退货
+                <spring:message code="return.detail.status.acceptBack"/>
             </c:when>
             <c:when test="${row.status==4}">
-                拒绝退货
+                <spring:message code="return.detail.status.refuseBack"/>
             </c:when>
             <c:when test="${row.status==5}">
-                取消退货
+                <spring:message code="return.detail.status.cancelBack"/>
             </c:when>
         </c:choose>
         </p>
@@ -62,19 +105,43 @@
 
 
     <div style="margin-bottom: 7rem;" class="verify-message-middle">
-        <p style="padding-left: 3rem;border-top: 2px solid #cccccc;line-height: 2.5rem" class="order-state">退货运费：<span class="fee" style="float: right">¥ -${fee}</span></p>
-        <p style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem">退回总额：¥ ${preBackMoney-fee}</p>
+        <p style="padding-left: 3rem;border-top: 2px solid #cccccc;line-height: 2.5rem" class="order-state"> <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${returnRequestDomain.orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${returnRequestDomain.orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp; -<fmt:formatNumber value="${fee}" pattern="#,###"/></span></p>
+        <p style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem"> <spring:message code="return.detail.total"/>：&nbsp;<font class="coinSymbol">
+            <c:choose>
+                <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
+                    &nbsp;<spring:message code="coin.ZH"/>
+                </c:when>
+                <c:when test="${returnRequestDomain.orderDomain.currentCode=='USD'}">
+                    &nbsp;<spring:message code="coin.USA"/>
+                </c:when>
+                <c:when test="${returnRequestDomain.orderDomain.currentCode=='EUR'}">
+                    &nbsp;<spring:message code="coin.EU"/>
+                </c:when>
+            </c:choose>
+        </font>&nbsp; <fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/></p>
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
-            <span style="float: left;">收到商品后7天内享有轻松退货政策</span>
+            <span style="float:left;margin-left: -10px">> </span>
+            <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
-            <span style="float: left;" class="privacyNotice">隐私权政策</span>
+            <span style="float:left;margin-left: -10px">> </span>
+            <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
 </div>

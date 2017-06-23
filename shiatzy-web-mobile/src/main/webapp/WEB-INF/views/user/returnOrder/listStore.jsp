@@ -8,39 +8,41 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left">门市退货设定</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a>
-</div><h6>选择退货门市</h6>
+    <p style="float: left"><spring:message code="return.list.store.title"/></p>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><spring:message code="goBack"/></a>
+</div><h6><spring:message code="return.list.store.selectstore"/></h6>
 <div class="dx-pickUp">
         <div class="model-select-box">
             <div class="model-select-country" data-value="" id="countrySelect">
-                <span class="pl-2" id="chooseCountry">中国</span>
+                <span class="pl-2" id="chooseCountry"><spring:message code="store.list.china"/></span>
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" style="display: none">
                     <c:forEach var="row" items="${storeCountryList}">
-                        <li data-option="${row.id}" value="${row.id}"  class="<c:if test='${row.id!=1}'>hide</c:if> ">${row.name}</li>
+                        <c:if test="${row.name=='中国'}">
+                            <li data-option="${row.id}" value="${row.id}" >${sessionScope.language=='en_US'?row.enName:row.name}</li>
+                        </c:if>
                     </c:forEach>
                 </ul>
             </div>
         </div>
         <div class="model-select-box" >
             <div class="model-select-city" data-value="" id="citySelect">
-                <span class="pl-2" id="chooseCity">请选择省/州</span>
+                <span class="pl-2" id="chooseCity"><spring:message code="store.list.select.state"/></span>
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" id="cityFather" style="display: none">
                     <c:forEach var="row" items="${storeCityList}">
-                        <li data-option="${row.id}" value="${row.id}">${row.name}</li>
+                        <li data-option="${row.id}" value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</li>
                     </c:forEach>
                 </ul>
             </div>
         </div>
         <div class="model-select-box" >
             <div class="model-select-store" data-value="" id="storeSelect">
-                <span class="pl-2" id="chooseStore">请选择门市</span>
+                <span class="pl-2" id="chooseStore"><spring:message code="store.list.select.store"/></span>
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" id="storeFather" style="display: none">
                     <c:forEach var="row" items="${storeList}" varStatus="num">
-                        <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${row.name}</li>
+                        <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${sessionScope.language=='en_US'?row.enTitle:row.name}</li>
                     </c:forEach>
                 </ul>
             </div>
@@ -52,7 +54,7 @@
             <p id="storeTel"></p>
         </div>
         <div class="submit-btn saveBtn" data-value="">
-            <a href="#">< 确认</a>
+            <a href="#">< <spring:message code="store.list.enter"/></a>
         </div>
 
 </div>
@@ -103,6 +105,8 @@
     };
     $(function () {
 
+        var isEn = ${sessionScope.language=='en_US'};
+
         $.post("/checkout/initCity",{"countryId":1},function (data) {
             var cityJson = data.data;
             console.log(cityJson);
@@ -113,10 +117,11 @@
                 var json = eval(cityJson)
                 for(var i=0; i<json.length; i++)
                 {
-                    $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                    var name = isEn?json[i].enName:json[i].name;
+                    $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                 }
             }else{
-                layer.msg("该国家下无门店");
+                layer.msg("<spring:message code='store.list.noStoreInCountry'/>");
             }
         });
 
@@ -140,10 +145,11 @@
                        var json = eval(cityJson)
                         for(var i=0; i<json.length; i++)
                         {
-                            $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                            var name = isEn?json[i].enName:json[i].name;
+                            $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                         }
                     }else{
-                        layer.msg("该国家下无门店");
+                        layer.msg("<spring:message code='store.list.noStoreInCountry'/>");
                     }
                 });
             });
@@ -169,10 +175,11 @@
                          json = eval(storeJson)
                         for(var i=0; i<json.length; i++)
                         {
-                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                            var name = isEn?json[i].enTitle:json[i].name;
+                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                         }
                     }else{
-                        layer.msg("该城市下无门店");
+                        layer.msg("<spring:message code='store.list.noStore'/>");
                     }
                 });
             });
@@ -187,8 +194,11 @@
                 var text = $(this).text();
                 $(this).parent().siblings("#chooseStore").text(text);
                 console.log(index);
-                $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
-                        .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
+                var name = isEn?json[index].enTitle:json[index].name;
+                var address = isEn?json[index].enAddress:json[index].address;
+
+                $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>："+name)
+                        .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>："+address).siblings("#storeTel").text("TEL："+json[index].tel);
                 $(".saveBtn").attr("data-value",json[index].id);
             });
 
@@ -197,7 +207,7 @@
         $(".saveBtn").click(function () {
             var storeId = $(this).attr("data-value");
             if(storeId==''){
-                layer.msg("请选择门店");
+                layer.msg("<spring:message code="store.list.select.store"/>");
                 return false;
             }
             $.post("/returnOrder/sureReturnWay",{"backWay":2,"addressId":storeId},function (data) {
