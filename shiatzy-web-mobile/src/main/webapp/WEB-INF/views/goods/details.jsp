@@ -256,6 +256,7 @@
 
           //iframe窗
           $(".sizeNotice").click(function () {
+            $("body").css("overflow","hidden");
             layer.open({
               type: 2,
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
@@ -267,6 +268,10 @@
               shade: [0.5, '#000'] //0.1透明度的白色背景
             });
           });
+
+          $(".layui-layer-close").click(function(){
+             $("body").css("overflow","");
+          })
 
           $(".whatBoutique").click(function () {
             layer.open({
