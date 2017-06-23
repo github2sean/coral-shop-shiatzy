@@ -47,7 +47,7 @@
           <div class="size j_collapse">
             <h3 class="title">
               <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></h3>
-            <ul  id="js_size">
+            <ul  id="js_size" class="hide">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
                   <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
@@ -100,7 +100,10 @@
           setPrice();
           $(".j_s_slider").bxSlider({pager:null});
             $(".j_collapse").on("click",'h3', function () {
-                $(this).parent().toggleClass("active");
+                $(this).parent().toggleClass("active").find("#js_size").slideToggle(0);
+            });
+            $(".j_collapse").on("click", function () {
+                $(this).find("#js_size").toggleClass("hide");
             });
           // 添加相册
           function galleryAppend() {
@@ -145,7 +148,7 @@
               layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
               return false;
             }
-            $(this).parent("ul").addClass("hide");
+            $(this).parents("#js_size").hide();
             var size = $(this).find('a').text();
             $(".sizeChecked").text(size);
             $(this).addClass("active").siblings().removeClass("active");
