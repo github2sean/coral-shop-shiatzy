@@ -8,6 +8,7 @@ import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -17,6 +18,10 @@ import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.temp.domain.TempStockDomain;
+import com.dookay.coral.shop.temp.query.TempStockQuery;
+import com.dookay.coral.shop.temp.service.ITempStockService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +59,10 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	private ICouponService couponService;
 	@Autowired
 	private IGoodsService goodsService;
+	@Autowired
+	private ITempStockService tempStockService;
+	@Autowired
+	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
 	@Override
 	public void withGoodItme(List<OrderItemDomain> cartList) {
@@ -79,6 +88,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	}
 
 	@Override
+	@Transactional("transactionManager")
 	public void updateSkuStock(OrderDomain orderDomain) {
 		if(orderDomain==null){
 			throw new ServiceException("订单为空");
@@ -87,9 +97,23 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 		query.setOrderId(orderDomain.getId());
 		List<OrderItemDomain> orderItemDomainList = orderItemService.getList(query);
 		for (OrderItemDomain orderItem :orderItemDomainList){
+			//sku中库存减少
 			SkuDomain skuDomain = skuService.get(orderItem.getSkuId());
 			skuDomain.setQuantity(skuDomain.getQuantity()-orderItem.getNum());
 			skuService.update(skuDomain);
+			//temp_stock中库存减少
+			TempStockQuery tempStockQuery = new TempStockQuery();
+			tempStockQuery.setProductNo(orderItem.getGoodsCode());
+			tempStockQuery.setSize(prototypeSpecificationOptionService.get(JSONObject.fromObject(orderItem.getSkuSpecifications()).getLong("size")).getName());
+			tempStockQuery.setColor(goodsItemService.get(orderItem.getItemId()).getName());
+			TempStockDomain tempStockDomain = tempStockService.getFirst(tempStockQuery);
+			if(tempStockDomain!=null){
+				Integer stock = tempStockDomain.getNum();
+				if(stock>0){
+					tempStockDomain.setNum(stock-1);
+					tempStockService.update(tempStockDomain);
+				}
+			}
 		}
 	}
 

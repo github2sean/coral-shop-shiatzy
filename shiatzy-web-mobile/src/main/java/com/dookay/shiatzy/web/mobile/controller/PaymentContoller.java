@@ -88,7 +88,7 @@ public class PaymentContoller extends BaseController{
     private ICouponService couponService;
 
     /**
-     * 第三方支付提交页面
+     * 支付宝支付提交页面
      * @param paymentMethod
      * @param orderNo
      * @return
@@ -129,7 +129,7 @@ public class PaymentContoller extends BaseController{
     }
 
     /**
-     * 第三方支付异步回调
+     * 支付宝支付异步回调
      * @return
      */
     @RequestMapping(value = "asynReturnUrl",method = RequestMethod.POST)
@@ -187,7 +187,7 @@ public class PaymentContoller extends BaseController{
                 if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                         total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
                         seller_id.equals(alipayConfig.getSeller_id())){
-                    orderService.updateOrderStatus(orderDomain);
+                    //orderService.updateOrderStatus(orderDomain);
                 }
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
@@ -207,7 +207,7 @@ public class PaymentContoller extends BaseController{
     }
 
     /**
-     * 第三方支付同步回调页面
+     * 支付宝支付同步回调页面
      * @return
      */
     @RequestMapping(value = "returnUrl",method = RequestMethod.GET)
@@ -264,16 +264,23 @@ public class PaymentContoller extends BaseController{
             }
             //该页面可做页面美工编辑
             message = "验证成功";
+            return new ModelAndView("redirect:payfailed?orderId="+out_trade_no);
         }else{
             //该页面可做页面美工编辑
             message = "验证失败";
+            return new ModelAndView("redirect:paysuccess?orderId="+out_trade_no);
         }
-        ModelAndView mv = new ModelAndView("payment/returnUrl");
+        /*ModelAndView mv = new ModelAndView("payment/returnUrl");
         mv.addObject("message",message);
         mv.addObject("order",orderDomain);
-        return mv;
+        return mv;*/
     }
 
+
+    /**
+     * 银联支付页面
+     * @return
+     */
     @RequestMapping(value = "initUnionPay",method = RequestMethod.GET)
     public ModelAndView initUnionPay(HttpServletRequest req,String orderNo,HttpServletResponse resp){
         resp.setContentType("text/html; charset="+ unionConfig.getEncoding());
@@ -345,7 +352,10 @@ public class PaymentContoller extends BaseController{
     }
 
 
-
+    /**
+     * 银联支付异步回调
+     * @return
+     */
     @RequestMapping(value = "backRcvResponse",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult backRcvResponse(HttpServletRequest req)throws ServletException, IOException{
@@ -387,7 +397,7 @@ public class PaymentContoller extends BaseController{
             OrderDomain orderDomain = orderService.getOrder(orderNo);
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
-                orderService.updateOrderStatus(orderDomain);
+                //orderService.updateOrderStatus(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -400,6 +410,10 @@ public class PaymentContoller extends BaseController{
         return successResult("支付成功");
     }
 
+    /**
+     * 银联支付同步回调页面
+     * @return
+     */
     @RequestMapping(value = "frontRcvResponse",method = RequestMethod.POST)
     public ModelAndView frontRcvResponse(HttpServletRequest req)throws ServletException, IOException {
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回开始");
@@ -435,6 +449,7 @@ public class PaymentContoller extends BaseController{
         if (!AcpService.validate(valideData, encoding)) {
             page.append("<tr><td width=\"30%\" align=\"right\">验证签名结果</td><td>失败</td></tr>");
             LogUtil.writeLog("验证签名结果[失败].");
+            return new ModelAndView("redirect:payfailed?orderId="+valideData.get("orderId"));
         } else {
             page.append("<tr><td width=\"30%\" align=\"right\">验证签名结果</td><td>成功</td></tr>");
             LogUtil.writeLog("验证签名结果[成功].");
@@ -449,13 +464,14 @@ public class PaymentContoller extends BaseController{
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 orderService.updateOrderStatus(orderDomain);
             }
-            mv.addObject("order",orderDomain);
+            return new ModelAndView("redirect:paysuccess?orderId="+orderNo);
+            //mv.addObject("order",orderDomain);
         }
-        mv.addObject("result",page);//req.setAttribute("result", page.toString());
+        /*mv.addObject("result",page);//req.setAttribute("result", page.toString());
         //req.getRequestDispatcher(pageResult).forward(req, resp);
         mv.addObject("message","支付成功");
         LogUtil.writeLog("FrontRcvResponse前台接收报文返回结束");
-        return mv;
+        return mv;*/
     }
 
 
@@ -563,6 +579,9 @@ public class PaymentContoller extends BaseController{
         return mv;
     }
 
+    /**
+     * ipaylinks 异步回调
+     */
     @RequestMapping(value = "noticeUrl",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult noticeUrl(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -585,7 +604,7 @@ public class PaymentContoller extends BaseController{
             System.out.println("ordertotal:"+orderDomain.getOrderTotal());
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal()) ){
-                orderService.updateOrderStatus(orderDomain);
+                //orderService.updateOrderStatus(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -596,6 +615,9 @@ public class PaymentContoller extends BaseController{
         return successResult("验证成功");
     }
 
+    /**
+     * ipaylinks 同步回调页面
+     */
     @RequestMapping(value = "ipayLinkReturnUrl",method = RequestMethod.POST)
     public ModelAndView ipayLinkReturnUrl(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
@@ -633,6 +655,10 @@ public class PaymentContoller extends BaseController{
         return mv;
     }
 
+
+    /**
+     * 支付失败
+     */
     @RequestMapping(value = "payfailed",method = RequestMethod.GET)
     public ModelAndView payfailed(String  orderId){
         ModelAndView mv = new ModelAndView("payment/payfailed");
@@ -651,6 +677,9 @@ public class PaymentContoller extends BaseController{
         mv.addObject("order",orderDomain);
         return mv;
     }
+    /**
+     * 支付成功
+     */
     @RequestMapping(value = "paysuccess",method = RequestMethod.GET)
     public ModelAndView paysuccess(String  orderId){
         ModelAndView mv = new ModelAndView("payment/paysuccess");
@@ -734,6 +763,9 @@ public class PaymentContoller extends BaseController{
         orderService.update(orderDomain);
     }*/
 
+    /**
+     * 金额格式化成不含小数点格式
+     */
     public String amtRemovePoint(Double amt){
         String returnAmt = "0";
         if(amt!=null){
@@ -752,6 +784,9 @@ public class PaymentContoller extends BaseController{
         return  returnAmt;
     }
 
+    /**
+     * 参数加密
+     */
     public String content2MD5(Map<String,String> map) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String returnStr = "";
 
@@ -774,6 +809,9 @@ public class PaymentContoller extends BaseController{
         return returnStr;
     }
 
+    /**
+     * 参数是否是必须的
+     */
     public Boolean isMustKey(String key){
         Boolean result = true;
         if("signMsg".equals(key) || IpayLinksStatics.REMARK.equals(key)
@@ -784,6 +822,9 @@ public class PaymentContoller extends BaseController{
         return result;
     }
 
+    /**
+     * 参数转码
+     */
     public String formatUTF8(String str) throws UnsupportedEncodingException {
         return new String(str.getBytes("gb2312"),"utf-8");
     }
