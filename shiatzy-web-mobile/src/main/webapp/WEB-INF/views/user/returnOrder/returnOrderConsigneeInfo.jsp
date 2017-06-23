@@ -105,13 +105,13 @@
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
+            <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
+            <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;" class="privacyNotice"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>

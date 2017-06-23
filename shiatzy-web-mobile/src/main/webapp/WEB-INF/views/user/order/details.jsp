@@ -79,13 +79,13 @@
                     <p><spring:message code="shoppingCart.unitPrice"/>　
                         &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -101,13 +101,13 @@
             <li><spring:message code="order.details.preDiscount"/><span>
              &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -116,13 +116,13 @@
             <li><spring:message code="order.details.couponDiscount"/><span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -131,13 +131,13 @@
             <li>Art Club&nbsp;<spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -146,13 +146,13 @@
             <li><spring:message code="payment.failed.fee"/><span>
              &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -162,13 +162,13 @@
         <p><spring:message code="payment.failed.total"/><span>
          &nbsp;<font class="coinSymbol">
                             <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
+                                <c:when test="${orderDomain.currentCode=='USD'}">
                                     &nbsp;<spring:message code="coin.USA"/>
                                 </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
@@ -195,13 +195,13 @@
 
     <div class="privacy">
         <a href="#">
-            <span style="float:left;">> </span>
+            <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
     <div class="privacy">
         <a href="#" class="privacyNotice">
-            <span style="float:left;">> </span>
+            <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="privacyPolicy"/></span>
         </a>
     </div>
