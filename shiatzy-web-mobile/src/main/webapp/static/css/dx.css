@@ -1792,7 +1792,7 @@ i {
     top: 0;
     bottom: 0;
     z-index: 99;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #fff;
     overflow: hidden;
     display: -webkit-box;
     display: -webkit-flex;
@@ -1813,7 +1813,7 @@ i {
 .gallery-block .iconfont {
     position: absolute;
     right: 30px;
-    top: 30px;
-    color: #fff;
+    top: 60px;
+    color: #333;
     font-size: 36px;
 }

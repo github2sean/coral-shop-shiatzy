@@ -113,7 +113,7 @@
             })
             $('body').append(htmlBefore + htmlMain + htmlAfter);
             $(".gallery-img-list").bxSlider({
-              pager: false
+              controls:false
             });
           }
 
