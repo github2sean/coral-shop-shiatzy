@@ -1960,6 +1960,10 @@ h3 {
     margin-top: .5rem
 }
 
+#subscribe_msg{
+    margin-top: 1rem;
+    color: #999;
+}
 .do-btn-subscribe {
     border: none;
     border-left: 1px solid #7f7f7f;

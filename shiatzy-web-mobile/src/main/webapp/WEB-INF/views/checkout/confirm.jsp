@@ -27,7 +27,7 @@
             </c:choose>
         </font>&nbsp;
         <span class=""><fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/></span></h3>
-    <div class="delivery content">
+        <div class="delivery content">
         <h3>1. <spring:message code="orderinfo.confirm.shipping"/></h3>
         <c:if test="${not empty order.storeDomain}">
             <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
@@ -71,6 +71,7 @@
             <li class=" payMethod" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
             <li class=" payMethod" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
             <li class=" payMethod" data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
+                <li class=" payMethod" data-value="4">货到付款(仅限中国大陆地区）</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}&nbsp;<spring:message code="orderinfo.confirm.numofgoods"/>　v</p>
         <div class="clearfix dx-shopping moreGoods" style="display:none;">
@@ -78,10 +79,10 @@
                 <c:forEach var="row" items="${cartList}">
                     <div class="goods clearfix goodsDiv">
                         <div class="goods-left">
-                            <div class="pic"> <img style="height: 120px;width: 100px" src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
+                            <div class="pic"> <img  src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                         </div>
-                        <div class="goods-right" style="word-break: break-all;width:200px;">
-                            <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                        <div class="goods-right" style="word-break: break-all;">
+                            <div class="name" >${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
                             <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                             <div class=""><spring:message code="shoppingCart.number"/>&nbsp;x${row.num}</div>
                             <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
@@ -115,7 +116,7 @@
     </div>
 
     <style>
-        .way-img img{height:30px;}
+        .way-img img{height:1.6rem;}
         .way-img a+a{margin-left: 5px;}
     </style>
     <div class="pay-way">
@@ -124,7 +125,7 @@
             <a href="#"><img src="${ctx}/static/images/alipay.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/online.jpg" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/visa.png" alt=""></a>
-            <a href="#"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
+            <a href="#" style="margin-left: 0px"><img src="${ctx}/static/images/mastercard.png" alt=""></a>
             <a href="#"><img src="${ctx}/static/images/jcb.jpg"  alt=""></a>
         </div>
     </div>

@@ -33,7 +33,6 @@
                         <option value="${country.id}">${country.name}</option>
                     </c:forEach>
                 </select></a>
-
         </li>
         <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
@@ -49,7 +48,9 @@
                 <input type="text" style="width: 64%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
                 <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
+
         </div>
+        <p id="subscribe_msg"></p>
     </div>
     <a name="do-online-service">
         <div class="do-online-service"  >
@@ -276,17 +277,18 @@
             var email = $(".do-fill-email").val();
             var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
             if(email==''){
-                layer.msg("请输入邮件地址");
+                $("#subscribe_msg").text("请输入邮件地址");
                 return false;
             }else if(!reg.test(email)){
-                layer.msg("请输入正确的邮件地址");
+                $("#subscribe_msg").text("请输入正确的邮件地址");
                 return false;
             }else{
                 $.post("/common/subscribe",{"email":email},function (data) {
                     if (data.code==200){
+                        $("#subscribe_msg").text("已发送邮件，请在邮件中点击订阅");
                         layer.msg("已发送邮件，请在邮件中点击订阅");
                     }else{
-                        layer.msg(data.message);
+                        $("#subscribe_msg").text(data.message);
                     }
                 });
             }
