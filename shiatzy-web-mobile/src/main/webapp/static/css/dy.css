@@ -534,15 +534,17 @@
 }
 
 .order-finish>h3 {
-    font-size: 1.3913rem;
+    font-size: 1.4rem;
     text-align: center;
 }
 
-.order-finish .delivery h3,
-.order-finish .delivery .delivery-message span {
-    font-size: 1.3913rem;
+.order-finish .delivery h3{
+    font-size: 1.4rem;
 }
 
+.order-finish .delivery .delivery-message span{
+    font-size: 1.2rem;
+}
 .order-finish .delivery .delivery-message span {
     margin-bottom: 1.1821rem;
     display: inherit;
@@ -578,7 +580,7 @@
 
 .drugstore p {
     line-height: 4.7923rem;
-    font-size: 1.1821rem;
+    font-size: 1.2rem;
     display: block;
     float: left;
 }
@@ -638,7 +640,7 @@
     background-color: #666666;
     text-align: center;
     color: #fff;
-    font-size: 18px;
+    font-size: 1.2rem;
     margin-top: 2.6rem;
     line-height: 2.7826rem;
     margin-bottom: 1.9rem;

@@ -12,7 +12,7 @@
 
 <div class="index-w text-center">
 
-    <div class="theme-default">
+  <%--  <div class="theme-default">
         <div>
             <ul class="slider">
                 <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
@@ -21,7 +21,7 @@
                 <li><img src="${ctx}/static/images/Banner-1.jpg" alt="" title="" /></li>
             </ul>
         </div>
-    </div>
+    </div>--%>
 
     <c:forEach items="${groupList}" var="row">
         <c:if test="${row.type==1 && not empty row.indexBlockDomainList}">

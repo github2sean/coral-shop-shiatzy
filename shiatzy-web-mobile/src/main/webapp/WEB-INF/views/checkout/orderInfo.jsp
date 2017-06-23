@@ -16,7 +16,7 @@
         <div class="dx-GoodsDetails goodsDiv">
             <div class="goods clearfix">
                 <div class="goods-left">
-                    <div class="pic" style="overflow: hidden"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
+                    <div class="pic" ><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
                     <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
