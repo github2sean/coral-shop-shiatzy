@@ -1,5 +1,6 @@
 package com.dookay.coral.shop.order.domain;
 
+import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import lombok.Data;
@@ -42,8 +43,10 @@ public class ReturnRequestItemDomain implements Serializable {
 	
 	/*退货理由json*/
 	private String returnReason;
+
 	@Transient
 	private String returnReasonText;
+
 	/*退货时间*/
 	private Date createTime;
 	
@@ -74,6 +77,9 @@ public class ReturnRequestItemDomain implements Serializable {
 	@Transient
 	private PrototypeSpecificationOptionDomain sizeDomain;
 
-	
+	@Transient
+	private GoodsDomain goodsDomain;
+
+
 	
 }

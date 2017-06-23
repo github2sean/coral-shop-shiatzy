@@ -72,4 +72,7 @@ public class ReturnRequestDomain implements Serializable {
 	@Transient
 	private List<ReturnRequestItemDomain> returnRequestItemDomainList;
 
+	@Transient
+	private OrderDomain orderDomain;
+
 }
