@@ -26,12 +26,14 @@
     </ul>
     <ul class="do-list-lang j_drop_down">
         <li>
-            <a href="/home/listShippingCountry" id="trigger_select_country"><spring:message code="selectOtherCountriesORRegions"/></a>
-            <select id="select_country" style="display: none">
-            <c:forEach var="country" items="${web:countryList()}" begin="1">
-                <option value="${country.id}">${country.name}</option>
-            </c:forEach>
-            </select>
+            <a href="/home/listShippingCountry" id="trigger_select_country">
+                <select id="select_country" style="width: 100%;background: transparent;border: 0;font-size: 1.1rem;">
+                    <option><spring:message code="selectOtherCountriesORRegions"/></option>
+                    <c:forEach var="country" items="${web:countryList()}" begin="0">
+                        <option value="${country.id}">${country.name}</option>
+                    </c:forEach>
+                </select></a>
+
         </li>
         <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
