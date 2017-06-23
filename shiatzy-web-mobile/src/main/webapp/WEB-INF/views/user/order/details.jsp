@@ -69,7 +69,7 @@
             <div class="verify-main">
                 <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                 <div class="img-message">
-                    <h3>${sessionScope.language=='en_US'?item.goodsDomain.enName:item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                    <h3>${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                     <h6>${item.goodsCode}</h6>
                     <div style="display: inline-block;" class="size">
                         <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
