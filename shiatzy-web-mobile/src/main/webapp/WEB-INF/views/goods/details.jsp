@@ -47,7 +47,7 @@
           <div class="size j_collapse">
             <h3 class="title">
               <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></h3>
-            <ul  id="js_size">
+            <ul  id="js_size" class="hide">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
                   <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
@@ -55,9 +55,9 @@
             </ul>
           </div>
           <div style="margin-top: 2rem;">
-          <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
-          <br>
-          <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
+          <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
+
+          <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;margin-top: 1rem;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
           </div>
           <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
 
@@ -65,7 +65,6 @@
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
           </div>
-
         </div>
 
         <!--也许喜欢-->
@@ -100,7 +99,10 @@
           setPrice();
           $(".j_s_slider").bxSlider({pager:null});
             $(".j_collapse").on("click",'h3', function () {
-                $(this).parent().toggleClass("active");
+                $(this).parent().toggleClass("active").find("#js_size").slideToggle(0);
+            });
+            $(".j_collapse").on("click", function () {
+                $(this).find("#js_size").toggleClass("hide");
             });
           // 添加相册
           function galleryAppend() {
@@ -152,7 +154,7 @@
               layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
               return false;
             }
-            $(this).parent("ul").addClass("hide");
+            $(this).parents("#js_size").hide();
             var size = $(this).find('a').text();
             $(".sizeChecked").text(size);
             $(this).addClass("active").siblings().removeClass("active");
