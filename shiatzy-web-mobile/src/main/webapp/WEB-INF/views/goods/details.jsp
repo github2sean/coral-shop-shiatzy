@@ -110,9 +110,12 @@
             var htmlMain = '';
             $(".j_s_slider li").not(".bx-clone").each(function () {
               var imgUrl = $(this).find("img").attr("src");
-              htmlMain += '<li><img src="' + imgUrl + '"></li>'
+               htmlMain += '<li style="background-image:url('+imgUrl+')"></li>';
             })
-            $('body').append(htmlBefore + htmlMain + htmlAfter);
+            $('body').append(htmlBefore + htmlMain + htmlAfter).css({
+              "position":"relative",
+              "overflow":"hidden"
+            });
             $(".gallery-img-list").bxSlider({
               controls:false
             });
@@ -129,6 +132,10 @@
 
           $("body").on("click touchstart", '.gallery-close', function (e) {
             $(".gallery-block").hide();
+            $("body").css({
+              "position":"",
+              "overflow":""
+            })
           });
 
 
@@ -256,7 +263,10 @@
 
           //iframe窗
           $(".sizeNotice").click(function () {
-            $("body").css("overflow","hidden");
+            $("body,html").css({
+              "overflow":"hidden",
+              "position":"relative"
+            });
             layer.open({
               type: 2,
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
@@ -264,15 +274,12 @@
               shade: [0],
               area: ['90%', '75%'],
               content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
-              //shadeClose: true,
-              shade: [0.5, '#000'] //0.1透明度的白色背景
+              shade: [0.5, '#000'] , //0.1透明度的白色背景
+              cancel: function(){
+                $("body").css({ "position":"", "overflow":"" });
+              }
             });
           });
-
-          $(".layui-layer-close").click(function(){
-             $("body").css("overflow","");
-          })
-
           $(".whatBoutique").click(function () {
             layer.open({
               type: 2,

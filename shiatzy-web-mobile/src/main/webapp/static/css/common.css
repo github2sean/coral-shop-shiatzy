@@ -2155,7 +2155,7 @@ h3 {
     transition: max-height .5s
 }
 
-.active  .search-rec-img{
+.active .search-rec-img {
     max-height: 400px;
 }
 
@@ -2646,8 +2646,20 @@ textarea {
 }
 
 .layui-layer-setwin .layui-layer-close1 {
-    padding-bottom: 20px;
-    padding-left: 15px;
-    padding-top: 15px;
-    margin-top: -10px;
+    margin-top:-2px;
+}
+
+.dx-bag-slide .bx-wrapper .bx-prev:before,
+.dx-bag-slide .bx-wrapper .bx-next:before {
+    display: none;
+}
+
+.bx-wrapper .bx-controls-direction a {
+    transform: rotate(55deg) skew(22deg);
+    background: transparent;
+    box-shadow: -2px 2px 0 #999;
+}
+
+.bx-wrapper .bx-controls-direction a.bx-next {
+    box-shadow: 2px -2px 0 #999;
 }

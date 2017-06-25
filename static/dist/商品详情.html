@@ -31,6 +31,10 @@
       doc.addEventListener('DOMContentLoaded', recalc, false);
     })(document, window);
   </script>
+  <style>
+    
+  
+  </style>
 </head>
 
 <body>
@@ -526,11 +530,11 @@
         var htmlMain = '';
         $(".j_s_slider li").not(".bx-clone").each(function () {
           var imgUrl = $(this).find("img").attr("src");
-          htmlMain += '<li><img src="' + imgUrl + '"></li>'
+          htmlMain += '<li style="background-image:url('+imgUrl+')"></li>'
         })
         $('body').append(htmlBefore + htmlMain + htmlAfter);
         $(".gallery-img-list").bxSlider({
-          pager:false
+          controls:false
         });
       }
 

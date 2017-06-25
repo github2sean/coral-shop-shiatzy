@@ -36,7 +36,7 @@
     <div class="model-select-box">
         <div class="model-select-city" data-value="" id="citySelect">
             <span class="pl-2" id="chooseCity"><spring:message code="store.list.select.state"/></span>
-            <span class="pull-right">v</span>
+            <span class="pull-right" style="margin-right:1.5rem">v</span>
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
                     <li data-option="${row.id}" value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</li>
