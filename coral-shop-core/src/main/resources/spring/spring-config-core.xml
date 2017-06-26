@@ -12,4 +12,5 @@
     <import resource="classpath:spring/spring-dao-core.xml"/>
     <import resource="classpath:spring/spring-service-core.xml"/>
     <import resource="classpath:spring/spring-redis-common.xml"/>
+    <import resource="spring-config-adapter.xml"/>
 </beans>

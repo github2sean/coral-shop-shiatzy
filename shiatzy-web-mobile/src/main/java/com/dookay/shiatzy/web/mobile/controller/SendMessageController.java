@@ -28,8 +28,6 @@ import java.util.HashMap;
 @RequestMapping("sendMessage/")
 public class SendMessageController extends BaseController {
 
-
-
     @Autowired
     private SendToPhoneConfig sendToPhoneConfig;
     @Autowired
@@ -52,7 +50,6 @@ public class SendMessageController extends BaseController {
     @RequestMapping(value = "sendToEmail",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult sendToEmail() {
-
 
         System.out.println("sendEmail");
         return successResult("操作完成");

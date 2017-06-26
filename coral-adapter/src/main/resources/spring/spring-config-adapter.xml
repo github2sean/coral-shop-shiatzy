@@ -12,4 +12,26 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
+
+    <!--短信配置 -->
+    <bean name="sendToPhoneConfig" class="com.dookay.coral.adapter.sendmsg.config.SendToPhoneConfig">
+
+        <property name="account" value="chuangzi"/>
+        <property name="pswd" value="Tch123456"/>
+        <property name="needstatus" value="true"/>
+        <property name="product" value="349312826"/>
+        <property name="url" value="http://222.73.117.158/msg/HttpBatchSendSM"/>
+    </bean>
+
+
+    <!--快递鸟配置 -->
+    <bean name="kdniaoSubscribeAPI" class="com.dookay.coral.adapter.express.KdniaoSubscribeAPI">
+        <!--测试数据 -->
+        <property name="kdnAppKey" value="91c848d6-d568-4e34-84d3-9ce0d73486e4"/>
+        <property name="kdnEBusinessID" value="1289803"/>
+        <property name="kdnReqURL" value="http://api.kdniao.cc/api/dist"/>
+        <property name="dataType" value="2"/>
+        <property name="requestType" value="1002"/>
+    </bean>
+
 </beans>

@@ -871,6 +871,7 @@ i {
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
     height: 10.2rem;
     text-align: center;
+    margin-top: 0.2rem;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic img {
@@ -939,7 +940,7 @@ i {
 .dx-shopping .dx-GoodsDetails .do-list-icon {
     position: absolute;
     right: 1.5rem;
-    top: 0.5rem;
+    top: 0.3rem;
 }
 
 
@@ -955,7 +956,7 @@ i {
 }
 
 .dx-accounts .dx-GoodsDetails .goods {
-    padding: .8rem 0.8rem 0 0.8rem;
+    padding: .8rem 0.8rem 0 0rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods-left {
@@ -1011,7 +1012,7 @@ i {
 .dx-accounts .dx-GoodsDetails .goods .do-list-icon{
     position: absolute;
     right: .5rem;
-    top: 0.6rem;
+    top: 0.5rem;
 }
 
 .dx-accounts .dx-GoodsDetails .alter a {

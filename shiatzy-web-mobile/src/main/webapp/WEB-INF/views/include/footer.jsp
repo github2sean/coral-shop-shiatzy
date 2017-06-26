@@ -285,8 +285,7 @@
             }else{
                 $.post("/common/subscribe",{"email":email},function (data) {
                     if (data.code==200){
-                        $("#subscribe_msg").text("已发送邮件，请在邮件中点击订阅");
-                        layer.msg("已发送邮件，请在邮件中点击订阅");
+                        $("#subscribe_msg").text("已成功订阅！");
                     }else{
                         $("#subscribe_msg").text(data.message);
                     }

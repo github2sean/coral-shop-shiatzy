@@ -27,11 +27,13 @@ import java.util.Date;
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @Service("emailService")
 public class EmailServiceImpl extends BaseServiceImpl<EmailDomain> implements IEmailService {
-	
+
 	@Autowired
 	private EmailMapper emailMapper;
 	@Autowired
 	private JavaMailSender mailSender;// spring配置中定义
+	@Autowired
+	private SimpleMailMessage simpleMailMessage;// spring配置中定义
 	@Override
 	public void sendEmail(String toEmail, String subject, String body) throws MessagingException {
 		if (StringUtils.isEmpty(toEmail)) {
@@ -56,13 +58,12 @@ public class EmailServiceImpl extends BaseServiceImpl<EmailDomain> implements IE
 		//调用发送邮件插件发送邮件，采用spring提供的JavaMailSender
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setFrom("");//TODO 从配置获取
+		helper.setFrom(simpleMailMessage.getFrom());//TODO 从配置获取
 		helper.setTo(email.getEmail());
 		helper.setSubject(email.getTitle());
 		helper.setText(email.getBody(), true);
 		mailSender.send(message);
 		//发送后写入邮件历史
-
 	}
 
 }

@@ -95,8 +95,6 @@ public class PaymentContoller extends BaseController{
      */
     @RequestMapping(value = "buildPayment",method = RequestMethod.GET)
     public ModelAndView buildPayment(Integer paymentMethod,String orderNo){
-
-
         ModelAndView mv = new ModelAndView("payment/buildPayment");
         OrderDomain orderDomain = orderService.getOrder(orderNo);
         //获取第三方支付配置
@@ -109,8 +107,9 @@ public class PaymentContoller extends BaseController{
         sParaTemp.put("notify_url", alipayConfig.getNotify_url());
         sParaTemp.put("return_url", alipayConfig.getReturn_url());
         sParaTemp.put("out_trade_no", orderNo);//商户订单号，商户网站订单系统中唯一订单号，必填
-        sParaTemp.put("subject", orderDomain.getOrderNo());//订单名称，必填
-        sParaTemp.put("total_fee", String.format("%.2f", orderDomain.getOrderTotal())); //付款金额，必填
+        sParaTemp.put("subject", orderDomain.getOrderNo());//订单名称，必填、
+        sParaTemp.put("total_fee", String.format("%.2f", 0.01)); //测试用金额 TODO 删除掉
+        //sParaTemp.put("total_fee", String.format("%.2f", orderDomain.getOrderTotal())); //付款金额，必填
         //sParaTemp.put("total_fee", String.format("%.2f", 0.01d));
         sParaTemp.put("show_url", "");//收银台页面上，商品展示的超链接，必填
         //sParaTemp.put("app_pay","Y");//启用此参数可唤起钱包APP支付。
@@ -185,9 +184,9 @@ public class PaymentContoller extends BaseController{
                 //如果有做过处理，不执行商户的业务程序
                 OrderDomain orderDomain = orderService.getOrder(out_trade_no);
                 if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
-                        total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
+                     /*   total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&*/
                         seller_id.equals(alipayConfig.getSeller_id())){
-                    //orderService.updateOrderStatus(orderDomain);
+                    orderService.updateOrderStatus(orderDomain);
                 }
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
@@ -256,7 +255,7 @@ public class PaymentContoller extends BaseController{
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
                 if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
-                        total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&
+                       /* total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&*/
                         seller_id.equals(alipayConfig.getSeller_id())){
 
                     orderService.updateOrderStatus(orderDomain);
@@ -264,11 +263,11 @@ public class PaymentContoller extends BaseController{
             }
             //该页面可做页面美工编辑
             message = "验证成功";
-            return new ModelAndView("redirect:payfailed?orderId="+out_trade_no);
+            return new ModelAndView("redirect:paysuccess?orderId="+out_trade_no);
         }else{
             //该页面可做页面美工编辑
             message = "验证失败";
-            return new ModelAndView("redirect:paysuccess?orderId="+out_trade_no);
+            return new ModelAndView("redirect:payfailed?orderId="+out_trade_no);
         }
         /*ModelAndView mv = new ModelAndView("payment/returnUrl");
         mv.addObject("message",message);
@@ -498,7 +497,8 @@ public class PaymentContoller extends BaseController{
         requestData.put(IpayLinksStatics.SUBMIT_TIME,simpleDateFormat.format(orderDomain.getOrderTime()));
         requestData.put(IpayLinksStatics.CUSTOMER_IP,ipAddress);
         requestData.put(IpayLinksStatics.SITE_ID,ipayLinksConfig.getSiteId());
-        requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
+        //requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
+        requestData.put(IpayLinksStatics.ORDER_AMOUNT,"0.01");//测试用//TODO 删除
         requestData.put(IpayLinksStatics.TRADE_TYPE,ipayLinksConfig.getTradeType());
         requestData.put(IpayLinksStatics.PAY_TYPE,ipayLinksConfig.getPayType());
         String currentCode = StringUtils.isBlank(orderDomain.getCurrentCode())?ipayLinksConfig.getCurrencyCode():orderDomain.getCurrentCode();
@@ -602,9 +602,9 @@ public class PaymentContoller extends BaseController{
             //验证成功
             OrderDomain orderDomain = orderService.getOrder(orderId);
             System.out.println("ordertotal:"+orderDomain.getOrderTotal());
-            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
-                    amt.equals(orderDomain.getOrderTotal()) ){
-                //orderService.updateOrderStatus(orderDomain);
+            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue()
+                    /*&& amt.equals(orderDomain.getOrderTotal())*/ ){
+                orderService.updateOrderStatus(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -636,8 +636,8 @@ public class PaymentContoller extends BaseController{
         System.out.println("amt:"+amt +"\n getOrderTotal():"+orderDomain.getOrderTotal());
         if("0000".equals(resultCode) && safe.equals(signMsg)){
             //验证成功
-            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
-                    amt.equals(orderDomain.getOrderTotal()) ){
+            if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue()
+                  /*  && amt.equals(orderDomain.getOrderTotal())*/ ){
                 //updateOrderStatus(orderDomain);
                 orderService.updateOrderStatus(orderDomain);
             }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&
