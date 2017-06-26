@@ -13,14 +13,14 @@
         <a href="/passport/toLogin" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
-    <form class="j_ajaxForm" action="/passport/sendPassword.do" method="post" data-next="${ctx}/passport/toLogin">
+    <form class="j_ajaxForm" action="/passport/forgetPassword" method="post" data-next="${ctx}/passport/toLogin">
         <div class="dx-form">
             <div class="tips" style="line-height: 2.0rem"><spring:message code="forgotTitle"/></div>
             <div class="form-item">
                 <input type="email" placeholder="<spring:message code="login.holderAccount"/>" class="userName"
                        name="userName" id="userName" onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="login.holderAccount"/>'"
-                       data-rule="电子邮箱:required;email">
+                       data-rule="<spring:message code="login.holderAccount"/>:required;email">
             </div>
             <div class="form-item">
                 <div class="dx-verify clearfix" style="width: 100%">
@@ -28,7 +28,7 @@
                            placeholder='<spring:message code="register.holderValidCode"/>'
                            name="validCode" id="validCode" onfocus="this.placeholder=''"
                            onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'"
-                           data-rule="验证码:required;" style="float: left;width: 60%">
+                           data-rule="<spring:message code="register.holderValidCode"/>:required;" style="float: left;width: 60%">
                     <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -25,6 +26,7 @@ import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
 import com.dookay.shiatzy.web.mobile.util.I18NReverse;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.mail.search.SearchException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +71,9 @@ public class AccountController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        if(accountDomain==null){
+            return new ModelAndView("redirect:/passport/toLogin");
+        }
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         ModelAndView mv = new ModelAndView("user/account/index");
         mv.addObject("accountDomain",accountDomain);
@@ -190,6 +198,16 @@ public class AccountController extends MobileBaseController {
         return mv;
     }
 
+    @RequestMapping(value = "toSetNewPassword", method = RequestMethod.GET)
+    public ModelAndView toSetNewPassword(HttpServletRequest request){
+        String userName = request.getParameter("userName");
+        String sid = request.getParameter("sid");
+        ModelAndView mv = new ModelAndView("user/account/setNewPassword");
+        mv.addObject("userName",userName);
+        mv.addObject("sid",sid);
+        return mv;
+    }
+
     @RequestMapping(value = "updateEmail", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateEmail(@ModelAttribute UpdateEmailForm updateEmailForm){
@@ -226,6 +244,36 @@ public class AccountController extends MobileBaseController {
             return errorResult(getI18N().getOldPasswordErro());
         }
         return successResult(getI18N().getUpdateSuccess());
+    }
+
+    @RequestMapping(value = "setNewPassword", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult setNewPassword(@ModelAttribute UpdatePasswordForm updatePasswordForm){
+        String userName = updatePasswordForm.getUserName();
+        String sid = updatePasswordForm.getSid();
+        AccountQuery query = new AccountQuery();
+        query.setUserName(userName);
+        AccountDomain accountDomain = accountService.getFirst(query);
+        if(accountDomain!=null&&new Timestamp(accountDomain.getRegisterDate()).getTime()<= System.currentTimeMillis()){
+            return errorResult("修改时间已过期");
+        }
+        String secretKey = accountDomain.getValidateCode();
+        long date = accountDomain.getRegisterDate();//忽略毫秒数
+        System.out.println("date:"+date);
+        String key = userName+"$"+date+"$"+secretKey;
+        String digitalSignature = DigestUtils.md5Hex(key);//数字签名
+        if(!digitalSignature.equals(sid)){
+            return errorResult("加密数据不正确");
+        }
+        accountService.setNewPassword(accountDomain,updatePasswordForm.getNewPassword());
+        UserContext userContext = UserContext.current();
+        if(userContext!=null){
+            AccountDomain login = userContext.getAccountDomain();
+            if(login!=null){
+                UserContext.signOut();
+            }
+        }
+        return successResult(getI18N().getOperateSuccess());
     }
 
 

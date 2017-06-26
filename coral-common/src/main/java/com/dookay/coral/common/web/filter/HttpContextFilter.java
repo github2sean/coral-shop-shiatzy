@@ -37,7 +37,6 @@ public class HttpContextFilter implements Filter {
         String checked = CookieUtil.getCookieValueByKey(request,cookieName);
         if(StringUtils.isNotBlank(checked)){
                 request.getSession().setAttribute("language",checked);
-        }else if(StringUtils.isBlank(checked)){
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }
         chain.doFilter(req, response);

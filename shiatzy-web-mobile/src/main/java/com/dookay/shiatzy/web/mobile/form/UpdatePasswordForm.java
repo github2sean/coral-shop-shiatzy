@@ -13,6 +13,8 @@ import javax.validation.constraints.AssertTrue;
 @Data
 public class UpdatePasswordForm {
 
+    private String sid;
+    private String userName;
     @NotBlank(message = "旧密码不能为空")
     private String oldPassword;
 

@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.CookieUtil;
@@ -44,10 +45,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -75,6 +78,8 @@ public class PassportController extends MobileBaseController{
     private ISmsService smsService;
     @Autowired
     private IContentCategoryService contentCategoryService;
+    @Autowired
+    private SimpleAliDMSendMail simpleAliDMSendMail;
 
     public static final String CRAT_NUM = "cartNumber";
 
@@ -194,7 +199,7 @@ public class PassportController extends MobileBaseController{
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult register(@ModelAttribute RegisterForm registerForm,HttpServletRequest request){
+    public JsonResult register(@ModelAttribute RegisterForm registerForm,HttpServletRequest request) throws MessagingException {
         beanValidator(registerForm);
         String userName = registerForm.getEmail();
         String password = registerForm.getPassword();
@@ -220,12 +225,41 @@ public class PassportController extends MobileBaseController{
         }
 
         AccountDomain accountDomain = accountService.getAccount(userName);
-        UserContext.signIn(accountDomain);
-
         // 发邮件通知 TODO: 2017/6/15
-
+        String secretKey = UUID.randomUUID().toString();//密钥
+        accountDomain.setActiveCode(secretKey);
+        accountService.update(accountDomain);
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        HashMap<String,String> emailMap = new HashMap<>();
+        emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
+        emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
+        emailMap.put(simpleAliDMSendMail.TITLE,"夏资陈帐号激活");
+        String resetPassHref =  basePath+"passport/activeEmail?userName="+userName+"&activeCode="+secretKey;
+        String emailContent = "如果您未申请夏资陈帐号,请删除此邮件，点击下面的链接,激活帐号<br/><a href="+resetPassHref+" target='_BLANK'>点击我重新设置密码</a>" ;
+        emailMap.put(simpleAliDMSendMail.CONTENT,emailContent);
+        simpleAliDMSendMail.sendEmail(emailMap);
+       // UserContext.signIn(accountDomain);
         return successResult("注册成功");
     }
+
+    @RequestMapping(value = "activeEmail", method = RequestMethod.GET)
+    public ModelAndView activeEmail(String userName,String activeCode){
+        beanValidator(userName);
+       AccountDomain accountDomain =  accountService.getAccountByEmail(userName);
+        if(accountDomain!=null){
+            String code = accountDomain.getActiveCode();
+            if(StringUtils.isNotBlank(code)&&code.equals(activeCode)){
+                accountDomain.setIsValid(1);
+            }else {
+                throw new ServiceException("激活码校验出错");
+            }
+        }
+        accountService.update(accountDomain);
+        ModelAndView mv = new ModelAndView("passport/login");
+        return mv;
+    }
+
 
     @RequestMapping(value = "sendPassword", method = RequestMethod.POST)
     @ResponseBody
@@ -233,14 +267,10 @@ public class PassportController extends MobileBaseController{
         beanValidator(forgetForm);
         String userName = forgetForm.getUserName();
         String validCode = forgetForm.getValidCode();
-
-
-
-
         return successResult("发送成功");
     }
 
-    @RequestMapping(value = "/forgetPassword")
+    @RequestMapping(value = "forgetPassword")
     @ResponseBody
     public Map forgetPassword(@ModelAttribute ForgetForm forgetForm,HttpServletRequest request){
         beanValidator(forgetForm);
@@ -259,19 +289,24 @@ public class PassportController extends MobileBaseController{
             String secretKey= UUID.randomUUID().toString();//密钥
             Timestamp outDate = new Timestamp(System.currentTimeMillis()+30*60*1000);//30分钟后过期
             long date = outDate.getTime()/1000*1000;//忽略毫秒数
+            System.out.println("date:"+date);
             users.setValidateCode(secretKey);
-            users.setRegisterDate(outDate);
+            users.setRegisterDate(date);
             accountService.update(users);//保存到数据库
             String key = users.getUserName()+"$"+date+"$"+secretKey;
             String digitalSignature = DigestUtils.md5Hex(key);//数字签名
-
             String emailTitle = "夏资陈密码找回";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-            String resetPassHref =  basePath+"user/reset_password?sid="+digitalSignature+"&userName="+users.getUserName();
+            String resetPassHref =  basePath+"u/account/toSetNewPassword?sid="+digitalSignature+"&userName="+users.getUserName();
             String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
-                    "<br/>tips:本邮件超过30分钟,链接将会失效，需要重新申请'找回密码'"+key+"\t"+digitalSignature;
-            System.out.print(resetPassHref);
+                    "<br/>tips:本邮件超过30分钟,链接将会失效"+key+"\tmd5:"+digitalSignature;
+            HashMap<String,String> emailMap = new HashMap<>();
+            emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
+            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,"seanzq0331@163.com");
+            emailMap.put(simpleAliDMSendMail.TITLE,emailTitle);
+            emailMap.put(simpleAliDMSendMail.CONTENT,emailContent);
+            simpleAliDMSendMail.sendEmail(emailMap);
 
             //三方jar包未选择
             //SendMail.getInstatnce().sendHtmlMail(emailTitle,emailContent,userName);
@@ -301,13 +336,13 @@ public class PassportController extends MobileBaseController{
             model.addObject("msg",msg) ;
             return model;
         }
-        Timestamp outDate = users.getRegisterDate();
-        if(outDate.getTime() <= System.currentTimeMillis()){         //表示已经过期
+        Long outDate = users.getRegisterDate();
+        if( new Timestamp(outDate).getTime()<= System.currentTimeMillis()){         //表示已经过期
             msg = "链接已经过期,请重新申请找回密码.";
             model.addObject("msg",msg);
             return model;
         }
-        String key = users.getUserName()+"$"+outDate.getTime()/1000*1000+"$"+users.getValidateCode();          //数字签名
+        String key = users.getUserName()+"$"+outDate+"$"+users.getValidateCode();          //数字签名
         String digitalSignature = DigestUtils.md5Hex(key);
         System.out.println(key+"\t"+digitalSignature);
         if(!digitalSignature.equals(sid)) {

@@ -53,10 +53,14 @@ public class AccountDomain implements Serializable {
     /*是否有效*/
     private Integer isValid;
 
-    /*是否有效*/
+    /*修改密码校验码*/
     private String validateCode;
 
     /*是否有效*/
-    private Timestamp registerDate;
+    private Long registerDate;
+
+    /*激活校验码*/
+    private String activeCode;
+
 
 }

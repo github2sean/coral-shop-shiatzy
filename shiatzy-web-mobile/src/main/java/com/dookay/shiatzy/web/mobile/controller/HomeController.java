@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
@@ -42,10 +43,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -73,6 +76,8 @@ public class HomeController extends MobileBaseController {
     private IIndexBlockService indexBlockService;
     @Autowired
     private CookieLocaleResolver resolver;
+    @Autowired
+    private SimpleAliDMSendMail simpleAliDMSendMail;
 
     private static final String PUSH_HISTORY = "push_history";
 
@@ -81,7 +86,7 @@ public class HomeController extends MobileBaseController {
     private final static int MAX_COOKIE_AGE = 24*60*60*7;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public ModelAndView index(){
+    public ModelAndView index() throws MessagingException {
 
         ModelAndView mv = new ModelAndView("home/index");
         CouponQuery query = new CouponQuery();

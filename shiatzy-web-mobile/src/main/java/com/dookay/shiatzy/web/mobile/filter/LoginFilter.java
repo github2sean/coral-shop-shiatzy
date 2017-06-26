@@ -29,7 +29,9 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String loginRef = "/passport/toLogin?ref=" + URLEncoder.encode(request.getServletPath(), "UTF-8");
 //        IAccountService accountService = SpringContextHolder.getBean("accountService");
-        if (UserContext.isGuest()) {
+        StringBuffer url = request.getRequestURL();
+
+        if (!url.toString().contains("etNewPassword")&&UserContext.isGuest()) {
             response.sendRedirect(loginRef);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

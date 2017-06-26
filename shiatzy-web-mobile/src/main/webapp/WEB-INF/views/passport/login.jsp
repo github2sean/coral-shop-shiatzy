@@ -74,21 +74,27 @@
 
         $(".top-right-nav").find("li:eq(2)").addClass("active");
         var backUrl = document.referrer;
-        console.log("backUrl:"+backUrl);
+        var ctx = '<%=request.getServerName()%>';
+        console.log("backUrl:"+backUrl+" ctx:"+ctx);
         var dataNext = '';
-        if(backUrl.indexOf("toLogin")>-1 || backUrl.indexOf("toRegister")>-1){
+        if(backUrl.indexOf("toLogin")>-1 || backUrl.indexOf("toRegister")>-1 ||backUrl.indexOf("toSetNewPassword")>-1
+            ||backUrl.indexOf("activeEmail")>-1||(ctx!=''&& backUrl.indexOf(ctx)<0 )
+        ){
             $(".j_ajaxForm").attr("data-next","${ctx}/u/account/index");
             dataNext = "${ctx}/u/account/index";
         }else{
             $(".j_ajaxForm").attr("data-next",backUrl);
             dataNext = backUrl;
         }
+        console.log("dataNext:"+dataNext);
         $(".login").click(function () {
             var data = $(".j_ajaxForm").serializeArray();
             $.post("/passport/login",data,function(data){
                if(data.code==200){
                    console.log("dataNext："+dataNext);
                    location.href = dataNext;
+               }else {
+                   layer.msg(data.message);
                }
             });
         });

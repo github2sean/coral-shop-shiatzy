@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +64,11 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
         AccountDomain accountDomain=this.getAccount(userName);
         if (accountDomain==null){
             throw new ServiceException("账户不存在");
+        }else{
+            System.out.println("accountDomain"+accountDomain);
+            if(accountDomain.getIsValid()==null||1!=accountDomain.getIsValid()){
+                throw new ServiceException("账户未激活，请在邮箱中激活帐号");
+            }
         }
         return this.comparePassword(accountDomain,password);
     }
@@ -155,6 +162,17 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
             throw new ServiceException("密码不能为空");
         }
         accountDomain.setPassword(newPassword);
+        encryptPassword(accountDomain);
+        super.update(accountDomain);
+    }
+
+    @Override
+    public void setNewPassword(AccountDomain accountDomain, String newPassword) {
+        if (accountDomain == null) {
+            throw new ServiceException("账户不存在");
+        }
+        accountDomain.setPassword(newPassword);
+        accountDomain.setRegisterDate(System.currentTimeMillis());
         encryptPassword(accountDomain);
         super.update(accountDomain);
     }

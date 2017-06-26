@@ -10,7 +10,7 @@
 <div class="dx-registered">
     <div class="dx-title"><spring:message code="register"/> <a href="/passport/toLogin"><spring:message
             code="goBack"/></a></div>
-    <form class="j_ajaxForm" action="/passport/register.do" method="post" data-next="${ctx}/u/account/index">
+    <form class="j_ajaxForm" action="/passport/register.do" method="post" data-next="${ctx}/passport/toLogin">
         <div class="dx-form">
             <div class="form-item text-center"><spring:message code="register.titleInfo"/></div>
             <div class="form-item">
