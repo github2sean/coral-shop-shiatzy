@@ -47,7 +47,7 @@
           <div class="size j_collapse">
             <h3 class="title">
               <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></h3>
-            <ul  id="js_size">
+            <ul  id="js_size" class="hide">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
                   <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
@@ -108,7 +108,10 @@
           setPrice();
           $(".j_s_slider").bxSlider({pager:null});
             $(".j_collapse").on("click",'h3', function () {
-                $(this).parent().toggleClass("active");
+                $(this).parent().toggleClass("active").find("#js_size").slideToggle(0);
+            });
+            $(".j_collapse").on("click", function () {
+                $(this).find("#js_size").toggleClass("hide");
             });
           // 添加相册
           function galleryAppend() {
@@ -118,9 +121,12 @@
             var htmlMain = '';
             $(".j_s_slider li").not(".bx-clone").each(function () {
               var imgUrl = $(this).find("img").attr("src");
-              htmlMain += '<li><img src="' + imgUrl + '"></li>'
+               htmlMain += '<li style="background-image:url('+imgUrl+')"></li>';
             })
-            $('body').append(htmlBefore + htmlMain + htmlAfter);
+            $('body').append(htmlBefore + htmlMain + htmlAfter).css({
+              "position":"relative",
+              "overflow":"hidden"
+            });
             $(".gallery-img-list").bxSlider({
               controls:false
             });
@@ -137,6 +143,10 @@
 
           $("body").on("click touchstart", '.gallery-close', function (e) {
             $(".gallery-block").hide();
+            $("body").css({
+              "position":"",
+              "overflow":""
+            })
           });
 
 
@@ -153,7 +163,7 @@
               layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
               return false;
             }
-            $(this).parent("ul").addClass("hide");
+            $(this).parents("#js_size").hide();
             var size = $(this).find('a').text();
             $(".sizeChecked").text(size);
             $(this).addClass("active").siblings().removeClass("active");
@@ -265,7 +275,10 @@
 
           //iframe窗
           $(".sizeNotice").click(function () {
-            $("body").css("overflow","hidden");
+            $("body,html").css({
+              "overflow":"hidden",
+              "position":"relative"
+            });
             layer.open({
               type: 2,
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
@@ -273,15 +286,12 @@
               shade: [0],
               area: ['90%', '75%'],
               content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
-              //shadeClose: true,
-              shade: [0.5, '#000'] //0.1透明度的白色背景
+              shade: [0.5, '#000'] , //0.1透明度的白色背景
+              cancel: function(){
+                $("body").css({ "position":"", "overflow":"" });
+              }
             });
           });
-
-          $(".layui-layer-close").click(function(){
-             $("body").css("overflow","");
-          })
-
           $(".whatBoutique").click(function () {
             layer.open({
               type: 2,

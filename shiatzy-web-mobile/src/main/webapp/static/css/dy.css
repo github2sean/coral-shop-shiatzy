@@ -181,8 +181,13 @@
     margin: 0;
 }
 
+.verify-main .img-message h6{
+    color:#999;
+    font-weight:normal;
+}
+
 .verify-main {
-    height: 8.2705rem;
+    height: 9.2705rem;
     padding-left: 1.5459rem;
     border-bottom: 2px #cccccc solid;
 }
@@ -205,7 +210,7 @@
 }
 
 .verify-main .img-message p:last-child {
-    float: right;
+    text-align: right;
 }
 
 .order-state {
@@ -284,6 +289,7 @@
 }
 
 .privacy {
+    padding:0.5rem 0;
     border-bottom: 1px solid #cccccc;
 }
 
@@ -328,14 +334,17 @@
     padding-right: 2.5507rem;
 }
 
+.back-up a{
+    margin: 1.5rem 2rem 1.5rem 0;
+}
 .back-up a h3 {
     font-size: 1.0rem;
-    float: right;
     border: 1px solid #cccccc;
     margin-right: 1.1821rem;
     line-height: 2rem;
     padding: 0.778rem 1.2367rem;
     color: #999999;
+    margin:0;
 }
 
 .club,
@@ -718,6 +727,7 @@
 
 .order-details h4+ul li {
     font-size: 0.9rem;
+    padding: 0.5rem 0;
 }
 
 .order-details h4+ul li span {
@@ -726,7 +736,7 @@
 
 .order-details ul+p {
     text-indent: 0.8502rem;
-    margin-bottom: 3.8647rem;
+    margin-bottom: 1.8647rem;
 }
 
 .order-details ul+p span {

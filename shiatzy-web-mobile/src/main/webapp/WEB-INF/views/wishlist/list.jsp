@@ -23,7 +23,7 @@
     .categoryList.active .title:after{    -webkit-transform: rotate(90deg);  transform: rotate(90deg);}
     .categoryList .body{margin-top: 1rem;line-height: 2rem;display: none;}
     .categoryList.active .body{display: block;}
-    .categoryList .body .category-item{margin: 0 1rem;}
+    .categoryList .body .category-item{margin: 0 1rem;font-size:1.2rem;}
     .categoryList .body .category-item:hover,.categoryList .body .category-item.active{background-color: #cccccc;}
     .j_collapse{}
 </style>
@@ -46,7 +46,7 @@
             <c:forEach var="row" items="${wishList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
-                    <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="height: 120px;width: 100px;"></div>
+                    <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right" style="word-break: break-all">
                     <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
