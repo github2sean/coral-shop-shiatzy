@@ -42,4 +42,10 @@
             </props>
         </property>
     </bean>
+
+    <bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from">
+            <value>${mail.default.from}</value>
+        </property>
+    </bean>
 </beans>

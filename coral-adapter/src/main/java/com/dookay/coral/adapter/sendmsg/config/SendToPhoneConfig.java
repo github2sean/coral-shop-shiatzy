@@ -7,12 +7,9 @@ import lombok.Data;
  */
 @Data
 public class SendToPhoneConfig {
-
     public String account;
     public String pswd;
     public Boolean needstatus;
     public String product;
     public String url;
-
-
 }

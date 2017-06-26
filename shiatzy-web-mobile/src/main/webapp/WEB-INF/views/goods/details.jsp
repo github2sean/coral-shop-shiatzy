@@ -25,7 +25,7 @@
           </div>
           <div class="price"><span class="do-pro-price" data-value="${goodsItemDomain.price}">&nbsp;</span>
             <a href="javascript:;" class="j_collect ">
-              <svg transform="scale(2) ">
+              <svg id="add_to_wish" style="transform:scale(2);-webkit-transform:scale(2)">
                 <use xlink:href="#heart-red"></use>
               </svg>
             </a>
@@ -70,23 +70,32 @@
         <!--也许喜欢-->
         <div class="maybeLike clearfix">
           <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
-          <c:forEach var="goods" items="${historyList}" begin="0" end="3">
-            <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-            <div class="left">
-              <a href="/goods/details/${firstItem.id}">
-                <div class="pic">
-                  <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
-                </div>
-                <div class="name">${sessionScope.language=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
-                <div class="price do-pro-price" data-value="${firstItem.price}">&nbsp;</div>
-                <ul class="color clearfix">
-                  <c:forEach var="goodsItem" items="${goods.goodsItemList}">
-                    <li style="background: ${goodsItem.colorValue}"></li>
-                  </c:forEach>
-                </ul>
-              </a>
-            </div>
-          </c:forEach>
+          <div class="container">
+          <ul class="do-pro-list j_scroll_list">
+            <c:forEach var="goods" items="${historyList}" varStatus="num"  begin="0" end="3">
+              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+              <li>
+                <a href="/goods/details/${firstItem.id}">
+                  <div class="do-img">
+                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
+                  </div>
+                  <p class="do-pro-t ellipsis-25" name="goodsName">${sessionScope.language=='en_US'?goods.enName:goods.name}</p>
+                  <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                  <ul class="do-list-color" name="skuId" data-value="">
+                    <c:forEach var="item" items="${goods.goodsItemList}">
+                      <li style="background: ${item.colorValue}"></li>
+                    </c:forEach>
+                  </ul>
+                </a>
+                <!--Todo:收藏按钮-->
+                <i class="icon-collect j_collect hide" data-value="${firstItem.id}" data-ids="${goods.sizeDomainList[0].id}" >
+                  <svg class="do-heart"><use xlink:href="#heart"></use></svg>
+                </i>
+              </li>
+            </c:forEach>
+          </ul>
+          </div>
+
         </div>
       </div>
 
@@ -168,7 +177,8 @@
 
           var isLogin = '${isGuest}' == 'onLine' ? true : false;
           $(".j_collect").click(function () {
-
+            $("#add_to_wish").css("-webkit-transform","scale(2.5)")
+              setTimeout('$("#add_to_wish").css("-webkit-transform","scale(2)")',500);
             var url = "";
             //var isAdd = $(this).find("use").attr("xlink:href");
             var sizeId = '';
@@ -188,7 +198,7 @@
               "sizeId": sizeId,
               "type": 2
             };
-            console.log(isAdd);
+
             var url = "";
               url = "/cart/addToCart";
            /* if (isAdd == "#heart-red") {
@@ -199,9 +209,9 @@
             } else if (!isLogin && isAdd == "#heart") {
               url = "/cart/removeFromSessionCart";
             }*/
-            console.log(url);
+
             $.post(url, data, function (result) {
-              console.log(result);
+
               if (result.code == 200) {
                 layer.msg('<spring:message code="success.towish"/>');
               }else{

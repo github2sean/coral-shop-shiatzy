@@ -176,7 +176,6 @@ public class GoodsController extends BaseController{
         HttpSession session = request.getSession();
 
 
-
         //清空session中筛选条件
         session.setAttribute(COLOR_IDS,null);
         session.setAttribute(ATTR_IDS,null);
@@ -405,7 +404,6 @@ public class GoodsController extends BaseController{
     }
 
 
-
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){
         //未发布，跳转到404页面
@@ -425,6 +423,10 @@ public class GoodsController extends BaseController{
         List<GoodsDomain> historyList = HistoryUtil.getHistory();
         goodsService.withGoodsItemList(historyList);
 
+
+        //获取sku列表
+        List<SkuDomain> skuDomainList = skuService.getSkuByGoodsId(goodsId);
+
         //尺寸
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
@@ -442,7 +444,6 @@ public class GoodsController extends BaseController{
         mv.addObject("historyList",historyList);
         return mv;
     }
-
 
 
     public  List<GoodsDomain> filterGoods(List<GoodsDomain> goodsList,Integer type,List<Long> data){

@@ -6,11 +6,9 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-<style>
-    .
-</style>
 
-<div class="index-w text-center">
+
+<div class="index-w text-center" style="margin-top: -1.7rem;">
 
   <%--  <div class="theme-default">
         <div>

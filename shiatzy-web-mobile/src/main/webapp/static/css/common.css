@@ -1812,7 +1812,8 @@ h3 {
 }
 
 .do-list-btm>li.active>a:after,
-.guide-nav>li.active>a:after {
+.guide-nav>li.active>a:after,
+.do-list-lang>li.active>a:after{
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
     display: block;
