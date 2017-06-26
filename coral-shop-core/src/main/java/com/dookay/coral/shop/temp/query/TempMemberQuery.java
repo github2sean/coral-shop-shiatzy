@@ -7,6 +7,8 @@ import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import lombok.Data;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.List;
+
 /**
  * 临时会员的Query
  * @author : luxor
@@ -17,7 +19,7 @@ import tk.mybatis.mapper.entity.Example;
 public class TempMemberQuery extends Query {
 
 	private String mobile;
-
+	private List<String> cardType;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(TempMemberDomain.class);
@@ -25,6 +27,9 @@ public class TempMemberQuery extends Query {
 
 		if(valid(mobile)){
 			criteria.andEqualTo("mobile",mobile);
+		}
+		if(valid(cardType)){
+			criteria.andIn("cardType",cardType);
 		}
 
 		//todo 写查询逻辑

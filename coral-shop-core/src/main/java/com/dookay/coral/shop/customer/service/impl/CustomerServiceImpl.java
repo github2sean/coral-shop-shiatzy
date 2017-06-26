@@ -2,6 +2,7 @@ package com.dookay.coral.shop.customer.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
+import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
@@ -24,6 +25,8 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 客户的业务实现类
@@ -126,6 +129,12 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 			throw new ServiceException("输入为空");
 		}
 		TempMemberQuery tempMemberQuery = new TempMemberQuery();
+		List<String> cardType = new ArrayList<>();
+		cardType.add("CN-A");
+		cardType.add("CN-B");
+		cardType.add("CN-C");
+		cardType.add("CN-D");
+		tempMemberQuery.setCardType(cardType);
 		TempMemberDomain tempMemberDomain = tempMemberService.getFirst(tempMemberQuery);
 		if(tempMemberDomain==null){
 			throw new ServiceException("验证会员失败");

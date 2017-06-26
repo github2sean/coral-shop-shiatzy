@@ -52,16 +52,16 @@
                     <a href="/u/account/vipDetail">
                         <span><spring:message code="account.personal.level"/>：
                         <c:choose>
-                            <c:when test="${customerDomain.tempMemberDomain.cardType=='普通会员'}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='CN-D'}">
                                 <spring:message code="account.personal.card.common"/>
                             </c:when>
-                            <c:when test="${customerDomain.tempMemberDomain.cardType=='兰花卡会员'}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='CN-C'}">
                                 <spring:message code="account.personal.card.fish"/>
                             </c:when>
-                            <c:when test="${customerDomain.tempMemberDomain.cardType=='墨竹卡会员'}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='CN-B'}">
                                 <spring:message code="account.personal.card.bamboo"/>
                             </c:when>
-                            <c:when test="${customerDomain.tempMemberDomain.cardType=='牡丹卡会员'}">
+                            <c:when test="${customerDomain.tempMemberDomain.cardType=='CN-A'}">
                                 <spring:message code="account.personal.card.peony"/>
                             </c:when>
                         </c:choose>
@@ -113,6 +113,7 @@
 </jsp:include>
 <script>
     $(function () {
+        console.log("das:"+'${customerDomain.tempMemberDomain.cardType}');
         $(".top-right-nav").find("li:eq(2)").addClass("active");
     });
 </script>

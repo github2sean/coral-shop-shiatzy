@@ -39,6 +39,7 @@ import javax.mail.search.SearchException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -91,9 +92,14 @@ public class AccountController extends MobileBaseController {
             TempMemberQuery query = new TempMemberQuery();
             String phone = customerDomain.getPhone();
             query.setMobile(StringUtils.isNotBlank(phone)&&phone.length()>2?phone.substring(2,phone.length()):"");
+            List<String> cardType = new ArrayList<>();
+            cardType.add("CN-A");
+            cardType.add("CN-B");
+            cardType.add("CN-C");
+            cardType.add("CN-D");
+            query.setCardType(cardType);
             customerDomain.setTempMemberDomain(tempMemberService.getFirst(query));
         }
-
         ModelAndView mv = new ModelAndView("user/account/details");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
@@ -327,6 +333,12 @@ public class AccountController extends MobileBaseController {
             record = record.substring(2,record.length());
         }
         query.setMobile(record);
+        List<String> cardType = new ArrayList<>();
+        cardType.add("CN-A");
+        cardType.add("CN-B");
+        cardType.add("CN-C");
+        cardType.add("CN-D");
+        query.setCardType(cardType);
         TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
         if(tempMemberDomain==null){
             return new ModelAndView("redirect:toValidVip");

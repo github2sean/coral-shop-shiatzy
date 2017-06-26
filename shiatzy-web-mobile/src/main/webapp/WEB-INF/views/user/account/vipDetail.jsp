@@ -19,32 +19,33 @@
 </div>
 <div class="club-card" >
     <c:choose>
-        <c:when test="${tempMemberDomain.cardType=='普通会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-D'}">
             <img src="${ctx}/static/images/SC_other1.png" alt="">
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='墨竹卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-B'}">
             <img src="${ctx}/static/images/SC_bamboo1.png" alt="">
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='兰花卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-C'}">
             <img src="${ctx}/static/images/SC_fish1.png" alt="">
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='牡丹卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-A'}">
             <img src="${ctx}/static/images/SC_peony1.png" alt="">
         </c:when>
+
     </c:choose>
     <p class="card-title ">ART CLUB <spring:message code="vip.valid.card.title"/></p>
 
     <c:choose>
-        <c:when test="${tempMemberDomain.cardType=='普通会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-D'}">
             <p class="card-name "> <spring:message code="account.personal.card.common"/></p>
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='墨竹卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-B'}">
             <p class="card-name "> <spring:message code="account.personal.card.bamboo"/></p>
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='兰花卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-C'}">
             <p class="card-name "> <spring:message code="account.personal.card.fish"/></p>
         </c:when>
-        <c:when test="${tempMemberDomain.cardType=='牡丹卡会员'}">
+        <c:when test="${tempMemberDomain.cardType=='CN-A'}">
             <p class="card-name "> <spring:message code="account.personal.card.peony"/></p>
         </c:when>
     </c:choose>
@@ -63,10 +64,7 @@
 </jsp:include>
 <script>
     $(function () {
-
-
-
-
+        console.log("CARD:"+'${tempMemberDomain.cardType}');
     });
 
 </script>
