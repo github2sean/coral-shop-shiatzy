@@ -20,5 +20,6 @@ public interface IEmailService extends IBaseService<EmailDomain> {
      * @return 邮件domain
      */
     void sendEmail(String toEmail, String title, String body) throws MessagingException;
-
+    void sendMultiEmail(String title, String body)throws MessagingException;
+    void sendSingleEmail(String toEmail, String title, String body)throws MessagingException;
 }
