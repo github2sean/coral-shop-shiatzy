@@ -27,8 +27,8 @@
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>:
-                        <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="number" value="${row.num}"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a></c:if>
-                        <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}">-</a><input class="quantitys" type="number" value="0"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}">+</a><span class="hasOut" data-value="${row.id}">(已售罄)</span></c:if>
+                        <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="${row.num}"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a></c:if>
+                        <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="0"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a><span class="hasOut" data-value="${row.id}">(<spring:message code="sellout"/>)</span></c:if>
                     </div>
                     <div class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
                 </div>
@@ -180,7 +180,7 @@
             var t = $(this).parent().find(".quantitys");
             var quantity = $(this).attr("data-num");
             var num = parseInt(t.val())+1>quantity?quantity:parseInt(t.val())+1;
-            var id = $(this).attr("data-value");
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
             t.val(num);
             var data = {"shoppingCartItemId":id,"num":num};
             $.post("/cart/updateCart",data,function () {
@@ -191,7 +191,7 @@
         });
         $(".minus").on("click",function () {
             var t = $(this).parent().find(".quantitys");
-            var id = $(this).attr("data-value");
+            var id = isLogin?$(this).attr("data-value"):$(this).attr("data-formid");
             if (parseInt(t.val())>1){
                 var num = parseInt(t.val())-1;
                 t.val(num);
