@@ -63,20 +63,50 @@
     </div>
     </c:if>
 
-    <div class="verify-message-middle">
+    <style>
+        .goods-list  .goods-item{
+            padding-top: 0.6rem;
+            border-bottom: .07rem solid #ccc;
+        }
+        .goods-list .goods-item .thumb {
+            height: 10.2rem;
+            text-align: center;
+            margin-top: 0.2rem;
+            float: left;
+        }
+        .goods-list .goods-item .thumb img {
+            display: block;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .goods-list h2{
+            font-size: 1.4rem;
+            line-height: 1.9rem;
+            border-bottom: 2px solid #cccccc;
+            text-indent: 0.8502rem;
+        }
+        .goods-list .goods-item .goods-info{
+            float: left;
+            text-align: left;
+            font-size: 1rem;
+            width: 20rem;
+        }
+        .goods-item .name{font-size: 1.2rem;}
+    </style>
+    <div class="goods-list clearfix ">
         <h2><spring:message code="goods.detail.details"/></h2>
         <c:forEach var="item" items="${orderItemList}">
-            <div class="verify-main">
-                <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
-                <div class="img-message">
-                    <h3>${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                    <h6>${item.goodsCode}</h6>
-                    <div style="display: inline-block;" class="size">
-                        <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
-                        <p><spring:message code="shoppingCart.size"/> &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
-                    </div>
+            <div class="goods-item clearfix ">
+                <div class="thumb">
+                    <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
+                </div>
+                <div class="goods-info">
+                    <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <p>${item.goodsCode}</p>
+                    <p>${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                    <p><spring:message code="shoppingCart.size"/>： &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                     <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <p><spring:message code="shoppingCart.unitPrice"/>　
+                    <p><spring:message code="shoppingCart.unitPrice"/>：
                         &nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${orderDomain.currentCode=='CNY'}">
@@ -90,7 +120,7 @@
                                 </c:when>
                             </c:choose>
                         </font>&nbsp;
-                      <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
+                        <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
                 </div>
             </div>
         </c:forEach>
@@ -176,7 +206,7 @@
          <fmt:formatNumber value="${orderDomain.orderTotal}" pattern="#,###" /></span></p>
     </div>
     <div class="information">
-        <h4><spring:message code="payment.failed.shippingAddress"/></h4>
+        <h4><%--<spring:message code="payment.failed.shippingAddress"/>--%>配送信息</h4>
         <p>${orderDomain.shipAddress}</p>
         <p>${orderDomain.shipTitle}</p>
         <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">

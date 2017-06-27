@@ -14,7 +14,7 @@
 </style>
 <div class="back-up clearfix">
     <a href="/u/account/details">
-        <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><h3>< <spring:message code="goBack"/></h3></a>
+        <a style="float: right;" href="/u/account/details" ><h3>< <spring:message code="goBack"/></h3></a>
     </a>
 </div>
 <div class="club-card" >
