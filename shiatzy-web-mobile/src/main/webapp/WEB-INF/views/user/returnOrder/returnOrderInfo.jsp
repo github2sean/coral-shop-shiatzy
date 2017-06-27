@@ -14,134 +14,175 @@
 <div class="verify-message">
     <div class="return-way clearfix">
         <h3><spring:message code="returnOrderInfo.chooseReason"/></h3>
-        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
+        <p><a href="#"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message
+                code="returnOrderInfo.returnInfo"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
-    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
+    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}"
+                                                                         pattern="yyyy-MM-dd hh:mm:ss" type="date"
+                                                                         dateStyle="long"/></span></p>
     <form method="post" class="goodsForm" action="/returnOrder/chooseGoodsAndReason">
-    <c:forEach var="row" items="${cartList}" varStatus="num">
-    <div class="return-commodity clearfix">
-        <div style="border-bottom: 2px #cccccc solid">
-            <span class="mr-2">
-                <label class="radiobox" style="float: left;width: 30%">
-                    <input type="checkbox" name="returnList[${num.count-1}].orderItemId" value="${row.id}">
-                    <i class="i-radiobox" style="float: left;margin-top: 30px"></i>
-                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height:80px;float: left;padding-left: 20px">
+        <!--商品列表-->
+        <div class="goods-list return-goods clearfix">
+            <c:forEach var="item" items="${cartList}" varStatus="num">
+            <div class="goods-item clearfix ">
+                <label class="radiobox" style="float: left">
+                    <input type="checkbox" name="returnList[${num.count-1}].orderItemId" value="${item.id}">
+                    <i class="i-radiobox" style="float: left;"></i>
                 </label>
-                <div class="verify-main" style="float: right;width: 70%;border-bottom: none;height: auto">
-                    <div class="img-message">
-                        <h3>${sessionScope.language=='en_US'?row.goodsDomain.enName:row.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                        <h6><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</h6>
-                        <div style="display: inline-block;" class="size">
-                            <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</p>
-                            <p> <spring:message code="shoppingCart.size"/> &nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</p>
-                        </div>
-                        <div class=""><spring:message code="shoppingCart.number"/>：${row.num} &nbsp; </div>
-                        <div class=""><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp;<fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></div>
-                    </div>
+                <div class="thumb">
+                    <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                 </div>
-            </span>
+                <div class="goods-info">
+                    <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
 
-        </div>
-    </div>
-   <div class="return-list clearfix" style="display: none">
-        <p style=""><spring:message code="returnOrderInfo.selectTips"/></p>
-       <ul>
-           <li><spring:message code="shoppingCart.size"/></li>
-           <li>
-               <div>
-                    <span class="mr-2"><label class="radiobox">
+                        <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p><spring:message code="shoppingCart.size"/>
+                            ：${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+
+                    <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
+                    <p class=""><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
+                        <c:choose>
+                            <c:when test="${order.currentCode=='CNY'}">
+                                &nbsp;<spring:message code="coin.ZH"/>
+                            </c:when>
+                            <c:when test="${order.currentCode=='USD'}">
+                                &nbsp;<spring:message code="coin.USA"/>
+                            </c:when>
+                            <c:when test="${order.currentCode=='EUR'}">
+                                &nbsp;<spring:message code="coin.EU"/>
+                            </c:when>
+                        </c:choose>
+                    </font>&nbsp;<fmt:formatNumber value="${item.goodsPrice}" pattern="#,###"/></p>
+                </div>
+
+            </div>
+            <div class="return-list clearfix" style="display: none">
+                <p style=""><spring:message code="returnOrderInfo.selectTips"/></p>
+                <ul>
+                    <li><spring:message code="shoppingCart.size"/></li>
+                    <li>
+                        <div>
+                        <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="太大"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toobig"/></label></span>
-               </div>
-           </li>
-           <li>
-               <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="太小"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toosmall"/></label></span>
-               </div>
-           </li>
-           <li>
-               <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason3" value="太长"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toolong"/></label></span>
-               </div>
-           </li>
-           <li>
-               <div>
-                   <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type4.reason4" value="太短"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.size.tooshort"/></label></span>
-               </div>
-           </li>
-       </ul>
-        <ul>
-            <li><spring:message code="returnOrderInfo.service"/></li>
-            <li>
-                <div>
-                    <input type="hidden" name="skuId" value="${row.skuId}">
-                    <input type="hidden" name="orderId" value="${row.skuId}">
-                    <span class="mr-2"><label class="radiobox">
+                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="太大"><i
+                                class="i-radiobox"></i><spring:message
+                                code="returnOrderInfo.size.toobig"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type4.reason2"
+                                                                              value="太小"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.size.toosmall"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type4.reason3"
+                                                                              value="太长"><i
+                                    class="i-radiobox"></i><spring:message code="returnOrderInfo.size.toolong"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type4.reason4"
+                                                                              value="太短"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.size.tooshort"/></label></span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li><spring:message code="returnOrderInfo.service"/></li>
+                    <li>
+                        <div>
+                            <input type="hidden" name="skuId" value="${item.skuId}">
+                            <input type="hidden" name="orderId" value="${item.skuId}">
+                            <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.service.erroGoods"/></label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type1.reason2" value="货运过长"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.service.longDelivery"/></label></span>
-                </div>
-            </li>
-        </ul>
-        <ul>
-            <li><spring:message code="returnOrderInfo.quality"/></li>
-            <li>
-                <div>
+                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.service.erroGoods"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type1.reason2"
+                                                                              value="货运过长"><i
+                                    class="i-radiobox"></i><spring:message code="returnOrderInfo.service.longDelivery"/></label></span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li><spring:message code="returnOrderInfo.quality"/></li>
+                    <li>
+                        <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.quality.defectiveGoods"/></label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type2.reason2" value="与图片不符"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.quality.picErro"/></label></span>
-                </div>
-            </li>
-        </ul>
-        <ul>
-            <li><spring:message code="returnOrderInfo.other"/></li>
-            <li>
-                <div>
+                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i
+                            class="i-radiobox"></i><spring:message
+                            code="returnOrderInfo.quality.defectiveGoods"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type2.reason2"
+                                                                              value="与图片不符"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.quality.picErro"/></label></span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li><spring:message code="returnOrderInfo.other"/></li>
+                    <li>
+                        <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.colorErro"/></label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason2" value="面料"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.skin"/></label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason3" value="风格不合适"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.styleErro"/></label></span>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span class="mr-2"><label class="radiobox"><input type="checkbox" name="returnList[${num.count-1}].type3.reason4" value="改变心意"><i class="i-radiobox"></i><spring:message code="returnOrderInfo.other.changeHeart"/></label></span>
-                </div>
-            </li>
-        </ul>
-    </div>
-    </c:forEach>
+                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i
+                            class="i-radiobox"></i><spring:message
+                            code="returnOrderInfo.other.colorErro"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type3.reason2"
+                                                                              value="面料"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.other.skin"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type3.reason3"
+                                                                              value="风格不合适"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.other.styleErro"/></label></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="mr-2"><label class="radiobox"><input type="checkbox"
+                                                                              name="returnList[${num.count-1}].type3.reason4"
+                                                                              value="改变心意"><i
+                                    class="i-radiobox"></i><spring:message
+                                    code="returnOrderInfo.other.changeHeart"/></label></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            </c:forEach>
+        </div>
     </form>
     <%--<div style="padding-left: 4rem;" class="return-commodity clearfix">
         <img style="float: left;" src="images/goods-pic01.jpg" alt="">
@@ -151,7 +192,7 @@
         </div>
     </div>--%>
     <div class="return-btn">
-        <a href="#" class="submitBtn">< <spring:message code="orderinfo.enter"/></a>
+        <a href="#" class="submitBtn btn-default">< <spring:message code="orderinfo.next"/></a>
     </div>
     <div class="privacy">
         <a href="#">
@@ -172,33 +213,32 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
-    $(function(){
+    $(function () {
         $(".reasonShow").click(function () {
-           //$(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
+            //$(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
         });
         //$(".return-list:first").show();
 
-        if($('input[type=checkbox]').is(':checked')) {
+        if ($('input[type=checkbox]').is(':checked')) {
             // do something
         }
 
         $(".i-radiobox").click(function () {
-            $(this).parents(".return-commodity").siblings(".return-list").slideToggle(300);
+            $(this).parents(".goods-item").siblings(".return-list").slideToggle(300);
         });
 
 
         $(".submitBtn").click(function () {
-            $(this).css("color","#333");
+            $(this).css("color", "#333");
             var data = $(".goodsForm").serializeArray();
-            $.post("/returnOrder/chooseGoodsAndReason",data,function (data) {
-               if(data.code==200){
-                   location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
-               }else {
-                   layer.msg(data.message);
-               }
+            $.post("/returnOrder/chooseGoodsAndReason", data, function (data) {
+                if (data.code == 200) {
+                    location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
+                } else {
+                    layer.msg(data.message);
+                }
             });
         });
-
 
 
     });

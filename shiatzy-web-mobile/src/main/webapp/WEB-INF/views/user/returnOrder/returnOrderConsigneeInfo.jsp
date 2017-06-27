@@ -8,47 +8,51 @@
 </jsp:include>
 
 <div class="order">
-    <p style="float: left"><spring:message code="consignee.confirmBack"/></p>
+    <p style="float: left"><spring:message code="returnOrderInfo.return"/></p>
     <a style="float: right;" href="/returnOrder/returnOrderInfo?orderId=${order.id}" >< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
         <h3><spring:message code="consignee.confirmBack"/></h3>
-        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
+        <p><a href="#"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message
+                code="returnOrderInfo.returnInfo"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
     <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
-    <div class="verify-message-middle">
-        <h2><spring:message code="consignee.returnGoods"/></h2>
-        <c:forEach var="row" items="${cartList}">
-        <div style="padding-left: 3rem;position:relative;" class="verify-main">
-            <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 80px;height: 100px;float: left">
-            <div style="margin-left: 6rem;" class="img-message">
-                <h3>${sessionScope.language=='en_US'?row.goodsDomain.enName:row.goodsDomain.name}</h3>
-                <h6>${row.goodsCode}</h6>
-                <div style="display: inline-block;" class="size">
-                    <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</p>
-                    <p><spring:message code="shoppingCart.size"/> &nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</p>
-                </div>
-                <p><spring:message code="shoppingCart.number"/>：${row.num}</p>
-                <p><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
-                    <c:choose>
-                        <c:when test="${order.currentCode=='CNY'}">
-                            &nbsp;<spring:message code="coin.ZH"/>
-                        </c:when>
-                        <c:when test="${order.currentCode=='USD'}">
-                            &nbsp;<spring:message code="coin.USA"/>
-                        </c:when>
-                        <c:when test="${order.currentCode=='EUR'}">
-                            &nbsp;<spring:message code="coin.EU"/>
-                        </c:when>
-                    </c:choose>
-                </font>&nbsp;<fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></p>
+    <div class="item-group">
+        <h4 class="title j_dropdown"><spring:message code="consignee.returnGoods"/> <span class="arrow">></span></h4>
+        <div class="item">
+            <div class="goods-list return-goods">
+                <c:forEach var="item" items="${cartList}">
+                    <div class="goods-item clearfix ">
+                        <div class="thumb">
+                            <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
+                        </div>
+                        <div class="goods-info">
+                            <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
+                            <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                            <p><spring:message code="shoppingCart.size"/>
+                                ：${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                            <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
+                            <p class=""><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
+                                <c:choose>
+                                    <c:when test="${order.currentCode=='CNY'}">
+                                        &nbsp;<spring:message code="coin.ZH"/>
+                                    </c:when>
+                                    <c:when test="${order.currentCode=='USD'}">
+                                        &nbsp;<spring:message code="coin.USA"/>
+                                    </c:when>
+                                    <c:when test="${order.currentCode=='EUR'}">
+                                        &nbsp;<spring:message code="coin.EU"/>
+                                    </c:when>
+                                </c:choose>
+                            </font>&nbsp;<fmt:formatNumber value="${item.goodsPrice}" pattern="#,###"/></p>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
-        </div>
-        </c:forEach>
-    </div>
-    <p style="padding-left: 3rem;padding-right: 1.5rem;font-size: 0.9rem;margin-bottom: 0;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
+            <p style="padding-left: 3rem;padding-right: 1.5rem;font-size: 0.9rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
                     <c:choose>
                         <c:when test="${order.currentCode=='CNY'}">
                             &nbsp;<spring:message code="coin.ZH"/>
@@ -61,7 +65,11 @@
                         </c:when>
                     </c:choose>
                 </font>&nbsp;<fmt:formatNumber value="${empty row.shipFee?0:row.shipFee}" pattern="#,###"/></span></p>
-    <div class="verify-message-bottom">
+        </div>
+    </div>
+
+    <!--预计退回总额-->
+    <div class="verify-message-bottom" style=" border-top: 2px solid #cccccc;">
         <h2 style="text-align: right;padding-right: 1.5rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
             <c:choose>
                 <c:when test="${order.currentCode=='CNY'}">
@@ -76,7 +84,10 @@
             </c:choose>
         </font>&nbsp;<fmt:formatNumber value="${preBackMoney}" pattern="#,###"/></h2>
     </div>
-    <div class="returnWay" style="height: 20px">
+
+
+    <div class="returnWay">
+
         <a href="/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
         <p><spring:message code="consignee.backWay"/>：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
@@ -101,7 +112,7 @@
     </div>
 
     <div class="return-btn">
-        <a href="#" class="returnBtn" data-value="${order.id}"><spring:message code="consignee.sureBack"/></a>
+        <a href="#" class="returnBtn btn-default" data-value="${order.id}"><spring:message code="orderinfo.next"/></a>
     </div>
     <div class="privacy">
         <a href="#">
@@ -124,7 +135,10 @@
 <script>
     $(function(){
 
-
+        $(".j_dropdown").on("click", function () {
+            $(this).toggleClass("active");
+            $(this).next().slideToggle();
+        });
 
         $(".returnBtn").click(function () {
             $(this).css("color","#333");

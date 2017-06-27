@@ -14,7 +14,7 @@
         line-height: 4.2rem;
         text-align: left;
     }
-    .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
+
 </style>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
@@ -23,110 +23,88 @@
 </div>
 <div class="unfinished">
     <h3 class="title"><spring:message code="order.detail"/></h3>
-    <div class="order-group">
-        <spring:message code="order.details.no"/>：${orderDomain.orderNo}
-    </div>
-    <div class="order-group">
-        <p><spring:message code="order.details.time"/>：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
-        <p><spring:message code="order.details.status"/>：
-            <c:choose>
-                <c:when test="${orderDomain.status==1}"><spring:message code="order.status.waitPay"/>&nbsp;
-                    <a href="" id="cancelBtn" class="btn btn-primary hide" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.cancel"/></a>
-                </c:when>
-                <c:when test="${orderDomain.status==2}"><spring:message code="order.status.paid"/></c:when>
-                <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/></c:when>
-                <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
-                <c:when test="${orderDomain.status==-1}"><spring:message code="order.status.cancel"/></c:when>
-            </c:choose>
-        </p>
-    </div>
-    <c:if test="${orderDomain.status==1&&orderDomain.paymentMethod!=4}">
-    <div class="order-group">
-        <a id="rePay" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon">></span></a>
-        <div style="display: none;margin-bottom: 15px;" class="rePayWay">
-            <spring:message code="payment.failed.paymentWay"/>: <br>
-            <p><label class="radiobox"><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.zfb"/></label></p>
-            <p> <label class="radiobox"><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.union"/></label></p>
-            <p> <label class="radiobox"><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.credits"/></label></p>
-            <div class="text-left">
-                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.pay"/></a>
+    <div class="item-group">
+        <h4 class="title">
+            <spring:message code="order.details.no"/>：${orderDomain.orderNo}
+        </h4>
+        <div class="item border">
+            <p><spring:message code="order.details.time"/>：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
+            <p><spring:message code="order.details.status"/>：
+                <c:choose>
+                    <c:when test="${orderDomain.status==1}"><spring:message code="order.status.waitPay"/>&nbsp;
+                        <a href="" id="cancelBtn" class="btn btn-primary hide" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.cancel"/></a>
+                    </c:when>
+                    <c:when test="${orderDomain.status==2}"><spring:message code="order.status.paid"/></c:when>
+                    <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/></c:when>
+                    <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
+                    <c:when test="${orderDomain.status==-1}"><spring:message code="order.status.cancel"/></c:when>
+                </c:choose>
+            </p>
+        </div>
+        <!-- 重新付款 -->
+        <c:if test="${orderDomain.status==1&&orderDomain.paymentMethod!=4}">
+        <div class="item">
+            <a id="rePay" class="btn-item" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon">></span></a>
+            <div style="display: none;margin-bottom: 15px;" class="rePayWay">
+                <spring:message code="payment.failed.paymentWay"/>: <br>
+                <p><label class="radiobox"><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.zfb"/></label></p>
+                <p> <label class="radiobox"><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.union"/></label></p>
+                <p> <label class="radiobox"><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.credits"/></label></p>
+                <div class="text-left">
+                    <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.pay"/></a>
+                </div>
             </div>
         </div>
-    </div>
-    </c:if>
-    <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
-    <div class="order-group">
-        <p><a id="queryExpress" href="javascript:void(0);"><spring:message code="order.details.searchExpress"/><span style="float:right;" class="rotateicon">></span></a></p>
-        <div class="logisticInfo" style="display: none;width: 100%;overflow: hidden;background-color: #F1F1F1">
-            <div></div>
-        </div>
-    </div>
-    </c:if>
+        </c:if>
+        <!-- 查看配送状态 -->
+        <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
+        <div class="item">
+            <a id="queryExpress" class="btn-item" href="javascript:void(0);"><spring:message code="order.details.searchExpress"/><span style="float:right;" class="rotateicon">></span></a>
+            <ul class="logisticInfo" style="display: none;width: 100%;overflow: hidden;">
 
-    <style>
-        .goods-list  .goods-item{
-            padding-top: 0.6rem;
-            border-bottom: .07rem solid #ccc;
-        }
-        .goods-list .goods-item .thumb {
-            height: 10.2rem;
-            text-align: center;
-            margin-top: 0.2rem;
-            float: left;
-        }
-        .goods-list .goods-item .thumb img {
-            display: block;
-            height: 100%;
-            margin: 0 auto;
-        }
-        .goods-list h2{
-            font-size: 1.4rem;
-            line-height: 1.9rem;
-            border-bottom: 2px solid #cccccc;
-            text-indent: 0.8502rem;
-        }
-        .goods-list .goods-item .goods-info{
-            float: left;
-            text-align: left;
-            font-size: 1rem;
-            width: 20rem;
-        }
-        .goods-item .name{font-size: 1.2rem;}
-    </style>
-    <div class="goods-list clearfix ">
-        <h2><spring:message code="goods.detail.details"/></h2>
-        <c:forEach var="item" items="${orderItemList}">
-            <div class="goods-item clearfix ">
-                <div class="thumb">
-                    <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
-                </div>
-                <div class="goods-info">
-                    <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <p>${item.goodsCode}</p>
-                    <p>${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
-                    <p><spring:message code="shoppingCart.size"/>： &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
-                    <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <p><spring:message code="shoppingCart.unitPrice"/>：
-                        &nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${orderDomain.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${orderDomain.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${orderDomain.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp;
-                        <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
-                </div>
-            </div>
-        </c:forEach>
+            </ul>
+        </div>
+        </c:if>
     </div>
-    <div class="order-details">
-        <h4><spring:message code="order.details.accountDetail"/></h4>
+    <!--商品详情-->
+    <div class="item-group">
+        <h4 class="title j_dropdown"><spring:message code="goods.detail.details"/> <span class="arrow">></span></h4>
+        <div class=" goods-list clearfix " style="display: none">
+            <c:forEach var="item" items="${orderItemList}">
+                <div class="goods-item clearfix ">
+                    <div class="thumb">
+                        <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
+                    </div>
+                    <div class="goods-info">
+                        <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <p>${item.goodsCode}</p>
+                        <p>${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                        <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p><spring:message code="shoppingCart.unitPrice"/>：
+                            &nbsp;<font class="coinSymbol">
+                                <c:choose>
+                                    <c:when test="${orderDomain.currentCode=='CNY'}">
+                                        &nbsp;<spring:message code="coin.ZH"/>
+                                    </c:when>
+                                    <c:when test="${orderDomain.currentCode=='USD'}">
+                                        &nbsp;<spring:message code="coin.USA"/>
+                                    </c:when>
+                                    <c:when test="${orderDomain.currentCode=='EUR'}">
+                                        &nbsp;<spring:message code="coin.EU"/>
+                                    </c:when>
+                                </c:choose>
+                            </font>&nbsp;
+                            <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+    <!--账单详情-->
+    <div class="item-group bill-detail">
+        <h4 class="title j_dropdown"><spring:message code="order.details.accountDetail"/> <span class="arrow">></span></h4>
+        <div class="item" style="display: none">
         <ul>
             <li><spring:message code="order.details.preDiscount"/><span>
              &nbsp;<font class="coinSymbol">
@@ -189,7 +167,7 @@
                         </font>&nbsp;
              <fmt:formatNumber value="${orderDomain.shipFee}" pattern="#,###" /></span></li>
         </ul>
-        <p><spring:message code="payment.failed.total"/><span>
+        <p class="total-price"><spring:message code="payment.failed.total"/><span>
          &nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${orderDomain.currentCode=='CNY'}">
@@ -204,25 +182,36 @@
                             </c:choose>
                         </font>&nbsp;
          <fmt:formatNumber value="${orderDomain.orderTotal}" pattern="#,###" /></span></p>
+        </div>
     </div>
-    <div class="information">
-        <h4><%--<spring:message code="payment.failed.shippingAddress"/>--%>配送信息</h4>
-        <p>${orderDomain.shipAddress}</p>
-        <p>${orderDomain.shipTitle}</p>
-        <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
-            <div class="information" style="margin-top: 2rem">
-                <p ><a href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}"><spring:message code="order.details.applyReturn"/><span style="float: right">></span></a></p>
+    <!--配送信息-->
+    <div class="item-group">
+        <h4 class="title j_dropdown">配送信息 <span class="arrow">></span></h4>
+        <%--<h4>&lt;%&ndash;<spring:message code="payment.failed.shippingAddress"/>&ndash;%&gt;配送信息</h4>--%>
+        <div class="item"  style="display: none">
+            <p>${orderDomain.shipAddress}</p>
+            <p>${orderDomain.shipTitle}</p>
+        </div>
+    </div>
+   <!--申请退货-->
+    <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
+    <div class="item-group">
+            <div class="item">
+                <a class="btn-item"  href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}">
+                    <spring:message code="order.details.applyReturn"/><span style="float: right">></span></a>
             </div>
-        </c:if>
-
-        <c:if test="${not empty orderDomain.returnRequestDomain}">
-
-            <a href="/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}"><p style="margin-top: 2rem;height: 3rem;line-height: 3rem;border-top:2px solid #cccccc;border-bottom:2px solid #cccccc"><spring:message code="order.details.searchReturn"/> <span style="float: right">></span></p></a>
-
-        </c:if>
-
     </div>
-
+    </c:if>
+    <!--查看退货详情-->
+    <c:if test="${not empty orderDomain.returnRequestDomain}">
+    <div class="item-group">
+            <div class="item">
+            <a class="btn-item" href="/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}">
+                <spring:message code="order.details.searchReturn"/> <span style="float: right">></span>
+            </a>
+            </div>
+    </div>
+    </c:if>
     <div class="privacy">
         <a href="#">
             <span style="float:left;margin-left: -10px">> </span>
@@ -243,7 +232,10 @@
 <script>
 
     $(function () {
-
+        $(".j_dropdown").on("click", function () {
+            $(this).toggleClass("active");
+            $(this).next().slideToggle();
+        });
         $("#rePay").click(function () {
             $(this).css("color","#333");
             $(".rePayWay").slideToggle();
@@ -285,7 +277,6 @@
                     location.reload();
                 }
             })
-
         });
 
         var num = 1;
@@ -307,10 +298,10 @@
                 if(data.code==200){
                     var trace =JSON.parse(data.data).Traces;
                     if(trace.length>0){
+                        $(".logisticInfo").empty();
                         for(var i=0;i<trace.length;i++){
-                            $(".logisticInfo").append("<div style='float: right;width: 90%;overflow: hidden;border-bottom: #cccccc dashed 1px;margin-top: 1rem' >"+trace[i].AcceptTime+"<br/>"+ trace[i].AcceptStation+"</div>");
+                            $(".logisticInfo").append("<li >"+trace[i].AcceptTime+"<br/>"+ trace[i].AcceptStation+"</li>");
                         }
-
                     }
                     layer.closeAll('loading');
                 }
