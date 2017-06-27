@@ -66,7 +66,7 @@
                             </c:when>
                         </c:choose>
                         </span>
-                        <span style="float: right;">></span>
+                        <span style="float: right;"> ></span>
                         <span style="float: right;"> <spring:message code="account.personal.card.point"/>：${customerDomain.tempMemberDomain.point}</span>
                     </a>
                 </li>
