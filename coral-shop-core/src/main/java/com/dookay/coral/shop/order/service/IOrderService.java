@@ -22,4 +22,6 @@ public interface IOrderService extends IBaseService<OrderDomain> {
     void updateSkuStock(OrderDomain orderDomain);
 
     void updateOrderStatus(OrderDomain orderDomain);
+
+    void subCouponNum(OrderDomain orderDomain);
 }

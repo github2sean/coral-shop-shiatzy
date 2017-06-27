@@ -122,6 +122,17 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	public void updateOrderStatus(OrderDomain orderDomain){
 		orderDomain.setPaidTime(new Date());
 		orderDomain.setStatus(OrderStatusEnum.PAID.getValue());
+
+		//优惠券数量减少
+		subCouponNum(orderDomain);
+		//商品库存减少
+		updateSkuStock(orderDomain);
+
+		super.update(orderDomain);
+	}
+
+	@Override
+	public void subCouponNum(OrderDomain orderDomain){
 		//优惠券次数减少
 		if(orderDomain.getCouponId()!=null){
 			CouponDomain couponDomain = couponService.get(orderDomain.getCouponId());
@@ -149,8 +160,5 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			}
 			couponService.update(couponDomain);
 		}
-		//商品库存减少
-		updateSkuStock(orderDomain);
-		super.update(orderDomain);
 	}
 }

@@ -159,6 +159,10 @@
 
 
         $(".choose-store").find(".findStore").click(function(){
+            if($(".goodsDiv").length>5){
+                layer.msg('<spring:message code="reservation.list.less5"/>');
+                return false;
+            }
             var $sellOut = $(".goodsDiv").find(".sellOut");
             if($sellOut.hasClass("hasOut")){
                 layer.msg('<spring:message code="shoppingCart.deleteOut"/>');

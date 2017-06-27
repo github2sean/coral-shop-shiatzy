@@ -29,11 +29,10 @@
         <a href="javascript:void(0)" id="payBtn"><spring:message code="payment.failed.repay"/></a>
     </div>
 
-
+    <h5 style="border-bottom: solid 1px #cccccc"><spring:message code="payment.failed.orderDetail"/></h5>
     <c:forEach var="row" items="${order.orderItemDomainList}">
         <c:set var="item" value="${row.goodsItemDomain}"></c:set>
         <div class="verify-message-middle">
-            <h2><spring:message code="payment.failed.orderDetail"/></h2>
             <div class="verify-main">
                 <img src="${ImageModel.toFirst(item.thumb).file}" alt="${ImageModel.toFirst(item.thumb).file}">
                 <div class="img-message">
@@ -56,7 +55,7 @@
                                 &nbsp;<spring:message code="coin.EU"/>
                             </c:when>
                         </c:choose>
-                    </font>&nbsp; ${row.goodsPrice}</p>
+                    </font>&nbsp;  <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></p>
                 </div>
             </div>
         </div>
@@ -78,7 +77,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; ${row.goodsPrice}</span></li>
+                        </font>&nbsp; <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></li>
             </c:forEach>
 
             <li><spring:message code="payment.failed.disAmt"/><span>&nbsp;<font class="coinSymbol">
@@ -93,7 +92,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; -${empty order.couponDiscount?0:order.couponDiscount}</span></li>
+                        </font>&nbsp; -<fmt:formatNumber value="${empty order.couponDiscount?0:order.couponDiscount}" pattern="#,###"/></span></li>
             <li><spring:message code="payment.failed.memAmt"/><span>&nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${order.currentCode=='CNY'}">
@@ -106,7 +105,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; -${empty order.memberDiscount?0:order.memberDiscount}</span></li>
+                        </font>&nbsp; -<fmt:formatNumber value="${empty order.memberDiscount?0:order.memberDiscount}" pattern="#,###"/></span></li>
             <%--<li>关税和税收<span>¥ 100</span></li>--%>
             <li><spring:message code="payment.failed.fee"/><span>&nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -120,7 +119,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; ${empty order.shipFee?0:order.shipFee}</span></li>
+                        </font>&nbsp; <fmt:formatNumber value="${empty order.shipFee?0:order.shipFee}" pattern="#,###"/></span></li>
         </ul>
         <p><spring:message code="payment.failed.total"/><span>&nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -134,7 +133,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; ${order.orderTotal}</span></p>
+                        </font>&nbsp;<fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/> </span></p>
     </div>
     <div class="order-details">
         <h4><spring:message code="payment.failed.paymentWay"/></h4>

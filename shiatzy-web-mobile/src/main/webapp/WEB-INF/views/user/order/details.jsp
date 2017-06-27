@@ -40,7 +40,7 @@
             </c:choose>
         </p>
     </div>
-    <c:if test="${orderDomain.status==1}">
+    <c:if test="${orderDomain.status==1&&orderDomain.paymentMethod!=4}">
     <div class="order-group">
         <a id="rePay" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon">></span></a>
         <div style="display: none;margin-bottom: 15px;" class="rePayWay">
@@ -173,7 +173,7 @@
                                 </c:when>
                             </c:choose>
                         </font>&nbsp;
-         <fmt:formatNumber value="${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}" pattern="#,###" /></span></p>
+         <fmt:formatNumber value="${orderDomain.orderTotal}" pattern="#,###" /></span></p>
     </div>
     <div class="information">
         <h4><spring:message code="payment.failed.shippingAddress"/></h4>

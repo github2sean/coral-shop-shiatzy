@@ -82,8 +82,6 @@ public class ShoppingCartController extends BaseController{
         SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
         if(skuDomain == null) {
             return  errorResult("无此商品");
-        }else if(skuDomain.getQuantity()<1){
-            return  errorResult("此商品已售罄");
         }
 
         if(userContext.isGuest()){//游客先保存到session中
@@ -250,10 +248,29 @@ public class ShoppingCartController extends BaseController{
     @RequestMapping(value = "updateCart" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateCart(Long shoppingCartItemId,Integer num){
-        Long accountId = UserContext.current().getAccountDomain().getId();
-        CustomerDomain customerDomain = customerService.getAccount(accountId);
-        shoppingCartService.updateShoppingCartItem(customerDomain,shoppingCartItemId,num);
-        return  successResult("修改成功");
+        UserContext userContext = UserContext.current();
+        if(userContext.isGuest()){
+            HttpSession session = HttpContext.current().getRequest().getSession();
+            List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+            System.out.println("oldlistCart:"+JsonUtils.toJSONString(listCart));
+            if(listCart!=null&&listCart.size()>0) {
+                Iterator<AddShoppingCartForm> it = listCart.iterator();
+                while(it.hasNext()){
+                    AddShoppingCartForm now = it.next();
+                    if(now.getId().equals(shoppingCartItemId+"")&& now.getType()==1){
+                        now.setNum(num);
+                        System.out.println("updateCartNum:"+JsonUtils.toJSONString(now));
+                    }
+                }
+            }
+            session.setAttribute(SESSION_CART,listCart);
+            return  successResult("修改成功");
+        }else{
+            Long accountId = userContext.getAccountDomain().getId();
+            CustomerDomain customerDomain = customerService.getAccount(accountId);
+            shoppingCartService.updateShoppingCartItem(customerDomain,shoppingCartItemId,num);
+            return  successResult("修改成功");
+        }
     }
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)

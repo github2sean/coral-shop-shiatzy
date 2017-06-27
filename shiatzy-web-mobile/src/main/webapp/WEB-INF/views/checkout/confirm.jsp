@@ -71,7 +71,7 @@
             <li class=" payMethod" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
             <li class=" payMethod" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
             <li class=" payMethod" data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
-                <li class=" payMethod" data-value="4">货到付款(仅限中国大陆地区）</li>
+            <li class=" payMethod" id="cod" data-value="4">货到付款(仅限中国大陆地区）</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}&nbsp;<spring:message code="orderinfo.confirm.numofgoods"/>　v</p>
         <div class="clearfix dx-shopping moreGoods" style="display:none;">
@@ -178,6 +178,28 @@
             noNeedBill();
         });
         $(".payMethod").click(function () {
+
+            if($(this).attr("data-value")==4){
+                //验证是否已选择收货地址
+                var index = layer.load(2, {
+                    shade: [0.4,'#fff'] //0.1透明度的白色背景
+                });
+                if(${not empty order.customerAddressDomain.address}){
+                    $.post("/checkout/submitOrder",{"payWay":"COD"},function (data) {
+                        console.log(data);
+                        //loading层
+                        if(data.code==200){
+                            layer.msg(data.message);
+                            var orderId = data.data.id;
+                            location.href = '/order/details?orderId='+orderId;
+                        }
+                    });
+                }else{
+                    layer.msg('请先选择收货地址');
+                    return false;
+                }
+            }
+
             $(this).addClass("active").siblings("li").removeClass("active");
             var  id = $(this).attr("data-value");
             $.post("/checkout/setPaymentMethod",{"paymentId":id},function (data) {
