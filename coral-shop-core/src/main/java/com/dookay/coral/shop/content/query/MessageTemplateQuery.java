@@ -18,6 +18,7 @@ public class MessageTemplateQuery extends Query {
 	private Integer code;
 	private Integer type;
 	private Integer isValid;
+	private String title;
 
 
 	@Override
@@ -34,7 +35,9 @@ public class MessageTemplateQuery extends Query {
 		if (valid(isValid)){
 			criteria.andEqualTo("isValid",isValid);
 		}
-
+		if (valid(title)){
+			criteria.andEqualTo("title",title);
+		}
 
 		//todo 写查询逻辑
 		return queryCriteria;

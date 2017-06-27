@@ -40,7 +40,11 @@ public class CustomerDomain implements Serializable {
 	
 	/*电话*/
 	private String phone;
-	
+
+
+	/*验证会员电话*/
+	private String validMobile;
+
 	/*会员等级*/
 	private Integer customerLevel;
 	

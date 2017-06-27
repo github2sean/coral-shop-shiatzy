@@ -49,7 +49,9 @@
             <p class="card-name "> <spring:message code="account.personal.card.peony"/></p>
         </c:when>
     </c:choose>
-    <p class="card-num "><spring:message code="vip.valid.card.number"/>：${tempMemberDomain.cardNo}</p>
+    <c:if test="${tempMemberDomain.cardType!='CN-D'}">
+        <p class="card-num "><spring:message code="vip.valid.card.number"/>：${tempMemberDomain.cardNo}</p>
+    </c:if>
 </div>
 <div class="anew">
     <a href="/u/account/toValidVip">

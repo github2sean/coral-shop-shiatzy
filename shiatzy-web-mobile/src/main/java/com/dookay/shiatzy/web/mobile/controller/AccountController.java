@@ -90,8 +90,7 @@ public class AccountController extends MobileBaseController {
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
         if(customerDomain.getIsArtClubMember()!=null&&customerDomain.getIsArtClubMember()==1) {
             TempMemberQuery query = new TempMemberQuery();
-            String phone = customerDomain.getPhone();
-            query.setMobile(StringUtils.isNotBlank(phone)&&phone.length()>2?phone.substring(2,phone.length()):"");
+            query.setMobile(customerDomain.getValidMobile());
             List<String> cardType = new ArrayList<>();
             cardType.add("CN-A");
             cardType.add("CN-B");
@@ -327,12 +326,10 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
-
-        String record = customerDomain.getPhone();
-        if(StringUtils.isNotBlank(record)&&record.length()>2){
-            record = record.substring(2,record.length());
+        if(!(StringUtils.isNotBlank(customerDomain.getValidMobile())&&customerDomain.getIsArtClubMember()==1)){
+            throw new ServiceException("暂未绑定会员");
         }
-        query.setMobile(record);
+        query.setMobile(customerDomain.getValidMobile());
         List<String> cardType = new ArrayList<>();
         cardType.add("CN-A");
         cardType.add("CN-B");
