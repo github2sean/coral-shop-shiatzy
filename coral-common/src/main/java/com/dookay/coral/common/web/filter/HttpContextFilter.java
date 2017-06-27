@@ -30,9 +30,7 @@ public class HttpContextFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpContext.current().setRequest(request);
-
-
-
+        HttpContext.current().setResponse(response);
         HttpContext.current().setSession(request.getSession());
 
         //显示语言
@@ -40,7 +38,7 @@ public class HttpContextFilter implements Filter {
         String checked = CookieUtil.getCookieValueByKey(request,cookieName);
         if(StringUtils.isNotBlank(checked)){
                 request.getSession().setAttribute("language",checked);
-            CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
+            CookieUtil.setCookieValueByKey(response,cookieName,"zh_CN",MAX_COOKIE_AGE);
         }
 
         chain.doFilter(req, response);
