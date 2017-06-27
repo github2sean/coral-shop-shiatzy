@@ -78,6 +78,9 @@ public class GoodsDomain implements Serializable {
 	/*是否打折*/
 	private Integer isSale;
 
+	/*是否能预约*/
+	private Integer isPre;
+
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;

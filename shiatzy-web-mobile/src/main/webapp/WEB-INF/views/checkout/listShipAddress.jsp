@@ -31,9 +31,11 @@
         </c:forEach>
 
     </div>
-    <div class="btn">
-        <a href="/checkout/confirm" type="button" class="accounts-btn">&lt; <spring:message code="delivery.address.enter"/></a>
-    </div>
+    <c:if test="${'index'!=way}">
+        <div class="btn">
+            <a href="/checkout/confirm" type="button" class="accounts-btn">&lt; <spring:message code="delivery.address.enter"/></a>
+        </div>
+    </c:if>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
@@ -44,7 +46,6 @@
 
         var way = '${way}';
         var backUrl;
-
         if(way=='index'){
             backUrl = "/u/account/index";
             $(".top-right-nav").find("li:eq(2)").addClass("active");
