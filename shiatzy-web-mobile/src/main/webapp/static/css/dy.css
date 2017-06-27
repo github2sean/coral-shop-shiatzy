@@ -167,13 +167,19 @@
     margin-bottom: 1.5459rem;
 }
 
+/*.verify-message-middle>h2 {*/
+    /*font-size: 1.1821rem;*/
+    /*text-indent: 0.8502rem;*/
+    /*margin-top: 2.8599rem;*/
+    /*border-bottom: 2px solid #cccccc;*/
+/*}*/
 .verify-message-middle>h2 {
-    font-size: 1.1821rem;
+    font-size: 1.4rem;
+    line-height: 1.9rem;
     text-indent: 0.8502rem;
     margin-top: 2.8599rem;
     border-bottom: 2px solid #cccccc;
 }
-
 .verify-main .img-message h3,
 .verify-main .img-message h6,
 .verify-main .img-message p {
@@ -407,13 +413,21 @@
     padding: 0 2.5507rem;
 }
 
+/*.card-name {*/
+    /*position: absolute;*/
+    /*top: 10rem;*/
+    /*left: 40%;*/
+    /*color: #fff;*/
+/*}*/
 .card-name {
     position: absolute;
     top: 10rem;
-    left: 40%;
+    left: 50%;
+    margin-left: -42px;
     color: #fff;
+    width: 84px;
+    text-align: center;
 }
-
 .card-num {
     position: absolute;
     top: 15.5rem;
@@ -421,7 +435,42 @@
     color: #fff;
     font-size: 16px;
 }
-
+@media screen and (max-width: 375px) {
+    .card-num {
+        position: absolute;
+        top: 14.5rem;
+        left: 14%;
+        color: #fff;
+        font-size: 16px;
+    }
+    .card-name {
+        position: absolute;
+        top: 9rem;
+        left: 50%;
+        margin-left: -42px;
+        color: #fff;
+        width: 84px;
+        text-align: center;
+    }
+}
+@media screen and (max-width: 320px) {
+    .card-num {
+        position: absolute;
+        top: 12rem;
+        left: 14%;
+        color: #fff;
+        font-size: 16px;
+    }
+    .card-name {
+        position: absolute;
+        top: 8rem;
+        left: 50%;
+        margin-left: -42px;
+        color: #fff;
+        width: 84px;
+        text-align: center;
+    }
+}
 .anew {
     text-align: center;
 }
@@ -709,13 +758,18 @@
     padding: 0 1.5459rem 0 1.5459rem;
 }
 
+/*.order-details h4 {*/
+    /*font-size: 1.1821rem;*/
+    /*line-height: 1.8rem;*/
+    /*border-bottom: 2px solid #cccccc;*/
+    /*text-indent: 0.8502rem;*/
+/*}*/
 .order-details h4 {
-    font-size: 1.1821rem;
-    line-height: 1.8rem;
+    font-size: 1.4rem;
+    line-height: 1.9rem;
     border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
 }
-
 .order-details h4 span {
     float: right;
 }
@@ -725,11 +779,14 @@
     text-indent: 0.8502rem;
 }
 
+/*.order-details h4+ul li {*/
+    /*font-size: 0.9rem;*/
+    /*padding: 0.5rem 0;*/
+/*}*/
 .order-details h4+ul li {
-    font-size: 0.9rem;
+    font-size: 1.4rem;
     padding: 0.5rem 0;
 }
-
 .order-details h4+ul li span {
     float: right;
 }
@@ -782,19 +839,28 @@
     font-size: 1.1821rem;
 }
 
+/*.information h4 {*/
+    /*font-size: 1.1821rem;*/
+    /*line-height: 1.8rem;*/
+    /*border-bottom: 2px solid #cccccc;*/
+    /*text-indent: 0.8502rem;*/
+/*}*/
 .information h4 {
-    font-size: 1.1821rem;
-    line-height: 1.8rem;
+    font-size: 1.4rem;
+    line-height: 1.9rem;
     border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
 }
-
 .information h4 span {
     float: right;
 }
 
+/*.information p {*/
+    /*font-size: 0.9rem;*/
+    /*text-indent: 0.8502rem;*/
+/*}*/
 .information p {
-    font-size: 0.9rem;
+    font-size: 1.4rem;
     text-indent: 0.8502rem;
 }
 
@@ -1089,4 +1155,10 @@
     font-size: 3rem;
     top: 50%;
     transform: translateY(-50%);
+}
+@media screen and (max-width: 320px) {
+    .verify-main .img-message {
+        float: left;
+        margin-left: -0.5rem;
+    }
 }
