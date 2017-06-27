@@ -37,10 +37,38 @@
         <img src="images/index-show.jpg" alt="">
     </a>
 </div>
+<div class="country-select" id="country-select">
+        <p class="country-title">国家*</p>
+        <ul class="country-con" style="">
+            <li class="active"><a href="#">中国</a></li>
+            <li><a href="#">美国</a></li>
+            <li><a href="#">韩国</a></li>
+            <li><a href="#">日本</a></li>
+        </ul>
+        <!--<div class="weui-cell__bd">-->
+            <!--<select class="weui-select" name="select1">-->
+                <!--<option selected="" value="1">微信号</option>-->
+                <!--<option value="2">QQ号</option>-->
+                <!--<option value="3">Email</option>-->
+            <!--</select>-->
+        <!--</div>-->
+
+</div>
 @include('include/footer.html')
 <script>
     $(function(){
         commonApp.init();
     });
+    window.onload=function(){
+        layer.open({
+            type:1,
+            shade:0.8,
+            title:false,
+            closeBtn:0,
+            content:$(".country-select"),
+            area:['100%','100%'],
+        });
+    }
+
 </script>
 @include('include/foot.html')
