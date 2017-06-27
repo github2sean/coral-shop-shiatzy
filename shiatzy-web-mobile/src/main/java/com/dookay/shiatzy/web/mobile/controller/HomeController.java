@@ -45,6 +45,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -152,10 +153,14 @@ public class HomeController extends MobileBaseController {
 
     @RequestMapping(value = "chooseShippingCountry", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult chooseShippingCountry(Long shippingCountryId){
+    public JsonResult chooseShippingCountry(HttpServletResponse response, Long shippingCountryId){
+        if(shippingCountryId==null){
+            return errorResult("选择为空");
+        }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         session.setAttribute(SHIPPING_COUNTRY_ID,shippingCountryId);
+        CookieUtil.setCookieValueByKey(response,"shippingCountry",shippingCountryId+"",60*60*24*365);
         return successResult("选择成功");
     }
 
@@ -197,7 +202,7 @@ public class HomeController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
 
-        Long id = (Long)session.getAttribute(SHIPPING_COUNTRY_ID);
+        Long id = (Long) session.getAttribute(SHIPPING_COUNTRY_ID);
         if(id==null){
             return errorResult("未选择国家");
         }

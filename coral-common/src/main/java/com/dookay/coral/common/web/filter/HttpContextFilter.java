@@ -30,7 +30,9 @@ public class HttpContextFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpContext.current().setRequest(request);
-        HttpContext.current().setResponse(response);
+
+
+
         HttpContext.current().setSession(request.getSession());
 
         //显示语言
@@ -41,12 +43,6 @@ public class HttpContextFilter implements Filter {
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }
 
-
-        String selectRef = "/passport/alertCountry?ref=" + URLEncoder.encode(request.getServletPath(), "UTF-8");
-        String old = CookieUtil.getCookieValue(request,"shippingCountry");
-        if(StringUtils.isBlank(old)){
-            response.sendRedirect(selectRef);
-        }
         chain.doFilter(req, response);
     }
 

@@ -21,4 +21,13 @@
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.util.List getShippingCountryList()</function-signature>
     </function>
+
+    <function>
+        <description>获取是否选择国家</description>
+        <name>selectCountry</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.String getSelectCountry()</function-signature>
+    </function>
+
+
 </taglib>

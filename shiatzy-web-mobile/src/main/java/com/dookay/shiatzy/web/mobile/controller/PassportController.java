@@ -3,6 +3,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.utils.HttpClientUtil;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -378,22 +379,4 @@ public class PassportController extends MobileBaseController{
         return successResult("退出成功",1);
     }
 
-    @RequestMapping(value = "firstSelectCountry", method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult firstSelectCountry(HttpServletResponse response, String countryId){
-        CookieUtil.setCookieValue(response,"shippingCountry",countryId,60*60*24*365);
-        return successResult("选择成功");
-    }
-
-    @RequestMapping(value = "alertCountry", method = RequestMethod.GET)
-    public ModelAndView alertCountry(){
-        //查询出配送国家
-        ShippingCountryQuery query = new ShippingCountryQuery();
-        query.setDesc(false);
-        query.setOrderBy("rank");
-        List<ShippingCountryDomain> countryList = shippingCountryService.getList(query);
-        ModelAndView mv = new ModelAndView("");//TODO: 弹出的页面
-        mv.addObject("countryList",countryList);
-        return mv;
-    }
 }

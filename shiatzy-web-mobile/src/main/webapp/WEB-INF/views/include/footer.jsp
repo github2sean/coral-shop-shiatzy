@@ -30,7 +30,7 @@
                 <select id="select_country" style="width: 100%;background: transparent;border: 0;font-size: 1.1rem;">
                     <option><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
-                        <option value="${country.id}">${country.name}</option>
+                        <option value="${country.id}">${sessionScope.language=='en_US'?country.enName:country.name}</option>
                     </c:forEach>
                 </select></a>
         </li>
@@ -63,6 +63,14 @@
     </div>
     </a>
     <div class="text-center do-copy"><spring:message code="ending"/></div>
+    <div class="country-select" id="country-select">
+        <p class="country-title">国家*</p>
+        <ul class="country-con" style="">
+            <c:forEach var="row" items="${web:countryList()}">
+                <li><a href="#"  data-value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a></li>
+            </c:forEach>
+        </ul>
+    </div>
 </footer>
 </div>
 </div>
@@ -308,6 +316,18 @@
             });
         });
 
+        //弹出层
+        $(".country-select").find("li").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id =  $(this).find("a").attr("data-value");
+            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    location.href = '/home/index';
+                }
+            });
+        });
+
+
     });
 
 
@@ -346,6 +366,20 @@
         }
         return windowHeight;
     }
+    //
+
+    <c:if test="${empty web:selectCountry()}">
+        window.onload=function(){
+            layer.open({
+                type:1,
+                shade:0.8,
+                title:false,
+                closeBtn:0,
+                content:$(".country-select"),
+                area:['100%','100%'],
+            });
+        }
+    </c:if>
 </script>
 <!-- js页面应用 结束 -->
 </body>
