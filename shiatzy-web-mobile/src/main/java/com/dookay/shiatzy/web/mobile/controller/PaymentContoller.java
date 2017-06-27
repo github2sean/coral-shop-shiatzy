@@ -118,7 +118,7 @@ public class PaymentContoller extends BaseController{
 
         //建立请求前判断优惠券是否被使用
         if(orderDomain.getCouponId()!=null){
-            couponService.checkCoupon(""+orderDomain.getCouponId());
+            couponService.checkCoupon(couponService.get(orderDomain.getCouponId()).getCode());
         }
         //建立请求
         String form = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
@@ -338,7 +338,7 @@ public class PaymentContoller extends BaseController{
 
         //建立请求前判断优惠券是否被使用
         if(orderDomain.getCouponId()!=null){
-            couponService.checkCoupon(""+orderDomain.getCouponId());
+            couponService.checkCoupon(couponService.get(orderDomain.getCouponId()).getCode());
         }
         String html = AcpService.createAutoFormHtml(requestFrontUrl, submitFromData,unionConfig.getEncoding());   //生成自动跳转的Html表单
         LogUtil.writeLog("打印请求HTML，此为请求报文，为联调排查问题的依据："+html);
@@ -497,8 +497,8 @@ public class PaymentContoller extends BaseController{
         requestData.put(IpayLinksStatics.SUBMIT_TIME,simpleDateFormat.format(orderDomain.getOrderTime()));
         requestData.put(IpayLinksStatics.CUSTOMER_IP,ipAddress);
         requestData.put(IpayLinksStatics.SITE_ID,ipayLinksConfig.getSiteId());
-        //requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
-        requestData.put(IpayLinksStatics.ORDER_AMOUNT,"0.01");//测试用//TODO 删除
+        requestData.put(IpayLinksStatics.ORDER_AMOUNT,amtRemovePoint(orderDomain.getOrderTotal()));
+        //requestData.put(IpayLinksStatics.ORDER_AMOUNT,"0.01");//测试用//TODO 删除 不能包含小数点，会报错
         requestData.put(IpayLinksStatics.TRADE_TYPE,ipayLinksConfig.getTradeType());
         requestData.put(IpayLinksStatics.PAY_TYPE,ipayLinksConfig.getPayType());
         String currentCode = StringUtils.isBlank(orderDomain.getCurrentCode())?ipayLinksConfig.getCurrencyCode():orderDomain.getCurrentCode();
@@ -570,7 +570,7 @@ public class PaymentContoller extends BaseController{
 
         //建立请求前判断优惠券是否被使用
         if(orderDomain.getCouponId()!=null){
-            couponService.checkCoupon(""+orderDomain.getCouponId());
+            couponService.checkCoupon(couponService.get(orderDomain.getCouponId()).getCode());
         }
         String html = AcpService.createAutoFormHtml(postUrl,requestData,"UTF-8");
         System.out.println("html:"+html);
@@ -781,6 +781,7 @@ public class PaymentContoller extends BaseController{
                 }
             }
         }
+        System.out.println("returnAmt:"+returnAmt);
         return  returnAmt;
     }
 

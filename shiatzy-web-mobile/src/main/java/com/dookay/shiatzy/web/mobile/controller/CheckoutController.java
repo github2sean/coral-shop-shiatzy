@@ -324,10 +324,15 @@ public class CheckoutController  extends BaseController{
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //从session中获取订单对象,对象至少包含商品列表、优惠券
         HttpServletRequest request = HttpContext.current().getRequest();
+        String payWay = request.getParameter("payWay");
+        Boolean isCOD = StringUtils.isNotBlank(payWay)&&"COD".equals(payWay)?true:false;
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order== null){
             return errorResult("订单已经失效");
+        }
+        if(isCOD){
+            order.setPaymentMethod(4);
         }
         //购物车
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
@@ -525,7 +530,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
         orderDomain.setShipAddressId(customerAddressDomain.getId());
-
+        orderDomain.setShippingMethod(ShippingMethodEnum.EXPRESS.getValue());
         session.setAttribute(ORDER,orderDomain);
         return successResult("操作成功");
     }

@@ -36,7 +36,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 		query.setCode(couponCode);
 		CouponDomain couponDomain = getOne(query);
 		if(couponDomain==null){
-			throw new ServiceException("无此优惠券");
+			throw new ServiceException("无代码："+couponCode+" 的此优惠券");
 		}else{
 			if(couponDomain.getIsValid()==0){
 				throw new ServiceException("优惠券无效");
