@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * 上下文过滤器，绑定HttpContext
@@ -38,6 +39,13 @@ public class HttpContextFilter implements Filter {
         if(StringUtils.isNotBlank(checked)){
                 request.getSession().setAttribute("language",checked);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
+        }
+
+
+        String selectRef = "/passport/alertCountry?ref=" + URLEncoder.encode(request.getServletPath(), "UTF-8");
+        String old = CookieUtil.getCookieValue(request,"shippingCountry");
+        if(StringUtils.isBlank(old)){
+            response.sendRedirect(selectRef);
         }
         chain.doFilter(req, response);
     }
