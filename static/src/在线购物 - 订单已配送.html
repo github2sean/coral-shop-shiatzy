@@ -69,11 +69,12 @@
             margin-top: 20px;
             padding: 10px;
             font-family: 宋体;
-            border-bottom: 1px solid #000;
+
         }
         .email-submit .dingdan .detail {
             text-align: left;
             font-size: 13px;
+            padding-bottom: 5px;
         }
         .email-submit .dingdan .detail ul li {
             line-height: 24px;
@@ -84,8 +85,36 @@
         }
         .email-submit .dingdan .list-name {
             font-weight: bold;
-
         }
+        .email-submit .email-txt .summary {
+            font-family: 宋体;
+            text-align: center;
+            font-size: 14px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-top: 1px solid #000;
+        }
+        .dingdan-list:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .dingdan-list .list-left {
+            float: left;
+            width: 30%;
+        }
+        .dingdan-list .list-right {
+            float: right;
+            text-align: left;
+            width: 70%;
+        }
+        .dingdan-list .list-right .pro-title {
+            font-family: "宋体";
+            font-size: 14px;
+            font-weight: normal;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -101,7 +130,7 @@
                 <div class="dingdan">
                     <p class="dingdan-title">订单详情</p>
                     <div class="detail">
-                        <ul>
+                        <ul class="detail-list">
                             <li>
                                 <span class="list-name">订单号:</span><span>20170602401</span>
                             </li>
@@ -125,8 +154,39 @@
                             </li>
                         </ul>
                     </div>
+                    <p class="summary">¥ 1</p>
+                    <p class="dingdan-title">运送信息</p>
+                    <div class="detail">
+                        <ul class="detail-list">
+                            <li>
+                                <span class="list-name">收货人:</span><span>Chen Shiatzy</span>
+                            </li>
+                            <li>
+                                <span class="list-name">运送国家:</span><span>中国</span>
+                            </li>
+                            <li>
+                                <span class="list-name">城市:</span><span>上海</span>
+                            </li>
+                            <li>
+                                <span class="list-name">地址详情:</span><span>200237 - 春申路1929号</span>  :
+                            </li>
+                            <li>
+                                <span class="list-name">联系方式:</span><span>0000-00-00</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <p class=""></p>
+                <div class="dingdan-list">
+                    <div class="list-left"><img src="images/1C179-B_sb.jpg" alt=""></div>
+                    <div class="list-right">
+                        <h3 class="pro-title">凸面金属浮雕花朵戒指</h3>
+                        <p class="pro-kind">1C179 B</p>
+                        <p>颜色 : 粉色</p>
+                        <p>尺寸 : S</p>
+                        <p>价格 : ¥1</p>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="email-footer">© shiatzy chen. all rights reserved</div>

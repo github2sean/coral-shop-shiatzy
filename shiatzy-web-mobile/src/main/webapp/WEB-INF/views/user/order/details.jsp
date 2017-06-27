@@ -15,6 +15,7 @@
         text-align: left;
     }
     .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
+
 </style>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
@@ -43,7 +44,7 @@
     <c:if test="${orderDomain.status==1&&orderDomain.paymentMethod!=4}">
     <div class="order-group">
         <a id="rePay" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon">></span></a>
-        <div style="display: none;margin-bottom: 15px;" class="rePayWay">
+        <div style="display: none;margin-bottom: 15px;" class="rePayWay szy-pay-way">
             <spring:message code="payment.failed.paymentWay"/>: <br>
             <p><label class="radiobox"><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.zfb"/></label></p>
             <p> <label class="radiobox"><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.union"/></label></p>
