@@ -10,6 +10,9 @@ import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
+import com.dookay.coral.shop.content.query.MessageTemplateQuery;
+import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
@@ -26,6 +29,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.IEmailService;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
@@ -64,6 +68,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -121,6 +126,10 @@ public class CheckoutController  extends BaseController{
     private ISmsService smsService;
     @Autowired
     private ITempStockService tempStockService;
+    @Autowired
+    private IEmailService emailService;
+    @Autowired
+    private IMessageTemplateService messageTemplateService;
 
 
     private static String CART_LIST = "cartList";
@@ -310,7 +319,7 @@ public class CheckoutController  extends BaseController{
      */
     @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult submitOrder(){
+    public JsonResult submitOrder() throws MessagingException {
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //从session中获取订单对象,对象至少包含商品列表、优惠券
@@ -375,6 +384,13 @@ public class CheckoutController  extends BaseController{
         //发送短信通知
         smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
         //发送邮件通知 TODO: 2017/6/15
+
+        MessageTemplateQuery query = new MessageTemplateQuery();
+        query.setType(1);
+        query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
+        query.setIsValid(1);
+        MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
+        emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
