@@ -16,6 +16,8 @@
     }
     .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
 
+
+
 </style>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
@@ -53,6 +55,9 @@
                 <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.pay"/></a>
             </div>
         </div>
+
+
+
     </div>
     </c:if>
     <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
