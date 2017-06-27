@@ -246,7 +246,7 @@
                 setCartNum();
                 //location.href="/cart/list";
               } else {
-                layer.msg(result.message);
+                layer.msg('<spring:message code="sellout"/>');
               }
             });
           });

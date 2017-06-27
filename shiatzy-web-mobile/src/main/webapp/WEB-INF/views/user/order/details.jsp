@@ -173,7 +173,7 @@
                                 </c:when>
                             </c:choose>
                         </font>&nbsp;
-         <fmt:formatNumber value="${orderDomain.orderTotal-orderDomain.couponDiscount-orderDomain.memberDiscount+orderDomain.shipFee}" pattern="#,###" /></span></p>
+         <fmt:formatNumber value="${orderDomain.orderTotal}" pattern="#,###" /></span></p>
     </div>
     <div class="information">
         <h4><spring:message code="payment.failed.shippingAddress"/></h4>

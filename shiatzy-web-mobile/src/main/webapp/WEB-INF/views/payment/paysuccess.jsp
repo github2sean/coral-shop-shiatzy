@@ -130,7 +130,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp;<fmt:formatNumber value="${order.orderTotal-order.couponDiscount-order.memberDiscount+order.shipFee}" pattern="#,###"/> </span></p>
+                        </font>&nbsp;<fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/> </span></p>
     </div>
     <div class="order-details">
         <h4><spring:message code="payment.failed.paymentWay"/></h4>

@@ -82,8 +82,6 @@ public class ShoppingCartController extends BaseController{
         SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
         if(skuDomain == null) {
             return  errorResult("无此商品");
-        }else if(skuDomain.getQuantity()<1){
-            return  errorResult("此商品已售罄");
         }
 
         if(userContext.isGuest()){//游客先保存到session中

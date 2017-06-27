@@ -298,9 +298,11 @@ public class CheckoutController  extends BaseController{
         if(orderDomain==null){
             return new ModelAndView("redirect:/home/index");
         }
+        //商品金额
+
         //购物车
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
-
+        calcOrderTotal(orderDomain, cartList);
         if(cartList==null || cartList.size()==0){
             return new ModelAndView("redirect:/home/index");
         }
@@ -331,9 +333,7 @@ public class CheckoutController  extends BaseController{
         if(order== null){
             return errorResult("订单已经失效");
         }
-        if(isCOD){
-            order.setPaymentMethod(4);
-        }
+
         //购物车
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         if(cartList== null || cartList.size() ==0){
@@ -346,8 +346,19 @@ public class CheckoutController  extends BaseController{
             CouponDomain couponDomain = couponService.get(couponId);
             couponService.checkCoupon(couponDomain.getCode());
         }
+        if(isCOD){
+            order.setPaymentMethod(4);
+            //优惠券减少
+            if(couponId!=null ){
+                orderService.subCouponNum(order);
+            }
+            //库存减少
+            orderService.updateSkuStock(order);
+        }
         List<Long> itemIds = new ArrayList<Long>();
         //创建订单
+        //商品金额
+        calcOrderTotal(order, cartList);
         order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
@@ -416,7 +427,8 @@ public class CheckoutController  extends BaseController{
         Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();
         Double memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
         Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
-        Double orderTotal = goodsTotal + shipFee -couponDiscount/rate - memberDiscount/rate;
+        System.out.println("shipFee:"+shipFee+" couponDiscount:"+couponDiscount+" memberDiscount:"+memberDiscount/rate+" goodsTotal:"+goodsTotal);
+        Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount/rate;
         BigDecimal bd = new BigDecimal(orderTotal);
         orderDomain.setOrderTotal(bd.setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
     }
@@ -682,6 +694,7 @@ public class CheckoutController  extends BaseController{
                     System.out.println(3);
                     break;
             }
+            System.out.println("优惠价："+trueDiscountPrice);
             trueDiscountPrice = new BigDecimal(trueDiscountPrice).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue();
             order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);

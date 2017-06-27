@@ -181,9 +181,13 @@
 
             if($(this).attr("data-value")==4){
                 //验证是否已选择收货地址
+                var index = layer.load(2, {
+                    shade: [0.4,'#fff'] //0.1透明度的白色背景
+                });
                 if(${not empty order.customerAddressDomain.address}){
                     $.post("/checkout/submitOrder",{"payWay":"COD"},function (data) {
                         console.log(data);
+                        //loading层
                         if(data.code==200){
                             layer.msg(data.message);
                             var orderId = data.data.id;
