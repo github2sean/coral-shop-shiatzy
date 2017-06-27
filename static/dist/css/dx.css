@@ -580,16 +580,14 @@ i{
     content: ">";
     float: right;
     margin-right: .7rem;
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .dx-CommonProblems .content .second-title a{
     padding-left: 2.8rem;
 }
 .dx-CommonProblems .content .second-title a:after {
     content: ">";
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
     float: right;
     margin-right: 2.4rem;
 }
@@ -840,8 +838,7 @@ i{
 }
 .dx-accounts .privilege .title:after{
     content: ">";
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
     float: right;
     margin-right: 1rem;
 }
@@ -959,8 +956,7 @@ i{
 .alter-popup .dx-goods .goods-details .size .title:after{
     content: ">";
     float: right;
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .alter-popup .dx-goods .goods-details .color ul,
 .alter-popup .dx-goods .goods-details .size ul{
@@ -1103,8 +1099,7 @@ i{
 .dx-shipping .content .address2 .title:after{
     content: ">";
     float: right;
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
     margin-right: .8rem;
 }
 .dx-shipping .btn{
@@ -1167,8 +1162,7 @@ i{
 .dx-EditAddress .recipients div span,
 .dx-EditAddress .address div span{
     float: right;
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .dx-EditAddress .content .btn{
     display: block;
@@ -1228,13 +1222,11 @@ i{
     margin-bottom: 1.8rem;
 }
 .dx-commodity .title{
-    color:#000;
     font-size: 1.4rem;
     line-height: 3.7rem;
-    border-bottom: 1px solid #ccc;
+    border-bottom: .2rem solid #ccc;
 }
 .dx-commodity .number {
-    color:#808080;
     font-size: 1rem;
     line-height: 2rem;
     margin-bottom: 2.7rem;
@@ -1246,8 +1238,6 @@ i{
 .dx-commodity .magnify{
     float: right;
     margin-right: 15%;
-    position: relative;
-    z-index: 98;
 }
 .dx-commodity .dx-bag-slide .bx-wrapper .bx-prev{
     left: -20%;
@@ -1275,8 +1265,7 @@ i{
 }
 .dx-commodity .content .color .title:after,.dx-commodity .content .size .title:after{
     content: ">";
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
     float: right;
     margin-right: 2rem;
 }
@@ -1351,8 +1340,7 @@ i{
 }
 .dx-commodity .dx-GoodsDetails .title:after{
     content: ">";
-    -webkit-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
     float: right;
     margin-right: 2rem;
 }
@@ -1407,46 +1395,4 @@ i{
     width: 1rem;
     height: 1rem;
     border: .2rem solid #ccc;
-}
-.gallery-block{
-    position:absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    z-index:99;
-    background-color:#fff;
-    overflow: hidden;
-}
-
-.gallery-block .bx-wrapper ,
-.gallery-block .bx-viewport,
-.gallery-block .gallery-img-list ,
-.gallery-block .gallery-img-list >li
-{
-    height:100%;
-}
-
-.gallery-block .gallery-img-list >li{
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.gallery-block img{
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.gallery-block .iconfont{
-    position:absolute;
-    right:30px;
-    top:30px;
-    color:#333;
-    font-size:36px;
-    z-index: 99;
-}
-
-.gallery-block .bx-wrapper .bx-pager{
-    bottom:30px;
 }

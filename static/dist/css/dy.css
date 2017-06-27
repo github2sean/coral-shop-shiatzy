@@ -1043,23 +1043,34 @@
 .store, .stores-introduce {
     display: none;
 }
-
-.site-notice{
-    position: relative;
-    z-index: 1;
-    padding:0.9rem 4rem 0.9rem 1.5rem;
-    font-size: 0.8rem;
-    color:#fff;
-    background-color:#4d4d4d;
-    letter-spacing: 0.12rem;
+/**选择国家**/
+.country-select {
+   width: 100%;
+   height: 100%;
+   overflow-y: auto;
+    background: #000;
 }
-
-.site-notice a.iconfont{
-    position: absolute;
-    color:#fff;
-    right:0.8rem;
-    line-height:1;
-    font-size:3rem;
-    top:50%;
-    transform:translateY(-50%);
+.country-select .country-title {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: #777777;
+    margin-bottom: 0;
+    padding-top: 40px;
+    letter-spacing: 6px;
+}
+.country-select .country-con {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: #111111;
+}
+.country-select .country-con li a {
+    color: #ccc;
+    display: block;
+    line-height: 40px;
+    letter-spacing: 5px;
+}
+.country-select .country-con li.active a {
+    background: #333333;
 }
