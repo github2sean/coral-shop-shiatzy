@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * 上下文过滤器，绑定HttpContext
@@ -29,7 +30,9 @@ public class HttpContextFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpContext.current().setRequest(request);
-        HttpContext.current().setResponse(response);
+
+
+
         HttpContext.current().setSession(request.getSession());
 
         //显示语言
@@ -39,6 +42,7 @@ public class HttpContextFilter implements Filter {
                 request.getSession().setAttribute("language",checked);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }
+
         chain.doFilter(req, response);
     }
 

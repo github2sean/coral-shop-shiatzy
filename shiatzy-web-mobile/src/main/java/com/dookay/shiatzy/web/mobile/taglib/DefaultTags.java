@@ -1,5 +1,7 @@
 package com.dookay.shiatzy.web.mobile.taglib;
 
+import com.dookay.coral.common.web.CookieUtil;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.utils.SpringContextHolder;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -13,7 +15,9 @@ import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
+import org.apache.commons.lang.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -40,6 +44,14 @@ public class DefaultTags {
 		query.setDesc(false);
 		query.setOrderBy("rank");
 		return  shippingCountryService.getList(query);
+	}
+
+
+	public static String getSelectCountry() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+		System.out.println("selectCountry:"+selectCountry);
+		return  selectCountry;
 	}
 
 }

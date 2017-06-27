@@ -3,6 +3,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.utils.HttpClientUtil;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -28,11 +29,15 @@ import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
+import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import com.sun.activation.registries.MailcapParseException;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -48,6 +53,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -80,6 +86,8 @@ public class PassportController extends MobileBaseController{
     private IContentCategoryService contentCategoryService;
     @Autowired
     private SimpleAliDMSendMail simpleAliDMSendMail;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
 
     public static final String CRAT_NUM = "cartNumber";
 
@@ -88,6 +96,7 @@ public class PassportController extends MobileBaseController{
     private static final String IS_GUEST ="isGuest";
     private final static String LANGUAGE_HISTORY = "language_history";
     private final static int MAX_COOKIE_AGE = 24*60*60;
+
 
     @RequestMapping(value = "toRegister", method = RequestMethod.GET)
     public String index(){
@@ -369,4 +378,5 @@ public class PassportController extends MobileBaseController{
         }
         return successResult("退出成功",1);
     }
+
 }
