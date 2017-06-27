@@ -403,6 +403,11 @@
     position: relative;
     text-align: center;
 }
+.club-card-lighter .card-title,
+.club-card-lighter .card-name,
+.club-card-lighter .card-num{
+    color: #999;
+}
 
 .card-title {
     position: absolute;
@@ -423,9 +428,9 @@
     position: absolute;
     top: 10rem;
     left: 50%;
-    margin-left: -42px;
+    margin-left: -50px;
     color: #fff;
-    width: 84px;
+    width: 100px;
     text-align: center;
 }
 .card-num {
@@ -1156,6 +1161,7 @@
     top: 50%;
     transform: translateY(-50%);
 }
+.szy-pay-way
 @media screen and (max-width: 320px) {
     .verify-main .img-message {
         float: left;

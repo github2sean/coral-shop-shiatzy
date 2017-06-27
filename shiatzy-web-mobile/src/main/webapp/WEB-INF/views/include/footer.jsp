@@ -310,7 +310,7 @@
                 title: '<spring:message code="privacyPolicy"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '80%'],
+                area: ['100%', '100%'],
                 content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
                 shade: [0.3,'#000'] //0.1透明度的白色背景
             });
