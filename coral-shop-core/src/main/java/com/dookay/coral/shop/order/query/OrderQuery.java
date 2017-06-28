@@ -26,6 +26,8 @@ public class OrderQuery extends Query {
 
 	private String orderNo;
 
+	private Integer paymentMethod;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(OrderDomain.class);
@@ -43,6 +45,10 @@ public class OrderQuery extends Query {
 
 		if(valid(orderNo)){
 			criteria.andEqualTo("orderNo",orderNo);
+		}
+
+		if(valid(paymentMethod)){
+			criteria.andNotEqualTo("paymentMethod",paymentMethod);
 		}
 
 		//todo 写查询逻辑

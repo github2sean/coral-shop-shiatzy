@@ -17,7 +17,7 @@
         <a style="float: right;" href="/u/account/details" ><h3>< <spring:message code="goBack"/></h3></a>
     </a>
 </div>
-<div class="club-card" >
+<div class="club-card <c:if test="${tempMemberDomain.cardType=='CN-A'}">club-card-lighter</c:if> ">
     <c:choose>
         <c:when test="${tempMemberDomain.cardType=='CN-D'}">
             <img src="${ctx}/static/images/SC_other1.png" alt="">

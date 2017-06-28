@@ -37,9 +37,9 @@
                     <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                     <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
 
-                        <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>
-                            ：${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                            ：${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
 
                     <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
                     <p class=""><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">

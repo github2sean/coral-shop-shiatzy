@@ -36,10 +36,10 @@
             <div class="verify-main">
                 <img src="${ImageModel.toFirst(item.thumb).file}" alt="${ImageModel.toFirst(item.thumb).file}">
                 <div class="img-message">
-                    <h3>${sessionScope.language=='en_US'?item.goods.enName:item.goods.name}</h3>
+                    <h3>${web:selectLanguage()=='en_US'?item.goods.enName:item.goods.name}</h3>
                     <h6><spring:message code="shoppingCart.no"/> ${row.goodsCode}</h6>
                     <div style="display: inline-block;" class="size">
-                        <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.enName:item.name}</p>
+                        <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.enName:item.name}</p>
                         <p><spring:message code="shoppingCart.size"/>&nbsp;${JSONObject.fromObject(row.skuSpecifications).get("size")}</p>
                     </div>
                     <p><spring:message code="shoppingCart.number"/>：${row.num}</p>
@@ -65,7 +65,7 @@
         <h4><spring:message code="payment.failed.orderTotal"/><span>v</span></h4>
         <ul>
             <c:forEach var="row" items="${order.orderItemDomainList}">
-                <li>${sessionScope.language=='en_US'?row.goodsItemDomain.goods.enName:row.goodsItemDomain.goods.name}<span>&nbsp;<font class="coinSymbol">
+                <li>${web:selectLanguage()=='en_US'?row.goodsItemDomain.goods.enName:row.goodsItemDomain.goods.name}<span>&nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${order.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>

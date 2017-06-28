@@ -13,7 +13,7 @@
         <div class="orderNumber"><spring:message code="reservation.detail.no"/>：${reservationDomain.reservationNo}</div>
         <div class="dx-details">
             <div class="date"><spring:message code="order.details.time"/> : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
-            <div class="retail"><spring:message code="reservation.detail.store"/> : <span>${sessionScope.language=='en_US'?reservationDomain.storeDomain.enTitle:reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap"><spring:message code="reservation.detail.map"/></a></div>
+            <div class="retail"><spring:message code="reservation.detail.store"/> : <span>${web:selectLanguage()=='en_US'?reservationDomain.storeDomain.enTitle:reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap"><spring:message code="reservation.detail.map"/></a></div>
             <div class="site"><spring:message code="account.personal.address"/>: <span>${reservationDomain.storeDomain.address}</span></div>
             <div class="telephone"><spring:message code="account.personal.phoneNum"/> : ${reservationDomain.tel}<span></span></div>
             <div class="time"><spring:message code="reservation.detail.openTime"/> : ${reservationDomain.storeDomain.time}<span></span></div>
@@ -39,7 +39,7 @@
                 <div class="goods-right">
                     <div class="name">${row.goodsName}</div>
                     <div class="number">${row.goodsItemDomain.goodsNo}</div>
-                    <div class="color">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
+                    <div class="color">${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/>:<span>${row.num}</span></div>
                     <div class="price" data-value="${row.goodsItemDomain.price}"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span><fmt:formatNumber value="${row.goodsItemDomain.price}" pattern="#,###"/></span></div>
                 </div>

@@ -16,7 +16,7 @@
     <div class="item-group">
         <h2 class="title"><spring:message code="return.detail.no"/>：${returnRequestDomain.orderNo}</h2>
         <div class="return-time" >
-            <c:if test="${sessionScope.language=='en_US'}">
+            <c:if test="${web:selectLanguage()=='en_US'}">
                 <p>
                     The return application was submitted at <fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />. A total of &nbsp;<font class="coinSymbol">
                     <c:choose>
@@ -64,9 +64,9 @@
                         <div class="goods-info">
                             <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
-                            <p style="float:left;margin-right: 3.0918rem;">${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                            <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>
-                                ：${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                                ：${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                             <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
                             <p class=""><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
                                 <c:choose>

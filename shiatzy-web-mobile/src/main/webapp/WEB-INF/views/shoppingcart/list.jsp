@@ -23,9 +23,9 @@
                     <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right" style="word-break: break-all">
-                    <div class="name">${ sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="name">${ web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
-                    <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
+                    <div class="color" >${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>:
                         <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="${row.num}"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a></c:if>
                         <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="0"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a><span class="hasOut" data-value="${row.id}">(<spring:message code="sellout"/>)</span></c:if>

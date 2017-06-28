@@ -78,8 +78,8 @@
                     <div class="goods-info">
                         <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <p>${item.goodsCode}</p>
-                        <p>${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
-                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                        <p>${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <p><spring:message code="shoppingCart.unitPrice"/>：
                             &nbsp;<font class="coinSymbol">

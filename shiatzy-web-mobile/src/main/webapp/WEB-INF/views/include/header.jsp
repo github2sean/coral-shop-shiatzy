@@ -209,7 +209,7 @@
 </div>
 <c:if test="${not empty pushContent}">
 <div class="site-notice">
-        ${sessionScope.language=='en_US'?pushContent.enContent:pushContent.content}
+        ${web:selectLanguage()=='en_US'?pushContent.enContent:pushContent.content}
     <a href="javascript:;" class="j_cls_notice iconfont icon-iconfontcha"></a>
 </div>
 </c:if>
@@ -251,10 +251,10 @@
                 <div class="search-rec-img">
                     <img src="${ImageModel.toFirst(level1.thumb).file}" alt="">
                 </div>
-                <a>${sessionScope.language=='en_US'?level1.enName:level1.name}
+                <a>${web:selectLanguage()=='en_US'?level1.enName:level1.name}
                     <ul class="guide-sub-nav">
                     <c:forEach var="level2" items="${level1.children}">
-                        <li><a href="/goods/list?categoryId=${level2.id}">${sessionScope.language=='en_US'?level2.enName:level2.name}</a></li>
+                        <li><a href="/goods/list?categoryId=${level2.id}">${web:selectLanguage()=='en_US'?level2.enName:level2.name}</a></li>
                     </c:forEach>
                     </ul>
                 </a>

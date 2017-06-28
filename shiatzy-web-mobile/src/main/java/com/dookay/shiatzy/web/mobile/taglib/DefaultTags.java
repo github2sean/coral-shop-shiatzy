@@ -54,4 +54,11 @@ public class DefaultTags {
 		return  selectCountry;
 	}
 
+	public static String getSelectLanguage() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
+		System.out.println("selectLanguage:"+selectLanguage);
+		return  selectLanguage;
+	}
+
 }

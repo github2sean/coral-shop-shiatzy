@@ -18,12 +18,12 @@
         <ul>
             <c:forEach var="itemDomain" items="${domainList}">
                 <li class="first-title j_collapse">
-                    <a href="#">${sessionScope.language=='en_US'?itemDomain.en_title:itemDomain.title}</a>
+                    <a href="#">${web:selectLanguage()=='en_US'?itemDomain.en_title:itemDomain.title}</a>
                     <ul class="second-title">
                         <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
                             <li class="j_collapse">
-                                <a href="#">${sessionScope.language=='en_US'?domainlist.en_title:domainlist.title}</a>
-                                <p class="answer">${sessionScope.language=='en_US'?domainlist.en_content:domainlist.content}</p>
+                                <a href="#">${web:selectLanguage()=='en_US'?domainlist.en_title:domainlist.title}</a>
+                                <p class="answer">${web:selectLanguage()=='en_US'?domainlist.en_content:domainlist.content}</p>
                             </li>
                         </c:forEach>
                     </ul>

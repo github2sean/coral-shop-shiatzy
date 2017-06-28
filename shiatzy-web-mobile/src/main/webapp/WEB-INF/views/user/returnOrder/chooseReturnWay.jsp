@@ -40,8 +40,8 @@
                     </div>
                     <div class="delivery-message" style="height: 120px;background-color: #cccccc;">
                         <p><spring:message code="consignee.storebackWay"/></p>
-                        <p>${sessionScope.language=='en_US'?return_order.storeDomain.enTitle:return_order.storeDomain.name}</p>
-                        <p>${sessionScope.language=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}</p>
+                        <p>${web:selectLanguage()=='en_US'?return_order.storeDomain.enTitle:return_order.storeDomain.name}</p>
+                        <p>${web:selectLanguage()=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}</p>
                         <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>

@@ -51,7 +51,7 @@
 
                     <select name="countryId" id="countryId" class="">
                         <c:forEach var="row" items="${countryList}">
-                        <option value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</option>
+                        <option value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</option>
                         </c:forEach>
                     </select>
 

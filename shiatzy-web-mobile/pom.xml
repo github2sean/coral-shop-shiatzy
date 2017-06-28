@@ -25,8 +25,8 @@
             <artifactId>coral-host</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.dookay</groupId>
-            <artifactId>coral-shop-core</artifactId>
+        <groupId>com.dookay</groupId>
+        <artifactId>coral-shop-core</artifactId>
         </dependency>
         <!--工程内依赖 结束-->
 

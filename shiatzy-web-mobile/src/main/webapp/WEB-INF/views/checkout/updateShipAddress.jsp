@@ -48,7 +48,7 @@
 
                     <select name="countryId" id="countryId" class="">
                         <c:forEach var="row" items="${countryList}">
-                            <option value="${row.id}" <c:if test="${row.id==address.countryId}">selected="selected"</c:if> >${sessionScope.language=='en_US'?row.enName:row.name}</option>
+                            <option value="${row.id}" <c:if test="${row.id==address.countryId}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?row.enName:row.name}</option>
                         </c:forEach>
                     </select>
                     </div>
