@@ -22,9 +22,11 @@
                 <c:when test="${reservationDomain.status==0}"><spring:message code="reservation.list.submit"/> </c:when>
             </c:choose>
             </span></div>
-            <div class="retentionTime"><spring:message code="reservation.detail.saveEndTime"/>: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
-            <div class="remake"><spring:message code="reservation.detail.mem"/> : <span>${reservationDomain.note}</span></div>
+          <%--  <div class="retentionTime"><spring:message code="reservation.detail.saveEndTime"/>: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
+            <div class="remake"><spring:message code="reservation.detail.mem"/> : <span>${reservationDomain.note}</span></div>--%>
         </div>
+
+
         <div class="dx-GoodsDetails">
             <div class="title"><spring:message code="goods.detail.details"/></div>
             <c:forEach var="row" items="${reservationDomain.reservationItemDomainList}">
