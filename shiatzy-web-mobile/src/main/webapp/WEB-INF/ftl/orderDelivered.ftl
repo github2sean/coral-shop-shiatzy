@@ -206,27 +206,27 @@
 </head>
 <body>
     <div class="email-submit">
-        <p class="title"><img src="images/logoSC.png" alt=""></p>
+        <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
-            <h1 class="email-title">订单已配送</h1>
+            <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">亲爱的 SU SU,</p>
+                <p class="name">亲爱的 ,${name}</p>
                 <br>
                 <p class="txt">
-                    感谢您在夏姿·陈（SHIATZY CHEN）在线精品店购物。我们很高兴地通知您以下订单已被配送，将会于1-3个工作日抵达。您可于以下配送运单号或我的账户“订单详情”内，点击查询最新动态。 如有任何问题，请随时联系我们的客服人员。</p>
+                    ${content}</p>
                 <div class="dingdan">
                     <div class="xzc-detail goods-detail">
                         <p class="dingdan-title">订单详情</p>
                         <div class="detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="list-name">订单编号 : </span><span>20170602401</span>
+                                    <span class="list-name">订单编号 : </span><span> ${order.orderNo}</span>
                                 </li>
                                 <li>
-                                    <span class="list-name">订单日期 : </span><span>2017-06-02 16:35:40</span>
+                                    <span class="list-name">订单日期 : </span><span>${date}</span>
                                 </li>
                                 <li>
-                                    <span class="list-name">订单状态 : </span><span>已支付</span>
+                                    <span class="list-name">订单状态 : </span><span>${status}</span>
                                 </li>
 
                             </ul>
@@ -236,13 +236,20 @@
                 <div class="dingdan-list">
                     <p class="goods-detail">商品详情</p>
                     <div class="list-left"><img src="images/email-img.png" alt=""></div>
-                    <div class="list-right">
-                        <h3 class="pro-title">窗棂光影系列缇花山水刺绣连衣裙 AMSDKA001</h3>
-                        <p class="pro-value">黑色</p>
-                        <p class="pro-value">选择尺寸：  M</p>
-                        <p class="pro-value">数量：1</p>
-                        <p class="pro-value">单价：    ¥   3,168</p>
-                    </div>
+
+                    <#if orderItem?exists  && orderItem.size gt 0 >
+                        <#list orderItem as it>
+                            <div class="list-right">
+                                <h3 class="pro-title">${it.goodsName} ${it.goodsCode}</h3>
+                                <p class="pro-value">${it.goodsItemDomain.name}</p>
+                                <p class="pro-value">选择尺寸：  ${it.sizeDomain.name}</p>
+                                <p class="pro-value">数量：${it.num}</p>
+                                <p class="pro-value">单价：    ¥   ${it.goodsPrice}</p>
+                            </div>
+
+                        </#list>
+                    </#if>
+
                 </div>
                 <div class="dingdan">
                     <div class="xzc-detail">
@@ -250,19 +257,19 @@
                         <div class="detail bill-detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="bill-lf">优惠前 : </span><span class="bill-rt">¥   3,168</span>
+                                    <span class="bill-lf">优惠前 : </span><span class="bill-rt">¥   ${order.goodsTotal}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt">¥   -0</span>
+                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt">¥   -${order.couponDiscount}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt">¥   -0</span>
+                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt">¥   -${order.memberDiscount}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">退货运费 : </span><span class="bill-rt">¥   0</span>
+                                    <span class="bill-lf">运费 : </span><span class="bill-rt">¥   ${order.shipFee}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">总计 : </span><span class="bill-rt">¥   3,168</span>
+                                    <span class="bill-lf">总计 : </span><span class="bill-rt">¥   ${order.orderTotal}</span>
                                 </li>
                             </ul>
                         </div>
@@ -272,10 +279,10 @@
                         <div class="detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="list-name">123232</span>
+                                    <span class="list-name">${order.shipAddress}</span>
                                 </li>
                                 <li>
-                                    <span class="list-name">女士</span>
+                                    <span class="list-name">${order.shipTitle}</span>
                                 </li>
                             </ul>
                         </div>

@@ -315,17 +315,26 @@ public class PassportController extends MobileBaseController{
             accountService.update(users);//保存到数据库
             String key = users.getUserName()+"$"+date+"$"+secretKey;
             String digitalSignature = DigestUtils.md5Hex(key);//数字签名
-            String emailTitle = "夏资陈密码找回";
+            String emailTitle = "夏资陈找回密码";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             String resetPassHref =  basePath+"u/account/toSetNewPassword?sid="+digitalSignature+"&userName="+users.getUserName();
+
+            //生成模版
+            Map<String,Object> freeMap = new HashMap<>();
+            freeMap.put("picUrl","https://shop.shiatzychen.com/assets/img/logo1.svg");
+            freeMap.put("title","夏资陈 找回密码");
+            freeMap.put("name",userName);
+            freeMap.put("setUrl",resetPassHref);
+            String html = FreemarkerUtil.printString("resetPassword.ftl",freeMap);
+
             String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
                     "<br/>tips:本邮件超过30分钟,链接将会失效"+key+"\tmd5:"+digitalSignature;
             HashMap<String,String> emailMap = new HashMap<>();
             emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,"seanzq0331@163.com");
+            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
             emailMap.put(simpleAliDMSendMail.TITLE,emailTitle);
-            emailMap.put(simpleAliDMSendMail.CONTENT,emailContent);
+            emailMap.put(simpleAliDMSendMail.CONTENT,html);
             simpleAliDMSendMail.sendEmail(emailMap);
 
             //三方jar包未选择
