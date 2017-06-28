@@ -2669,7 +2669,7 @@ textarea {
     box-shadow: 2px -2px 0 #999;
 }
 
-
+/*内容列表*/
 .item-group{
     margin-bottom: 2.4rem;
 }
@@ -2758,3 +2758,4 @@ textarea {
     text-indent: 0;
     font-size: 1.2rem;
 }
+
