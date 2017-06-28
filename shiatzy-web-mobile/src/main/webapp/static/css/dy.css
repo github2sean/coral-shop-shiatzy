@@ -303,6 +303,7 @@
     display: inline-block;
     line-height: 0.5rem;
     font-size: 1.1821rem;
+    width: 100%;
 }
 
 .data-setting h3 {
