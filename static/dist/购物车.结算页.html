@@ -304,6 +304,16 @@
             <a href="javascript:;">2件商品　v</a>
         </div>
     </div>
+    <div class="new-pay-way">
+        <h3>支付方式</h3>
+        <ul id="j_m_payment2">
+            <li class="active"><label for="unionPay2"><input type="radio" name="methodOfPayment" id="unionPay2">支付宝</label>
+            </li>
+            <li><label for="alipay2"><input type="radio" name="methodOfPayment" id="alipay2">银联在线 （每日每单限额RMB30,000元）</label></li>
+            <li><label for="iPay2"><input type="radio" name="methodOfPayment" id="iPay2">信用卡 (VISA/MASTERCARD/JCB)</label></li>
+        </ul>
+        <a href="#" class="pay-btn">支付</a>
+    </div>
     <div class="order-pay">
         <a href="我的账户.我的订单.订单详情.已支付.html">订购付款</a>
         <span>提交订单即表示您同意接受 SHIATZY CHEN 公司条款 和 隐私权政策。</span>
@@ -372,6 +382,13 @@
     $(function(){
         commonApp.init();
     });
+    var payment2 = function () {
+        $("#j_m_payment2 input[type=radio]").on("change", function () {
+            var $this = $(this);
+            if ($this.is(":checked")) $this.parents("li").addClass("active").siblings().removeClass("active");
+        })
+    }
+    payment2();
 </script>
 </body>
 </html>

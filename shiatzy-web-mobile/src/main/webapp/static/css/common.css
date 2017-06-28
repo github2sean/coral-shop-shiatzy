@@ -2710,7 +2710,7 @@ textarea {
 .goods-list .goods-item .thumb img {
     display: block;
     height: 100%;
-    margin: 0 auto;
+    margin: 7px auto;
 }
 .goods-list h2{
     font-size: 1.4rem;
