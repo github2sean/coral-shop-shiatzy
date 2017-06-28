@@ -63,7 +63,7 @@
     </div>
     </a>
     <div class="text-center do-copy"><spring:message code="ending"/></div>
-    <div class="country-select" id="country-select">
+    <div class="country-select" id="country-select" style="display: none">
         <p class="country-title">国家*</p>
         <ul class="country-con" style="">
             <c:forEach var="row" items="${web:countryList()}">

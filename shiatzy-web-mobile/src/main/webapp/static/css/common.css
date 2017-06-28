@@ -2668,3 +2668,93 @@ textarea {
 .bx-wrapper .bx-controls-direction a.bx-next {
     box-shadow: 2px -2px 0 #999;
 }
+
+
+.item-group{
+    margin-bottom: 2.4rem;
+}
+
+.item-group .title{
+    font-size: 1.4rem;
+    line-height: 1.9rem;
+    border-bottom: 2px solid #cccccc;
+    padding-left: 0.9rem;
+
+}
+.item-group .item{
+    margin: 0 0.9rem 0.9rem 0.9rem;
+}
+.item-group .border{
+    border-bottom: 2px solid #cccccc;
+}
+.item-group .item .btn-item{
+    margin-bottom: 0.6rem;
+    border-bottom: 2px solid #cccccc;
+    padding-bottom: 0.6rem;
+    font-size: 1.4rem;
+    display: block;
+}
+.logisticInfo li{font-size: 1rem;  border-bottom: 1px dashed #cccccc;padding: 0.4rem;}
+
+
+.goods-list  .goods-item{
+    padding-top: 0.6rem;
+    border-bottom: .07rem solid #ccc;
+}
+.goods-list .goods-item .thumb {
+    height: 10.2rem;
+    text-align: center;
+    margin-top: 0.2rem;
+    float: left;
+}
+.goods-list .goods-item .thumb img {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+}
+.goods-list h2{
+    font-size: 1.4rem;
+    line-height: 1.9rem;
+    border-bottom: 2px solid #cccccc;
+    text-indent: 0.8502rem;
+}
+.goods-list .goods-item .goods-info{
+
+    text-align: left;
+    font-size: 1rem;
+
+}
+.goods-item .name{font-size: 1.2rem;}
+
+.item-group .title .arrow{float:right;margin-right: 0.9rem;}
+.item-group .title.active .arrow{
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    display: block;}
+
+.item-group .item li{
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+}
+.item-group .item ul{
+    border-bottom: 2px solid #cccccc;
+    text-indent: 0.8502rem;
+}
+
+.bill-detail li span{float: right;}
+.bill-detail .total-price span{
+    float: right;}
+
+.return-goods .code{color: #999;}
+.goods-item .i-radiobox {
+    margin-top: 30px;
+   margin-right: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #333;
+    text-indent: 0;
+    font-size: 1.2rem;
+}

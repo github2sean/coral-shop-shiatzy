@@ -228,7 +228,7 @@
 .verify-message-bottom h2 {
     font-size: 1.1821rem;
     text-align: center;
-    border-top: 1px solid #cccccc;
+
     line-height: 1.855rem;
 }
 
@@ -789,7 +789,7 @@
     /*padding: 0.5rem 0;*/
 /*}*/
 .order-details h4+ul li {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     padding: 0.5rem 0;
 }
 .order-details h4+ul li span {
@@ -1005,13 +1005,13 @@
 
 .return-btn {
     display: inherit;
-    background-color: #999999;
+
     text-align: center;
     color: #fff;
-    font-size: 18px;
+
     line-height: 2.7826rem;
     margin-bottom: 1.9rem;
-    margin-top: 8rem;
+    margin-top: 3rem;
 }
 
 .return-commodity p {
@@ -1093,13 +1093,17 @@
 
 .returnWay {
     padding: 0 1.7778rem 0 2.1642rem;
+    border-bottom: 2px solid #cccccc;
+    border-top: 2px solid #cccccc;
 }
 
 .returnWay h4 {
     text-indent: .6rem;
     font-size: 1.1821rem;
-    border-top: 1px solid #cccccc;
+
     border-bottom: 1px solid #cccccc;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
 }
 
 .returnWay p {
