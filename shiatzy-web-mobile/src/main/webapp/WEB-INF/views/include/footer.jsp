@@ -317,6 +317,14 @@
                 content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
                 shade: [0.3,'#000'], //0.1透明度的白色背景
 
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
             });
         });
 
@@ -332,7 +340,27 @@
             });
         });
 
+        //退货政策
+        $(".returnOrchange").click(function () {
+            layer.open({
+                type: 2,
+                title: '退货政策',
+                closeBtn: 1, //不显示关闭按钮
+                shade: [0],
+                area: ['100%', '100%'],
+                content: ['${ctx}/content/returnOrchange'],//iframe的url，no代表不显示滚动条
+                shade: [0.3,'#000'], //0.1透明度的白色背景
 
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
+            });
+        })
     });
 
 

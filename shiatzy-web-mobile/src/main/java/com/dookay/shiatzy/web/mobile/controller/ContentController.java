@@ -84,4 +84,7 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/whatCoupon");
         return modelAndView;
     }
+
+
+
 }

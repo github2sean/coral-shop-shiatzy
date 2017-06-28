@@ -83,6 +83,7 @@ public class ReservationController extends BaseController{
 
     public static int RESERVATION_TYPE=3;
 
+
 /**
  * 预约单列表
  */
@@ -213,6 +214,7 @@ public class ReservationController extends BaseController{
             reservationItemDomain.setIsVisible(1);
             reservationItemDomain.setReservationId(reservationDomain.getId());
             reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
+            reservationItemDomain.setGoodsPrice(line.getGoodsPrice());
             reservationItemDomain.setSkuCode(line.getSkuId()+"");
             reservationItemDomain.setNum(line.getNum());
             reservationItemDomain.setItemId(line.getItemId());
@@ -224,6 +226,7 @@ public class ReservationController extends BaseController{
             //从精品店中移除
             shoppingCartService.removeFromCart(line.getId());
         }
+
         //清空session
         session.setAttribute("submitCartList",null);
         //发送短信

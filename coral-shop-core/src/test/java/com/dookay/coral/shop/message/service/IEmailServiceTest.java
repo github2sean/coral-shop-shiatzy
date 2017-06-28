@@ -16,7 +16,7 @@ public class IEmailServiceTest extends BaseTest {
     private IEmailService emailService;
     @Test
     public void sendEmail() throws Exception {
-        emailService.sendEmail("jbideal@163.com","夏姿陈网站测试邮件","只是一个测试邮件，请不要回复");
+        emailService.sendEmail("420782058@qq.com","夏姿陈网站测试邮件","只是一个测试邮件，请不要回复");
     }
 
 }

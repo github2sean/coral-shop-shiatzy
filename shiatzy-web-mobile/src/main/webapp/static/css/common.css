@@ -2563,6 +2563,11 @@ svg {
     margin: 0 auto;
 }
 
+.btn-default:hover {
+     color: #FFFFFF;
+     background-color: #333;
+    border-color: #adadad;
+}
 .btn-gray {
     width: 23rem;
     display: block;
@@ -2661,9 +2666,6 @@ textarea {
 .layui-layer-setwin .layui-layer-close1 {
     margin-top:-10px;
 }
-body .layui-layer-setwin{
-    right: 3px;
-}
 
 .dx-bag-slide .bx-wrapper .bx-prev:before,
 .dx-bag-slide .bx-wrapper .bx-next:before {
@@ -2713,11 +2715,11 @@ body .layui-layer-setwin{
     border-bottom: .07rem solid #ccc;
 }
 .goods-list .goods-item .thumb {
-    height: 10.2rem;
+    height: 9.2rem;
     text-align: center;
-    margin-top: 0.2rem;
     float: left;
 }
+
 .goods-list .goods-item .thumb img {
     display: block;
     height: 100%;
@@ -2733,10 +2735,12 @@ body .layui-layer-setwin{
 
     text-align: left;
     font-size: 1rem;
+    float: right;
 
 }
-.goods-item .name{font-size: 1.2rem;}
-
+.goods-list .goods-item .name{font-size: 1.2rem;}
+.goods-list .goods-item .code{color: #999;}
+.goods-list .goods-item .color{float:left;margin-right: 3rem;}
 .item-group .title .arrow{float:right;margin-right: 0.9rem;}
 .item-group .title.active .arrow{
     -webkit-transform: rotate(90deg);
@@ -2748,8 +2752,11 @@ body .layui-layer-setwin{
     padding: 0.5rem 0;
 }
 .item-group .item ul{
-    border-bottom: 2px solid #cccccc;
     text-indent: 0.8502rem;
+}
+
+.item-group .item p{
+    font-size: 1.2rem;
 }
 
 .bill-detail li span{float: right;}
