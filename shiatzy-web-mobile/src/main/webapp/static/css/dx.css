@@ -674,7 +674,8 @@ i {
 
 .dx-CommonProblems .content li a {
     display: block;
-    font-size: 1.2rem;
+    /*font-size: 1.2rem;*/
+    font-size: 14px;
     line-height: 2.2rem;
     padding-left: .8rem;
     border-bottom: 2px solid #ccc;
@@ -732,7 +733,8 @@ i {
 
 .dx-CommonProblems .content .second-title li p {
     margin-top: 1.5rem;
-    font-size: 1rem;
+    /*font-size: 1rem;*/
+    font-size: 14px;
     line-height: 2.1rem;
     padding: 0 3.2rem 0 1.4rem;
 }

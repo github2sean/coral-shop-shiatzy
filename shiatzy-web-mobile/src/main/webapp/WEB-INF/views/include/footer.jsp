@@ -63,17 +63,20 @@
     </div>
     </a>
     <div class="text-center do-copy"><spring:message code="ending"/></div>
-    <div class="country-select" id="country-select" style="display: none">
-        <p class="country-title">国家*</p>
-        <ul class="country-con" style="">
-            <c:forEach var="row" items="${web:countryList()}">
-                <li><a href="#"  data-value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a></li>
-            </c:forEach>
-        </ul>
-    </div>
 </footer>
 </div>
 </div>
+
+<!--选择国家或地区-->
+<div class="country-select" id="country-select" style="display: none">
+    <h3 class="country-title">选择国家或地区</h3>
+    <ul class="country-con" style="">
+        <c:forEach var="row" items="${web:countryList()}">
+            <li><a href="#"  data-value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
+
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
@@ -312,7 +315,15 @@
                 shade: [0],
                 area: ['100%', '100%'],
                 content: ['${ctx}/content/privacyNotice'],//iframe的url，no代表不显示滚动条
-                shade: [0.3,'#000'] //0.1透明度的白色背景
+                shade: [0.3,'#000'], //0.1透明度的白色背景
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
             });
         });
 
@@ -368,17 +379,31 @@
         return windowHeight;
     }
     //
-
+    layer.config({
+        extend: 'selectCountry/style.css', //加载您的扩展样式
+        skin: 'layer-ext-selectCountry'
+    });
     <c:if test="${empty web:selectCountry()}">
         window.onload=function(){
             layer.open({
                 type:1,
-                shade:0.8,
+                shade:0,
                 title:false,
                 closeBtn:0,
+                skin: 'selectCountry',
                 content:$(".country-select"),
                 area:['100%','100%'],
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                    document.body.style.overflow = "auto";
+                }
             });
+            document.body.style.overflow = "hidden";
         }
     </c:if>
 </script>

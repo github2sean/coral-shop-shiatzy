@@ -303,6 +303,7 @@
     display: inline-block;
     line-height: 0.5rem;
     font-size: 1.1821rem;
+    width: 100%;
 }
 
 .data-setting h3 {
@@ -697,7 +698,54 @@
     text-align: center;
     margin-bottom: 5rem;
 }
+.new-pay-way ul li {
+    font-size: 1.0821rem;
+    line-height: 3.5rem;
+    border: 2px solid #cccccc;
 
+}
+.new-pay-way ul li+li {
+    border-top: none;
+}
+.new-pay-way ul .active {
+    background: #cccccc;
+}
+
+.new-pay-way label {
+    display: block;
+    position: relative;
+    padding-left: 2.7rem;
+    margin-bottom: 0;
+}
+
+.new-pay-way label input[type=radio] {
+    position: absolute;
+    opacity: 0;
+}
+
+.new-pay-way ul {
+    margin-bottom: 15px;
+}
+
+.new-pay-way ul + p {
+    line-height: 1.8rem;
+    border-bottom: 2px solid #cccccc;
+    text-align: center;
+    margin-bottom: 5rem;
+}
+.new-pay-way h3 {
+    font-size: 1.0821rem;;
+}
+.new-pay-way .pay-btn {
+    display: inherit;
+    background-color: #666666;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 15px;
+    line-height: 2.7826rem;
+    margin-bottom: 1.9rem;
+}
 .order-pay a {
     display: inherit;
     background-color: #666666;
@@ -1177,28 +1225,36 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background: #000;
+    opacity: 0.8;
 }
 .country-select .country-title {
     width: 100%;
     text-align: center;
     color: #fff;
-    background: #777777;
+    background: #666;
     margin-bottom: 0;
-    padding-top: 40px;
-    letter-spacing: 6px;
+    font-size: 1.6rem;
+    position: fixed;
+    top:0;
+    height: 4rem;
 }
 .country-select .country-con {
     width: 100%;
     text-align: center;
     color: #fff;
     background: #111111;
+    height: 100%;
+    overflow: scroll;
+    margin-top: 6rem;
 }
 .country-select .country-con li a {
     color: #ccc;
     display: block;
     line-height: 40px;
     letter-spacing: 5px;
+}
+.country-select .country-con li a:hover {
+    background: #333333;
 }
 .country-select .country-con li.active a {
     background: #333333;

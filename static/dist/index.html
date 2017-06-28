@@ -297,23 +297,7 @@
         <img src="images/index-show.jpg" alt="">
     </a>
 </div>
-<div class="country-select" id="country-select">
-        <p class="country-title">国家*</p>
-        <ul class="country-con" style="">
-            <li class="active"><a href="#">中国</a></li>
-            <li><a href="#">美国</a></li>
-            <li><a href="#">韩国</a></li>
-            <li><a href="#">日本</a></li>
-        </ul>
-        <!--<div class="weui-cell__bd">-->
-            <!--<select class="weui-select" name="select1">-->
-                <!--<option selected="" value="1">微信号</option>-->
-                <!--<option value="2">QQ号</option>-->
-                <!--<option value="3">Email</option>-->
-            <!--</select>-->
-        <!--</div>-->
 
-</div>
     <a href="javascript:;" id="j_back_top" class="back-top">返回顶部</a>
     <footer class="footer font-12">
         <ul class="do-list-btm j_drop_down">
@@ -370,9 +354,67 @@
             closeBtn:0,
             content:$(".country-select"),
             area:['100%','100%'],
+            success: function(layero, index){
+                $('html').css("height","100%").css("overflow","hidden");
+                $('body').css("height","100%").css("overflow","hidden");
+            },
+            end:function () {
+                $('html').css("height","auto").css("overflow","auto");
+                $('body').css("height","auto").css("overflow","auto");
+            }
         });
+//        $(".country-select .country-con li a").click(function(e){
+//            e.preventDefault();
+//            console.log("nnn");
+//            $("#country-select").css("display","none");
+//        })
+
     }
 
 </script>
 </body>
 </html>
+<div class="country-select" id="country-select">
+    <p class="country-title">国家*</p>
+    <ul class="country-con" style="">
+        <li class="active"><a href="#">中国</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li><li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+        <li><a href="#">美国</a></li>
+        <li><a href="#">韩国</a></li>
+        <li><a href="#">日本</a></li>
+
+    </ul>
+    <!--<div class="weui-cell__bd">-->
+    <!--<select class="weui-select" name="select1">-->
+    <!--<option selected="" value="1">微信号</option>-->
+    <!--<option value="2">QQ号</option>-->
+    <!--<option value="3">Email</option>-->
+    <!--</select>-->
+    <!--</div>-->
+
+</div>
