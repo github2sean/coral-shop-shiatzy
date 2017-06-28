@@ -289,12 +289,20 @@
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
-              area: ['90%', '75%'],
+              area: ['100%', '100%'],
               content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
               shade: [0.5, '#000'] , //0.1透明度的白色背景
               cancel: function(){
                 $("body").css({ "position":"", "overflow":"" });
-              }
+              },
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
             });
           });
           $(".whatBoutique").click(function () {
