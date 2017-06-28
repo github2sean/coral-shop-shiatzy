@@ -119,4 +119,8 @@
         <!-- jfinal-weixin APPRAISE -->
     </dependencies>
 
+
+    <build>
+        <finalName>coral-schedule</finalName>
+    </build>
 </project>

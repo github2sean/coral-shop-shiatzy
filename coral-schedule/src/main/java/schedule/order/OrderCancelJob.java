@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,14 +30,17 @@ public class OrderCancelJob {
         orderQuery.setStatus(OrderStatusEnum.UNPAID.getValue());
         orderQuery.setPaymentMethod(4);
         List<OrderDomain> orderDomainList = orderService.getList(orderQuery);
+        Calendar calendar = Calendar.getInstance();
         System.out.println("时间："+new Date());
         orderDomainList.forEach(n -> {
             try {
-                Date orderTime =   n.getOrderTime();
-                Long cancelTime =   orderTime.getTime()+60*60*1;
-                System.out.println("取消时间："+new Date(cancelTime));
+                Date orderTime = n.getOrderTime();
+                calendar.setTime(orderTime);
+                calendar.add(Calendar.HOUR_OF_DAY,1);
+                Date afterTime = calendar.getTime();
+                System.out.println("取消时间："+afterTime);
                 Date nowTime = new Date();
-                if(cancelTime<nowTime.getTime()){
+                if(afterTime.before(nowTime)){
                     orderService.delete(n.getId());
                 }
             } catch (Exception e) {
