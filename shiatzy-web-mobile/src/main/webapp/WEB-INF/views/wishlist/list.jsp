@@ -23,8 +23,10 @@
     .categoryList.active .title:after{    -webkit-transform: rotate(90deg);  transform: rotate(90deg);}
     .categoryList .body{margin-top: 1rem;line-height: 2rem;display: none;}
     .categoryList.active .body{display: block;}
+
     .categoryList .body .category-item{margin: 0 1rem;font-size:1.2rem;}
-    .categoryList .body .category-item:hover,.categoryList .body .category-item.active{background-color: #cccccc;}
+    .categoryList .body .category-item a{display:block;}
+    .categoryList .body .category-item:hover a,.categoryList .body .category-item.active a{background-color: #cccccc;}
     .j_collapse{}
 </style>
 <div class="dx-shopping clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
@@ -54,8 +56,9 @@
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                        <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                     </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></div>
-                    <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
-                    <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
+                <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
+                    <div class="preferential-price" style="color:#ccc"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+
                 </div>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"><svg style="margin-left: 3px"><use xlink:href="#bag"></use></svg></a></li>
