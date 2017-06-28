@@ -9,7 +9,7 @@
         <%--<li><a href="/content/faq?id="><spring:message code="commonQuestion"/></a></li>--%>
         <c:forEach var="item" items="${domainList}">
             <c:if test="${item.level==1 && item.isIndex == 1}">
-            <li><a href="/content/faq?id=${item.id}">${sessionScope.language=='en_US'?item.en_title:item.title}</a></li>
+            <li><a href="/content/faq?id=${item.id}">${web:selectLanguage()=='en_US'?item.en_title:item.title}</a></li>
             </c:if>
         </c:forEach>
         <li><a href="/content/specialService"><spring:message code="specialService"/></a></li>
@@ -30,7 +30,7 @@
                 <select id="select_country" style="width: 100%;background: transparent;border: 0;font-size: 1.1rem;">
                     <option><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
-                        <option value="${country.id}">${sessionScope.language=='en_US'?country.enName:country.name}</option>
+                        <option value="${country.id}">${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
                     </c:forEach>
                 </select></a>
         </li>
@@ -72,7 +72,7 @@
     <h3 class="country-title">选择国家或地区</h3>
     <ul class="country-con" style="">
         <c:forEach var="row" items="${web:countryList()}">
-            <li><a href="#"  data-value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a></li>
+            <li><a href="#"  data-value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a></li>
         </c:forEach>
     </ul>
 </div>
@@ -85,10 +85,10 @@
 <script src="${ctx}/static/js/common.js"></script>
 <script src="${ctx}/static/js/plugins/validator/jquery.validator.min.js"></script>
 <script src="${ctx}/static/js/jquery.formatCurrency-1.4.0.js"></script>
-<c:if test="${sessionScope.language=='en_US'}">
+<c:if test="${web:selectLanguage()=='en_US'}">
     <script src="${ctx}/static/js/plugins/validator/local/en_US.js"></script>
 </c:if>
-<c:if test="${sessionScope.language!='en_US'}">
+<c:if test="${web:selectLanguage()!='en_US'}">
     <script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
 </c:if>
 <script src="${ctx}/static/js/backend.js"></script>
@@ -258,7 +258,7 @@
             }
             $("#contentForm").submit();
         });
-        console.log('${sessionScope.language}');
+        console.log("sessionScopeLanguage:"+'${sessionScope.language}'+"  cookieLanguage:"+'${web:selectLanguage()}');
         $(".language").click(function () {
             var language = $(this).attr("data-value");
             $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {
@@ -333,7 +333,8 @@
             var id =  $(this).find("a").attr("data-value");
             $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
                 if(data.code==200){
-                    location.href = '/home/index';
+                    var index = layer.index; //获取当前弹层的索引号
+                    layer.close(index); //关闭当前弹层
                 }
             });
         });
@@ -378,12 +379,14 @@
         return windowHeight;
     }
     //
-    layer.config({
-        extend: 'selectCountry/style.css', //加载您的扩展样式
-        skin: 'layer-ext-selectCountry'
-    });
+
     <c:if test="${empty web:selectCountry()}">
+        layer.config({
+            extend: 'selectCountry/style.css', //加载您的扩展样式
+            skin: 'layer-ext-selectCountry'
+        });
         window.onload=function(){
+
             layer.open({
                 type:1,
                 shade:0,

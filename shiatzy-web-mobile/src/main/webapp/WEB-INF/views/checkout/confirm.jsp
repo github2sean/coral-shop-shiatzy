@@ -38,8 +38,8 @@
             </div>
             <div class="delivery-message" style="background-color: #cccccc;">
                 <p><spring:message code="orderinfo.confirm.storePickup"/></p>
-                    <p>${sessionScope.language=='en_US'?order.storeDomain.enTitle:order.storeDomain.name}</p>
-                    <p>${sessionScope.language=='en_US'?order.storeDomain.enAddress:order.storeDomain.address}</p>
+                    <p>${web:selectLanguage()=='en_US'?order.storeDomain.enTitle:order.storeDomain.name}</p>
+                    <p>${web:selectLanguage()=='en_US'?order.storeDomain.enAddress:order.storeDomain.address}</p>
                 <a href="/checkout/listStore"><spring:message code="orderinfo.confirm.select"/> ></a>
             </div>
         </c:if>
@@ -82,11 +82,11 @@
                             <div class="pic"> <img  src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                         </div>
                         <div class="goods-right" style="word-break: break-all;">
-                            <div class="name" >${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                            <div class="name" >${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
                             <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
                             <div class=""><spring:message code="shoppingCart.number"/>&nbsp;x${row.num}</div>
-                            <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                            <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
+                            <div class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                            <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                              </span>
                             </div>
                             <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;

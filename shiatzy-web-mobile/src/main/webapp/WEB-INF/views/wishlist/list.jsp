@@ -35,7 +35,7 @@
             <ul class="body">
                 <c:forEach var="row" items="${categoryList}">
                     <li class="category-item <c:if test='${categoryDomain.id==row.id}'>active</c:if>" >
-                        <a href="/cart/wishlist?categoryId=${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a>
+                        <a href="/cart/wishlist?categoryId=${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a>
                     </li>
                 </c:forEach>
             </ul>
@@ -49,10 +49,10 @@
                     <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right" style="word-break: break-all">
-                    <div class="name" style="margin: 0;width: 100%">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="name" style="margin: 0;width: 100%">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>${ sessionScope.language=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                       <spring:message code="shoppingCart.size"/>: ${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
+                    <div class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                       <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                     </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></div>
                     <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
                     <div class="price hide"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
@@ -76,7 +76,7 @@
                     <div class="pic" style="height: 100px">
                         <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
-                    <div class="name">${sessionScope.language=='en_US'?goods.enName:goods.name}</div>
+                    <div class="name">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</div>
                     <div class="price do-pro-price" data-value="${goods.price}">&nbsp;</div>
                     <ul class="color clearfix">
                         <c:forEach var="goodsItem" items="${goods.goodsItemList}">

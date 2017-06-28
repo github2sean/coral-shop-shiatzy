@@ -14,7 +14,11 @@
         line-height: 4.2rem;
         text-align: left;
     }
-
+    .item .title.active .arrow{
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+        display: block;
+    }
 </style>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
@@ -43,19 +47,22 @@
         </div>
         <!-- 重新付款 -->
         <c:if test="${orderDomain.status==1&&orderDomain.paymentMethod!=4}">
-        <div class="item">
-            <a id="rePay" class="btn-item" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon">></span></a>
-            <div style="display: none;margin-bottom: 15px;" class="rePayWay">
-                <spring:message code="payment.failed.paymentWay"/>: <br>
-                <p><label class="radiobox"><input data-value="1" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod" checked="checked"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.zfb"/></label></p>
-                <p> <label class="radiobox"><input data-value="2" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.union"/></label></p>
-                <p> <label class="radiobox"><input data-value="3" style="vertical-align:middle; margin-top:-1px; margin-bottom:1px;"  type="radio" name="payMethod"/><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.payway.credits"/></label></p>
-                <div class="text-left">
-                    <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="btn btn-submit" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.pay"/></a>
-                </div>
+        <div class="item" >
+            <h4 id="rePay" class="btn-item title" style="display: block" href="javascript:void(0);"><spring:message code="payment.failed.repay"/><span style="float:right;" class="rotateicon arrow">></span></h4>
+            <div class="new-pay-way rePayWay" style="display: none;">
+                <h3 style="text-align: left"><spring:message code="payment.failed.paymentWay"/></h3>
+                <ul id="j_m_payment2" style="border-bottom: none">
+                    <li class="active"><label for="unionPay2"><input type="radio" data-value="1" name="methodOfPayment" id="unionPay2"  ><spring:message code="orderinfo.confirm.payway.zfb"/></label>
+                    </li>
+                    <li><label for="alipay2"><input type="radio" data-value="2" name="methodOfPayment" id="alipay2" ><spring:message code="orderinfo.confirm.payway.union"/></label></li>
+                    <li><label for="iPay2"><input type="radio" data-value="3" name="methodOfPayment" id="iPay2"  ><spring:message code="orderinfo.confirm.payway.credits"/></label></li>
+                </ul>
+                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="pay-btn"><spring:message code="order.details.pay"/></a>
             </div>
         </div>
+
         </c:if>
+
         <!-- 查看配送状态 -->
         <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
         <div class="item">
@@ -78,8 +85,8 @@
                     <div class="goods-info">
                         <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <p>${item.goodsCode}</p>
-                        <p>${sessionScope.language=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
-                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${sessionScope.language=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                        <p>${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <p><spring:message code="shoppingCart.unitPrice"/>：
                             &nbsp;<font class="coinSymbol">
@@ -121,6 +128,8 @@
                             </c:choose>
                         </font>&nbsp;
              <fmt:formatNumber value="${orderDomain.goodsTotal}" pattern="#,###" /></span></li>
+            <%--优惠券--%>
+            <c:if test="${orderDomain.couponDiscount!=null}">
             <li><spring:message code="order.details.couponDiscount"/><span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -136,6 +145,9 @@
                             </c:choose>
                         </font>&nbsp;
                 -<fmt:formatNumber value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}" pattern="#,###" /></span></li>
+            </c:if>
+            <%--会员优惠--%>
+            <c:if test="${orderDomain.memberDiscount!=null}">
             <li>Art Club&nbsp;<spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -151,7 +163,9 @@
                             </c:choose>
                         </font>&nbsp;
                 -<fmt:formatNumber value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}" pattern="#,###" /></span></li>
-            <li><spring:message code="payment.failed.fee"/><span>
+            </c:if>
+            <%--配送费用--%>
+            <li><spring:message code="order.details.delivery"/><span>
              &nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${orderDomain.currentCode=='CNY'}">
@@ -237,7 +251,7 @@
             $(this).next().slideToggle();
         });
         $("#rePay").click(function () {
-            $(this).css("color","#333");
+            $(this).toggleClass("active");
             $(".rePayWay").slideToggle();
         });
         var payMethod = 1;
@@ -247,8 +261,9 @@
         //检查地址的正确性不然会报错
         $.post("/checkout/checkAddress",{"addressId":"${orderDomain.shipAddressId}"},function (data) {
             if(data.code==200){
-                $("input[name = 'payMethod']").click(function () {
+                $("input[name = 'methodOfPayment']").click(function () {
                     payMethod = $(this).attr("data-value");
+                    $(this).parents("li").addClass("active").siblings("li").removeClass("active");
                     console.log(payMethod);
                     if(payMethod == 1){
                         url = "/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;

@@ -19,7 +19,7 @@
                 <ul class="text-center model-select-option" style="display: none">
                     <c:forEach var="row" items="${storeCountryList}">
                         <c:if test="${row.name=='中国'}">
-                            <li data-option="${row.id}" value="${row.id}" >${sessionScope.language=='en_US'?row.enName:row.name}</li>
+                            <li data-option="${row.id}" value="${row.id}" >${web:selectLanguage()=='en_US'?row.enName:row.name}</li>
                         </c:if>
                     </c:forEach>
                 </ul>
@@ -31,7 +31,7 @@
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" id="cityFather" style="display: none">
                     <c:forEach var="row" items="${storeCityList}">
-                        <li data-option="${row.id}" value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</li>
+                        <li data-option="${row.id}" value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</li>
                     </c:forEach>
                 </ul>
             </div>
@@ -42,7 +42,7 @@
                 <span class="pull-right">v</span>
                 <ul class="text-center model-select-option" id="storeFather" style="display: none">
                     <c:forEach var="row" items="${storeList}" varStatus="num">
-                        <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${sessionScope.language=='en_US'?row.enTitle:row.name}</li>
+                        <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}">${web:selectLanguage()=='en_US'?row.enTitle:row.name}</li>
                     </c:forEach>
                 </ul>
             </div>
@@ -105,7 +105,7 @@
     };
     $(function () {
 
-        var isEn = ${sessionScope.language=='en_US'};
+        var isEn = ${web:selectLanguage()=='en_US'};
 
         $.post("/checkout/initCity",{"countryId":1},function (data) {
             var cityJson = data.data;

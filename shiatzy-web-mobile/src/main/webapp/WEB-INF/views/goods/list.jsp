@@ -18,7 +18,7 @@
 
 <div class="container">
     <div class="do-list-header">
-        <a href="javascript:;" class="link-down font-14 j_panel_trigger" data-panel="j_panel_cat">${sessionScope.language=='en_US'?goodsCategoryDomain.enName:goodsCategoryDomain.name}</a>
+        <a href="javascript:;" class="link-down font-14 j_panel_trigger" data-panel="j_panel_cat">${web:selectLanguage()=='en_US'?goodsCategoryDomain.enName:goodsCategoryDomain.name}</a>
         <div class="pull-right font-14">
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_filter"><spring:message code="goods.list.filter"/></a>
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort"><spring:message code="goods.list.sort"/></a>
@@ -33,7 +33,7 @@
                 <div class="do-img">
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
-                <p class="do-pro-t ellipsis-25" name="goodsName">${sessionScope.language=='en_US'?goods.enName:goods.name}</p>
+                <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
                 <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
@@ -63,7 +63,7 @@
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
     <ul class="do-sort-list">
         <c:forEach var="item" items="${categoryList}">
-            <li><a href="/goods/list?categoryId=${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</a></li>
+            <li><a href="/goods/list?categoryId=${item.id}">${web:selectLanguage()=='en_US'?item.enName:item.name}</a></li>
         </c:forEach>
     </ul>
 </div>
@@ -83,7 +83,7 @@
                        <c:if test="${row==item.id}">checked="checked"</c:if>
                 </c:forEach>
                        id="color${item.id}" value="${item.id}">
-                <label for="color${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
+                <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enName:item.name}</label>
             </div>
             </c:forEach>
             </div>
@@ -98,7 +98,7 @@
                             <c:if test="${row==item.id}">checked="checked"</c:if>
                         </c:forEach>
                                id="color${item.id}" value="${item.id}">
-                        <label for="color${item.id}">${sessionScope.language=='en_US'?item.enValue:item.value}</label>
+                        <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enValue:item.value}</label>
                     </div>
                 </c:forEach>
             </div>
@@ -113,7 +113,7 @@
                                <c:if test="${row==item.id}">checked="checked"</c:if>
                         </c:forEach>
                                id="size${item.id}" value="${item.id}">
-                        <label for="size${item.id}">${sessionScope.language=='en_US'?item.enName:item.name}</label>
+                        <label for="size${item.id}">${web:selectLanguage()=='en_US'?item.enName:item.name}</label>
                     </div>
                 </c:forEach>
             </div>
@@ -235,7 +235,7 @@
 
                 if(moreList!=''){
                     console.log("exe")
-                    var isEn = ${sessionScope.language=='en_US'};
+                    var isEn = ${web:selectLanguage()=='en_US'};
                     for(var i=0;i<nowSize;i++){
                         var firstItem = moreList[i].goodsItemList[0];
                         var srcJson = eval(firstItem.thumb);

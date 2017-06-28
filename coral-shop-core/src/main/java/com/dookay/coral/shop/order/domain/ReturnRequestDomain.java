@@ -57,6 +57,9 @@ public class ReturnRequestDomain implements Serializable {
 	/*退货门店id*/
 	private Long returnShopId;
 
+	/*退货状态*/
+	private Integer status;
+
 	@Transient
 	private StoreDomain storeDomain;
 

@@ -10,7 +10,7 @@
 
       <div class="dx-commodity">
         <div class="content">
-          <div class="title">${sessionScope.language=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
+          <div class="title">${web:selectLanguage()=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
           <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
           <div class="dx-bag-slide" style="height: 28rem;">
@@ -33,7 +33,7 @@
 
           <div class="color j_collapse">
             <h3 class="title">
-            ${sessionScope.language=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)
+            ${web:selectLanguage()=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)
             </h3>
             <c:if test="${goodsDomain.goodsItemList.size()>0}">
               <ul class="clearfix">
@@ -68,7 +68,7 @@
 
           <div class="dx-GoodsDetails j_collapse">
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
-            <p class="text">${sessionScope.language=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
+            <p class="text">${web:selectLanguage()=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
           </div>
         </div>
 
@@ -84,7 +84,7 @@
                   <div class="do-img">
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                   </div>
-                  <p class="do-pro-t ellipsis-25" name="goodsName">${sessionScope.language=='en_US'?goods.enName:goods.name}</p>
+                  <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
                   <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
                   <ul class="do-list-color" name="skuId" data-value="">
                     <c:forEach var="item" items="${goods.goodsItemList}">
@@ -289,12 +289,20 @@
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
-              area: ['90%', '75%'],
+              area: ['100%', '100%'],
               content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
               shade: [0.5, '#000'] , //0.1透明度的白色背景
               cancel: function(){
                 $("body").css({ "position":"", "overflow":"" });
-              }
+              },
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
             });
           });
           $(".whatBoutique").click(function () {

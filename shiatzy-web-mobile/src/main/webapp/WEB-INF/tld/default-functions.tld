@@ -23,10 +23,17 @@
     </function>
 
     <function>
-        <description>获取是否选择国家</description>
+        <description>获取选择国家</description>
         <name>selectCountry</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.lang.String getSelectCountry()</function-signature>
+    </function>
+
+    <function>
+        <description>获取选择语言</description>
+        <name>selectLanguage</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.String getSelectLanguage()</function-signature>
     </function>
 
 

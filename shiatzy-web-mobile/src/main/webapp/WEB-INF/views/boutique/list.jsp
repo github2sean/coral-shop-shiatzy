@@ -51,11 +51,11 @@
                 <div class="pic">
                     <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
                 </div>
-                <p class="product-name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</p>
+                <p class="product-name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</p>
                 <div class="color-size">
-                    <span>${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
+                    <span>${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
                     <span><spring:message
-                            code="shoppingCart.size"/>:&nbsp;${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
+                            code="shoppingCart.size"/>:&nbsp;${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
                     &nbsp;&nbsp;
                     <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
                     <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>

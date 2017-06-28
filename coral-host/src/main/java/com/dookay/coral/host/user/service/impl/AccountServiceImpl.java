@@ -32,8 +32,6 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
 
     @Autowired
     private AccountMapper accountMapper;
-    @Autowired
-    private IAccountService accountService;
 
     @Override
     public AccountDomain getAccount(long id) {

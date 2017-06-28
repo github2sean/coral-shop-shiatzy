@@ -84,12 +84,14 @@
                     <span style="float: right;">></span>
                 </a>
             </li>
-            <li>
-                <a href="/u/account/toValidVip">
-                    <span><spring:message code="account.personal.validVIP"/></span>
-                    <span style="float: right;">></span>
-                </a>
-            </li>
+            <c:if test="${empty customerDomain.tempMemberDomain}">
+                <li>
+                    <a href="/u/account/toValidVip">
+                        <span><spring:message code="account.personal.validVIP"/></span>
+                        <span style="float: right;">></span>
+                    </a>
+                </li>
+            </c:if>
             <li>
                 <a href="/u/account/initSubscribe">
                     <span><spring:message code="account.personal.subscriptions"/></span>

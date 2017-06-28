@@ -17,6 +17,7 @@
         <module>coral-shop-core</module>
         <module>shiatzy-web-mobile</module>
         <module>shiatzy-web-admin</module>
+        <module>coral-schedule</module>
     </modules>
     <properties>
         <spring.version>4.2.0.RELEASE</spring.version>

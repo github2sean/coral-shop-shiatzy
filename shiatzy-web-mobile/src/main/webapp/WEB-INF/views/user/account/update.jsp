@@ -79,7 +79,7 @@
                             <option value="-1"><spring:message code="account.personal.update.select"/></option>
                             <c:forEach items="${countryList}" var="row">
                                 <option value="${row.id}"
-                                        <c:if test="${customerAddressDomain.countryId==row.id}">selected="selected"</c:if> >${sessionScope.language=='en_US'?row.enName: row.name}</option>
+                                        <c:if test="${customerAddressDomain.countryId==row.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?row.enName: row.name}</option>
                             </c:forEach>
                         </select>
                     </label>

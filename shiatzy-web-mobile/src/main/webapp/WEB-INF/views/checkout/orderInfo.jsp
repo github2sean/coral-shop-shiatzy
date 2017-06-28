@@ -19,9 +19,9 @@
                     <div class="pic" ><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right">
-                    <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
                     <div class="number">${row.goodsCode}</div>
-                    <div class="color" >${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span >${sessionScope.language=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
+                    <div class="color" >${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span >${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/> : <span>${row.num}</span></div>
                     <div class="price" data-value="${row.goodsPrice}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
                         <c:choose>
@@ -51,13 +51,13 @@
                         <span></span><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;">
                     </div>
                     <div class="goods-details">
-                        <div class="name">${sessionScope.language=='en_US'?row.goodsEnName:row.goodsName}</div>
+                        <div class="name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
                         <div class="number checkedNo"  data-value="${row.goodsCode}"><spring:message code="shoppingCart.no"/>&nbsp;${row.goodsCode}</div>
                         <div class="color">
-                            <div class="title">${sessionScope.language=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}(<spring:message code="goods.detail.thereAre"/>&nbsp;${row.goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
+                            <div class="title">${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}(<spring:message code="goods.detail.thereAre"/>&nbsp;${row.goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)</div>
                             <ul>
                                 <c:forEach var="colorRow" items="${row.goodsDomain.goodsItemList}" varStatus="status">
-                                    <li data-id="${colorRow.id}" class=" <c:if test="${colorRow.id==row.goodsItemDomain.id}">active</c:if> "><a href="#">${sessionScope.language=='en_US'?colorRow.enName:colorRow.name}</a></li>
+                                    <li data-id="${colorRow.id}" class=" <c:if test="${colorRow.id==row.goodsItemDomain.id}">active</c:if> "><a href="#">${web:selectLanguage()=='en_US'?colorRow.enName:colorRow.name}</a></li>
                                 </c:forEach>
                                     <%--<li class="active"><a href="">紅色</a></li>
                                     <li><a href="">藍色</a></li>
