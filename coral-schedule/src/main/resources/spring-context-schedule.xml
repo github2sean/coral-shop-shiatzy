@@ -17,6 +17,7 @@
 	<context:component-scan base-package="schedule" />
 	<!-- phomule-invest-core -->
 	<import resource="classpath:/spring/spring-config-core.xml" />
+	<import resource="classpath:/spring/spring-config-host.xml" />
 	<!-- phomule-common -->
 	<import resource="classpath:spring/spring-config-common.xml"/>
 

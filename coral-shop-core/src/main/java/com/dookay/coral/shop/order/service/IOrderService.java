@@ -24,4 +24,5 @@ public interface IOrderService extends IBaseService<OrderDomain> {
     void updateOrderStatus(OrderDomain orderDomain);
 
     void subCouponNum(OrderDomain orderDomain);
+    List<OrderDomain> getUnpaidOrder();
 }
