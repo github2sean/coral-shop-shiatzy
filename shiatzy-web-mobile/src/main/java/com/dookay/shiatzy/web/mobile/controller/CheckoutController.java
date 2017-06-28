@@ -617,6 +617,9 @@ public class CheckoutController  extends BaseController{
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
+        if(order==null){
+            return errorResult("订单已过期");
+        }
         order.setPaymentMethod(paymentId);
         session.setAttribute(ORDER,order);
         return successResult("操作成功");

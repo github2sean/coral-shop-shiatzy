@@ -161,4 +161,12 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			couponService.update(couponDomain);
 		}
 	}
+
+	@Override
+	public List<OrderDomain> getUnpaidOrder() {
+		OrderQuery query = new OrderQuery();
+		query.setStatus(OrderStatusEnum.UNPAID.getValue());
+		query.setCod(4);
+		return getList(query);
+	}
 }

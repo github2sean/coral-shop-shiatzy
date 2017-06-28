@@ -26,12 +26,9 @@ public class OrderCancelJob {
 
     @Scheduled(cron = "0/10 * * * * *")
     public void cancel() {
-        OrderQuery orderQuery = new OrderQuery();
-        orderQuery.setStatus(OrderStatusEnum.UNPAID.getValue());
-        orderQuery.setPaymentMethod(4);
-        List<OrderDomain> orderDomainList = orderService.getList(orderQuery);
+        List<OrderDomain> orderDomainList = orderService.getUnpaidOrder();
         Calendar calendar = Calendar.getInstance();
-        System.out.println("时间："+new Date());
+        System.out.println("时间："+new Date()+" listSize:"+orderDomainList);
         orderDomainList.forEach(n -> {
             try {
                 Date orderTime = n.getOrderTime();
