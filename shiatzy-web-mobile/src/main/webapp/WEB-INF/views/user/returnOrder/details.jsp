@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="com.dookay.coral.shop.order.enums.ReturnRequestStatusEnum" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -53,7 +54,7 @@
         </div>
     </div>
     <div class="item-group">
-        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/> <span class="arrow">></span></h4>
+        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/>(${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) <span class="arrow">></span></h4>
         <div class="item">
             <div class="goods-list return-goods">
                 <c:forEach var="item" items="${returnOrderItemList}">

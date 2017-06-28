@@ -458,12 +458,20 @@ html #layuicss-skinlayercss {
 
 .layui-layer-setwin .layui-layer-close1 {
     background-position: 1px -40px;
-    cursor: pointer
+    cursor: pointer;
+
+    margin-top: -10px;
+    border: #F8F8F8 solid 8px;
+    display: block;
+    width: 30px;
+    height: 30px;
 }
+
 
 .layui-layer-setwin .layui-layer-close1:hover {
     opacity: .7
 }
+
 
 .layui-layer-setwin .layui-layer-close2 {
     position: absolute;
@@ -2651,7 +2659,10 @@ textarea {
 }
 
 .layui-layer-setwin .layui-layer-close1 {
-    margin-top:-2px;
+    margin-top:-10px;
+}
+body .layui-layer-setwin{
+    right: 3px;
 }
 
 .dx-bag-slide .bx-wrapper .bx-prev:before,
