@@ -63,17 +63,20 @@
     </div>
     </a>
     <div class="text-center do-copy"><spring:message code="ending"/></div>
-    <div class="country-select" id="country-select" style="display: none">
-        <p class="country-title">国家*</p>
-        <ul class="country-con" style="">
-            <c:forEach var="row" items="${web:countryList()}">
-                <li><a href="#"  data-value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a></li>
-            </c:forEach>
-        </ul>
-    </div>
 </footer>
 </div>
 </div>
+
+<!--选择国家或地区-->
+<div class="country-select" id="country-select" style="display: none">
+    <h3 class="country-title">选择国家或地区</h3>
+    <ul class="country-con" style="">
+        <c:forEach var="row" items="${web:countryList()}">
+            <li><a href="#"  data-value="${row.id}">${sessionScope.language=='en_US'?row.enName:row.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
+
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
@@ -367,17 +370,25 @@
         return windowHeight;
     }
     //
-
+    layer.config({
+        extend: 'selectCountry/style.css', //加载您的扩展样式
+        skin: 'layer-ext-selectCountry'
+    });
     <c:if test="${empty web:selectCountry()}">
         window.onload=function(){
             layer.open({
                 type:1,
-                shade:0.8,
+                shade:0,
                 title:false,
                 closeBtn:0,
+                skin: 'selectCountry',
                 content:$(".country-select"),
                 area:['100%','100%'],
+                end:function () {
+                    document.body.style.overflow = "auto";
+                }
             });
+            document.body.style.overflow = "hidden";
         }
     </c:if>
 </script>
