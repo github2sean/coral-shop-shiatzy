@@ -69,10 +69,11 @@
             font-family: 宋体;"
         }
         .dingdan {
-            background: #F2F2F2;
+            /*background: #F2F2F2;*/
             margin-top: 20px;
             padding: 10px;
             font-family: 宋体;
+            text-align: left;
 
         }
         .dingdan .detail {
@@ -82,13 +83,19 @@
         }
         .dingdan .detail ul li {
             line-height: 24px;
+            font-size: 14px;
         }
+        .dingdan .detail ul li:first-child {
+            border-bottom: 2px solid #cccccc;
+            margin-bottom: 5px;
+        }
+
         .dingdan .dingdan-title {
-            font-weight: bold;
+            /*font-weight: bold;*/
             margin-bottom: 10px;
         }
         .dingdan .list-name {
-            font-weight: bold;
+            /*font-weight: bold;*/
         }
         .email-txt .summary {
             font-family: 宋体;
@@ -156,6 +163,9 @@
             font-family: "宋体";
             font-size: 16px;
         }
+        .xzc-detail {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -169,52 +179,22 @@
                 <p class="txt">
                     感谢您在夏姿·陈（SHIATZY CHEN）在线精品店购物。我们很高兴地通知您以下订单已被配送，将会于1-3个工作日抵达。您可于以下配送运单号或我的账户“订单详情”内，点击查询最新动态。 如有任何问题，请随时联系我们的客服人员。</p>
                 <div class="dingdan">
-                    <p class="dingdan-title">订单详情</p>
-                    <div class="detail">
-                        <ul class="detail-list">
-                            <li>
-                                <span class="list-name">订单号 : </span><span>20170602401</span>
-                            </li>
-                            <li>
-                                <span class="list-name">交易日期 : </span><span>2017-06-02 16:35:40</span>
-                            </li>
-                            <li>
-                                <span class="list-name">订单日期 : </span><span>2017-06-02 16:35:40</span>
-                            </li>
-                            <li>
-                                <span class="list-name">交易序号 : </span><span>1021706021635986372</span>  :
-                            </li>
-                            <li>
-                                <span class="list-name">付款状态 : </span><span>已付款未出货</span>
-                            </li>
-                            <li>
-                                <span class="list-name">付款方式 : </span><span>Visa/Master/JCB</span>
-                            </li>
-                            <li>
-                                <span class="list-name">商品数量 : </span><span>1</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <p class="summary">¥ 1</p>
-                    <p class="dingdan-title">运送信息</p>
-                    <div class="detail">
-                        <ul class="detail-list">
-                            <li>
-                                <span class="list-name">收货人 : </span><span>Chen Shiatzy</span>
-                            </li>
-                            <li>
-                                <span class="list-name">运送国家 : </span><span>中国</span>
-                            </li>
-                            <li>
-                                <span class="list-name">城市 : </span><span>上海</span>
-                            </li>
-                            <li>
-                                <span class="list-name">地址详情 : </span><span>200237 - 春申路1929号</span>  :
-                            </li>
-                            <li>
-                                <span class="list-name">联系方式 : </span><span>0000-00-00</span>
-                            </li>
-                        </ul>
+                    <div class="xzc-detail">
+                        <p class="dingdan-title">订单详情</p>
+                        <div class="detail">
+                            <ul class="detail-list">
+                                <li>
+                                    <span class="list-name">订单编号 : </span><span>20170602401</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">订单日期 : </span><span>2017-06-02 16:35:40</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">订单状态 : </span><span>已支付</span>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="dingdan-list">
@@ -226,6 +206,40 @@
                         <p class="pro-value">颜色 : 粉色</p>
                         <p class="pro-value">尺寸 : S</p>
                         <p class="pro-value">价格 : ¥1</p>
+                    </div>
+                </div>
+                <div class="dingdan">
+                    <div class="xzc-detail">
+                        <p class="dingdan-title">账单详情</p>
+                        <div class="detail">
+                            <ul class="detail-list">
+                                <li>
+                                    <span class="list-name">优惠前 : </span><span>20170602401</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">优惠应用 : </span><span>2017-06-02 16:35:40</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">Art Club 会员优惠 : </span><span>已支付</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">Art Club 会员优惠 : </span><span>已支付</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="xzc-detail">
+                        <p class="dingdan-title">配送信息</p>
+                        <div class="detail">
+                            <ul class="detail-list">
+                                <li>
+                                    <span class="list-name">123232</span>
+                                </li>
+                                <li>
+                                    <span class="list-name">女士</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="dingdan-sum">
