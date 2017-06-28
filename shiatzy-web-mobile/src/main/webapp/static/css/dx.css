@@ -142,9 +142,10 @@ i {
     margin-top: 1rem;
 }
 
-.dx-orderDetails .dx-GoodsDetails .goods-left {
-    float: left;
-    width: 6.9rem;
+.dx-orderDetails .dx-GoodsDetails .goods-left .pic {
+    width: 5.5rem;
+    height: 9.2rem;
+    margin-top: 1rem;
 }
 
 .dx-orderDetails .dx-GoodsDetails .goods-left .pic {
@@ -862,6 +863,7 @@ i {
 
 .dx-shopping .dx-GoodsDetails .goods {
     padding-top:0.6rem;
+    padding-bottom: 0.6rem;
     border-bottom: .07rem solid #ccc;
 }
 
@@ -872,7 +874,7 @@ i {
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
-    height: 10.2rem;
+    height: 9.3rem;
     text-align: center;
     margin-top: 0.2rem;
 }
@@ -1806,8 +1808,8 @@ i {
 
 .gallery-block .iconfont {
     position: absolute;
-    right: 30px;
-    top: 30px;
+    right: 50px;
+    top: 50px;
     color: #333;
     font-size: 24px;
     z-index: 99;
