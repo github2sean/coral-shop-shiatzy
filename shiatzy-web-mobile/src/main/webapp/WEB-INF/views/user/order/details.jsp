@@ -121,6 +121,8 @@
                             </c:choose>
                         </font>&nbsp;
              <fmt:formatNumber value="${orderDomain.goodsTotal}" pattern="#,###" /></span></li>
+            <%--优惠券--%>
+            <c:if test="${orderDomain.couponDiscount!=null}">
             <li><spring:message code="order.details.couponDiscount"/><span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -136,6 +138,9 @@
                             </c:choose>
                         </font>&nbsp;
                 -<fmt:formatNumber value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}" pattern="#,###" /></span></li>
+            </c:if>
+            <%--会员优惠--%>
+            <c:if test="${orderDomain.memberDiscount!=null}">
             <li>Art Club&nbsp;<spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -151,7 +156,9 @@
                             </c:choose>
                         </font>&nbsp;
                 -<fmt:formatNumber value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}" pattern="#,###" /></span></li>
-            <li><spring:message code="payment.failed.fee"/><span>
+            </c:if>
+            <%--配送费用--%>
+            <li><spring:message code="order.details.delivery"/><span>
              &nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${orderDomain.currentCode=='CNY'}">

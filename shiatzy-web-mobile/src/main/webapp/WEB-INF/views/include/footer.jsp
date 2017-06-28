@@ -379,12 +379,14 @@
         return windowHeight;
     }
     //
-    layer.config({
-        extend: 'selectCountry/style.css', //加载您的扩展样式
-        skin: 'layer-ext-selectCountry'
-    });
+
     <c:if test="${empty web:selectCountry()}">
+        layer.config({
+            extend: 'selectCountry/style.css', //加载您的扩展样式
+            skin: 'layer-ext-selectCountry'
+        });
         window.onload=function(){
+
             layer.open({
                 type:1,
                 shade:0,
