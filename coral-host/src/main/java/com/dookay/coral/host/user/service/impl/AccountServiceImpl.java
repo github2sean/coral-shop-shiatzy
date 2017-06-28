@@ -64,7 +64,7 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
             throw new ServiceException("账户不存在");
         }else{
             System.out.println("accountDomain"+accountDomain);
-            if(accountDomain.getIsValid()==null||1!=accountDomain.getIsValid()){
+            if(accountDomain.getIsValid()==null){//||1!=accountDomain.getIsValid()
                 throw new ServiceException("账户未激活，请在邮箱中激活帐号");
             }
         }

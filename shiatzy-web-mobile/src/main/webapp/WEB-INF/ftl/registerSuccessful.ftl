@@ -56,11 +56,11 @@
 </head>
 <body>
     <div class="email-submit">
-        <p class="title"><img src="images/logoSC.png" alt=""></p>
+        <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
-            <h1 class="email-title">WELCOME TO SHIATZY CHEN!</h1>
+            <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">Dear SU ,</p>
+                <p class="name">Dear ${name} ,</p>
                 <br>
                 <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.${contentSuffix}</p>
                 <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
