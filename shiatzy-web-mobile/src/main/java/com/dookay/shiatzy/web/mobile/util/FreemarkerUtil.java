@@ -1,22 +1,25 @@
 package com.dookay.shiatzy.web.mobile.util;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Created by admin on 2017/6/28.
  */
+@Component
 public class FreemarkerUtil {
+
     /**
      * 获取模板
      * @param name
@@ -37,15 +40,16 @@ public class FreemarkerUtil {
         return null;
     }
     /**
-     * 输出到控制台
+     * 输出到页面
      * @param name 模板文件名
      * @param root
      */
-    public void print(String name,Map<String,Object> root) {
+    public void print(String name, Map<String,Object> root, HttpServletResponse response) {
         try {
             //通过Template可以将模板文件输出到相应的流
             Template temp = this.getTemplate(name);
-            temp.process(root, new PrintWriter(System.out));
+            response.setContentType("text/html; charset=" + temp.getEncoding());
+            temp.process(root, new PrintWriter(response.getWriter()));
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -62,8 +66,7 @@ public class FreemarkerUtil {
         FileWriter out = null;
         try {
             //通过一个文件输出流，就可以写到相应的文件中
-            out = new FileWriter(
-                    new File("E:\\freemarker\\ftl\\"+outFile));
+            out = new FileWriter(new File("E:\\freemarker\\ftl\\"+outFile));
             Template temp = this.getTemplate(name);
             temp.process(root, out);
         } catch (IOException e) {
@@ -80,23 +83,3 @@ public class FreemarkerUtil {
     }
 }
 
-//模拟数据，进行测试
- class TestFreemarker {
-    FreemarkerUtil fu;
-    Map<String,Object> root = null;
-    @Before
-    public void setUp() {
-        fu = new FreemarkerUtil();
-        root = new HashMap<String,Object>();
-    }
-    @Test
-    public void test01() {
-        //1、创建数据模型
-        Map<String,Object> root = new HashMap<String,Object>();
-        //2、为数据模型添加值
-        root.put("username", "张三");
-        //3、将数据模型和模板组合的数据输出到控制台
-        fu.print("01.ftl", root);
-        fu.fprint("02.ftl", root, "01.html");
-    }
-}

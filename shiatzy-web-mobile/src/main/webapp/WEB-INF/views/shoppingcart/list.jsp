@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="shopping-start">
-        <a href="javascript:void(0)" data-href="${sessionScope.shippingCountryId==null?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
+        <a href="javascript:void(0)" data-href="${empty web:selectCountry()?'/home/listShippingCountry':'/checkout/initOrder'}" class="shopping checkout"><spring:message code="shoppingCart.checkout"/></a>
         <div class="explain">
             <ul>
                 <li><a href="#" class="returnAndExchange"><spring:message code="shoppingCart.returnAndExchange"/><span>></span></a></li>
