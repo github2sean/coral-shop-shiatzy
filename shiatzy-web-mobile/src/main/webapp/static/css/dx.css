@@ -97,7 +97,7 @@ i {
 }
 
 .dx-orderDetails .orderNumber {
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: 2rem;
     padding-left: .8rem;
     border-bottom: 2px solid #ccc;
@@ -109,7 +109,7 @@ i {
 
 .dx-orderDetails .dx-details div {
     margin: .8rem 0;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 2rem;
 }
 
@@ -128,7 +128,7 @@ i {
 }
 
 .dx-orderDetails .dx-GoodsDetails .title {
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: 2rem;
     padding-left: .8rem;
     border-bottom: 2px solid #ccc;
@@ -139,6 +139,7 @@ i {
     padding: 0 1rem;
     margin-bottom: 1rem;
     border-bottom: .07rem solid #ccc;
+    margin-top: 1rem;
 }
 
 .dx-orderDetails .dx-GoodsDetails .goods-left .pic {
@@ -163,13 +164,13 @@ i {
 
 .dx-orderDetails .dx-GoodsDetails .goods-right {
     float: right;
-    width: 13rem;
+
     /*margin-left: 12%;*/
 }
 
 .dx-orderDetails .dx-GoodsDetails .goods-right .name {
     font-size: 1rem;
-    margin: 1.3rem 0 .8rem;
+
 }
 
 .dx-orderDetails .dx-GoodsDetails .goods-right .number {
@@ -198,7 +199,7 @@ i {
 
 .dx-orderDetails .dx-explain {
     padding: 0 1.5rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.5rem;
     margin-bottom: 6.5rem;
 }

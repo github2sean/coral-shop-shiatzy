@@ -232,7 +232,7 @@
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
-    <div class="privacy">
+            <div class="privacy">
         <a href="#" class="privacyNotice">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="privacyPolicy"/></span>

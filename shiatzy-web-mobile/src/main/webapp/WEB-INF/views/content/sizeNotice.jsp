@@ -1,7 +1,7 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-
+    <html>
       <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -41,9 +41,10 @@
           })(document, window);
         </script>
       </head>
-      <div class="dx-CommonProblems">
+      <body >
+      <div class="dx-CommonProblems" style="width: 100%;font-size: 1.2rem">
         <div class="content">
-          <h3 style="text-align: center;font-size:2rem">尺码建议</h3>
+          <h3 style="text-align: center;font-size: 1.6rem">尺码建议</h3>
           <p class=""><a href="#">如无特别说明，我们统一采用法码标准，以下表格可以帮助您根据实际尺寸所对应的各地区不同尺码进行参照。</a></p>
           <table class="table table-bordered ">
             <thead style="font-size:12px ">
@@ -444,3 +445,6 @@
             });
           });
         </script>
+      </div>
+      </body>
+    </html>
