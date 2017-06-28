@@ -34,7 +34,7 @@
                 </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/> refund.
                 </p>
             </c:if>
-            <c:if test="${sessionScope.language!='en_US'}">
+            <c:if test="${web:selectLanguage()!='en_US'}">
                 <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
                     提交，总计&nbsp;<font class="coinSymbol">
                         <c:choose>
