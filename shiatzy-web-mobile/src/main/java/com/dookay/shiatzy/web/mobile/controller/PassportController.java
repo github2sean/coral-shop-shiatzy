@@ -240,7 +240,7 @@ public class PassportController extends MobileBaseController{
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
         //生成模版
         Map<String,Object> map = new HashMap<>();
-        map.put("picUrl","https://shop.shiatzychen.com/assets/img/logo1.svg");
+        map.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
         map.put("title","夏资陈");
         map.put("name",userName);
         map.put("contentPrefix","We are pleased you’ve opened an account at");
@@ -322,7 +322,7 @@ public class PassportController extends MobileBaseController{
 
             //生成模版
             Map<String,Object> freeMap = new HashMap<>();
-            freeMap.put("picUrl","https://shop.shiatzychen.com/assets/img/logo1.svg");
+            freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
             freeMap.put("title","夏资陈 找回密码");
             freeMap.put("name",userName);
             freeMap.put("setUrl",resetPassHref);

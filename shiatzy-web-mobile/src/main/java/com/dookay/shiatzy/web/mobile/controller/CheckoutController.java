@@ -418,7 +418,7 @@ public class CheckoutController  extends BaseController{
 
         //生成模版
         Map<String,Object> freeMap = new HashMap<>();
-        freeMap.put("picUrl","https://shop.shiatzychen.com/assets/img/logo1.svg");
+        freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
         freeMap.put("title",messageTemplate.getTitle());
         freeMap.put("name",customerDomain.getEmail());
         freeMap.put("status",OrderStatusEnum.UNPAID.getValue());

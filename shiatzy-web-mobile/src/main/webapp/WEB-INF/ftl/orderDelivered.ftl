@@ -235,10 +235,11 @@
                 </div>
                 <div class="dingdan-list">
                     <p class="goods-detail">商品详情</p>
-                    <div class="list-left"><img src="images/email-img.png" alt=""></div>
 
-                    <#if orderItem?exists  && orderItem.size gt 0 >
+
+                    <#if orderItem?? && (orderItem?size > 0) >
                         <#list orderItem as it>
+                            <div class="list-left"><img src="${it.goodsItemDomain.picUrl}" alt=""></div>
                             <div class="list-right">
                                 <h3 class="pro-title">${it.goodsName} ${it.goodsCode}</h3>
                                 <p class="pro-value">${it.goodsItemDomain.name}</p>
@@ -260,13 +261,13 @@
                                     <span class="bill-lf">优惠前 : </span><span class="bill-rt">¥   ${order.goodsTotal}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt">¥   -${order.couponDiscount}</span>
+                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt">¥   -${order.couponDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt">¥   -${order.memberDiscount}</span>
+                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt">¥   -${order.memberDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">运费 : </span><span class="bill-rt">¥   ${order.shipFee}</span>
+                                    <span class="bill-lf">运费 : </span><span class="bill-rt">¥   ${order.shipFee!'0'}</span>
                                 </li>
                                 <li>
                                     <span class="bill-lf">总计 : </span><span class="bill-rt">¥   ${order.orderTotal}</span>

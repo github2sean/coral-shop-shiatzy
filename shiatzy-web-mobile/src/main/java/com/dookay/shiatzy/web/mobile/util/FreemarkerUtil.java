@@ -3,6 +3,7 @@ package com.dookay.shiatzy.web.mobile.util;
 import java.io.*;
 import java.util.*;
 
+import com.dookay.coral.common.web.HttpContext;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -31,8 +33,9 @@ public class FreemarkerUtil {
             Configuration cfg = new Configuration();
             //设定去哪里读取相应的ftl模板文件
             String path = FreemarkerUtil.class.getResource("").getPath();
-            System.out.println("path:"+path);
-            cfg.setDirectoryForTemplateLoading(new File("D:/AllProjects/coral-shop-shiatzy/shiatzy-web-mobile/target/shiatzy-web-mobile/WEB-INF/ftl"));
+            String root= getWebAppPath("/WEB-INF/ftl");
+            System.out.println("path:"+path+" root:"+root);
+            cfg.setDirectoryForTemplateLoading(new File(root));
             //cfg.setClassForTemplateLoading(FreemarkerUtil.class,"/ftl");
             //在模板文件目录中找到名称为name的文件
             Template temp = cfg.getTemplate(name);
@@ -100,6 +103,21 @@ public class FreemarkerUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String getServerPath(){
+        HttpServletRequest request =  HttpContext.current().getRequest();
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+       return  basePath;
+    }
+
+    public static String getWebAppPath(String fileName){
+        return  HttpContext.current().getRequest().getServletContext().getRealPath(fileName);
+    }
+
+    public static String getLogoUrl(String fileName){
+        return  getServerPath()+fileName;
     }
 }
 

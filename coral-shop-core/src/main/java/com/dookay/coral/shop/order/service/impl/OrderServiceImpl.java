@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.order.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
@@ -21,6 +22,7 @@ import com.dookay.coral.shop.promotion.service.ICouponService;
 import com.dookay.coral.shop.temp.domain.TempStockDomain;
 import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempStockService;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.service.IOrderService;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -70,8 +73,12 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setIds(ids);
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		HttpServletRequest request =  HttpContext.current().getRequest();
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 		for(GoodsItemDomain itemDomain:goodsItemDomainList){
 			itemDomain.setGoods(goodsService.get(itemDomain.getGoodsId()));
+			itemDomain.setPicUrl(basePath+ JSONObject.fromObject(JSONArray.fromObject(itemDomain.getThumb()).get(0)).getString("file"));
 		}
 		for (OrderItemDomain orderItemDomain:cartList){
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()

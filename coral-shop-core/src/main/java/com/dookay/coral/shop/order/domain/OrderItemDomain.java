@@ -57,6 +57,7 @@ public class OrderItemDomain implements Serializable {
 	/*已退数量*/
 	private Integer returnNum;
 
+
 	@Transient
 	private GoodsDomain goodsDomain;
 
