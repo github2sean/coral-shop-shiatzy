@@ -187,6 +187,8 @@ public class ReservationController extends BaseController{
     public  JsonResult submitPreOrder(Long storeId){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
+        HttpSession session = HttpContext.current().getRequest().getSession();
+
         if(storeId==null){
             return errorResult("请选择门店");
         }
@@ -194,77 +196,22 @@ public class ReservationController extends BaseController{
         if(storeDomain==null){
             return errorResult("无此门店");
         }
-
-
-        //reservationService.submit();
-
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-        String en_US = CookieUtil.getCookieValueByKey(request,"Language");
-        ReservationDomain reservationDomain = new ReservationDomain();
-        reservationDomain.setCreateTime(new Date());
-        reservationDomain.setRank(1);
-        reservationDomain.setIsVisible(0);
-        reservationDomain.setStatus(0);
-        reservationDomain.setCustomerId(customerDomain.getId());
-        reservationDomain.setReservationNo(RandomUtils.buildNo());
-        reservationDomain.setStoreTitle(storeDomain.getId()+"");
-        reservationDomain.setTel(storeDomain.getTel());
-        reservationDomain.setAddress("en_US".equals(en_US)?storeDomain.getEnAddress():storeDomain.getAddress());
-        reservationDomain.setTime(storeDomain.getTime());
-        reservationDomain.setNote("");
-        reservationDomain.setUpdateTime(new Date());
-
-        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
-        ShippingCountryDomain shippingCountryDomain = null;
-        String currentCode = "CNY";
-        Double rate = 1D;
-        if(StringUtils.isNotBlank(countryId)){
-            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
-            rate = shippingCountryDomain.getRate();
-            //根据国家选择结算币种
-            int currentCodeType = shippingCountryDomain.getRateType();
-            if(currentCodeType==1){
-                currentCode = "USD";
-            }else if(currentCodeType==2){
-                currentCode = "EUR";
-            }
-        }
-        reservationDomain.setRate(rate);
-        reservationDomain.setCurrentCode(currentCode);
-        reservationService.create(reservationDomain);
-
         //判断传入商品ID是否在精品店中
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
         if(!(cartList!=null&&cartList.size()>0)){
             return errorResult("预约单过期");
         }
-        for (ShoppingCartItemDomain line:cartList){
-            ReservationItemDomain reservationItemDomain = new ReservationItemDomain();
-            reservationItemDomain.setRank(1);
-            reservationItemDomain.setIsVisible(1);
-            reservationItemDomain.setReservationId(reservationDomain.getId());
-            reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
-            reservationItemDomain.setGoodsPrice(line.getGoodsPrice()/rate);
-            reservationItemDomain.setGoodsDisPrice(line.getGoodsDisPrice()/rate);
-            reservationItemDomain.setSkuCode(line.getSkuId()+"");
-            reservationItemDomain.setNum(line.getNum());
-            reservationItemDomain.setItemId(line.getItemId());
-            reservationItemDomain.setSpecifications(line.getSkuSpecifications());
-            reservationItemDomain.setCreateTime(new Date());
-            reservationItemDomain.setUpdateTime(new Date());
-            reservationItemDomain.setStatus(0);
-            reservationItemService.create(reservationItemDomain);
-            //从精品店中移除
-            shoppingCartService.removeFromCart(line.getId());
-        }
-
+        Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
         //发送短信
-        smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+        String phone = customerDomain.getPhone();
+        if(StringUtils.isNotBlank(phone)){
+            smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+        }
+        //发送邮件
 
-        return successResult("提交成功",reservationDomain.getId());
+        return successResult("提交成功",reservationDomainId);
     }
 
 

@@ -202,7 +202,8 @@ public class HomeController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
 
-        Long id = (Long) session.getAttribute(SHIPPING_COUNTRY_ID);
+        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+        Long id = StringUtils.isBlank(countryId)?1L:Long.parseLong(countryId);
         if(id==null){
             return errorResult("未选择国家");
         }
