@@ -36,7 +36,7 @@
                                 &nbsp;<spring:message code="coin.EU"/>
                             </c:when>
                         </c:choose>
-                       </font>&nbsp;<span class="true-price"><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
+                       </font>&nbsp;<span class="${empty row.goodsDisPrice?'true-price':''}"><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
                     <c:if test="${not empty row.goodsDisPrice}">
                         <div class="price xzc-dis-price" data-value="${row.goodsDisPrice}"><spring:message code="shoppingCart.disPrice"/>&nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -126,7 +126,7 @@
                 </c:choose>
             </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}"><fmt:formatNumber value="${order.goodsTotal}" pattern="#,###"/></span></span>
             </div>
-            <div class="discount" style="color: red"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
+            <div class="discount" style="color: red;display: none"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -139,6 +139,21 @@
                     </c:when>
                  </c:choose>
             </font>&nbsp;<span id="discount" class="">0</span></span></div>
+
+            <div class="memDiscount" style="${empty order.memberDiscount?'display:none;':''}">ART CLUB 会员优惠<span><font class="coinSymbol">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                </c:choose>
+            </font>&nbsp;<span id="memDiscount" class="">${empty order.memberDiscount?0:order.memberDiscount}</span></span></div>
+
             <div class="express"><spring:message code="orderinfo.freight"/> <span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
@@ -186,12 +201,12 @@
             var num =  ($(this).find(".quantity").attr("data-value"))*1;
             var price  = rmoney($(this).find(".true-price").text())*1;
             total += num * price;
-            //$("#js_total").html("&yen; &nbsp;"+total.toFixed(2));
-            console.log("total:"+total);
+            console.log("num:"+num+" pri:"+price+" total:"+total);
         });
         var fee = rmoney($("#express").text())*1;
         var dis = rmoney($("#discount").text())*1;
-        var final_amt = total+fee-dis;
+        var memdis = rmoney($("#memDiscount").text())*1;
+        var final_amt = total+fee-dis-memdis;
         console.log("fee:"+fee+" dis "+ dis+" "+final_amt);
         $("#ordertotal").html("&nbsp;"+fmoney(final_amt.toFixed(0),0));
 
@@ -371,6 +386,7 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('<spring:message code="orderinfo.coupon.success"/>');
+                    $(".discount").show();
                     $("#discount").text(fmoney((data.data).toFixed(0),0));
                     clsTotal();
                 }else{
@@ -388,6 +404,7 @@
                     $("#discount").text(0);
                     clsTotal();
                     $('.showInfo').text("");
+                    $(".discount").css("display","none");
                 }else{
                     $('.showInfo').text(data.message);
                 }
