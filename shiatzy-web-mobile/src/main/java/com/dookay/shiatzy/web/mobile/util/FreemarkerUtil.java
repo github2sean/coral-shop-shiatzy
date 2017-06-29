@@ -38,7 +38,7 @@ public class FreemarkerUtil {
             cfg.setDirectoryForTemplateLoading(new File(root));
             //cfg.setClassForTemplateLoading(FreemarkerUtil.class,"/ftl");
             //在模板文件目录中找到名称为name的文件
-            Template temp = cfg.getTemplate(name);
+            Template temp = cfg.getTemplate(name,"utf-8");
             return temp;
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,6 +67,7 @@ public class FreemarkerUtil {
         try {
             //通过Template可以将模板文件输出到相应的流
             Template temp = getTemplate(name);
+            temp.setEncoding("UTF-8");
             StringWriter writer = new StringWriter();
             temp.process(root, writer);
             return writer.toString();
