@@ -89,7 +89,7 @@
                             <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                              </span>
                             </div>
-                            <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                            <div class="preferential-price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                                 <span class="">
                                     <c:choose>
                                         <c:when test="${order.currentCode=='CNY'}">
@@ -104,6 +104,26 @@
                                     </c:choose>
                                 </span>&nbsp;
                                 <span><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
+                            <c:if test="${not empty row.goodsDisPrice}">
+                                <div class="preferential-price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>&nbsp;
+                                <span class="">
+                                    <c:choose>
+                                        <c:when test="${order.currentCode=='CNY'}">
+                                            &nbsp;<spring:message code="coin.ZH"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='USD'}">
+                                            &nbsp;<spring:message code="coin.USA"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='EUR'}">
+                                            &nbsp;<spring:message code="coin.EU"/>
+                                        </c:when>
+                                    </c:choose>
+                                </span>&nbsp;
+                                    <span><fmt:formatNumber value="${row.goodsDisPrice}" pattern="#,###"/></span></div>
+
+                            </c:if>
+
+
                         </div>
                     </div>
                 </c:forEach>

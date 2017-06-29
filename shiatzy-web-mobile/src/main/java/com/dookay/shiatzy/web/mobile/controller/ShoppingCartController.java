@@ -293,6 +293,7 @@ public class ShoppingCartController extends BaseController{
                         shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
                         shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
                         shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+                        shoppingCartItemDomain.setGoodsDisPrice(goodsDomain.getDisPrice());
                         shoppingCartItemDomain.setSkuId(skuDomain.getId());
                         shoppingCartItemDomain.setItemId(skuDomain.getItemId());
                         shoppingCartItemDomain.setShoppingCartType(form.getType());

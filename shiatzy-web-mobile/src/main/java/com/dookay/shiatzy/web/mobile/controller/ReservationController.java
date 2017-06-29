@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -24,6 +25,8 @@ import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IReservationService;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
@@ -35,6 +38,7 @@ import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -80,6 +84,9 @@ public class ReservationController extends BaseController{
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
+
 
     public static int RESERVATION_TYPE=3;
 
@@ -187,9 +194,13 @@ public class ReservationController extends BaseController{
         if(storeDomain==null){
             return errorResult("无此门店");
         }
+
+
+        //reservationService.submit();
+
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-        String en_US = (String)session.getAttribute("language");
+        String en_US = CookieUtil.getCookieValueByKey(request,"Language");
         ReservationDomain reservationDomain = new ReservationDomain();
         reservationDomain.setCreateTime(new Date());
         reservationDomain.setRank(1);
@@ -203,18 +214,39 @@ public class ReservationController extends BaseController{
         reservationDomain.setTime(storeDomain.getTime());
         reservationDomain.setNote("");
         reservationDomain.setUpdateTime(new Date());
+
+        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+        ShippingCountryDomain shippingCountryDomain = null;
+        String currentCode = "CNY";
+        Double rate = 1D;
+        if(StringUtils.isNotBlank(countryId)){
+            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+            rate = shippingCountryDomain.getRate();
+            //根据国家选择结算币种
+            int currentCodeType = shippingCountryDomain.getRateType();
+            if(currentCodeType==1){
+                currentCode = "USD";
+            }else if(currentCodeType==2){
+                currentCode = "EUR";
+            }
+        }
+        reservationDomain.setRate(rate);
+        reservationDomain.setCurrentCode(currentCode);
         reservationService.create(reservationDomain);
 
         //判断传入商品ID是否在精品店中
-
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
+        if(!(cartList!=null&&cartList.size()>0)){
+            return errorResult("预约单过期");
+        }
         for (ShoppingCartItemDomain line:cartList){
             ReservationItemDomain reservationItemDomain = new ReservationItemDomain();
             reservationItemDomain.setRank(1);
             reservationItemDomain.setIsVisible(1);
             reservationItemDomain.setReservationId(reservationDomain.getId());
             reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
-            reservationItemDomain.setGoodsPrice(line.getGoodsPrice());
+            reservationItemDomain.setGoodsPrice(line.getGoodsPrice()/rate);
+            reservationItemDomain.setGoodsDisPrice(line.getGoodsDisPrice()/rate);
             reservationItemDomain.setSkuCode(line.getSkuId()+"");
             reservationItemDomain.setNum(line.getNum());
             reservationItemDomain.setItemId(line.getItemId());

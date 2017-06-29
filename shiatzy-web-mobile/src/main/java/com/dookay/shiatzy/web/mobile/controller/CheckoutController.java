@@ -247,6 +247,10 @@ public class CheckoutController  extends BaseController{
             line.setGoodsDomain(goodsDomain);
             Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
             line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            Double disPrice = line.getGoodsDisPrice();
+            if(disPrice!=null){
+                line.setGoodsDisPrice(new BigDecimal(disPrice/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            }
             System.out.println("goodsDomain:"+goodsDomain+"\n sizeList:"+sizeList);
         }
         //商品金额
@@ -388,6 +392,7 @@ public class CheckoutController  extends BaseController{
             orderItemDomain.setGoodsName("en_US".equals(en_US)?items.getGoodsEnName():items.getGoodsName());
             orderItemDomain.setGoodsCode(items.getGoodsCode());
             orderItemDomain.setGoodsPrice(items.getGoodsPrice());
+            orderItemDomain.setGoodsDisPrice(items.getGoodsDisPrice());
             orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
             orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(items.getSkuSpecifications()).getLong("size")));
             orderItemDomain.setStatus(0);
@@ -449,7 +454,9 @@ public class CheckoutController  extends BaseController{
 
         Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
         for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
-            goodsTotal  = goodsTotal+ shoppingCartItemDomain.getGoodsPrice() * shoppingCartItemDomain.getNum();
+            Double disPrice = shoppingCartItemDomain.getGoodsDisPrice();
+            Double price = disPrice==null?shoppingCartItemDomain.getGoodsPrice():disPrice;
+            goodsTotal  = goodsTotal+  price* shoppingCartItemDomain.getNum();
         }
         orderDomain.setGoodsTotal(goodsTotal);
         Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();

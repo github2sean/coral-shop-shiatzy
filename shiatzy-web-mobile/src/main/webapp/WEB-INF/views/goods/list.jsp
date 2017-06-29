@@ -34,8 +34,8 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
-                <p class="do-pro-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
+                <p class="do-pro-price <c:if test="${not empty goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                <c:if test="${not empty goods.disPrice}"><p class="do-pro-price xzc-dis-price"  data-value="${goods.disPrice}">&nbsp;</p></c:if>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
                     <li style="background: ${item.colorValue}"></li>

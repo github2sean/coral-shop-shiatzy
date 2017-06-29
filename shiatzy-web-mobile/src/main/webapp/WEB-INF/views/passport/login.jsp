@@ -6,6 +6,12 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
+<style>
+    .price{
+        display: inline;
+        margin-left: 1rem;
+    }
+</style>
 <div class="dx-login dx-shopping">
     <div class="dx-title clearfix" style="background-color: #555">
         <div class="member"><span><svg><use xlink:href="#account"></use></svg></span> <spring:message code="vip"/></div>
@@ -51,7 +57,11 @@
                     <img style="width:80px;height: 100px;" src="${ImageModel.toFirst(row.goodsItem.thumb).file}" alt="">
                 </div>
                 <div class="name" style="text-align: center">${row.goods.name}</div>
-                <div class="price do-pro-price" data-value="${row.goodsItem.price}"></div>
+                <div class="price do-pro-price ${not empty row.goods.disPrice?'xzc-price':''}" data-value="${row.goodsItem.price}"></div>
+                <c:if test="${not empty row.goods.disPrice}">
+                <div class="price do-pro-price xzc-dis-price" data-value="${row.goods.disPrice}"></div>
+                </c:if>
+                <br/>
                 <ul class="color clearfix">
                         <li style="background: ${row.goodsItem.colorValue}"></li>
                 </ul>

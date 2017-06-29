@@ -42,6 +42,9 @@ public class ReservationItemDomain implements Serializable {
 
 	/*商品价格*/
 	private Double goodsPrice;
+
+	/*商品优惠价*/
+	private Double goodsDisPrice;
 	
 	/*商品规格编号*/
 	private String skuCode;

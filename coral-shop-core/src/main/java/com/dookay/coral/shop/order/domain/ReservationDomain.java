@@ -64,6 +64,12 @@ public class ReservationDomain implements Serializable {
 	
 	/*更新时间*/
 	private Date updateTime;
+
+	/*币种*/
+	private String currentCode;
+
+	@Transient
+	private Double rate;
 	
 	@Transient
 	private List<ReservationItemDomain> reservationItemDomainList;
