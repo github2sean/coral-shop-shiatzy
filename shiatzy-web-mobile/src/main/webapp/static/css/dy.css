@@ -136,17 +136,10 @@
 
 .submit-btn {
     text-align: center;
+    margin-top: 2rem;
 }
 
-.submit-btn a {
-    display: inline-block;
-    background: #000;
-    width: 90%;
-    color: #fff;
-    text-align: center;
-    line-height: 4.8696rem;
-    margin-top: 2.087rem;
-}
+
 
 .verify-message {
     padding: 0 1.2367rem;
@@ -796,17 +789,6 @@
     color: #999999;
 }
 
-.again-btn a {
-    display: inherit;
-    background-color: #666666;
-    text-align: center;
-    color: #fff;
-    font-size: 18px;
-    margin-top: 2.6rem;
-    line-height: 2.7826rem;
-    margin-bottom: 1.9rem;
-}
-
 .unfinished {
     padding: 0 1.5459rem 0 1.5459rem;
 }
@@ -1106,7 +1088,7 @@
     margin-left: 6rem;
 }
 
-.return-list h3 {
+.return-list h4 {
     font-size: 1.3913rem;
 }
 
@@ -1133,6 +1115,7 @@
 
 .return-list ul {
     float: left;
+    width: 50%;
 }
 
 .return-list {

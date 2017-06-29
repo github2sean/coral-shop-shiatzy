@@ -73,5 +73,16 @@ public class ReservationDomain implements Serializable {
 
 	@Transient
 	private StoreDomain storeDomain;
+
+	public Double getTotal(){
+		Double total = 0D;
+		if(reservationItemDomainList== null)
+			return total;
+		for(ReservationItemDomain reservationItemDomain :reservationItemDomainList){
+			total =total+reservationItemDomain.getNum() * reservationItemDomain.getGoodsPrice();
+		}
+
+		return total;
+	}
 	
 }

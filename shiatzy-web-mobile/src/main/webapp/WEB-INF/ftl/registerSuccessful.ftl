@@ -43,7 +43,6 @@
         .email-con .email-txt .txt {
             font-size: 14px;
             line-height: 22px;
-            margin-bottom: 15px;
         }
         .email-con .email-txt .txt .link-web {
             text-decoration: underline;
@@ -57,21 +56,14 @@
 </head>
 <body>
     <div class="email-submit">
-        <p class="title"><img src="images/logoSC.png" alt=""></p>
+        <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
-            <h1 class="email-title">${}</h1>
+            <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">Dear ,</p>
+                <p class="name">Dear ${name} ,</p>
                 <br>
-                <p class="txt">We have just created a new password for you. For security reasons, we suggest to change this password with your next log-in of your choice. Should you have any questions, please contact us via: <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
-                <p class="txt">
-                    Should you have any other questions, please contact us via<br>
-                    <a href="#" class="link-web">customercare@shiatzychen.com</a>
-                </p>
-                <p class="txt" style="margin-bottom: 0">
-                    点击下面连接重新设置密码
-                </p>
-                <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 100%; margin: 0px auto 30px; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">设置新密码</a>
+                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.${contentSuffix}</p>
+                <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
             </div>
         </div>
         <p class="email-footer">

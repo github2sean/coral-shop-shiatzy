@@ -66,7 +66,7 @@
         <!-- 查看配送状态 -->
         <c:if test="${orderDomain.status==3 || orderDomain.status==4}">
         <div class="item">
-            <a id="queryExpress" class="btn-item" href="javascript:void(0);"><spring:message code="order.details.searchExpress"/><span style="float:right;" class="rotateicon">></span></a>
+            <a id="queryExpress" class="btn-item title" href="javascript:void(0);"><spring:message code="order.details.searchExpress"/><span style="float:right;" class="rotateicon arrow">></span></a>
             <ul class="logisticInfo" style="display: none;width: 100%;overflow: hidden;">
 
             </ul>
@@ -84,8 +84,8 @@
                     </div>
                     <div class="goods-info">
                         <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                        <p>${item.goodsCode}</p>
-                        <p>${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p class="code">产品编号：${item.goodsCode}</p>
+                        <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <p><spring:message code="shoppingCart.unitPrice"/>：
@@ -112,7 +112,7 @@
     <div class="item-group bill-detail">
         <h4 class="title j_dropdown"><spring:message code="order.details.accountDetail"/> <span class="arrow">></span></h4>
         <div class="item" style="display: none">
-        <ul>
+        <ul class="border">
             <li><spring:message code="order.details.preDiscount"/><span>
              &nbsp;<font class="coinSymbol">
                             <c:choose>
@@ -203,8 +203,10 @@
         <h4 class="title j_dropdown">配送信息 <span class="arrow">></span></h4>
         <%--<h4>&lt;%&ndash;<spring:message code="payment.failed.shippingAddress"/>&ndash;%&gt;配送信息</h4>--%>
         <div class="item"  style="display: none">
-            <p>${orderDomain.shipAddress}</p>
-            <p>${orderDomain.shipTitle}</p>
+            <ul>
+                <li>${orderDomain.shipCountry}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
+                <li>${orderDomain.shipFirstName}${orderDomain.shipLastName} ${orderDomain.shipTitle}</li>
+            </ul>
         </div>
     </div>
    <!--申请退货-->
@@ -227,12 +229,12 @@
     </div>
     </c:if>
     <div class="privacy">
-        <a href="#">
+        <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
     </div>
-            <div class="privacy">
+    <div class="privacy">
         <a href="#" class="privacyNotice">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="privacyPolicy"/></span>
@@ -254,6 +256,7 @@
             $(this).toggleClass("active");
             $(".rePayWay").slideToggle();
         });
+
         var payMethod = 1;
         var orderNo = '${orderDomain.orderNo}';
         var url = "/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
@@ -296,6 +299,7 @@
 
         var num = 1;
         $("#queryExpress").click(function () {
+            $(this).toggleClass("active");
             num++;
             $(this).css("color","#333");
             var id = '${orderDomain.id}';

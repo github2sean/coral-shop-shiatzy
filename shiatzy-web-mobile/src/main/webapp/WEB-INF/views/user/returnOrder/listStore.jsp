@@ -6,11 +6,20 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<style>
+    h3.title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        line-height: 2rem;
+        text-align: left;
+        margin-left: 2rem;
+    }
+</style>
 <div class="order">
     <p style="float: left"><spring:message code="return.list.store.title"/></p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);"><spring:message code="goBack"/></a>
-</div><h6><spring:message code="return.list.store.selectstore"/></h6>
+</div>
+<h3 class="title"><spring:message code="return.list.store.selectstore"/></h3>
 <div class="dx-pickUp">
         <div class="model-select-box">
             <div class="model-select-country" data-value="" id="countrySelect">
@@ -54,7 +63,7 @@
             <p id="storeTel"></p>
         </div>
         <div class="submit-btn saveBtn" data-value="">
-            <a href="#">< <spring:message code="store.list.enter"/></a>
+            <a href="#" class="btn-default">< <spring:message code="store.list.enter"/></a>
         </div>
 
 </div>

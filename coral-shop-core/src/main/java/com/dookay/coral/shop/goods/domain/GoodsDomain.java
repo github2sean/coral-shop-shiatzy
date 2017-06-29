@@ -75,6 +75,9 @@ public class GoodsDomain implements Serializable {
 	/*商品价格*/
 	private Double price;
 
+	/*商品优惠价格*/
+	private Double disPrice;
+
 	/*是否打折*/
 	private Integer isSale;
 

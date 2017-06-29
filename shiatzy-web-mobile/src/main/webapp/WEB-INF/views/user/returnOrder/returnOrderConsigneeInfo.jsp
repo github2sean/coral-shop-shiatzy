@@ -14,7 +14,7 @@
 <div class="verify-message">
     <div class="return-way clearfix">
         <h3><spring:message code="consignee.confirmBack"/></h3>
-        <p><a href="#"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message
+        <p><a href="#" class="returnOrchange"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message
                 code="returnOrderInfo.returnInfo"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
@@ -52,7 +52,7 @@
                     </div>
                 </c:forEach>
             </div>
-            <p style="padding-left: 3rem;padding-right: 1.5rem;font-size: 0.9rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
+            <p style="padding-left: 3rem;padding-right: 1.5rem;font-size:1.2rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
                     <c:choose>
                         <c:when test="${order.currentCode=='CNY'}">
                             &nbsp;<spring:message code="coin.ZH"/>
@@ -64,13 +64,13 @@
                             &nbsp;<spring:message code="coin.EU"/>
                         </c:when>
                     </c:choose>
-                </font>&nbsp;<fmt:formatNumber value="${empty row.shipFee?0:row.shipFee}" pattern="#,###"/></span></p>
+                </font>-&nbsp;<fmt:formatNumber value="${empty row.shipFee?0:row.shipFee}" pattern="#,###"/></span></p>
         </div>
     </div>
 
     <!--预计退回总额-->
-    <div class="verify-message-bottom" style=" border-top: 2px solid #cccccc;">
-        <h2 style="text-align: right;padding-right: 1.5rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
+    <div class="verify-message-bottom" >
+        <h2 style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem;font-size: 1.4rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
             <c:choose>
                 <c:when test="${order.currentCode=='CNY'}">
                     &nbsp;<spring:message code="coin.ZH"/>
@@ -87,7 +87,6 @@
 
 
     <div class="returnWay">
-
         <a href="/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
         <p><spring:message code="consignee.backWay"/>：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
@@ -115,7 +114,7 @@
         <a href="#" class="returnBtn btn-default" data-value="${order.id}"><spring:message code="orderinfo.next"/></a>
     </div>
     <div class="privacy">
-        <a href="#">
+        <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>

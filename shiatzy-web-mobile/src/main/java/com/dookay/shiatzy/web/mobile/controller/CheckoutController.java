@@ -1,11 +1,13 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.BeanValidators;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.validate.FieldMatch;
@@ -58,6 +60,7 @@ import com.dookay.coral.shop.temp.domain.TempStockDomain;
 import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempStockService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
+import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +75,8 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Luxor
@@ -130,6 +132,8 @@ public class CheckoutController  extends BaseController{
     private IEmailService emailService;
     @Autowired
     private IMessageTemplateService messageTemplateService;
+    @Autowired
+    private SimpleAliDMSendMail simpleAliDMSendMail;
 
 
     private static String CART_LIST = "cartList";
@@ -145,7 +149,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         //创建订单对象
         OrderDomain order = new OrderDomain();
-        String countryId = session.getAttribute(SHIPPING_COUNTRY_ID)+"";
+        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
         ShippingCountryDomain shippingCountryDomain = null;
         String currentCode = "CNY";
         Double fee = 0D;
@@ -356,6 +360,7 @@ public class CheckoutController  extends BaseController{
             orderService.updateSkuStock(order);
         }
         List<Long> itemIds = new ArrayList<Long>();
+        List<OrderItemDomain> orderItemDomainList = new ArrayList<OrderItemDomain>();
         //创建订单
         //商品金额
         calcOrderTotal(order, cartList);
@@ -384,10 +389,12 @@ public class CheckoutController  extends BaseController{
             orderItemDomain.setGoodsCode(items.getGoodsCode());
             orderItemDomain.setGoodsPrice(items.getGoodsPrice());
             orderItemDomain.setSkuSpecifications(items.getSkuSpecifications());
+            orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(items.getSkuSpecifications()).getLong("size")));
             orderItemDomain.setStatus(0);
             orderItemDomain.setReturnNum(0);
             System.out.println("order:"+ JsonUtils.toJSONString(order));
             orderItemService.create(orderItemDomain);
+            orderItemDomainList.add(orderItemDomain);
         }
 
         //清除session
@@ -406,7 +413,28 @@ public class CheckoutController  extends BaseController{
         query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
         query.setIsValid(1);
         MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
-        emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
+        //emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
+
+
+        //生成模版
+        Map<String,Object> freeMap = new HashMap<>();
+        freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
+        freeMap.put("title",messageTemplate.getTitle());
+        freeMap.put("name",customerDomain.getEmail());
+        freeMap.put("status",OrderStatusEnum.UNPAID.getValue());
+        freeMap.put("content",messageTemplate.getContent());
+        freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
+        orderService.withGoodItme(orderItemDomainList);
+        freeMap.put("order",order);
+        freeMap.put("orderItem",orderItemDomainList);
+        String html = FreemarkerUtil.printString("orderDelivered.ftl",freeMap);
+
+        HashMap<String,String> emailMap = new HashMap<>();
+        emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
+        emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
+        emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+        emailMap.put(simpleAliDMSendMail.CONTENT,html);
+        simpleAliDMSendMail.sendEmail(emailMap);
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){

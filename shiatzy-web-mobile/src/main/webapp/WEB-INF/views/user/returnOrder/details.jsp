@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="item-group">
-        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/>(${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) <span class="arrow">></span></h4>
+        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/> (状态：${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) </h4>
         <div class="item">
             <div class="goods-list return-goods">
                 <c:forEach var="item" items="${returnOrderItemList}">
@@ -65,7 +65,7 @@
                         <div class="goods-info">
                             <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
-                            <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                            <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>
                                 ：${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                             <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
@@ -86,7 +86,7 @@
                     </div>
                 </c:forEach>
             </div>
-            <p style="padding-left: 3rem;line-height: 2.5rem" class="order-state"> <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">
+            <div style="padding-left: 3rem;font-size: 1.2rem" class="order-state"> <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
@@ -98,7 +98,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; -<fmt:formatNumber value="${fee}" pattern="#,###"/></span></p>
+                        </font>&nbsp; -<fmt:formatNumber value="${fee}" pattern="#,###"/></span></div>
     </div>
     <div style="margin-bottom: 3rem;" class="verify-message-middle">
 

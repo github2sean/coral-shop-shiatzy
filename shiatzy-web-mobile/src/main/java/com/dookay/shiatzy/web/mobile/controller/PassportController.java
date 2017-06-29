@@ -37,6 +37,7 @@ import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
+import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import com.sun.activation.registries.MailcapParseException;
 
@@ -88,6 +89,7 @@ public class PassportController extends MobileBaseController{
     private SimpleAliDMSendMail simpleAliDMSendMail;
     @Autowired
     private IShippingCountryService shippingCountryService;
+
 
     public static final String CRAT_NUM = "cartNumber";
 
@@ -157,7 +159,7 @@ public class PassportController extends MobileBaseController{
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult login(@ModelAttribute LoginForm loginForm){
+    public JsonResult login(@ModelAttribute LoginForm loginForm) throws MessagingException {
         beanValidator(loginForm);
         String userName = loginForm.getUserName();
         String password = loginForm.getPassword();
@@ -234,21 +236,30 @@ public class PassportController extends MobileBaseController{
         }
 
         AccountDomain accountDomain = accountService.getAccount(userName);
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        //生成模版
+        Map<String,Object> map = new HashMap<>();
+        map.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
+        map.put("title","夏资陈");
+        map.put("name",userName);
+        map.put("contentPrefix","We are pleased you’ve opened an account at");
+        map.put("contentSuffix","From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
+        String html = FreemarkerUtil.printString("registerSuccessful.ftl",map);
         // 发邮件通知 TODO: 2017/6/15
         String secretKey = UUID.randomUUID().toString();//密钥
         accountDomain.setActiveCode(secretKey);
         accountService.update(accountDomain);
-        String path = request.getContextPath();
-        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
         HashMap<String,String> emailMap = new HashMap<>();
         emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
         emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
-        emailMap.put(simpleAliDMSendMail.TITLE,"夏资陈帐号激活");
-        String resetPassHref =  basePath+"passport/activeEmail?userName="+userName+"&activeCode="+secretKey;
-        String emailContent = "如果您未申请夏资陈帐号,请删除此邮件，点击下面的链接,激活帐号<br/><a href="+resetPassHref+" target='_BLANK'>点击我重新设置密码</a>" ;
-        emailMap.put(simpleAliDMSendMail.CONTENT,emailContent);
+        emailMap.put(simpleAliDMSendMail.TITLE,"夏资陈 注册成功");
+        //String resetPassHref =  basePath+"passport/activeEmail?userName="+userName+"&activeCode="+secretKey;
+        //String emailContent = "如果您未申请夏资陈帐号,请删除此邮件，点击下面的链接,激活帐号<br/><a href="+resetPassHref+" target='_BLANK'>点击我重新设置密码</a>" ;
+        emailMap.put(simpleAliDMSendMail.CONTENT,html);
         simpleAliDMSendMail.sendEmail(emailMap);
-       // UserContext.signIn(accountDomain);
+        UserContext.signIn(accountDomain);
         return successResult("注册成功");
     }
 
@@ -304,17 +315,26 @@ public class PassportController extends MobileBaseController{
             accountService.update(users);//保存到数据库
             String key = users.getUserName()+"$"+date+"$"+secretKey;
             String digitalSignature = DigestUtils.md5Hex(key);//数字签名
-            String emailTitle = "夏资陈密码找回";
+            String emailTitle = "夏资陈找回密码";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             String resetPassHref =  basePath+"u/account/toSetNewPassword?sid="+digitalSignature+"&userName="+users.getUserName();
+
+            //生成模版
+            Map<String,Object> freeMap = new HashMap<>();
+            freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
+            freeMap.put("title","夏资陈 找回密码");
+            freeMap.put("name",userName);
+            freeMap.put("setUrl",resetPassHref);
+            String html = FreemarkerUtil.printString("resetPassword.ftl",freeMap);
+
             String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
                     "<br/>tips:本邮件超过30分钟,链接将会失效"+key+"\tmd5:"+digitalSignature;
             HashMap<String,String> emailMap = new HashMap<>();
             emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,"seanzq0331@163.com");
+            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
             emailMap.put(simpleAliDMSendMail.TITLE,emailTitle);
-            emailMap.put(simpleAliDMSendMail.CONTENT,emailContent);
+            emailMap.put(simpleAliDMSendMail.CONTENT,html);
             simpleAliDMSendMail.sendEmail(emailMap);
 
             //三方jar包未选择

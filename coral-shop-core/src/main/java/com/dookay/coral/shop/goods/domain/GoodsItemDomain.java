@@ -95,5 +95,8 @@ public class GoodsItemDomain implements Serializable {
 	@Transient
 	private GoodsColorDomain goodsColor;
 
+	@Transient
+	private String picUrl;
+
 	
 }

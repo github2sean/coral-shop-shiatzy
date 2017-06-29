@@ -6,9 +6,12 @@
     <jsp:param name="nav" value="首页"/>
     <jsp:param name="pageTitle" value="首页"/>
 </jsp:include>
-<div class="dx-orderDetails clearfix">
+<style>
+    .reservation-details .status{font-size: 1.2rem;}
+</style>
+<div class="dx-orderDetails clearfix reservation-details">
     <div class="dx-title"><spring:message code="reservation.detail.title"/><a href="/reservation/list"><spring:message code="goBack"/></a></div>
-    <div class="content">
+    <div class="verify-message">
         <div class="dx-reservation"><spring:message code="reservation.detail"/></div>
         <div class="orderNumber"><spring:message code="reservation.detail.no"/>：${reservationDomain.reservationNo}</div>
         <div class="dx-details">
@@ -27,31 +30,45 @@
         </div>
 
 
-        <div class="dx-GoodsDetails">
-            <div class="title"><spring:message code="goods.detail.details"/></div>
-            <c:forEach var="row" items="${reservationDomain.reservationItemDomainList}">
-            <div class="goods clearfix">
-                <div class="goods-left">
-                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
-                   <div class="status"><spring:message code="return.detail.status"/> : <c:choose>
-                       <c:when test="${row.status==0}"><span><spring:message code="reservation.list.submit"/></span></c:when>
-                       <c:when test="${row.status==1}"><span><spring:message code="reservation.detail.success"/></span></c:when>
-                   </c:choose></div>
-                </div>
-                <div class="goods-right">
-                    <div class="name">${row.goodsName}</div>
-                    <div class="number">${row.goodsItemDomain.goodsNo}</div>
-                    <div class="color">${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
-                    <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/>:<span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsItemDomain.price}"><spring:message code="shoppingCart.unitPrice"/>&nbsp; &yen; <span><fmt:formatNumber value="${row.goodsItemDomain.price}" pattern="#,###"/></span></div>
-                </div>
-            </div>
-            </c:forEach>
+        <!--商品详情-->
+        <div class="item-group" style="margin-top: 2rem">
+            <h4 class="title j_dropdown"><spring:message code="goods.detail.details"/> <span class="arrow">></span></h4>
+            <div class=" goods-list clearfix item">
 
+                <c:forEach var="item" items="${reservationDomain.reservationItemDomainList}">
+                    <div class="goods-item clearfix ">
+                        <div class="thumb">
+                            <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
+                        </div>
+                        <div class="goods-info">
+                            <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <p class="code">产品编号：${item.goodsItemDomain.goodsNo}</p>
+                            <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                            <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                            <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <p><spring:message code="shoppingCart.unitPrice"/>：
+                                &nbsp;
+                                &yen; <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
+                        </div>
+                    </div>
+                    <p class="status"><spring:message code="return.detail.status"/> : <c:choose>
+                        <c:when test="${item.status==0}"><span><spring:message code="reservation.list.submit"/></span></c:when>
+                        <c:when test="${item.status==1}"><span><spring:message code="reservation.detail.success"/></span></c:when>
+                    </c:choose></p>
+                </c:forEach>
+
+            </div>
         </div>
-        <div class="dx-total" style="text-align: right;font-size: 1.2rem;margin-top: 15px;"><spring:message code="payment.failed.orderTotal"/> : &yen; <span id="js_total"></span></div>
-        <div class="dx-explain"><spring:message code="reservation.detail.endinfo"/></div>
-        <div class="dx-instructions"><a href="#do-online-service"><spring:message code="customerServiceLine"/></a></div>
+
+        <div class="dx-total" style="text-align: center;font-size: 1.4rem;padding-top: 0.5rem;">预计订单总额: &yen; <span id="js_total">${reservationDomain.getTotal()}</span></div>
+        <div class="dx-explain" style="color: #999;"><spring:message code="reservation.detail.endinfo"/></div>
+
+        <div class="privacy">
+            <a href="#">
+                <span style="float:left;margin-left: -10px">&gt; </span>
+                <span style="float: left;" class="privacyNotice"><spring:message code="customerServiceLine"/></span>
+            </a>
+        </div>
         <!--<div class="dx-privacy"><a href="#">隐私权政策</a></div>-->
     </div>
 
@@ -74,7 +91,10 @@
     };
     $(function () {
         clsTotal();
-
+        $(".j_dropdown").on("click", function () {
+            $(this).toggleClass("active");
+            $(this).next().slideToggle();
+        });
 
         $(".alertMap").click(function () {
 

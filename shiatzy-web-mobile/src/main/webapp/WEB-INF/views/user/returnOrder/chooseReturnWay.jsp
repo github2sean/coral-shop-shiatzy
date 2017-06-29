@@ -13,24 +13,13 @@
 <div class="verify-message">
     <div class="return-way clearfix">
         <h3><spring:message code="consignee.selectBackWay"/></h3>
-        <p><a href="#"><img src="images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
+        <p><a href="#" class="returnOrchange"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
     <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
     <div class="order-finish">
         <div class="delivery">
-            <%--<div class="delivery-message" style="position: relative;margin-top: 2px">
-                <span>快递取件</span>
-                <div style="position: absolute;top: 1.5rem;right: 0">
-                </div>
-                <p>联系人：</p>
-                <p style="display: initial;">地址：</p>
-                <a href="/returnOrder/listAddress">编辑 ></a>
-            </div>
-            <div class="drugstore">
-                <p>退回门店</p>
-                <a href="/returnOrder/listStoreCountry">编辑 ></a>
-            </div>--%>
+
                 <c:if test="${backWay==2}">
                     <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
                         <span><spring:message code="consignee.shippingbackWay"/></span>
@@ -69,14 +58,13 @@
                         <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
-
         </div>
     </div>
     <div class="return-btn">
-        <a href="#" class="sureBtn">< <spring:message code="orderinfo.enter"/></a>
+        <a href="#" class="sureBtn btn-default">< <spring:message code="orderinfo.enter"/></a>
     </div>
     <div class="privacy">
-        <a href="#">
+        <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>
@@ -88,8 +76,6 @@
         </a>
     </div>
 </div>
-
-
 
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

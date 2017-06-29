@@ -9,11 +9,17 @@
 </jsp:include>
 <style>
     h3.title {
-        height: 4.2rem;
-        margin-left: 1rem;
-        font-size: 1.4rem;
-        line-height: 4.2rem;
-        text-align: left;
+
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 2rem;
+        text-align: center;
+    }
+    .order-finish .order-no{
+        font-size: 1rem;
+        text-align: center;
+        color: #999999;
+        margin-bottom: 2rem;
     }
     .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
 </style>
@@ -22,117 +28,138 @@
     <p style="float: left"><spring:message code="payment.failed.order"/></p>
     <a style="float: right;" href="/u/account/index">< <spring:message code="myAccount"/></a>
 </div>
-<div class="unfinished">
-    <h3><spring:message code="payment.success.tips"/></h3>
-    <p><spring:message code="payment.failed.orderNo"/>&nbsp;&nbsp;${order.orderNo}</p>
-    <h5 style="border-bottom: solid 1px #cccccc"><spring:message code="payment.failed.orderDetail"/></h5>
-    <c:forEach var="row" items="${order.orderItemDomainList}">
-        <c:set var="item" value="${row.goodsItemDomain}"></c:set>
-        <div class="verify-message-middle">
-
-            <div class="verify-main">
-                <img src="${ImageModel.toFirst(item.thumb).file}" alt="${ImageModel.toFirst(item.thumb).file}">
-                <div class="img-message">
-                    <h3>${web:selectLanguage()=='en_US'?item.goods.enName:item.goods.name}</h3>
-                    <h6><spring:message code="shoppingCart.no"/> ${row.goodsCode}</h6>
-                    <div style="display: inline-block;" class="size">
-                        <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.enName:item.name}</p>
-                        <p><spring:message code="shoppingCart.size"/>&nbsp;${JSONObject.fromObject(row.skuSpecifications).get("size")}</p>
+<div class=" order-finish">
+    <h3 class="title"><spring:message code="payment.success.tips"/></h3>
+    <p class="order-no"><spring:message code="payment.failed.orderNo"/>：${order.orderNo}</p>
+    <%--商品详情--%>
+    <div class="item-group">
+        <h4 class="title j_dropdown"><spring:message code="goods.detail.details"/> </h4>
+        <div class=" goods-list clearfix">
+            <c:set var="orderDomain" value="${order}"></c:set>
+            <c:forEach var="item" items="${order.orderItemDomainList}">
+                <div class="goods-item clearfix ">
+                    <div class="thumb">
+                        <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                     </div>
-                    <p><spring:message code="shoppingCart.number"/>：${row.num}</p>
-                    <p><spring:message code="shoppingCart.unitPrice"/>　&nbsp;<font class="coinSymbol">
-                        <c:choose>
-                            <c:when test="${order.currentCode=='CNY'}">
-                                &nbsp;<spring:message code="coin.ZH"/>
-                            </c:when>
-                            <c:when test="${order.currentCode=='USD'}">
-                                &nbsp;<spring:message code="coin.USA"/>
-                            </c:when>
-                            <c:when test="${order.currentCode=='EUR'}">
-                                &nbsp;<spring:message code="coin.EU"/>
-                            </c:when>
-                        </c:choose>
-                    </font>&nbsp;  <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></p>
+                    <div class="goods-info">
+                        <div class="name">${item.goodsItemDomain.goods.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <p class="code">产品编号：${item.goodsCode}</p>
+                        <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
+                        <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
+                        <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p><spring:message code="shoppingCart.unitPrice"/>：
+                            &nbsp;<font class="coinSymbol">
+                                <c:choose>
+                                    <c:when test="${orderDomain.currentCode=='CNY'}">
+                                        &nbsp;<spring:message code="coin.ZH"/>
+                                    </c:when>
+                                    <c:when test="${orderDomain.currentCode=='USD'}">
+                                        &nbsp;<spring:message code="coin.USA"/>
+                                    </c:when>
+                                    <c:when test="${orderDomain.currentCode=='EUR'}">
+                                        &nbsp;<spring:message code="coin.EU"/>
+                                    </c:when>
+                                </c:choose>
+                            </font>&nbsp;
+                            <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </c:forEach>
-
-    <div class="order-details">
-        <h4><spring:message code="payment.failed.orderTotal"/><span>v</span></h4>
-        <ul>
-            <c:forEach var="row" items="${order.orderItemDomainList}">
-                <li>${web:selectLanguage()=='en_US'?row.goodsItemDomain.goods.enName:row.goodsItemDomain.goods.name}<span>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp;  <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></li>
             </c:forEach>
-
-            <li><spring:message code="payment.failed.disAmt"/><span>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp; - <fmt:formatNumber value="${empty order.couponDiscount?0:order.couponDiscount}" pattern="#,###"/></span></li>
-            <li><spring:message code="payment.failed.memAmt"/><span>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp; -<fmt:formatNumber value="${empty order.memberDiscount?0:order.memberDiscount}" pattern="#,###"/></span></li>
-            <%--<li>关税和税收<span>¥ 100</span></li>--%>
-            <li><spring:message code="payment.failed.fee"/><span>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp; <fmt:formatNumber value="${empty order.shipFee?0:order.shipFee}" pattern="#,###"/></span></li>
-        </ul>
-        <p><spring:message code="payment.failed.total"/><span>&nbsp;<font class="coinSymbol">
-                            <c:choose>
-                                <c:when test="${order.currentCode=='CNY'}">
-                                    &nbsp;<spring:message code="coin.ZH"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='USD'}">
-                                    &nbsp;<spring:message code="coin.USA"/>
-                                </c:when>
-                                <c:when test="${order.currentCode=='EUR'}">
-                                    &nbsp;<spring:message code="coin.EU"/>
-                                </c:when>
-                            </c:choose>
-                        </font>&nbsp;<fmt:formatNumber value="${order.orderTotal}" pattern="#,###"/> </span></p>
+        </div>
     </div>
-    <div class="order-details">
+    <!--账单详情-->
+    <div class="item-group bill-detail">
+        <h4 class="title j_dropdown"><spring:message code="order.details.accountDetail"/> </h4>
+        <div class="item" >
+            <ul class="border">
+                <li><spring:message code="order.details.preDiscount"/><span>
+             &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+             <fmt:formatNumber value="${orderDomain.goodsTotal}" pattern="#,###" /></span></li>
+                <%--优惠券--%>
+                <c:if test="${orderDomain.couponDiscount!=null}">
+                    <li><spring:message code="order.details.couponDiscount"/><span data-value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}">
+                &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+                -<fmt:formatNumber value="${orderDomain.couponDiscount==null?0:orderDomain.couponDiscount}" pattern="#,###" /></span></li>
+                </c:if>
+                <%--会员优惠--%>
+                <c:if test="${orderDomain.memberDiscount!=null}">
+                    <li>Art Club&nbsp;<spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
+                &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+                -<fmt:formatNumber value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}" pattern="#,###" /></span></li>
+                </c:if>
+                <%--配送费用--%>
+                <li><spring:message code="order.details.delivery"/><span>
+             &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+             <fmt:formatNumber value="${orderDomain.shipFee}" pattern="#,###" /></span></li>
+            </ul>
+            <p class="total-price"><spring:message code="payment.failed.total"/><span>
+         &nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${orderDomain.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${orderDomain.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;
+         <fmt:formatNumber value="${orderDomain.orderTotal}" pattern="#,###" /></span></p>
+        </div>
+    </div>
+
+
+    <div class="order-details item-group">
         <h4><spring:message code="payment.failed.paymentWay"/></h4>
         <c:if test="${order.paymentMethod==1}">
             <p><spring:message code="payment.failed.zfb"/></p>
@@ -145,25 +172,27 @@
         </c:if>
 
     </div>
-    <div class="delivery-detail">
-        <h4><spring:message code="payment.failed.shipping"/></h4>
-        <c:if test="${order.shippingMethod==1 && not empty order.shippingMethod}">
-            <p><spring:message code="payment.failed.shippingAddress"/>：${order.shipAddress}</p>
-        </c:if>
-        <c:if test="${order.shippingMethod==2 && not empty order.shippingMethod}">
-            <p><spring:message code="payment.failed.shippingStore"/>：${order.shipShopId}</p>
-        </c:if>
 
-        <c:if test="${order.billRequired==0 || empty order.billRequired}">
-            <p><spring:message code="payment.failed.bill"/>：<spring:message code="payment.failed.noNeed"/></p>
-        </c:if>
-        <c:if test="${order.billRequired==1}">
-            <p><spring:message code="payment.failed.bill"/>：${order.billTitle}</p>
-        </c:if>
-
+    <!--配送信息-->
+    <div class="item-group">
+        <h4 class="title j_dropdown">配送信息 </h4>
+        <div class="item">
+            <ul>
+                <li>收货地址：${orderDomain.shipCountry}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
+                <li>收货人：${orderDomain.shipFirstName}${orderDomain.shipLastName} ${orderDomain.shipTitle}</li>
+                <c:if test="${order.billRequired==0 || empty order.billRequired}">
+                    <li><spring:message code="payment.failed.bill"/>：<spring:message code="payment.failed.noNeed"/></li>
+                </c:if>
+                <c:if test="${order.billRequired==1}">
+                    <li><spring:message code="payment.failed.bill"/>：${order.billTitle}</li>
+                </c:if>
+            </ul>
+        </div>
     </div>
+
+
     <div class="again-btn">
-        <a href="/order/details?orderId=${order.id}"><spring:message code="payment.failed.back"/></a>
+        <a href="/order/details?orderId=${order.id}" class="btn-default"><spring:message code="payment.failed.back"/></a>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
