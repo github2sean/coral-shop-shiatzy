@@ -1791,6 +1791,9 @@ h3 {
     background-color: #2a2a2a;
 }
 
+.do-list-lang>li>a {
+    background-color: #2a2a2a;
+}
 .do-list-btm>li>a {
     display: block;
     padding: 1rem 1.7rem .6rem;
@@ -2527,7 +2530,7 @@ svg {
 }
 
 .do-list-icon>li {
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.4rem;
 }
 
 .icon-bag svg {
@@ -2770,3 +2773,18 @@ body .layui-layer-setwin{
     font-size: 1.2rem;
 }
 
+.do-sub-list-btm a.language {
+    color: #999;
+    font-size: 1.1rem;
+    display: block;
+    padding: .6rem 0;
+}
+/**单价**/
+.xzc-price {
+    color: #ccc!important;
+    text-decoration: line-through!important;
+}
+/**优惠价**/
+.xzc-dis-price {
+    color: #333;
+}
