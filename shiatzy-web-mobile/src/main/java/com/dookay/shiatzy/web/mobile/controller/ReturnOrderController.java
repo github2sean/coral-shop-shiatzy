@@ -1,7 +1,9 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -21,6 +23,8 @@ import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.*;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
 import com.dookay.coral.shop.store.query.StoreCountryQuery;
@@ -43,6 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -82,6 +87,8 @@ public class ReturnOrderController extends BaseController {
     private ISmsService smsService;
     @Autowired
     private IGoodsService goodsService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
 
     private static String CART_LIST = "cartList";
     private static String RETURN_ORDER = "return_order";
@@ -150,6 +157,27 @@ public class ReturnOrderController extends BaseController {
         orderService.withGoodItme(cartList);
         OrderDomain orderDomain = orderService.get(orderId);
         orderDomain.setOrderItemDomainList(cartList);
+
+        HttpServletRequest request = HttpContext.current().getRequest();
+        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+        ShippingCountryDomain shippingCountryDomain = null;
+        String currentCode = "CNY";
+        Double fee = 0D;
+        if(StringUtils.isNotBlank(countryId)){
+            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+            Double rate = shippingCountryDomain.getRate();
+            //根据国家选择结算币种
+            int currentCodeType = shippingCountryDomain.getRateType();
+            if(currentCodeType==1){
+                currentCode = "USD";
+                fee = 350D/rate;
+            }else if(currentCodeType==2){
+                currentCode = "EUR";
+                fee = 350D/rate;
+            }else {
+                fee = 25D/rate;
+            }
+        }
         //创建订单对象
         ReturnRequestDomain returnRequestDomain = new ReturnRequestDomain();
         returnRequestDomain.setCustomerId(customerDomain.getId());
@@ -158,8 +186,11 @@ public class ReturnOrderController extends BaseController {
         returnRequestDomain.setOrderNo(orderDomain.getOrderNo());
         returnRequestDomain.setShipName(customerDomain.getFirstName()+customerDomain.getLastName());
         returnRequestDomain.setOrderTime(orderDomain.getOrderTime());
+        returnRequestDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        returnRequestDomain.setCurrentCode(currentCode);
+        returnRequestDomain.setStatus(1);
         //保存订单对象到session
-        HttpServletRequest request = HttpContext.current().getRequest();
+
         HttpSession session = request.getSession();
         session.setAttribute(CART_LIST,cartList);
         session.setAttribute(ORDER,orderDomain);
@@ -190,6 +221,10 @@ public class ReturnOrderController extends BaseController {
     public ModelAndView returnOrderConsigneeInfo(String page){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
+        ReturnRequestDomain returnRequestDomain = (ReturnRequestDomain)session.getAttribute(RETURN_ORDER);
+        if(returnRequestDomain==null){
+            throw new ServiceException("退货单过期");
+        }
         //判断是否选择有退货商品
         List<OrderItemDomain> list = (List<OrderItemDomain>) session.getAttribute(CART_LIST);
         if(!(list!=null && list.size()>0)){
@@ -200,7 +235,7 @@ public class ReturnOrderController extends BaseController {
             preBackMoney += line.getGoodsPrice()*line.getNum();
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
-        mv.addObject("preBackMoney",preBackMoney);
+        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee());
         session.setAttribute("referrerPage",page);
         return mv;
     }
@@ -324,6 +359,7 @@ public class ReturnOrderController extends BaseController {
             returnRequest.setShipName(null);
             returnRequest.setShipAddress(null);
             returnRequest.setCustomerAddressDomain(null);
+            returnRequest.setShipFee(0D);
         }
         session.setAttribute(BACK_WAY,backWay);
         session.setAttribute(RETURN_ORDER,returnRequest);
@@ -379,6 +415,7 @@ public class ReturnOrderController extends BaseController {
             returnRequestItemDomain.setGoodsName(line.getGoodsName());
             returnRequestItemDomain.setGoodsCode(line.getGoodsCode());
             returnRequestItemDomain.setGoodsPrice(line.getGoodsPrice());
+            returnRequestItemDomain.setGoodsDisPrice(line.getGoodsDisPrice());
             returnRequestItemDomain.setSkuSpecifications(line.getSkuSpecifications());
             returnRequestItemDomain.setSkuId(line.getSkuId());
             returnRequestItemDomain.setItemId(line.getItemId());

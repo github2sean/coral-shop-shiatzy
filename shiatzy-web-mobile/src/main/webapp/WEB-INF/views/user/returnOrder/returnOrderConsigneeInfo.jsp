@@ -35,7 +35,7 @@
                             <p><spring:message code="shoppingCart.size"/>
                                 ：${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                             <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
-                            <p class=""><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
+                            <p class="${not empty item.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
                                 <c:choose>
                                     <c:when test="${order.currentCode=='CNY'}">
                                         &nbsp;<spring:message code="coin.ZH"/>
@@ -48,6 +48,21 @@
                                     </c:when>
                                 </c:choose>
                             </font>&nbsp;<fmt:formatNumber value="${item.goodsPrice}" pattern="#,###"/></p>
+                            <c:if test="${not empty item.goodsDisPrice}">
+                                <p class="xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>：<font class="coinSymbol">
+                                    <c:choose>
+                                        <c:when test="${order.currentCode=='CNY'}">
+                                            &nbsp;<spring:message code="coin.ZH"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='USD'}">
+                                            &nbsp;<spring:message code="coin.USA"/>
+                                        </c:when>
+                                        <c:when test="${order.currentCode=='EUR'}">
+                                            &nbsp;<spring:message code="coin.EU"/>
+                                        </c:when>
+                                    </c:choose>
+                                </font>&nbsp;<fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###"/></p>
+                            </c:if>
                         </div>
                     </div>
                 </c:forEach>
@@ -64,7 +79,7 @@
                             &nbsp;<spring:message code="coin.EU"/>
                         </c:when>
                     </c:choose>
-                </font>-&nbsp;<fmt:formatNumber value="${empty row.shipFee?0:row.shipFee}" pattern="#,###"/></span></p>
+                </font>-&nbsp;<fmt:formatNumber value="${empty return_order.shipFee?0:return_order.shipFee}" pattern="#,###"/></span></p>
         </div>
     </div>
 

@@ -65,6 +65,9 @@ public class ReturnRequestItemDomain implements Serializable {
 	/*商品价格*/
 	private Double goodsPrice;
 
+	/*商品优惠价*/
+	private Double goodsDisPrice;
+
 	/*sku规格json*/
 	private String skuSpecifications;
 
