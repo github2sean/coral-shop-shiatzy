@@ -107,11 +107,20 @@
         <%--关闭提示--%>
         $(".j_cls_notice").on("click touchstart",function(){
             $(this).parent().fadeOut();
-        })
+        });
         $("#trigger_select_country").click(function (e) {
             e.preventDefault();
             $("#select_country").trigger("change");
         })
+        $("#trigger_select_country").find("option").click(function(){
+            var id =  $(this).attr("value");
+            alert(id);
+            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    console.log("success");
+                }
+            });
+        });
     });
 </script>
 <script>
@@ -259,6 +268,9 @@
             $("#contentForm").submit();
         });
         console.log("sessionScopeLanguage:"+'${sessionScope.language}'+"  cookieLanguage:"+'${web:selectLanguage()}');
+
+
+
         $(".language").click(function () {
             var language = $(this).attr("data-value");
             $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {

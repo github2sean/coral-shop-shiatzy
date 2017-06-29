@@ -164,6 +164,8 @@ public class CheckoutController  extends BaseController{
                 currentCode = "EUR";
             }
             fee = shippingCountryDomain.getShippingCost()/rate;
+        }else {
+            countryId = "1";
         }
         order.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
         //根据国家获取值
@@ -451,7 +453,6 @@ public class CheckoutController  extends BaseController{
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
         //商品金额
         Double goodsTotal = 0D;
-
         Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
         for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
             Double disPrice = shoppingCartItemDomain.getGoodsDisPrice();
