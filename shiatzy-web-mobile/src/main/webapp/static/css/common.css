@@ -2735,12 +2735,20 @@ textarea {
     text-indent: 0.8502rem;
 }
 .goods-list .goods-item .goods-info{
-
     text-align: left;
     font-size: 1rem;
     float: right;
-
+    width: 21rem ;
 }
+@media screen and (max-height: 320px) {
+    .goods-list .goods-item .goods-info{
+        text-align: left;
+        font-size: 1rem;
+        float: right;
+        width: 16rem ;
+    }
+}
+
 .goods-list .goods-item .name{font-size: 1.2rem;}
 .goods-list .goods-item .code{color: #999;}
 .goods-list .goods-item .color{float:left;margin-right: 3rem;}
