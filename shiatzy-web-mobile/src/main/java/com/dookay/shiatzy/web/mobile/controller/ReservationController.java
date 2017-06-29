@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -24,6 +25,8 @@ import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IReservationService;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
@@ -35,6 +38,7 @@ import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -80,6 +84,9 @@ public class ReservationController extends BaseController{
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
+
 
     public static int RESERVATION_TYPE=3;
 
@@ -180,6 +187,8 @@ public class ReservationController extends BaseController{
     public  JsonResult submitPreOrder(Long storeId){
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
+        HttpSession session = HttpContext.current().getRequest().getSession();
+
         if(storeId==null){
             return errorResult("请选择门店");
         }
@@ -187,52 +196,22 @@ public class ReservationController extends BaseController{
         if(storeDomain==null){
             return errorResult("无此门店");
         }
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-        String en_US = (String)session.getAttribute("language");
-        ReservationDomain reservationDomain = new ReservationDomain();
-        reservationDomain.setCreateTime(new Date());
-        reservationDomain.setRank(1);
-        reservationDomain.setIsVisible(0);
-        reservationDomain.setStatus(0);
-        reservationDomain.setCustomerId(customerDomain.getId());
-        reservationDomain.setReservationNo(RandomUtils.buildNo());
-        reservationDomain.setStoreTitle(storeDomain.getId()+"");
-        reservationDomain.setTel(storeDomain.getTel());
-        reservationDomain.setAddress("en_US".equals(en_US)?storeDomain.getEnAddress():storeDomain.getAddress());
-        reservationDomain.setTime(storeDomain.getTime());
-        reservationDomain.setNote("");
-        reservationDomain.setUpdateTime(new Date());
-        reservationService.create(reservationDomain);
-
         //判断传入商品ID是否在精品店中
-
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
-        for (ShoppingCartItemDomain line:cartList){
-            ReservationItemDomain reservationItemDomain = new ReservationItemDomain();
-            reservationItemDomain.setRank(1);
-            reservationItemDomain.setIsVisible(1);
-            reservationItemDomain.setReservationId(reservationDomain.getId());
-            reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
-            reservationItemDomain.setGoodsPrice(line.getGoodsPrice());
-            reservationItemDomain.setSkuCode(line.getSkuId()+"");
-            reservationItemDomain.setNum(line.getNum());
-            reservationItemDomain.setItemId(line.getItemId());
-            reservationItemDomain.setSpecifications(line.getSkuSpecifications());
-            reservationItemDomain.setCreateTime(new Date());
-            reservationItemDomain.setUpdateTime(new Date());
-            reservationItemDomain.setStatus(0);
-            reservationItemService.create(reservationItemDomain);
-            //从精品店中移除
-            shoppingCartService.removeFromCart(line.getId());
+        if(!(cartList!=null&&cartList.size()>0)){
+            return errorResult("预约单过期");
         }
-
+        Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
         //发送短信
-        smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+        String phone = customerDomain.getPhone();
+        if(StringUtils.isNotBlank(phone)){
+            smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+        }
+        //发送邮件
 
-        return successResult("提交成功",reservationDomain.getId());
+        return successResult("提交成功",reservationDomainId);
     }
 
 

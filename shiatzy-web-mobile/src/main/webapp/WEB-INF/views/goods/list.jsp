@@ -34,7 +34,10 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                <p class="do-pro-price <c:if test="${not empty goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                <c:if test="${not empty goods.disPrice}">
+                    <p class="do-pro-price xzc-dis-price"  data-value="${goods.disPrice}">&nbsp;</p>
+                </c:if>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
                     <li style="background: ${item.colorValue}"></li>
@@ -258,6 +261,15 @@
                         if(isEn){
                             goodsName = moreList[i].enName;
                         }
+
+                        var disPri = firstItem.disPrice;
+                        var priceStr = disPri!=''
+                                        ?" <p class='do-pro-price xzc-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
+                                +"&nbsp;"+" </p><p class='do-pro-price xzc-dis-price' name='goodsPrice' data-value='"+firstItem.disPrice+"'>"
+                                +"&nbsp;"+" </p> "
+                                        :" <p class='do-pro-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
+                                +"&nbsp;"+" </p> ";
+
                         var now = 't'+'h'+'i'+'s';
                         var str = " <li>" +
                                 " <a href='/goods/details/"
@@ -267,15 +279,12 @@
                                 " alt='' style='height: 120px;'/></div>  " +
                                 " <p class='do-pro-t ellipsis-25' name='goodsName'>"
                                 +goodsName+
-                                " </p> " +
-                                " <p class='do-pro-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
-                                +"&nbsp;"+
-                                " </p> " +
+                                " </p> " + priceStr +
                                 colorStr +
                                 "</a> " +
                                 "<i class='icon-collect j_collect hide' onclick='addToWish("+now+","+2+")'  data-value="
                                 +firstItem.id+
-                                " data-ids="+firstSizeid+"> <svg class='do-heart'><use xlink:href='#heart'></use></svg> </i> </li>";
+                                " data-ids="+firstSizeid+"> <svg class='do-heart hide'><use xlink:href='#heart'></use></svg> </i> </li>";
                         //console.log(str);
                         //滚动条滚动一段距离
                         $(".j_scroll_list").append(str);

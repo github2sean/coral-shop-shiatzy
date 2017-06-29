@@ -2240,6 +2240,8 @@ h3 {
 .do-pro-list>li>a .do-pro-price {
     font-size: 0.85rem;
     letter-spacing: 0.1rem;
+    display: inline;
+    margin-left: 1rem;
 }
 
 .do-list-color>li {

@@ -60,6 +60,13 @@ public class ReturnRequestDomain implements Serializable {
 	/*退货状态*/
 	private Integer status;
 
+	/*退货运费*/
+	private Double shipFee;
+
+	/*退货币种*/
+	private String currentCode;
+
+
 	@Transient
 	private StoreDomain storeDomain;
 

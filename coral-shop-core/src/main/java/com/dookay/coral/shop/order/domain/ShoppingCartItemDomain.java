@@ -53,6 +53,9 @@ public class ShoppingCartItemDomain implements Serializable {
 	
 	/*商品价格*/
 	private Double goodsPrice;
+
+	/*商品价格*/
+	private Double goodsDisPrice;
 	
 	/*sku规格json*/
 	private String skuSpecifications;

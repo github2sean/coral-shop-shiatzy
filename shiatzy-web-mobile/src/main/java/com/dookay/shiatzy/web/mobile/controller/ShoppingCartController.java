@@ -293,6 +293,7 @@ public class ShoppingCartController extends BaseController{
                         shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
                         shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
                         shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+                        shoppingCartItemDomain.setGoodsDisPrice(goodsDomain.getDisPrice());
                         shoppingCartItemDomain.setSkuId(skuDomain.getId());
                         shoppingCartItemDomain.setItemId(skuDomain.getItemId());
                         shoppingCartItemDomain.setShoppingCartType(form.getType());
@@ -416,6 +417,11 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(shoppingCartItemDomain.getItemId(),JSONObject.fromObject(shoppingCartItemDomain.getSkuSpecifications()).getLong("size"));
+        ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
+        if(queryShoppingCart!=null){
+            return  errorResult("心愿单中已经存在");
+        }
         shoppingCartItemDomain.setShoppingCartType(2);
         shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
@@ -430,6 +436,11 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(shoppingCartItemDomain.getItemId(),JSONObject.fromObject(shoppingCartItemDomain.getSkuSpecifications()).getLong("size"));
+        ShoppingCartItemDomain queryShoppingCart = shoppingCartService.isExistInWish(customerDomain, skuDomain);
+        if(queryShoppingCart!=null){
+            return  errorResult("心愿单中已经存在");
+        }
         shoppingCartItemDomain.setShoppingCartType(2);
         shoppingCartService.update(shoppingCartItemDomain);
         updateBoutiqueListSession(shoppingCartItemId);

@@ -60,9 +60,15 @@
                     <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
                     <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
                 </div>
-                <p class="price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                <p style="display: inline;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
                 </p>
+                <c:if test="${not empty row.goodsDisPrice}">
+                    <p class="price xzc-dis-price" style="display: inline;margin-left: 1rem"><spring:message code="shoppingCart.disPrice"/>&nbsp;
+                        <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span>
+                    </p>
+                </c:if>
+
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"
                            <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >
@@ -212,6 +218,8 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
+                }else{
+                    layer.msg(data.message);
                 }
             });
         });

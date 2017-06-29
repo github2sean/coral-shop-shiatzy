@@ -28,6 +28,10 @@
     .categoryList .body .category-item a{display:block;}
     .categoryList .body .category-item:hover a,.categoryList .body .category-item.active a{background-color: #cccccc;}
     .j_collapse{}
+    .price{
+        display: inline;
+        margin-left: 1rem;
+    }
 </style>
 <div class="dx-shopping clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
     <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
@@ -56,8 +60,10 @@
                     <div class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                        <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
                     </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></div>
-                <div class="price hide xzc-dis-price"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsPrice}">0</span></div>
-                    <div class="preferential-price xzc-price" style="color:#ccc"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                    <div class="preferential-price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                    <c:if test="${not empty row.goodsDisPrice}">
+                    <div class="price  xzc-dis-price"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span></div>
+                    </c:if>
 
                 </div>
                 <ul class="do-list-icon">
@@ -80,7 +86,11 @@
                         <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                     </div>
                     <div class="name">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</div>
-                    <div class="price do-pro-price" data-value="${goods.price}">&nbsp;</div>
+                    <div class="price do-pro-price ${not empty goods.disPrice?'xzc-price':''}" data-value="${goods.price}">&nbsp;</div>
+                    <c:if test="${not empty goods.disPrice}">
+                    <div class="price do-pro-price xzc-dis-price" data-value="${goods.disPrice}">&nbsp;</div>
+                    </c:if>
+                    <br/>
                     <ul class="color clearfix">
                         <c:forEach var="goodsItem" items="${goods.goodsItemList}">
                             <li style="background: ${goodsItem.colorValue}"></li>

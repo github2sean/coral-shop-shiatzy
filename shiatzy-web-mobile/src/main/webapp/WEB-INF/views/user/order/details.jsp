@@ -88,7 +88,7 @@
                         <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                        <p><spring:message code="shoppingCart.unitPrice"/>：
+                        <p class="${not empty item.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>：
                             &nbsp;<font class="coinSymbol">
                                 <c:choose>
                                     <c:when test="${orderDomain.currentCode=='CNY'}">
@@ -103,6 +103,24 @@
                                 </c:choose>
                             </font>&nbsp;
                             <fmt:formatNumber value="${item.goodsPrice}" pattern="#,###" /></p>
+                        <c:if test="${not empty item.goodsDisPrice}">
+                            <p class="xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>：
+                                &nbsp;<font class="coinSymbol">
+                                    <c:choose>
+                                        <c:when test="${orderDomain.currentCode=='CNY'}">
+                                            &nbsp;<spring:message code="coin.ZH"/>
+                                        </c:when>
+                                        <c:when test="${orderDomain.currentCode=='USD'}">
+                                            &nbsp;<spring:message code="coin.USA"/>
+                                        </c:when>
+                                        <c:when test="${orderDomain.currentCode=='EUR'}">
+                                            &nbsp;<spring:message code="coin.EU"/>
+                                        </c:when>
+                                    </c:choose>
+                                </font>&nbsp;
+                                    <fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###" /></span></p>
+                        </c:if>
+
                     </div>
                 </div>
             </c:forEach>

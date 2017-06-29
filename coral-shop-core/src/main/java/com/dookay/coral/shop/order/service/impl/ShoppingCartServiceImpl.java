@@ -106,6 +106,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
 			shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
 			shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
+			shoppingCartItemDomain.setGoodsDisPrice(goodsDomain.getDisPrice());
 			shoppingCartItemDomain.setSkuId(skuDomain.getId());
 			shoppingCartItemDomain.setItemId(skuDomain.getItemId());
 			shoppingCartItemDomain.setShoppingCartType(shoppingCartType);
@@ -161,7 +162,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		query.setCustomerId(customerDomain.getId());
 		query.setSkuId(skuDomain.getId());
 		query.setShoppingCartType(2);
-		ShoppingCartItemDomain shoppingCart = getOne(query);
+		ShoppingCartItemDomain shoppingCart = getFirst(query);
 		return shoppingCart;
 	}
 
@@ -171,7 +172,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 		query.setCustomerId(customerDomain.getId());
 		query.setSkuId(skuDomain.getId());
 		query.setShoppingCartType(cartType);
-		ShoppingCartItemDomain shoppingCart = getOne(query);
+		ShoppingCartItemDomain shoppingCart = getFirst(query);
 		return shoppingCart;
 	}
 

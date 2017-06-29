@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="renderer" content="webkit">
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -245,7 +245,12 @@
                                 <p class="pro-value">${it.goodsItemDomain.name}</p>
                                 <p class="pro-value">选择尺寸：  ${it.sizeDomain.name}</p>
                                 <p class="pro-value">数量：${it.num}</p>
-                                <p class="pro-value">单价：    ¥   ${it.goodsPrice}</p>
+                                <p class="pro-value">单价：
+                                <#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>
+                                ${it.goodsPrice}</p>
                             </div>
 
                         </#list>
@@ -258,19 +263,34 @@
                         <div class="detail bill-detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="bill-lf">优惠前 : </span><span class="bill-rt">¥   ${order.goodsTotal}</span>
+                                    <span class="bill-lf">优惠前 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>   ${order.goodsTotal}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt">¥   -${order.couponDiscount!'0'}</span>
+                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>   -${order.couponDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt">¥   -${order.memberDiscount!'0'}</span>
+                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>   -${order.memberDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">运费 : </span><span class="bill-rt">¥   ${order.shipFee!'0'}</span>
+                                    <span class="bill-lf">运费 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>   ${order.shipFee!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">总计 : </span><span class="bill-rt">¥   ${order.orderTotal}</span>
+                                    <span class="bill-lf">总计 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>   ${order.orderTotal}</span>
                                 </li>
                             </ul>
                         </div>

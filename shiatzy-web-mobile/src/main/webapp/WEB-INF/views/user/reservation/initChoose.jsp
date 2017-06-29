@@ -40,7 +40,12 @@
                     <p>${row.leftItem.goodsItemDomain.name}</p>
                     <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}号</p>
                 </div>
-                <p class="price">单价　¥ ${row.leftItem.goodsPrice}</p>
+                <p class="price ${not empty row.leftItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span>　</p>
+                <c:if test="${not empty row.leftItem.goodsDisPrice}">
+                    <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>
+                        <span class="do-pro-price" data-value="${row.leftItem.goodsDisPrice}">&nbsp;</span>　
+                    </p>
+                </c:if>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -56,7 +61,11 @@
                         <p>${row.rightItem.goodsItemDomain.name}</p>
                         <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}号</p>
                     </div>
-                    <p class="price">单价　¥ ${row.rightItem.goodsPrice}</p>
+                    <p class="price ${not empty row.rightItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
+                    <c:if test="${not empty row.rightItem.goodsDisPrice}">
+                    <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/><span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
+                    </c:if>
+
                     <ul class="do-list-icon">
                         <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
                         <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -111,7 +120,7 @@
         <p id="storeTel"></p>
     </div>
     <div class="submit-btn">
-        <a href="#" class="sendBtn" data-value="" style="line-height: 3rem;">送出预约</a>
+        <a href="#" class="sendBtn btn btn-default" data-value="" style="line-height: 3rem;">送出预约</a>
     </div>
 </div>
 
@@ -163,7 +172,7 @@
         }
     };
     $(function () {
-
+        setPrice();
         $("#countrySelect").click(function () {
             $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
@@ -265,8 +274,10 @@
             $.post("/reservation/submitPreOrder",{"storeId":storeId},function (data) {
                 if(data.code==200){
                     location.href = "/reservation/details?reservationId="+data.data;
+                }else {
+                    layer.msg(data.message);
                 }
-            })
+            });
         });
 
         $(".deleteBtn").on("click",function () {

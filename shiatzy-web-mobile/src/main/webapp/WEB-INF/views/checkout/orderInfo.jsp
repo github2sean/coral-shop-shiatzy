@@ -23,7 +23,8 @@
                     <div class="number">${row.goodsCode}</div>
                     <div class="color" >${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span >${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity" data-value="${row.num}"><spring:message code="shoppingCart.number"/> : <span>${row.num}</span></div>
-                    <div class="price" data-value="${row.goodsPrice}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;<font class="coinSymbol">
+                    <div class="price ${not empty row.goodsDisPrice?'xzc-price':''}" data-value="${row.goodsPrice}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                        <font class="coinSymbol ">
                         <c:choose>
                             <c:when test="${order.currentCode=='CNY'}">
                                 &nbsp;<spring:message code="coin.ZH"/>
@@ -36,7 +37,24 @@
                             </c:when>
                         </c:choose>
                        </font>&nbsp;<span class="true-price"><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
+                    <c:if test="${not empty row.goodsDisPrice}">
+                        <div class="price xzc-dis-price" data-value="${row.goodsDisPrice}"><spring:message code="shoppingCart.disPrice"/>&nbsp;<font class="coinSymbol">
+                            <c:choose>
+                                <c:when test="${order.currentCode=='CNY'}">
+                                    &nbsp;<spring:message code="coin.ZH"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='USD'}">
+                                    &nbsp;<spring:message code="coin.USA"/>
+                                </c:when>
+                                <c:when test="${order.currentCode=='EUR'}">
+                                    &nbsp;<spring:message code="coin.EU"/>
+                                </c:when>
+                            </c:choose>
+                        </font>&nbsp;<span class="true-price"><fmt:formatNumber value="${row.goodsDisPrice}" pattern="#,###"/></span></div>
+                    </c:if>
                 </div>
+
+
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_appointment" data-value="${row.id}"><svg><use xlink:href="#ap-small"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_collect" data-value="${row.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
