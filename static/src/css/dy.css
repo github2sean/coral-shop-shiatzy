@@ -1143,7 +1143,6 @@
 .country-select .country-con li.active a {
     background: #333333;
 }
-.ios-select-body-class .sure,
 .ios-select-body-class .close {
     display: none;
 }
@@ -1152,7 +1151,8 @@
     line-height: 44px;
     width: 100%;
     z-index: 9999;
-    text-align: center;
+    text-align: left;
+    padding-left: 15px;
     color: #fff;
     background: #777777;
 }
@@ -1188,6 +1188,11 @@
     margin-top: -147px;
     left: 0;
     visibility: visible;
+}
+.ios-select-widget-box header.iosselect-header a {
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
 }
 .chicun {
     position: absolute;

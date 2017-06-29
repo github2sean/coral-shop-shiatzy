@@ -298,60 +298,12 @@
         <img src="images/index-show.jpg" alt="">
     </a>
 </div>
-<div class="country-select" id="country-select">
-    <!--<p class="country-title">国家*</p>-->
-    <!--<div class="country-wrapper">-->
-
-    <!--<ul class="country-con" style="">-->
-    <!--<li class="active"><a href="#">中国</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li><li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-    <!--<li><a href="#">美国</a></li>-->
-    <!--<li><a href="#">韩国</a></li>-->
-    <!--<li><a href="#">日本</a></li>-->
-
-    <!--</ul>-->
-    <!--</div>-->
-    <div class="form-item item-line">
-        <label>请选择银行</label>
-        <div class="pc-box">
-            <input type="hidden" name="bank_id" id="bankId" value="">
-            <span id="showBank">点击这里选择银行</span>
-        </div>
+<div class="form-item item-line">
+    <label>请选择银行</label>
+    <div class="pc-box">
+        <input type="hidden" name="bank_id" id="bankId" value="">
+        <span id="showBank"></span>
     </div>
-
-    <!--<div class="weui-cell__bd">-->
-    <!--<select class="weui-select" name="select1">-->
-    <!--<option selected="" value="1">微信号</option>-->
-    <!--<option value="2">QQ号</option>-->
-    <!--<option value="3">Email</option>-->
-    <!--</select>-->
-    <!--</div>-->
-
 </div>
     <a href="javascript:;" id="j_back_top" class="back-top">返回顶部</a>
     <footer class="footer font-12">
@@ -432,7 +384,7 @@
             [data],
             {
                 container: '.container',
-                title: '国家*',
+                title: '选择您所在的地区',
                 itemHeight: 50,
                 itemShowCount: 5,
                 oneLevelId: bankId,
@@ -441,8 +393,10 @@
                     showBankDom.innerHTML = selectOneObj.value;
                     showBankDom.dataset['id'] = selectOneObj.id;
                     showBankDom.dataset['value'] = selectOneObj.value;
+
                 }
             });
+        $(".sure").html("DONE");
 //        layer.open({
 //            type:1,
 //            shade:0.8,
