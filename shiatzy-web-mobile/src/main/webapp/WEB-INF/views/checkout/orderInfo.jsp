@@ -126,7 +126,7 @@
                 </c:choose>
             </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}"><fmt:formatNumber value="${order.goodsTotal}" pattern="#,###"/></span></span>
             </div>
-            <div class="discount" style="color: red"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
+            <div class="discount" style="color: red;display: none"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -371,6 +371,7 @@
             $.post("/checkout/useCoupon",{"couponCode":couponCode},function (data) {
                 if(data.code==200){
                     layer.msg('<spring:message code="orderinfo.coupon.success"/>');
+                    $(".discount").show();
                     $("#discount").text(fmoney((data.data).toFixed(0),0));
                     clsTotal();
                 }else{
@@ -388,6 +389,7 @@
                     $("#discount").text(0);
                     clsTotal();
                     $('.showInfo').text("");
+                    $(".discount").css("display","none");
                 }else{
                     $('.showInfo').text(data.message);
                 }
