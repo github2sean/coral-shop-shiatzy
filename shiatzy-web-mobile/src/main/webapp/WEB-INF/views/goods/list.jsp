@@ -35,6 +35,7 @@
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
                 <p class="do-pro-price" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                <p class="do-pro-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
                     <li style="background: ${item.colorValue}"></li>

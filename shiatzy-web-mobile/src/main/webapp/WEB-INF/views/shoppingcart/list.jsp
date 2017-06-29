@@ -275,6 +275,8 @@
                         }else{
                             clsTotal();
                         }
+                    }else{
+                        layer.msg(data.message);
                     }
                 });
             }

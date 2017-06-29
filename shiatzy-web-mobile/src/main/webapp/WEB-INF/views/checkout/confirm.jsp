@@ -90,7 +90,7 @@
                              </span>
                             </div>
                             <div class="preferential-price"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
-                                <font class="coinSymbol">
+                                <span class="">
                                     <c:choose>
                                         <c:when test="${order.currentCode=='CNY'}">
                                             &nbsp;<spring:message code="coin.ZH"/>
@@ -102,7 +102,7 @@
                                             &nbsp;<spring:message code="coin.EU"/>
                                         </c:when>
                                     </c:choose>
-                                </font>&nbsp;
+                                </span>&nbsp;
                                 <span><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###"/></span></div>
                         </div>
                     </div>
