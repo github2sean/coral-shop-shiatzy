@@ -37,80 +37,89 @@
         <img src="images/index-show.jpg" alt="">
     </a>
 </div>
-
+<div class="form-item item-line">
+    <label>请选择银行</label>
+    <div class="pc-box">
+        <input type="hidden" name="bank_id" id="bankId" value="">
+        <span id="showBank"></span>
+    </div>
+</div>
 @include('include/footer.html')
 <script>
     $(function(){
         commonApp.init();
     });
+    var data = [
+        {'id': '10001', 'value': '中国'},
+        {'id': '10002', 'value': '英国'},
+        {'id': '10003', 'value': '韩国'},
+        {'id': '10004', 'value': '日本'},
+        {'id': '10005', 'value': '美国'},
+        {'id': '10006', 'value': '泰国'},
+        {'id': '10007', 'value': '马来西亚'},
+        {'id': '10008', 'value': '希腊'},
+
+        {'id': '10009', 'value': '法国'},
+        {'id': '10010', 'value': '德国'},
+        {'id': '10011', 'value': '俄罗斯'},
+        {'id': '10012', 'value': '缅甸'},
+        {'id': '10013', 'value': '印度'},
+        {'id': '10014', 'value': '奥地利'},
+        {'id': '10015', 'value': '文莱'},
+        {'id': '10016', 'value': '巴西'}
+    ];
+    var showBankDom = document.querySelector('#showBank');
+    var bankIdDom = document.querySelector('#bankId');
     window.onload=function(){
-        layer.open({
-            type:1,
-            shade:0.8,
-            title:false,
-            closeBtn:0,
-            content:$(".country-select"),
-            area:['100%','100%'],
-            success: function(layero, index){
-                $('html').css("height","100%").css("overflow","hidden");
-                $('body').css("height","100%").css("overflow","hidden");
-            },
-            end:function () {
-                $('html').css("height","auto").css("overflow","auto");
-                $('body').css("height","auto").css("overflow","auto");
-            }
-        });
+        var bankId = showBankDom.dataset['id'];
+        var bankName = showBankDom.dataset['value'];
+
+        var bankSelect = new IosSelect(1,
+            [data],
+            {
+                container: '.container',
+                title: '选择您所在的地区',
+                itemHeight: 50,
+                itemShowCount: 5,
+                oneLevelId: bankId,
+                callback: function (selectOneObj) {
+                    bankIdDom.value = selectOneObj.id;
+                    showBankDom.innerHTML = selectOneObj.value;
+                    showBankDom.dataset['id'] = selectOneObj.id;
+                    showBankDom.dataset['value'] = selectOneObj.value;
+
+                }
+            });
+        $(".sure").html("DONE");
+//        layer.open({
+//            type:1,
+//            shade:0.8,
+//            title:false,
+//            closeBtn:0,
+//            content:$(".country-select"),
+//            area:['100%','270px'],
+//            success: function(layero, index){
+//                $('html').css("height","100%").css("overflow","hidden");
+//                $('body').css("height","100%").css("overflow","hidden");
+//
+//            },
+//            end:function () {
+//                $('html').css("height","auto").css("overflow","auto");
+//                $('body').css("height","auto").css("overflow","auto");
+//            }
+//        });
 //        $(".country-select .country-con li a").click(function(e){
 //            e.preventDefault();
 //            console.log("nnn");
 //            $("#country-select").css("display","none");
 //        })
 
-    }
+    };
+
+    showBankDom.addEventListener('click', function () {
+
+    });
 
 </script>
 @include('include/foot.html')
-<div class="country-select" id="country-select">
-    <p class="country-title">国家*</p>
-    <ul class="country-con" style="">
-        <li class="active"><a href="#">中国</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li><li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
-        <li><a href="#">美国</a></li>
-        <li><a href="#">韩国</a></li>
-        <li><a href="#">日本</a></li>
 
-    </ul>
-    <!--<div class="weui-cell__bd">-->
-    <!--<select class="weui-select" name="select1">-->
-    <!--<option selected="" value="1">微信号</option>-->
-    <!--<option value="2">QQ号</option>-->
-    <!--<option value="3">Email</option>-->
-    <!--</select>-->
-    <!--</div>-->
-
-</div>

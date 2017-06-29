@@ -118,7 +118,7 @@
     </div>
     <div style="margin-bottom: 3rem;" class="verify-message-middle">
 
-        <p style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem"> <spring:message code="return.detail.total"/>：&nbsp;<font class="coinSymbol">
+        <p style="text-align: left;border-top: 2px solid #cccccc;line-height: 2.5rem;padding-left: 3.9rem;"> <spring:message code="return.detail.total"/>：&nbsp;<span class="float:right"><font class="coinSymbol">
             <c:choose>
                 <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
                     &nbsp;<spring:message code="coin.ZH"/>
@@ -130,7 +130,7 @@
                     &nbsp;<spring:message code="coin.EU"/>
                 </c:when>
             </c:choose>
-        </font>&nbsp; <fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/></p>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/></span> </p>
     </div>
     </div>
 
