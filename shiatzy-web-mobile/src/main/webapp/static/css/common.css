@@ -2532,7 +2532,7 @@ svg {
 }
 
 .do-list-icon>li {
-    margin-bottom: 1.4rem;
+    margin-bottom: 2.9rem;
 }
 
 .icon-bag svg {
@@ -2740,7 +2740,7 @@ textarea {
     text-align: left;
     font-size: 1rem;
     float: right;
-    width: 21rem ;
+    width: 20rem ;
 }
 @media screen and (max-height: 320px) {
     .goods-list .goods-item .goods-info{

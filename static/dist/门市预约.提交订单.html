@@ -337,6 +337,119 @@
         <a href="门市预约.提交订单.成功.html">送出预约</a>
     </div>
 </div>
+
+
+
+
+<div class="order-stores">
+    <h1>选择预约门市</h1>
+    <div class="model-select-box">
+        <div class="model-select-country j_collapse" data-value="" id="countrySelect">
+            <a class="pl-2" id="chooseCountry">中国</a>
+
+            <ul class="text-center model-select-option hide">
+
+                <li data-option="35" value="35" class="hide"><span>其他地区</span></li>
+
+                <li data-option="34" value="34" class="hide"><span>英国</span></li>
+
+                <li data-option="33" value="33" class="hide"><span>荷兰</span></li>
+
+                <li data-option="32" value="32" class="hide"><span>泰国</span></li>
+
+                <li data-option="31" value="31" class="hide"><span>台湾</span></li>
+
+                <li data-option="30" value="30" class="hide"><span>瑞士</span></li>
+
+                <li data-option="29" value="29" class="hide"><span>瑞典</span></li>
+
+                <li data-option="28" value="28" class="hide"><span>新加坡</span></li>
+
+                <li data-option="27" value="27" class="hide"><span>俄罗斯</span></li>
+
+                <li data-option="26" value="26" class="hide"><span>葡萄牙</span></li>
+
+                <li data-option="25" value="25" class="hide"><span>波兰</span></li>
+
+                <li data-option="24" value="24" class="hide"><span>挪威</span></li>
+
+                <li data-option="23" value="23" class="hide"><span>新西兰</span></li>
+
+                <li data-option="22" value="22" class="hide"><span>摩洛哥</span></li>
+
+                <li data-option="21" value="21" class="hide"><span>马拉西亚</span></li>
+
+                <li data-option="20" value="20" class="hide"><span>卢森堡</span></li>
+
+                <li data-option="19" value="19" class="hide"><span>韩国</span></li>
+
+                <li data-option="18" value="18" class="hide"><span>日本</span></li>
+
+                <li data-option="17" value="17" class="hide"><span>意大利</span></li>
+
+                <li data-option="16" value="16" class="hide"><span>爱尔兰</span></li>
+
+                <li data-option="15" value="15" class="hide"><span>冰岛</span></li>
+
+                <li data-option="14" value="14" class="hide"><span>香港</span></li>
+
+                <li data-option="13" value="13" class="hide"><span>希腊</span></li>
+
+                <li data-option="12" value="12" class="hide"><span>德国</span></li>
+
+                <li data-option="11" value="11" class="hide"><span>法国</span></li>
+
+                <li data-option="10" value="10" class="hide"><span>芬兰</span></li>
+
+                <li data-option="9" value="9" class="hide"><span>埃及</span></li>
+
+                <li data-option="8" value="8" class="hide"><span>丹麦</span></li>
+
+                <li data-option="7" value="7" class="hide"><span>捷克</span></li>
+
+                <li data-option="6" value="6" class="hide"><span>加拿大</span></li>
+
+                <li data-option="5" value="5" class="hide"><span>比利时</span></li>
+
+                <li data-option="4" value="4" class="hide"><span>奥大利亚</span></li>
+
+                <li data-option="3" value="3" class="hide"><span>奥地利</span></li>
+
+                <li data-option="2" value="2" class="hide"><span>美国</span></li>
+
+                <li data-option="1" value="1" class="active"><span>中国</span></li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="model-select-box">
+        <div class="model-select-city" data-value="" id="citySelect">
+            <a class="pl-2" id="chooseCity">苏州</a>
+
+            <ul class="text-center model-select-option hide" id="cityFather" >
+
+                <li data-option="4" value="4" class="">成都</li><li data-option="2" value="2" class="active">苏州</li><li data-option="1" value="1">上海</li></ul>
+        </div>
+    </div>
+    <div class="model-select-box">
+        <div class="model-select-store active" data-value="" id="storeSelect">
+            <a class="pl-2" id="chooseStore">请选择门市</a>
+
+            <ul class="text-center model-select-option hide" id="storeFather">
+
+                <li data-value="0" data-option="2" value="2">苏州新光精品店</li></ul>
+        </div>
+    </div>
+    <div class="stores-introduce storeInfo">
+        <h2 id="storeName"></h2>
+        <p id="storeAddress"></p>
+        <p id="storeTime"></p>
+        <p id="storeTel"></p>
+    </div>
+    <div class="submit-btn">
+        <a href="#" class="sendBtn btn btn-default" data-value="" style="line-height: 3rem;">送出预约</a>
+    </div>
+</div>
     <a href="javascript:;" id="j_back_top" class="back-top">返回顶部</a>
     <footer class="footer font-12">
         <ul class="do-list-btm j_drop_down">
@@ -389,7 +502,7 @@
     });
 </script>
 <script>
-    //下拉列表
+
     $(function () {
         function selectModel() {
             var $box = $('div.model-select-box');
@@ -432,6 +545,19 @@
             }
         }
         selectModel();
+
+        $(".model-select-box a").click(function(e){
+            e.preventDefault();
+            console.log($(this).siblings());
+            $(this).siblings().removeClass("hide");
+        });
+
+//        $(".model-select-country ul li").click(function(){
+//            $(".model-select-city .model-select-option").css("display","block");
+//        })
+//        $(".model-select-option ul li").click(function(){
+//            $(".model-select-store .model-select-option").css("display","block");
+////        })
     })
 </script>
 </body>

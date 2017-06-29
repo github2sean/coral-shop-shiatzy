@@ -874,10 +874,11 @@ i {
 }
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic {
-    height: 9.3rem;
+    height: 12.3rem;
     text-align: center;
     margin-top: 0.2rem;
 }
+
 
 .dx-shopping .dx-GoodsDetails .goods-left .pic img {
     display: block;
@@ -1009,7 +1010,7 @@ i {
 }
 
 .dx-accounts .dx-GoodsDetails .goods-right .price {
-    margin-left: 8.4rem;
+    margin-left: 0rem;
 }
 
 .dx-accounts .dx-GoodsDetails .goods .do-list-icon{
@@ -1131,7 +1132,7 @@ i {
 /*--------------修改弹窗----------------------------*/
 
 .alter-popup {
-    padding: 2.6rem 1.4rem 0 2.6rem;
+    padding: 2.6rem 1.4rem 0 1.4rem;
     display: none;
 }
 
@@ -1142,7 +1143,7 @@ i {
 .alter-popup .dx-goods .goods-pic {
     float: left;
     width: 5.4rem;
-    height: 20.8rem;
+    /*height: 20.8rem;*/
     margin-right: 1.6rem;
 }
 
@@ -1188,8 +1189,8 @@ i {
 .alter-popup .dx-goods .goods-details .size .title:after {
     content: ">";
     float: right;
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
 }
 
 .alter-popup .dx-goods .goods-details .color ul,
