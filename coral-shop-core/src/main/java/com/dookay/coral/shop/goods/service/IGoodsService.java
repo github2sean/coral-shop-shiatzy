@@ -3,6 +3,7 @@ package com.dookay.coral.shop.goods.service;
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.common.web.validate.FieldMatch;
+import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.domain.GoodsColorDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
@@ -45,4 +46,5 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
     void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId,List<Long> parmaId);
     void sizeWithStock(List<PrototypeSpecificationOptionDomain> sizeDomainList, List<Long> goodsId, List<Long> parmaId);
 
+    List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList);
 }

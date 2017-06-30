@@ -53,6 +53,8 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	private ITempStockService tempStockService;
 	@Autowired
 	private IGoodsColorService goodsColorService;
+	@Autowired
+	private IGoodsCategoryService goodsCategoryService;
 
 	@Override
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
@@ -228,6 +230,18 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			}
 		}
 
+	}
+
+	@Override
+	public List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList) {
+
+		List<Long> categoryIds = new ArrayList<>();
+		for (GoodsDomain line:goodsList){
+			categoryIds.add(line.getCategoryId());
+		}
+		GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
+		categoryQuery.setIds(categoryIds);
+		return goodsCategoryService.getList(categoryQuery);
 	}
 
 }

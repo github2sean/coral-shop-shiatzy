@@ -27,7 +27,7 @@
     <ul class="do-list-lang j_drop_down">
         <li>
             <a href="javascript:void(0)" id="trigger_select_country">
-                <select id="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                <select class="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
                     <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
                         <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
@@ -243,9 +243,12 @@
 
     $(function () {
 
-        $("#select_country").change(function(){
+        $(".select_country").change(function(){
             var id =  $(this).find("option:selected").attr("value");
             $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    location.reload();
+                }
             });
         });
 

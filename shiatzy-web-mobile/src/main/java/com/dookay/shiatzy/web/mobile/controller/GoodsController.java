@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 
         import com.dookay.coral.common.json.JsonUtils;
+        import com.dookay.coral.common.persistence.Query;
         import com.dookay.coral.common.persistence.pager.PageList;
         import com.dookay.coral.common.web.BaseController;
         import com.dookay.coral.common.web.HttpContext;
@@ -62,31 +63,108 @@ public class GoodsController extends BaseController{
     private static Integer HIGN_TO_LOW = 1;
     private static Integer LOW_TO_HIGN= 0;
 
-    @RequestMapping(value = "search", method = RequestMethod.POST)
-    public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm){
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public ModelAndView search(@ModelAttribute QueryGoodsForm queryGoodsForm,Integer priceWay){
         //查询页面进入模糊查询，主页面进入根据商品所有信息匹配查询
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
         query.setCategoryId(queryGoodsForm.getCategoryId());
         query.setPrototypeId(queryGoodsForm.getPrototypeId());
-        PageList<GoodsDomain> goodsList =  goodsService.getGoodsList(query);
-        List<GoodsDomain> goodsNameList =  goodsService.getList(query);
-        ModelAndView modelAndView;
+        query.setDesc(false);
+        query.setPageSize(20);
+        List<GoodsDomain> goodsList =  goodsService.getList(query);
+        ModelAndView modelAndView = new ModelAndView("goods/namelist");
+        List<GoodsCategoryDomain> categoryList = goodsService.getAll2Category(goodsList);
         if(query.getCategoryId()==null && query.getPrototypeId()==null) {
-            modelAndView = new ModelAndView("goods/namelist");
-            goodsService.withGoodsItemList(goodsNameList);
-            System.out.println(" goodsList:"+JsonUtils.toJSONString(goodsNameList));
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsNameList,query.getPageIndex(),query.getPageSize(),goodsNameList.size());
-            System.out.println(" list:"+JsonUtils.toJSONString(goodsDomainPageList));
-            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
-        } else {
-            PageList<SkuDomain> goodsSku = skuService.getPageList(query);
-            System.out.print("goodsSku:" + JsonUtils.toJSONString(goodsSku));
-            modelAndView = new ModelAndView("goods/list");
-            modelAndView.addObject("goodsList", goodsList);
-            modelAndView.addObject("goodsSku", goodsSku);
+            goodsService.withGoodsItemList(goodsList);
+            modelAndView.addObject("keyword",query.getName());
+            modelAndView.addObject("categoryList",categoryList);
+            //材质列表
+            modelAndView.addObject("attributeList",getAttributes(goodsList));
+            //颜色列表
+            modelAndView.addObject("colorList",getColors(goodsList));
+            //尺寸列表
+            modelAndView.addObject("sizeList",getSizes(goodsList));
+
+            //过滤开始
+            doFilter(query,modelAndView,goodsList,priceWay);
+
+            goodsService.withSizeDomain(goodsList);
         }
         return modelAndView;
+    }
+
+
+    public List<GoodsDomain> filterParam(List<GoodsDomain> goodsList,List<Long> queryColorIds, List<Long> querySizeIds,List<Long> queryAttributeIds){
+
+        // 过滤goodsList
+        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
+        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
+        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
+        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
+            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
+            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
+        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
+            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
+            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
+            goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
+        }
+        return goodsList;
+    }
+    public List<PrototypeAttributeOptionDomain> getAttributes(List<GoodsDomain> goodsList){
+        //获得原型Ids
+        List<Long> prototypeIds = new ArrayList<Long>();
+        goodsList.forEach(x->prototypeIds.addAll(JsonUtils.toLongArray("["+x.getPrototypeId()+"]")));
+        List<Long> newPrototypeIds = prototypeIds.stream().distinct().collect(Collectors.toList());
+        //获得原型id属性
+        PrototypeAttributeQuery prototypeAttributeQuery = new PrototypeAttributeQuery();
+        prototypeAttributeQuery.setPrototypeIds(newPrototypeIds);
+        List<PrototypeAttributeDomain> prototypeAttributeDomainList = prototypeAttributeService.getList(prototypeAttributeQuery);
+        List<PrototypeAttributeDomain> newAttributeDomainList = prototypeAttributeDomainList.stream().distinct().collect(Collectors.toList());
+        //获得原型属性选项
+        List<Long> prototypeAttributeIds = new ArrayList<>();
+        for (PrototypeAttributeDomain attributeDomain:newAttributeDomainList) {
+            prototypeAttributeIds.add(attributeDomain.getPrototypeId());
+        }
+        List<Long> newPrototypeAttributeIds = prototypeAttributeIds.stream().distinct().collect(Collectors.toList());
+        PrototypeAttributeOptionQuery prototypeAttributeOptionQuery = new PrototypeAttributeOptionQuery();
+        prototypeAttributeOptionQuery.setPrototypeAttributeIds(newPrototypeAttributeIds);
+        List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
+        return prototypeAttributeOptionDomainList;
+    }
+    public List<PrototypeSpecificationOptionDomain> getSizes(List<GoodsDomain> goodsList){
+        List<Long> sizeIds = new ArrayList<>();
+        goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
+        List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
+        PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
+        prototypeSpecificationOptionQuery.setIds(newSizeIds);
+        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+        return sizeList;
+    }
+    public List<GoodsColorDomain> getColors(List<GoodsDomain> goodsList){
+        List<Long> colorIds = new ArrayList<>();
+        goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
+        List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
+        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
+        goodsColorQuery.setIds(newColorIds);
+        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+        return goodsColorDomainList;
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
@@ -130,52 +208,24 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
 
         //材质列表
-        //获得原型Ids
-        List<Long> prototypeIds = new ArrayList<Long>();
-        goodsList.forEach(x->prototypeIds.addAll(JsonUtils.toLongArray("["+x.getPrototypeId()+"]")));
-        List<Long> newPrototypeIds = prototypeIds.stream().distinct().collect(Collectors.toList());
-        //获得原型id属性
-        PrototypeAttributeQuery prototypeAttributeQuery = new PrototypeAttributeQuery();
-        prototypeAttributeQuery.setPrototypeIds(newPrototypeIds);
-        List<PrototypeAttributeDomain> prototypeAttributeDomainList = prototypeAttributeService.getList(prototypeAttributeQuery);
-        List<PrototypeAttributeDomain> newAttributeDomainList = prototypeAttributeDomainList.stream().distinct().collect(Collectors.toList());
-        //获得原型属性选项
-        List<Long> prototypeAttributeIds = new ArrayList<>();
-        for (PrototypeAttributeDomain attributeDomain:newAttributeDomainList) {
-            prototypeAttributeIds.add(attributeDomain.getPrototypeId());
-        }
-        List<Long> newPrototypeAttributeIds = prototypeAttributeIds.stream().distinct().collect(Collectors.toList());
-        PrototypeAttributeOptionQuery prototypeAttributeOptionQuery = new PrototypeAttributeOptionQuery();
-        prototypeAttributeOptionQuery.setPrototypeAttributeIds(newPrototypeAttributeIds);
-        List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
-        modelAndView.addObject("attributeList",prototypeAttributeOptionDomainList);
-        System.out.println("attributeList:"+JsonUtils.toJSONString(prototypeAttributeOptionDomainList));
+        modelAndView.addObject("attributeList",getAttributes(goodsList));
 
         //颜色列表
-        List<Long> colorIds = new ArrayList<>();
-        goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
-        List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
-        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
-        goodsColorQuery.setIds(newColorIds);
-        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
-        modelAndView.addObject("colorList",goodsColorDomainList);
-
+        modelAndView.addObject("colorList",getColors(goodsList));
 
         //尺寸列表
-        List<Long> sizeIds = new ArrayList<>();
-        goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
-        List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
-        PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
-        prototypeSpecificationOptionQuery.setIds(newSizeIds);
-        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-        modelAndView.addObject("sizeList",sizeList);
-        System.out.println("sizeList:"+sizeList);
-        System.out.println("sizeList:"+sizeList);
+        modelAndView.addObject("sizeList",getSizes(goodsList));
         goodsService.withSizeDomain(goodsList);
+
+        //过滤开始
+        doFilter(query,modelAndView,goodsList,priceWay);
+
+        return modelAndView;
+    }
+
+    public void doFilter(GoodsQuery query,ModelAndView modelAndView,List<GoodsDomain> goodsList,Integer priceWay){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
-
-
         //清空session中筛选条件
         session.setAttribute(COLOR_IDS,null);
         session.setAttribute(ATTR_IDS,null);
@@ -185,9 +235,6 @@ public class GoodsController extends BaseController{
         List<Long> queryColorIds= query.getColorIds();
         List<Long> querySizeIds = query.getSizeIds();
         List<Long> queryAttributeIds=query.getAttributeIds();
-        System.out.println("colorIds:"+queryColorIds);
-        System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
-        System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
         //当前的筛选条件存入session中
         if(queryColorIds!=null&&queryColorIds.size()>0){
             session.setAttribute(COLOR_IDS,queryColorIds);
@@ -198,36 +245,9 @@ public class GoodsController extends BaseController{
         if(querySizeIds!=null&&querySizeIds.size()>0){
             session.setAttribute(SIZE_IDS,querySizeIds);
         }
+        //参数过滤
+        goodsList = filterParam(goodsList,queryColorIds,querySizeIds,queryAttributeIds);
 
-
-        // 过滤goodsList
-        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
-        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
-        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
-        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
-        }
         System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         if(priceWay == null ){
             PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),query.getPageSize());
@@ -237,66 +257,33 @@ public class GoodsController extends BaseController{
             PageList<GoodsDomain> goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),query.getPageSize());
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         }
-        return modelAndView;
     }
 
 
     @RequestMapping(value = "listMore", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult listMore(Long categoryId,Integer priceWay,Integer offset,Integer nowPage){
+    public JsonResult listMore(String goodsName,Long categoryId,Integer priceWay,Integer offset,Integer nowPage){
 
         GoodsQuery query = new GoodsQuery();
         //query.setOffset(offset);
        // query.setLimit(2);
+        query.setName(goodsName);
         query.setPageIndex(nowPage);
         query.setPageSize(10);
-        System.out.println("offset:"+offset);
         //商品列表
         query.setCategoryId(categoryId);
-        System.out.println("query:"+query);
         List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();
         goodsService.withGoodsItemList(goodsList);
-        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
 
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
+
         //颜色尺寸材质过滤
         List<Long> queryColorIds= (List<Long>)session.getAttribute(COLOR_IDS);
         List<Long> querySizeIds = (List<Long>)session.getAttribute(SIZE_IDS);
         List<Long> queryAttributeIds= (List<Long>)session.getAttribute(ATTR_IDS);
-        System.out.println("colorIds:"+queryColorIds);
-        System.out.println("sizeIds:"+JsonUtils.toJSONString(querySizeIds));
-        System.out.println("attributeIds:"+JsonUtils.toJSONString(queryAttributeIds));
-
-
-        // 过滤goodsList
-        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
-        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
-        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
-        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
-        }
+        //参数过滤
+        goodsList = filterParam(goodsList,queryColorIds,querySizeIds,queryAttributeIds);
 
         //把商品与自己的颜色和尺寸关联
         for(GoodsDomain goodsDomain:goodsList){
@@ -328,7 +315,7 @@ public class GoodsController extends BaseController{
 
         for(GoodsDomain line : goodsDomainPageList.getList()){
 
-            System.out.println("lien:"+JsonUtils.toJSONString(line));
+            System.out.println("line:"+JsonUtils.toJSONString(line));
         }
         return successResult("操作成功",goodsDomainPageList);
     }

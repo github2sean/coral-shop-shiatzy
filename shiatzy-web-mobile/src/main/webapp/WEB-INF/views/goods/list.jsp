@@ -191,7 +191,6 @@
         });
         //价格点击事件
         $('.j_price_order').click(function () {
-
             var $this = $(this);
             var priceorder = $this.attr('data-order');
             var href = window.location.href;
