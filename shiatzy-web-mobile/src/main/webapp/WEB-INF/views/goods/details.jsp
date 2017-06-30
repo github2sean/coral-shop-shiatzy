@@ -716,14 +716,16 @@
               content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
               shade: [0.5, '#000'] , //0.1透明度的白色背景
 
-                success: function(layero, index){
-                   /* $('html').css("height","100%").css("position","relative").css("overflow","hidden");*/
-                    $('body').css("height","100%").css("overflow","hidden");
-                },
-                end:function () {
-                    $('html').css("height","auto").css("overflow","auto");
-                    $('body').css("height","auto").css("overflow","auto");
-                }
+              success: function(layero, index){
+                $('html').addClass("open-c");
+                $('body').addClass("open-c");
+                $('.main-content').addClass("open-c");
+              },
+              end:function () {
+                $('html').removeClass("open-c");
+                $('body').removeClass("open-c");
+                $('.main-content').removeClass("open-c");
+             }
             });
           });
           $(".whatBoutique").click(function () {
