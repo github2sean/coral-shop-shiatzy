@@ -36,7 +36,7 @@
     <div class="model-select-box">
         <div class="model-select-city" data-value="" id="citySelect">
             <span class="pl-2" id="chooseCity"><spring:message code="store.list.select.state"/></span>
-            <span class="pull-right" style="margin-right:1.5rem">v</span>
+            <span class="pull-right">v</span>
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
                     <li data-option="${row.id}" value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</li>
@@ -61,8 +61,8 @@
         <p id="storeTime"></p>
         <p id="storeTel"></p>
     </div>
-    <div class="submit-btn saveBtn" data-value="">
-        <a href="#">< <spring:message code="store.list.enter"/></a>
+    <div class="btn btn-default submit-btn saveBtn" data-value="">
+        <a href="#" style="color: #fff">< <spring:message code="store.list.enter"/></a>
     </div>
 
 </div>
@@ -72,6 +72,11 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 <script>
+
+function cityClick() {
+    var isEn = ${web:selectLanguage()=='en_US'};
+
+}
 
     //下拉列表
     function selectModel() {
@@ -119,37 +124,7 @@
 
         var isEn = ${web:selectLanguage()=='en_US'};
 
-        $("#countrySelect").click(function () {
 
-            var $option = $(this).find(".model-select-option");
-            $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
-            $option.find("li").click(function () {
-                $(this).addClass("active").siblings().removeClass("active");
-                var text = $(this).text();
-                $(this).parent().siblings("#chooseCountry").text(text);
-                //初始化选择城市
-                $.post("/checkout/initCity", {"countryId": $(this).attr("data-option")}, function (data) {
-                    var cityJson = data.data;
-                    console.log(cityJson);
-                    if (data.code == 200 && cityJson != null) {
-                        $("#cityFather").children("li").each(function () {
-                            $(this).remove();
-                        });
-                        var json = eval(cityJson)
-                        for (var i = 0; i < json.length; i++) {
-                            var name = isEn?json[i].enName:json[i].name;
-                            $("#cityFather").append("<li data-option=" + json[i].id + " value=" + json[i].id + ">" + name+ "</li>");
-                        }
-                    } else {
-                        layer.msg("<spring:message code='store.list.noStoreInCountry'/>");
-                    }
-                });
-            });
-        });
-
-        $("#chooseCountry").text("<spring:message code='store.list.china'/>");
-        /*$("#countrySelect").trigger("click");
-        $("#countrySelect").find("li").eq(0).trigger("click");*/
         $.post("/checkout/initCity", {"countryId": 1}, function (data) {
             var cityJson = data.data;
             console.log(cityJson);
@@ -167,19 +142,50 @@
             }
         });
 
+        /*$("#countrySelect").click(function () {
+         var $option = $(this).find(".model-select-option");
+         $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
+         $option.on("click","li",function () {
+         $(this).addClass("active").siblings().removeClass("active");
+         var text = $(this).text();
+         $(this).parent().siblings("#chooseCountry").text(text);
+         //初始化选择城市
+         $.post("/checkout/initCity", {"countryId": $(this).attr("data-option")}, function (data) {
+         var cityJson = data.data;
+         console.log(cityJson);
+         if (data.code == 200 && cityJson != null) {
+         $("#cityFather").children("li").each(function () {
+         $(this).remove();
+         });
+         var json = eval(cityJson)
+         for (var i = 0; i < json.length; i++) {
+         var name = isEn?json[i].enName:json[i].name;
+         $("#cityFather").append("<li data-option=" + json[i].id + " value=" + json[i].id + ">" + name+ "</li>");
+         }
+         //显示城市
+         $("#cityFather").css("display","block");
+         } else {
+         layer.msg("<spring:message code='store.list.noStoreInCountry'/>");
+         }
+         });
+         });
+         });*/
+
+        $("#chooseCountry").text("<spring:message code='store.list.china'/>");
+        /*$("#countrySelect").trigger("click");
+        $("#countrySelect").find("li").eq(0).trigger("click");*/
 
         var json = "";
         $("#citySelect").click(function () {
             var $option = $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
-            $option.find("li").on("click", function () {
+            $option.on("click",'li', function () {
                 $(this).addClass("active").siblings().removeClass("active");
                 var text = $(this).text();
                 $(this).parent().siblings("#chooseCity").text(text);
                 //初始化选择城市
                 $.post("/checkout/initStore", {"cityId": $(this).attr("data-option")}, function (data) {
                     var storeJson = data.data;
-                    console.log(storeJson);
                     if (data.code == 200 && storeJson != null) {
                         $("#storeFather").children("li").each(function () {
                             $(this).remove();
@@ -189,6 +195,24 @@
                             var name = isEn?json[i].enTitle:json[i].name;
                             $("#storeFather").append("<li data-value=" + i + " data-option=" + json[i].id + " value=" + json[i].id + ">" + name + "</li>");
                         }
+                        //显示城市
+                        $("#storeFather").css("display","block");
+                        if($("#storeFather").find("li").length<1){
+                            layer.msg("<spring:message code='store.list.noStore'/>");
+                            return false;
+                        }
+                        $("#storeFather").on("click",'li', function () {
+                            var index = $(this).attr("data-value");
+                            $(this).addClass("active").siblings().removeClass("active");
+                            var text = $(this).text();
+                            $(this).parent().siblings("#chooseStore").text(text);
+                            var name = isEn?json[index].enTitle:json[index].name;
+                            var address = isEn?json[index].enAddress:json[index].address;
+
+                            $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>：" + name)
+                                    .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>：" + address).siblings("#storeTel").text("TEL：" + json[index].tel);
+                            $(".saveBtn").attr("data-value", json[index].id);
+                        });
                     } else {
                         layer.msg("<spring:message code='store.list.noStore'/>");
                     }
@@ -196,23 +220,9 @@
             });
         });
 
-        $("#storeSelect").click(function () {
+        $("#storeSelect").on("click",function () {
             var $option = $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
-            $option.find("li").on("click", function () {
-                var index = $(this).attr("data-value");
-                $(this).addClass("active").siblings().removeClass("active");
-                var text = $(this).text();
-                $(this).parent().siblings("#chooseStore").text(text);
-                console.log(index);
-                var name = isEn?json[index].enTitle:json[index].name;
-                var address = isEn?json[index].enAddress:json[index].address;
-
-                $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>：" + name)
-                    .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>：" + address).siblings("#storeTel").text("TEL：" + json[index].tel);
-                $(".saveBtn").attr("data-value", json[index].id);
-            });
-
         });
 
         $(".saveBtn").click(function () {

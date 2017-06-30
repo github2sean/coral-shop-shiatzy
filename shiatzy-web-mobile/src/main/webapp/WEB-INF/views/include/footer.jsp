@@ -26,11 +26,11 @@
     </ul>
     <ul class="do-list-lang j_drop_down">
         <li>
-            <a href="/home/listShippingCountry" id="trigger_select_country">
-                <select id="select_country" style="width: 100%;background: transparent;border: 0;font-size: 1.1rem;">
-                    <option><spring:message code="selectOtherCountriesORRegions"/></option>
+            <a href="javascript:void(0)" id="trigger_select_country">
+                <select id="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                    <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
-                        <option value="${country.id}">${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
+                        <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
                     </c:forEach>
                 </select></a>
         </li>
@@ -108,19 +108,10 @@
         $(".j_cls_notice").on("click touchstart",function(){
             $(this).parent().fadeOut();
         });
-        $("#trigger_select_country").click(function (e) {
-            e.preventDefault();
-            $("#select_country").trigger("change");
+        $("#trigger_select_country").on("click",function (e) {
+            //e.preventDefault();
+            //$("#select_country").trigger("change");
         })
-        $("#trigger_select_country").find("option").click(function(){
-            var id =  $(this).attr("value");
-            alert(id);
-            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-                if(data.code==200){
-                    console.log("success");
-                }
-            });
-        });
     });
 </script>
 <script>
@@ -251,6 +242,12 @@
     });
 
     $(function () {
+
+        $("#select_country").change(function(){
+            var id =  $(this).find("option:selected").attr("value");
+            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+            });
+        });
 
         $("#j_back_top").click(function () {
             var speed=500;//滑动的速度

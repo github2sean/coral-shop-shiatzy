@@ -45,11 +45,11 @@
             $(".model-select-option").slideToggle(500);
         });
 
-        var backUrl = document.referrer;
+        /*var backUrl = document.referrer;
         var goOrder = false;
         if(backUrl.indexOf("/cart/list")>0){
             goOrder = true;
-        }
+        }*/
         console.log(backUrl);
         $(".option").click(function () {
             var active = "active";
@@ -58,9 +58,9 @@
             $(".checked").text(name);
             $.post("/home/chooseShippingCountry",{"shippingCountryId":$(this).val()},function (data) {
                 console.log(data);
-                if(goOrder && data.code==200){
+                /*if(goOrder && data.code==200){
                     location.href = "/checkout/initOrder";
-                }
+                }*/
             });
         });
     });
