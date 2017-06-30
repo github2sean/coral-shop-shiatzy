@@ -260,7 +260,7 @@
             </div>
         </div>
     </div>
-    <div class="main-content">
+    <div class="main-content" >
 <div class="dx-commodity">
     <div class="content">
         <div class="title">玉镯提包系列黑色刺绣托特包</div>
@@ -399,11 +399,35 @@
             $(this).siblings().toggleClass("hide");
         })
 
+
+        $(".check-chicun").click(function () {
+            layer.open({
+                type: 1,
+                title: '退货政策',
+                closeBtn: 1, //不显示关闭按钮
+                area: ['100%', '50%'],
+                content: $("#chicun"),//iframe的url，no代表不显示滚动条
+                shade: [0.3,'#000'], //0.1透明度的白色背景
+
+                success: function(layero, index){
+                    $('html').addClass("open-c");
+                    $('body').addClass("open-c");
+                    $('.main-content').addClass("open-c");
+                },
+                end:function () {
+                    $('html').removeClass("open-c");
+                    $('body').removeClass("open-c");
+                    $('.main-content').removeClass("open-c");
+                }
+            });
+        })
+
+
     });
 </script>
 </body>
 </html>
-<div class="chicun">
+<div class="chicun" style="display: none" id="chicun">
     <div class="dx-CommonProblems" style="width: 100%;font-size: 1.2rem">
         <div class="content">
             <h3 style="text-align: center;font-size: 1.6rem">尺码建议</h3>

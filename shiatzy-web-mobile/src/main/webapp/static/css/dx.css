@@ -987,6 +987,9 @@ i {
 
 .dx-accounts .dx-GoodsDetails .goods-right .name {
     font-size: 1.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 
@@ -1155,7 +1158,7 @@ i {
 
 .alter-popup .dx-goods .goods-pic img {
     width: 5.4rem;
-    height: 9.2rem;
+    /*height: 9.2rem;*/
     vertical-align: middle;
 }
 
