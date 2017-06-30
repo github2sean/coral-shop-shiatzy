@@ -136,7 +136,7 @@
 
 
 
-        $("#countrySelect").click(function () {
+        /*$("#countrySelect").click(function () {
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").click(function () {
@@ -162,7 +162,7 @@
                     }
                 });
             });
-        });
+        });*/
 
 
         var json = "";
@@ -187,6 +187,26 @@
                             var name = isEn?json[i].enTitle:json[i].name;
                             $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                         }
+                        if($("#storeFather").find("li").length<1){
+                            layer.msg("<spring:message code='store.list.noStore'/>");
+                            return false;
+                        }
+                        $("#storeFather").css("display","block");
+                        $("#storeFather").find("li").on("click",function () {
+                            var index = $(this).attr("data-value");
+                            $(this).addClass("active").siblings().removeClass("active");
+                            var text = $(this).text();
+                            $(this).parent().siblings("#chooseStore").text(text);
+                            console.log(index);
+                            var name = isEn?json[index].enTitle:json[index].name;
+                            var address = isEn?json[index].enAddress:json[index].address;
+
+                            $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>："+name)
+                                    .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>："+address).siblings("#storeTel").text("TEL："+json[index].tel);
+                            $(".saveBtn").attr("data-value",json[index].id);
+                        });
+
+
                     }else{
                         layer.msg("<spring:message code='store.list.noStore'/>");
                     }
@@ -197,20 +217,6 @@
         $("#storeSelect").click(function () {
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
-            $option.find("li").on("click",function () {
-                var index = $(this).attr("data-value");
-                $(this).addClass("active").siblings().removeClass("active");
-                var text = $(this).text();
-                $(this).parent().siblings("#chooseStore").text(text);
-                console.log(index);
-                var name = isEn?json[index].enTitle:json[index].name;
-                var address = isEn?json[index].enAddress:json[index].address;
-
-                $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>："+name)
-                        .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>："+address).siblings("#storeTel").text("TEL："+json[index].tel);
-                $(".saveBtn").attr("data-value",json[index].id);
-            });
-
         });
 
         $(".saveBtn").click(function () {
