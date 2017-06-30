@@ -36,5 +36,12 @@
         <function-signature>java.lang.String getSelectLanguage()</function-signature>
     </function>
 
+    <function>
+        <description>获取购物车数量</description>
+        <name>getCartNum</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.Integer getCartNum(java.lang.Integer)</function-signature>
+    </function>
+
 
 </taglib>
