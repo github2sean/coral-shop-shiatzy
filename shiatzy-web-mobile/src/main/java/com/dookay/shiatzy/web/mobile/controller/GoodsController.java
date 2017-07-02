@@ -1,6 +1,8 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 
+        import com.alibaba.fastjson.JSON;
+        import com.dookay.coral.common.enums.ValidEnum;
         import com.dookay.coral.common.json.JsonUtils;
         import com.dookay.coral.common.persistence.Query;
         import com.dookay.coral.common.persistence.pager.PageList;
@@ -127,6 +129,7 @@ public class GoodsController extends BaseController{
         }
         return goodsList;
     }
+
     public List<PrototypeAttributeOptionDomain> getAttributes(List<GoodsDomain> goodsList){
         //获得原型Ids
         List<Long> prototypeIds = new ArrayList<Long>();
@@ -148,6 +151,7 @@ public class GoodsController extends BaseController{
         List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
         return prototypeAttributeOptionDomainList;
     }
+
     public List<PrototypeSpecificationOptionDomain> getSizes(List<GoodsDomain> goodsList){
         List<Long> sizeIds = new ArrayList<>();
         goodsList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
@@ -157,6 +161,7 @@ public class GoodsController extends BaseController{
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         return sizeList;
     }
+
     public List<GoodsColorDomain> getColors(List<GoodsDomain> goodsList){
         List<Long> colorIds = new ArrayList<>();
         goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
@@ -186,6 +191,7 @@ public class GoodsController extends BaseController{
             GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
             goodsCategoryQuery.setParentId(goodsCategoryDomain.getId());
             goodsCategoryQuery.setLevel(2);
+            goodsCategoryQuery.setIsValid(ValidEnum.YES.getValue());
             list  = goodsCategoryService.getList(goodsCategoryQuery);
             for (GoodsCategoryDomain line: list){
                 childCategoryIds.add(line.getId());
@@ -197,8 +203,23 @@ public class GoodsController extends BaseController{
         }
         //商品列表
         System.out.println("query:"+query);
-        List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
 
+        //支持多分类查询
+        GoodsQuery goodsQuery = new GoodsQuery();
+        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
+        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
+        for (GoodsDomain goodsDomain :goodsListAll){
+            goodsDomain.setCategoryIdList(JSON.parseArray(goodsDomain.getCategoryIds(),Long.class));
+        }
+        if(query.getCategoryId()!=null){
+            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
+        }else{
+            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryIds())).collect(Collectors.toList());
+        }
+
+        //List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
+        Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
+        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
         goodsService.withGoodsItemList(goodsList);
         System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         modelAndView.addObject("query",query);

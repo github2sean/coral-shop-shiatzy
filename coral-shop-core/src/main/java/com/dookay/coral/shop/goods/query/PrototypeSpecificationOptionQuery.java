@@ -18,6 +18,7 @@ import java.util.List;
 public class PrototypeSpecificationOptionQuery extends Query {
 	private List<Long> ids;
 	private Long specificationId;
+	private String name;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(PrototypeSpecificationOptionDomain.class);
@@ -28,6 +29,10 @@ public class PrototypeSpecificationOptionQuery extends Query {
 		}
 		if(valid(ids)){
 			criteria.andIn("id",ids);
+		}
+		if(valid(name))
+		{
+			criteria.andEqualTo("name",name);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

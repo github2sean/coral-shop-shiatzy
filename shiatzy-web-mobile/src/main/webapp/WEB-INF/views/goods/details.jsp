@@ -13,13 +13,10 @@
           <div class="title">${web:selectLanguage()=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
           <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
-          <div class="dx-bag-slide" style="height: 28rem;">
+          <div class="dx-bag-slide" >
             <ul class="j_s_slider">
               <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
-                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 25rem;"></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 36rem;"></a></li>
               </c:forEach>
             </ul>
           </div>
@@ -65,7 +62,7 @@
             </c:if>
           </div>
 
-          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:7.8rem':''}" >
+          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${web:selectLanguage()=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
           </div>

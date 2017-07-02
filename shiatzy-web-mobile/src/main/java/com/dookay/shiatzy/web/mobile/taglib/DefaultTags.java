@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.taglib;
 
+import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.utils.SpringContextHolder;
@@ -39,6 +40,7 @@ public class DefaultTags {
 		query.setOrderBy("displayOrder");
 		query.setDesc(false);
 		query.setLevel(1);
+		query.setIsValid(ValidEnum.YES.getValue());
 		return   goodsCategoryService.listCategory(query);
 	}
 

@@ -3,6 +3,7 @@ package com.dookay.coral.common.persistence.pager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 分页模型处理

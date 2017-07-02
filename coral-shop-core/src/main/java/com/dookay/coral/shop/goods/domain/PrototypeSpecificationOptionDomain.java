@@ -36,7 +36,7 @@ public class PrototypeSpecificationOptionDomain implements Serializable {
 	private String enName;
 	
 	/*显示顺序*/
-	private String rank;
+	private Integer rank;
 
 	/*库存*/
 	@Transient

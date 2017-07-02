@@ -84,6 +84,12 @@ public class GoodsDomain implements Serializable {
 	/*是否能预约*/
 	private Integer isPre;
 
+	/*多分类*/
+	private String categoryIds;
+
+	@Transient
+	private List<Long> categoryIdList;
+
 	/*商品分类*/
 	@Transient
 	private GoodsCategoryDomain goodsCategory;
