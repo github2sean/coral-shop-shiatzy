@@ -442,7 +442,10 @@ public class GoodsController extends BaseController{
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
         System.out.println("sizeIds"+sizeIds);
         for(PrototypeSpecificationOptionDomain sizeDomain:sizeList){
-            sizeDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeDomain.getName(),goodsItemDomain.getColorId()));
+            String productNo = goodsItemDomain.getGoodsNo().split("\\s+")[0];//库存商品编号
+            String color = goodsItemDomain.getGoodsNo().split("\\s+")[1];//颜色标识
+
+            sizeDomain.setStock(goodsService.getTempStock(productNo,color,sizeDomain.getName()));
         }
 
         ModelAndView mv = new ModelAndView("goods/details");

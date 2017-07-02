@@ -191,6 +191,16 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	}
 
 	@Override
+	public Long getTempStock(String productNo, String color, String size) {
+		TempStockQuery query = new TempStockQuery();
+		query.setProductNo(productNo);
+		query.setSize(size);
+		query.setColor(color);
+		TempStockDomain tempStockDomain = tempStockService.getFirst(query);
+		return tempStockDomain==null?0L:Long.parseLong(tempStockDomain.getNum()+"");
+	}
+
+	@Override
 	public void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId, List<Long> parmaId) {
 
 		GoodsItemQuery itemQuery = new GoodsItemQuery();

@@ -41,7 +41,16 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
 
     void withSizeDomain(List<GoodsDomain> goodsList);
 
+    /**
+     * 无效
+     * @param goodsNo
+     * @param sizeValue
+     * @param colorId
+     * @return
+     */
     Long getTempStock(String goodsNo,String sizeValue,Long colorId);
+
+    Long getTempStock(String productNo,String color,String size);
 
     void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId,List<Long> parmaId);
     void sizeWithStock(List<PrototypeSpecificationOptionDomain> sizeDomainList, List<Long> goodsId, List<Long> parmaId);
