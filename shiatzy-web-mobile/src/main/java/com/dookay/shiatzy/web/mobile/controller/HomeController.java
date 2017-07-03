@@ -137,13 +137,14 @@ public class HomeController extends MobileBaseController {
         groupQuery.setOrderBy("rank");
         List<IndexBlockGroupDomain> groupList = indexBlockGroupService.getList(groupQuery);
         IndexBlockQuery blockQuery = new IndexBlockQuery();
-
+        System.out.println("groupList:"+groupList+"\n size:"+groupList.size());
         for(IndexBlockGroupDomain line:groupList){
             blockQuery.setGroupId(line.getId());
             blockQuery.setDesc(false);
             blockQuery.setOrderBy("rank");
             blockQuery.setIsValid(1);
             List<IndexBlockDomain> indexBlockDomainList  = indexBlockService.getList(blockQuery);
+            System.out.println("indexBlockDomainList:"+indexBlockDomainList+"\n size:"+indexBlockDomainList.size());
             line.setIndexBlockDomainList(indexBlockDomainList);
         }
         mv.addObject("groupList",groupList);
@@ -212,7 +213,6 @@ public class HomeController extends MobileBaseController {
         if(country==null){
             return  errorResult("无此国家");
         }
-        System.out.println("country:"+country);
         return successResult("查询成功",country);
     }
 
