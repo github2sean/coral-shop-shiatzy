@@ -82,6 +82,4 @@ public class CouponController extends BaseApiController {
         return successResponse("删除成功");
     }
 
-    
-
 }
