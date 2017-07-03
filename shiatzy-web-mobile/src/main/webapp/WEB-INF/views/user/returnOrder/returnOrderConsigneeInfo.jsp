@@ -64,6 +64,7 @@
                                 </font>&nbsp;<fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###"/></p>
                             </c:if>
                         </div>
+             
                     </div>
                 </c:forEach>
             </div>

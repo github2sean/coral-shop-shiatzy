@@ -497,13 +497,13 @@
 }*/
 
 .mail-change {
-    padding: 0 1.7778rem 0 2.1642rem;
+    padding:0 1.5459rem 0 1.5459rem;
     border-bottom: 2px solid #999999;
 }
 
 .password-change,
 .order-finish {
-    padding: 0 1.7778rem 0 2.1642rem;
+    padding: 0 1.5459rem 0 1.5459rem
 }
 
 .mail-change h4,

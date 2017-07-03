@@ -83,7 +83,7 @@
                         <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                     </div>
                     <div class="goods-info">
-                        <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div class="name">${item.goodsDomain.id}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <p class="code">产品编号：${item.goodsCode}</p>
                         <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>

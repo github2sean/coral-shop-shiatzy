@@ -2740,7 +2740,7 @@ textarea {
     text-align: left;
     font-size: 1rem;
     float: right;
-    width: 20rem ;
+    width: 18rem ;
 }
 @media screen and (max-height: 320px) {
     .goods-list .goods-item .goods-info{
