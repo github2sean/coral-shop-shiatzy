@@ -52,18 +52,15 @@ public class DefaultTags {
 		return  shippingCountryService.getList(query);
 	}
 
-
 	public static String getSelectCountry() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
-		System.out.println("selectCountry:"+selectCountry);
 		return  selectCountry;
 	}
 
 	public static String getSelectLanguage() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
-		System.out.println("selectLanguage:"+selectLanguage);
 		return  selectLanguage;
 	}
 

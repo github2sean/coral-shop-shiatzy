@@ -30,8 +30,8 @@
                         <c:if test="${row.stock>0}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="${row.num}"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a></c:if>
                         <c:if test="${row.stock<1}"><a href="#" class="minus" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>>-</a><input class="quantitys disabled" readonly="readonly" type="number" value="0"  onkeyup="value=value.replace(/[^\d]/g,'')"><a href="#" class="add" data-num="${row.stock}" data-value="${row.id}" <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >+</a><span class="hasOut" data-value="${row.id}">(<spring:message code="sellout"/>)</span></c:if>
                     </div>
-                    <div class="price ${not empty row.goodsDisPrice?'xzc-price':''} "><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="${not empty row.goodsDisPrice?'':'js_price'} do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
-                    <c:if test="${not empty row.goodsDisPrice}">
+                    <div class="price ${row.goodsDisPrice!=0?'xzc-price':''} "><spring:message code="shoppingCart.unitPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="${row.goodsDisPrice!=0?'':'js_price'} do-pro-price" data-value="${row.goodsPrice}" data-rate="1">&nbsp;</span></div>
+                    <c:if test="${row.goodsDisPrice!=0}">
                         <div class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>&nbsp;<span class="coinSymbol"></span>&nbsp;<span class="js_price do-pro-price" data-value="${row.goodsDisPrice}" data-rate="1">&nbsp;</span></div>
                     </c:if>
 

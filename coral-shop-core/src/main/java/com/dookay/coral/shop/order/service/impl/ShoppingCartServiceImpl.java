@@ -102,7 +102,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 			GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
 			ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
 			shoppingCartItemDomain.setCustomerId(customerDomain.getId());
-			shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+			shoppingCartItemDomain.setGoodsCode(goodsItemDomain.getGoodsNo());
 			shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
 			shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
 			shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
@@ -218,8 +218,6 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 				//购物车中删除
 				super.delete(items.getId());
 			}
-
-
 		}else {
 			throw new ServiceException("购物车为空");
 		}
