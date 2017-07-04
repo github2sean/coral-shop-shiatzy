@@ -27,6 +27,9 @@ public class CouponDomain implements Serializable {
 	
 	/*优惠券名称*/
 	private String name;
+
+	/*优惠券英文名称*/
+	private String enName;
 	
 	/*优惠券代码*/
 	private String code;

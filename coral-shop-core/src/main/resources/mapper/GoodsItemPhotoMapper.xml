@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.goods.mapper.GoodsItemPhotoMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`is_valid` as 'isValid',
+		    	a.`item_id` as 'itemId',
+		    	a.`image` as 'image',
+		    	a.`big_image` as 'bigImage',
+		    </trim>
+	   	from 
+	    	`t_goods_item_photo` as a
+	</sql>
+  
+</mapper>

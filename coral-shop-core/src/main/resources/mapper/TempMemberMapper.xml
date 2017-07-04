@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dookay.coral.shop.temp.mapper.TempMemberMapper" >
+  
+    <!-- 公共查询语句 -->
+	<sql id="selectSql">
+		select 
+		    <trim suffixOverrides="," >
+		    	a.`id` as 'id',
+		    	a.`card_no` as 'cardNo',
+		    	a.`card_type` as 'cardType',
+		    	a.`name` as 'name',
+		    	a.`member_id` as 'memberId',
+		    	a.`discount` as 'discount',
+		    	a.`mobile` as 'mobile',
+		    	a.`point` as 'point',
+		    	a.`card_type_name` as 'cardTypeName',
+		    </trim>
+	   	from 
+	    	`t_temp_member` as a
+	</sql>
+  
+</mapper>

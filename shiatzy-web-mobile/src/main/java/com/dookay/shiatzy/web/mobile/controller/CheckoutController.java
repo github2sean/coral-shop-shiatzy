@@ -12,6 +12,7 @@ import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.validate.FieldMatch;
 import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
 import com.dookay.coral.shop.content.query.MessageTemplateQuery;
 import com.dookay.coral.shop.content.service.IMessageTemplateService;
@@ -56,8 +57,11 @@ import com.dookay.coral.shop.store.query.StoreQuery;
 import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
+import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import com.dookay.coral.shop.temp.domain.TempStockDomain;
+import com.dookay.coral.shop.temp.query.TempMemberQuery;
 import com.dookay.coral.shop.temp.query.TempStockQuery;
+import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.coral.shop.temp.service.ITempStockService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
@@ -134,6 +138,8 @@ public class CheckoutController  extends BaseController{
     private IMessageTemplateService messageTemplateService;
     @Autowired
     private SimpleAliDMSendMail simpleAliDMSendMail;
+    @Autowired
+    private ITempMemberService tempMemberService;
 
 
     private static String CART_LIST = "cartList";
@@ -451,20 +457,40 @@ public class CheckoutController  extends BaseController{
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
+        Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
+        Double memDis = 1D;
+        Double memberDiscount = 0D;
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        if(accountDomain!=null){
+            CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+            if(customerDomain!=null&&customerDomain.getIsArtClubMember()==1){
+                TempMemberQuery query = new TempMemberQuery();
+                query.setMobile(customerDomain.getValidMobile());
+                List<String> cardType = new ArrayList<>();
+                cardType.add("CN-A");
+                cardType.add("CN-B");
+                cardType.add("CN-C");
+                cardType.add("CN-D");
+                query.setCardType(cardType);
+                TempMemberDomain tempMemberDomain = tempMemberService.getFirst(query);
+                memDis =tempMemberDomain!=null?tempMemberDomain.getDiscount():1D;
+            }
+        }
         //商品金额
         Double goodsTotal = 0D;
-        Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
         for (ShoppingCartItemDomain shoppingCartItemDomain :cartList){
             Double disPrice = shoppingCartItemDomain.getGoodsDisPrice();
             Double price = disPrice==null?shoppingCartItemDomain.getGoodsPrice():disPrice;
             goodsTotal  = goodsTotal+  price* shoppingCartItemDomain.getNum();
+            memberDiscount = goodsTotal*(1-memDis)/rate;
         }
+        orderDomain.setMemberDiscount(memberDiscount);
         orderDomain.setGoodsTotal(goodsTotal);
         Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();
-        Double memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
+        //memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
         Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
-        System.out.println("shipFee:"+shipFee+" couponDiscount:"+couponDiscount+" memberDiscount:"+memberDiscount/rate+" goodsTotal:"+goodsTotal);
-        Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount/rate;
+        System.out.println("shipFee:"+shipFee+" couponDiscount:"+couponDiscount+" memberDiscount:"+memberDiscount+" goodsTotal:"+goodsTotal);
+        Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount;
         BigDecimal bd = new BigDecimal(orderTotal);
         orderDomain.setOrderTotal(bd.setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
     }

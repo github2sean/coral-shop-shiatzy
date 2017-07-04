@@ -53,6 +53,8 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	private ITempStockService tempStockService;
 	@Autowired
 	private IGoodsColorService goodsColorService;
+	@Autowired
+	private IGoodsCategoryService goodsCategoryService;
 
 	@Override
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
@@ -189,6 +191,16 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	}
 
 	@Override
+	public Long getTempStock(String productNo, String color, String size) {
+		TempStockQuery query = new TempStockQuery();
+		query.setProductNo(productNo);
+		query.setSize(size);
+		query.setColor(color);
+		TempStockDomain tempStockDomain = tempStockService.getFirst(query);
+		return tempStockDomain==null?0L:Long.parseLong(tempStockDomain.getNum()+"");
+	}
+
+	@Override
 	public void colorWithStock( List<GoodsColorDomain> goodsColorDomainList,List<Long> goodsId, List<Long> parmaId) {
 
 		GoodsItemQuery itemQuery = new GoodsItemQuery();
@@ -228,6 +240,18 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			}
 		}
 
+	}
+
+	@Override
+	public List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList) {
+
+		List<Long> categoryIds = new ArrayList<>();
+		for (GoodsDomain line:goodsList){
+			categoryIds.add(line.getCategoryId());
+		}
+		GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
+		categoryQuery.setIds(categoryIds);
+		return goodsCategoryService.getList(categoryQuery);
 	}
 
 }

@@ -13,18 +13,15 @@
           <div class="title">${web:selectLanguage()=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
           <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
-          <div class="dx-bag-slide" style="height: 28rem;">
+          <div class="dx-bag-slide" >
             <ul class="j_s_slider">
               <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
-                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 25rem;"></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
-                <li><a href="javascript:;"><img src="${item.file}" alt=""></a></li>
+                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 36rem;"></a></li>
               </c:forEach>
             </ul>
           </div>
-          <div class="price"><span class="do-pro-price <c:if test="${not empty goodsDomain.disPrice}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
-              <c:if test="${not empty goodsDomain.disPrice}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsDomain.disPrice}">&nbsp;</span></c:if>
+          <div class="price"><span class="do-pro-price <c:if test="${goodsItemDomain.discountPrice!=0}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
+              <c:if test="${goodsItemDomain.discountPrice!=0}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsItemDomain.discountPrice}">&nbsp;</span></c:if>
             <a href="javascript:;" class="j_collect " style="margin-top:0.8rem;">
               <svg id="add_to_wish" style="transform:scale(2);-webkit-transform:scale(2)">
                 <use xlink:href="#heart-red"></use>
@@ -44,7 +41,6 @@
               </ul>
             </c:if>
           </div>
-
           <div class="size j_collapse">
             <h3 class="title">
               <spring:message code="shoppingCart.size" /> &nbsp;&nbsp; <span class="sizeChecked"></span>&nbsp;&nbsp;<span class="sizeNotice"><spring:message code="goods.detail.sizeNotice"/></span></h3>
@@ -65,7 +61,7 @@
             </c:if>
           </div>
 
-          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:7.8rem':''}" >
+          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${web:selectLanguage()=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
           </div>
@@ -84,8 +80,8 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                   </div>
                   <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                  <p class="do-pro-price <c:if test="${not empty goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
-                    <c:if test="${not empty goods.disPrice}">
+                  <p class="do-pro-price <c:if test="${goods.disPrice!=0}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                    <c:if test="${goods.disPrice!=0}">
                         <p class="do-pro-price xzc-dis-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
                     </c:if>
                   <ul class="do-list-color" name="skuId" data-value="">

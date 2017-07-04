@@ -29,6 +29,8 @@ public class GoodsQuery extends Query {
 	private  List<Long> categoryIds;
 	private  Integer isSale;
 	private  String code;
+
+	private Integer isPublished;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
@@ -55,6 +57,9 @@ public class GoodsQuery extends Query {
 		}
 		if(valid(code)){
 			criteria.andEqualTo("code",code);
+		}
+		if(valid(isPublished)){
+			criteria.andEqualTo("isPublished",isPublished);
 		}
 		return queryCriteria;
 	}

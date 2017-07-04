@@ -289,7 +289,7 @@ public class ShoppingCartController extends BaseController{
                         GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
                         GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
                         ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
-                        shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+                        shoppingCartItemDomain.setGoodsCode(goodsItemDomain.getGoodsNo());
                         shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
                         shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
                         shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
@@ -300,33 +300,41 @@ public class ShoppingCartController extends BaseController{
                         shoppingCartItemDomain.setNum(form.getNum());
                         shoppingCartItemDomain.setSkuSpecifications(skuDomain.getSpecifications());
                         shoppingCartItemDomain.setFormId(form.getId());
-                        PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(form.getSizeId());
-                        shoppingCartItemDomain.setSizeDomain(sizeDomain);
-                        String sizeValue = sizeDomain.getName();
-                        Long colorId = goodsItemDomain.getColorId();
-                        shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
                         cartList.add(shoppingCartItemDomain);
-                        shoppingCartService.withGoodsItem(cartList);
-                        shoppingCartService.withSku(cartList);
                     }
                 }
+                shoppingCartService.withGoodsItem(cartList);
+                shoppingCartService.withSku(cartList);
+                shoppingCartService.withSizeDomain(cartList);
             }
         }else {
             Long accountId = userContext.getAccountDomain().getId();
             CustomerDomain customerDomain = customerService.getAccount(accountId);
             cartList= shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
             for (ShoppingCartItemDomain cartItemDomain:cartList){
-                Long colorId = goodsItemService.get(cartItemDomain.getItemId()).getColorId();
-                String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(cartItemDomain.getSkuSpecifications()).getLong("size")).getName();
-                cartItemDomain.setStock(goodsService.getTempStock(cartItemDomain.getGoodsCode(),sizeValue,colorId));
+                GoodsItemDomain  goodsItemDomain = goodsItemService.get(cartItemDomain.getItemId());
+                PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(JSONObject.fromObject(cartItemDomain.getSkuSpecifications()).getLong("size"));
+
+                String productNo = goodsItemDomain.getGoodsNo().split("\\s+")[0];//库存商品编号
+                String color = goodsItemDomain.getGoodsNo().split("\\s+")[1];//颜色标识
+                cartItemDomain.setStock(goodsService.getTempStock(productNo,color,sizeDomain.getName()));
             }
             shoppingCartService.withGoodsItem(cartList);
             shoppingCartService.withSku(cartList);
             shoppingCartService.withSizeDomain(cartList);
         }
+        updateStock(cartList);
         ModelAndView mv = new ModelAndView("shoppingcart/list");
         mv.addObject("cartList",cartList);
         return mv;
+    }
+
+    private void updateStock(List<ShoppingCartItemDomain> cartList) {
+        for(ShoppingCartItemDomain cartItemDomain:cartList){
+            String productNo = cartItemDomain.getGoodsCode().split("\\s+")[0];//库存商品编号
+            String color = cartItemDomain.getGoodsCode().split("\\s+")[1];//颜色标识
+            cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));
+        }
     }
 
     @RequestMapping(value = "wishlist" ,method = RequestMethod.GET)
@@ -348,6 +356,8 @@ public class ShoppingCartController extends BaseController{
             String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")).getName();
             line.setStock(goodsService.getTempStock(line.getGoodsCode(),sizeValue,colorId));
         }
+        updateStock(wishList);
+
         query.setIds(goodsIds);
         List<GoodsDomain> goodsList =  goodsService.getList(query);
         for(GoodsDomain line:goodsList){

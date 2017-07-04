@@ -128,9 +128,9 @@
 		this.callback = options.callback;
 		this.title = options.title || '';
 		this.options.itemHeight = options.itemHeight || 35;
-		this.options.itemShowCount = [3, 5, 7, 9].indexOf(options.itemShowCount) !== -1? options.itemShowCount: 7; 
+		this.options.itemShowCount = [3, 5, 7, 9].indexOf(options.itemShowCount) !== -1? options.itemShowCount: 7;
 		this.options.coverArea1Top = Math.floor(this.options.itemShowCount / 2);
-		this.options.coverArea2Top = Math.ceil(this.options.itemShowCount / 2); 
+		this.options.coverArea2Top = Math.ceil(this.options.itemShowCount / 2);
 		this.options.headerHeight = options.headerHeight || 44;
 		this.options.relation = iosSelectUtil.isArray(this.options.relation)? this.options.relation: [];
 		this.options.oneTwoRelation = this.options.relation[0];
@@ -159,36 +159,36 @@
 			var self = this;
 			var all_html = [
 				'<header style="height: ' + this.options.headerHeight + this.options.cssUnit + '; line-height: ' + this.options.headerHeight + this.options.cssUnit + '" class="iosselect-header">',
-					'<h2 id="iosSelectTitle"></h2>',
-					'<a style="height: ' + this.options.headerHeight + this.options.cssUnit + '; line-height: ' + this.options.headerHeight + this.options.cssUnit + '" href="javascript:void(0)" class="close">取消</a>',
-					'<a style="height: ' + this.options.headerHeight + this.options.cssUnit + '; line-height: ' + this.options.headerHeight + this.options.cssUnit + '" href="javascript:void(0)" class="sure">确定</a>',
+				'<h2 id="iosSelectTitle"></h2>',
+				'<a style="height: ' + this.options.headerHeight + this.options.cssUnit + '; line-height: ' + this.options.headerHeight + this.options.cssUnit + '" href="javascript:void(0)" class="close">取消</a>',
+				'<a style="height: ' + this.options.headerHeight + this.options.cssUnit + '; line-height: ' + this.options.headerHeight + this.options.cssUnit + '" href="javascript:void(0)" class="sure">确定</a>',
 				'</header>',
 				'<section class="iosselect-box">',
-					'<div class="one-level-contain" id="oneLevelContain">',
-						'<ul class="select-one-level">',
-						'</ul>',
-					'</div>',
-					'<div class="two-level-contain" id="twoLevelContain">',
-						'<ul class="select-two-level">',
-						'</ul>',
-					'</div>',
-					'<div class="three-level-contain" id="threeLevelContain">',
-						'<ul class="select-three-level">',
-						'</ul>',
-					'</div>',
-					'<div class="four-level-contain" id="fourLevelContain">',
-						'<ul class="select-four-level">',
-						'</ul>',
-					'</div>',
-					'<div class="five-level-contain" id="fiveLevelContain">',
-						'<ul class="select-five-level">',
-						'</ul>',
-					'</div>',
+				'<div class="one-level-contain" id="oneLevelContain">',
+				'<ul class="select-one-level">',
+				'</ul>',
+				'</div>',
+				'<div class="two-level-contain" id="twoLevelContain">',
+				'<ul class="select-two-level">',
+				'</ul>',
+				'</div>',
+				'<div class="three-level-contain" id="threeLevelContain">',
+				'<ul class="select-three-level">',
+				'</ul>',
+				'</div>',
+				'<div class="four-level-contain" id="fourLevelContain">',
+				'<ul class="select-four-level">',
+				'</ul>',
+				'</div>',
+				'<div class="five-level-contain" id="fiveLevelContain">',
+				'<ul class="select-five-level">',
+				'</ul>',
+				'</div>',
 				'</section>',
 				'<hr class="cover-area1"/>',
 				'<hr class="cover-area2"/>',
 				'<div class="ios-select-loading-box" id="iosSelectLoadingBox">',
-				    '<div class="ios-select-loading"></div>',
+				'<div class="ios-select-loading"></div>',
 				'</div>'
 			].join('\r\n');
 			this.iosSelectLayer = new Layer(all_html, {
@@ -293,7 +293,7 @@
 					self.setTwoLevel(self.selectOneObj.id, self.selectTwoObj.id, self.selectThreeObj.id, self.selectFourObj.id, self.selectFiveObj.id);
 				}
 			});
-            this.scrollOne.on('scrollCancel', function() {
+			this.scrollOne.on('scrollCancel', function() {
 				var pa = Math.abs(this.y / self.baseSize) / self.options.itemHeight;
 				var plast = 1;
 				var to = 0;
@@ -389,7 +389,7 @@
 						self.setThreeLevel(self.selectOneObj.id, self.selectTwoObj.id, self.selectThreeObj.id, self.selectFourObj.id, self.selectFiveObj.id);
 					}
 				});
-                this.scrollTwo.on('scrollCancel', function() {
+				this.scrollTwo.on('scrollCancel', function() {
 					var pa = Math.abs(this.y / self.baseSize) / self.options.itemHeight;
 					var plast = 1;
 					var to = 0;
@@ -485,7 +485,7 @@
 						self.setFourLevel(self.selectOneObj.id, self.selectTwoObj.id, self.selectThreeObj.id, self.selectFourObj.id, self.selectFiveObj.id);
 					}
 				});
-                this.scrollThree.on('scrollCancel', function() {
+				this.scrollThree.on('scrollCancel', function() {
 					var pa = Math.abs(this.y / self.baseSize) / self.options.itemHeight;
 					var plast = 1;
 					var to = 0;
@@ -581,7 +581,7 @@
 						self.setFiveLevel(self.selectOneObj.id, self.selectTwoObj.id, self.selectThreeObj.id, self.selectFourObj.id, self.selectFiveObj.id);
 					}
 				});
-                this.scrollFour.on('scrollCancel', function() {
+				this.scrollFour.on('scrollCancel', function() {
 					var pa = Math.abs(this.y / self.baseSize) / self.options.itemHeight;
 					var plast = 1;
 					var to = 0;
@@ -865,8 +865,8 @@
 				throw new Error('data format error');
 			}
 		},
-	    renderThreeLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, threeLevelData) {
-	    	var plast = 0;
+		renderThreeLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, threeLevelData) {
+			var plast = 0;
 			var hasAtId = threeLevelData.some(function(v, i, o) {
 				return v.id == threeLevelId;
 			});
@@ -895,8 +895,8 @@
 
 			var pdom = this.changeClassName(this.threeLevelContainDom, plast);
 			this.selectThreeObj = iosSelectUtil.attrToData(pdom, this.getAtIndexByPlast(plast));
-	    },
-	    getFourLevel: function(oneLevelId, twoLevelId, threeLevelId) {
+		},
+		getFourLevel: function(oneLevelId, twoLevelId, threeLevelId) {
 			var fourLevelData = [];
 			if (this.options.threeFourRelation === 1) {
 				this.data[3].forEach(function(v, i, o) {
@@ -925,8 +925,8 @@
 				throw new Error('data format error');
 			}
 		},
-	    renderFourLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, fourLevelData) {
-	    	var plast = 0;
+		renderFourLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, fourLevelData) {
+			var plast = 0;
 			var hasAtId = fourLevelData.some(function(v, i, o) {
 				return v.id == fourLevelId;
 			});
@@ -955,8 +955,8 @@
 
 			var pdom = this.changeClassName(this.fourLevelContainDom, plast);
 			this.selectFourObj = iosSelectUtil.attrToData(pdom, this.getAtIndexByPlast(plast));
-	    },
-	    getFiveLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId) {
+		},
+		getFiveLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId) {
 			var fiveLevelData = [];
 			if (this.options.fourFiveRelation === 1) {
 				this.data[4].forEach(function(v, i, o) {
@@ -985,8 +985,8 @@
 				throw new Error('data format error');
 			}
 		},
-	    renderFiveLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, fiveLevelData) {
-	    	var plast = 0;
+		renderFiveLevel: function(oneLevelId, twoLevelId, threeLevelId, fourLevelId, fiveLevelId, fiveLevelData) {
+			var plast = 0;
 			var hasAtId = fiveLevelData.some(function(v, i, o) {
 				return v.id == fiveLevelId;
 			});
@@ -1011,79 +1011,55 @@
 
 			var pdom = this.changeClassName(this.fiveLevelContainDom, plast);
 			this.selectFiveObj = iosSelectUtil.attrToData(pdom, this.getAtIndexByPlast(plast));
-	    },
-	    getWhiteItem: function() {
-	    	var whiteItemHtml = '';
-	    	whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
-	    	if (this.options.itemShowCount > 3) {
-	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
-	    	}
-	    	if (this.options.itemShowCount > 5) {
-	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
-	    	}
-	    	if (this.options.itemShowCount > 7) {
-	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
-	    	}
-	    	return whiteItemHtml;
-	    }, 
-	    changeClassName: function(levelContainDom, plast) {
-	    	var pdom;
-	    	if (this.options.itemShowCount === 3) {
-	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')');
+		},
+		getWhiteItem: function() {
+			var whiteItemHtml = '';
+			whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+			if (this.options.itemShowCount > 3) {
+				whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+			}
+			if (this.options.itemShowCount > 5) {
+				whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+			}
+			if (this.options.itemShowCount > 7) {
+				whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+			}
+			return whiteItemHtml;
+		},
+		changeClassName: function(levelContainDom, plast) {
+			var pdom;
+			if (this.options.itemShowCount === 3) {
+				pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')');
 				pdom.classList.add('at');
-				var id = pdom.attr("data-id")
-				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-					if(data.code==200){
-						console.log(code.message);
-					}
-				});
-	    	}
-	    	else if (this.options.itemShowCount === 5) {
-	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')');
+			}
+			else if (this.options.itemShowCount === 5) {
+				pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')');
 				pdom.classList.add('at');
-				var id = pdom.attr("data-id")
-				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-					if(data.code==200){
-						console.log(code.message);
-					}
-				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')').classList.add('side1');
-	    	}
-	    	else if (this.options.itemShowCount === 7) {
-	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')');
+			}
+			else if (this.options.itemShowCount === 7) {
+				pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')');
 				pdom.classList.add('at');
-				var id = pdom.attr("data-id")
-				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-					if(data.code==200){
-						console.log(code.message);
-					}
-				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')').classList.add('side2');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 4) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 5) + ')').classList.add('side2');
-	    	}
-	    	else if (this.options.itemShowCount === 9) {
-	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 4) + ')');
+			}
+			else if (this.options.itemShowCount === 9) {
+				pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 4) + ')');
 				pdom.classList.add('at');
-				var id = pdom.attr("data-id")
-				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-					if(data.code==200){
-						console.log(code.message);
-					}
-				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')').classList.add('side2');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 5) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 6) + ')').classList.add('side2');
-	    	}
-	    	return pdom;
-	    },
-	    getAtIndexByPlast: function(plast) {
-	    	return plast + Math.ceil(this.options.itemShowCount / 2);
-	    },
-	    setBase: function() {
+			}
+			return pdom;
+		},
+		getAtIndexByPlast: function(plast) {
+			return plast + Math.ceil(this.options.itemShowCount / 2);
+		},
+		setBase: function() {
 			if (this.options.cssUnit === 'rem') {
 				var dltDom = document.documentElement;
 				var dltStyle = window.getComputedStyle(dltDom, null);

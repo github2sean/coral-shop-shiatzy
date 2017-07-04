@@ -87,9 +87,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerDomain> impleme
 			create(customerDomain);
 			getCustomer = getAccount(customerDomain.getAccountId());
 			if(getCustomer!=null){
-				CustomerAddressDomain customerAddressDomain = new CustomerAddressDomain();
+				/*CustomerAddressDomain customerAddressDomain = new CustomerAddressDomain();
 				customerAddressDomain.setCustomerId(getCustomer.getId());
-				customerAddressService.create(customerAddressDomain);
+				customerAddressService.create(customerAddressDomain);*/
 			}else {
 				throw new ServiceException("创建用户失败");
 			}

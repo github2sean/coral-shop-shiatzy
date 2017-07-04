@@ -37,6 +37,11 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
+	<table tableName="t_goods_item_photo" domainObjectName="GoodsItemPhoto"
+		   packageName="com.dookay.coral.shop.goods" desc="商品项目照片" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
 	<table tableName="t_goods_attribute_value" domainObjectName="GoodsAttributeValue"
 		   packageName="com.dookay.coral.shop.goods" desc="商品属性值" author="luxor">
 		<generatedKey column="id" identity="true" />

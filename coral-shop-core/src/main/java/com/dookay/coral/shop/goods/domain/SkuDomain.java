@@ -41,6 +41,7 @@ public class SkuDomain implements Serializable {
 	/*商品规格json*/
 	private String specifications;
 
+	private String size;
 	/*创建时间*/
 	private Date createTime;
 
@@ -52,6 +53,7 @@ public class SkuDomain implements Serializable {
 
 	/*能否预约*/
 	private Integer isPre;
+
 
 	/*商品*/
 	@Transient

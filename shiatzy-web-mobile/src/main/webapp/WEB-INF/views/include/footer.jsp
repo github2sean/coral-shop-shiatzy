@@ -27,7 +27,7 @@
     <ul class="do-list-lang j_drop_down">
         <li>
             <a href="javascript:void(0)" id="trigger_select_country">
-                <select id="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                <select class="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
                     <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
                         <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
@@ -77,6 +77,16 @@
     </ul>
 </div>
 
+<div class="form-item item-line">
+    <label></label>
+    <div class="pc-box">
+        <input type="hidden" name="bank_id" id="bankId" value="">
+        <span id="showBank"></span>
+    </div>
+</div>
+
+<script src="${ctx}/static/js/iosSelect.js"></script>
+<script src="${ctx}/static/js/iscroll.js"></script>
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
@@ -98,6 +108,8 @@
 <script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 <!-- 轮播 结束 -->
+
+
 
 <!-- js页面应用 开始 -->
 <script>
@@ -243,9 +255,12 @@
 
     $(function () {
 
-        $("#select_country").change(function(){
+        $(".select_country").change(function(){
             var id =  $(this).find("option:selected").attr("value");
             $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    location.reload();
+                }
             });
         });
 
@@ -411,33 +426,48 @@
     //
 
     <c:if test="${empty web:selectCountry()}">
-        layer.config({
-            extend: 'selectCountry/style.css', //加载您的扩展样式
-            skin: 'layer-ext-selectCountry'
-        });
-        window.onload=function(){
 
-            layer.open({
-                type:1,
-                shade:0,
-                title:false,
-                closeBtn:0,
-                skin: 'selectCountry',
-                content:$(".country-select"),
-                area:['100%','100%'],
-                success: function(layero, index){
-                    $('html').css("height","100%").css("overflow","hidden");
-                    $('body').css("height","100%").css("overflow","hidden");
-                },
-                end:function () {
-                    $('html').css("height","auto").css("overflow","auto");
-                    $('body').css("height","auto").css("overflow","auto");
-                    document.body.style.overflow = "auto";
-                }
-            });
-            document.body.style.overflow = "hidden";
-        }
+    var showBankDom = document.querySelector('#showBank');
+    var bankIdDom = document.querySelector('#bankId');
+    var data = new Array();
+    $(".country-select").find("a").each(function (index) {
+        var id  = $(this).attr("data-value");
+        var name = $(this).text();
+        data[index] = {"id":id,"value":name};
+    });
+    window.onload=function(){
+        var bankId = showBankDom.dataset['id'];
+        var bankName = showBankDom.dataset['value'];
+
+        var bankSelect = new IosSelect(1,
+                [data],
+                {
+                    container: '.container',
+                    title: '选择您所在的地区',
+                    itemHeight: 50,
+                    itemShowCount: 5,
+                    oneLevelId: bankId,
+                    callback: function (selectOneObj) {
+                        bankIdDom.value = selectOneObj.id;
+                        showBankDom.innerHTML = selectOneObj.value;
+                        showBankDom.dataset['id'] = selectOneObj.id;
+                        showBankDom.dataset['value'] = selectOneObj.value;
+                        var id = selectOneObj.id;
+                        $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                         if(data.code==200){
+                         console.log(data.message);
+                         }
+                         });
+                    }
+                });
+        $(".sure").html("确认");
+        $(".close").hide();
+    };
+
+
     </c:if>
+
+
 </script>
 <!-- js页面应用 结束 -->
 </body>

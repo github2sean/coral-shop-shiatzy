@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="${ctx}/static/css/nivo_slider.css">
     <link rel="stylesheet" href="${ctx}/static/css/default.css">
     <!-- 轮播 结束 -->
-
+    <link rel="stylesheet" href="${ctx}/static/css/iosSelect.css">
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {
@@ -235,16 +235,11 @@
     </div>
     <div class="do-nav-cnt">
         <div class="do-search">
-            <form action="/goods/search" method="post" id="contentForm">
+            <form action="/goods/search" method="get" id="contentForm">
                 <input type="text" id="searchKey" placeholder="<spring:message code="searchKey"/>" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="searchKey"/>'"/>
-                <input type="hidden" value="1"  name="pageIndex">
-                <input type="hidden" value="10"  name="pageSize">
-                <input type="hidden" value="0"  name="offset">
-                <input type="hidden" value="10"  name="limit">
                 <button class="iconfont" id="searchBtn">&#xe610;</button>
             </form>
         </div>
-
         <ul class="guide-nav j_drop_down">
             <c:forEach var="level1" items="${web:categoryList()}" begin="0">
             <li data-image="${ImageModel.toFirst(level1.thumb).file}">
@@ -264,11 +259,22 @@
         </ul>
         <ul class="do-list-lang">
             <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>
-            <li class="do-login"><a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
-            <li><a href="/home/listShippingCountry"><spring:message code="selectOtherCountriesORRegions"/></a></li>
+            <li class="do-login">
+                <a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
+            <li>
+                <a href="javascript:void(0)">
+                    <select class="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                        <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
+                        <c:forEach var="country" items="${web:countryList()}" begin="0">
+                            <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
+                        </c:forEach>
+                    </select>
+                </a></li>
         </ul>
         <ul class="do-list-lang j_drop_down">
-            <li class=""><a href="javascript:void(0);"><spring:message code="selectLanguage"/>
+            <li class=""><a href="javascript:void(0);">
+               <spring:message code="selectLanguage"/>
+            </a>
                 <ul class="do-sub-list-btm">
                     <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
                     <li><a class="language" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
