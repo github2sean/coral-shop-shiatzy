@@ -393,38 +393,22 @@
                     showBankDom.innerHTML = selectOneObj.value;
                     showBankDom.dataset['id'] = selectOneObj.id;
                     showBankDom.dataset['value'] = selectOneObj.value;
-
+                    console.log(selectOneObj.id);
+                    $(".one-level-contain").find(".at").on("click",function () {
+                        alert(1);
+                    });
                 }
             });
         $(".sure").html("DONE");
-//        layer.open({
-//            type:1,
-//            shade:0.8,
-//            title:false,
-//            closeBtn:0,
-//            content:$(".country-select"),
-//            area:['100%','270px'],
-//            success: function(layero, index){
-//                $('html').css("height","100%").css("overflow","hidden");
-//                $('body').css("height","100%").css("overflow","hidden");
-//
-//            },
-//            end:function () {
-//                $('html').css("height","auto").css("overflow","auto");
-//                $('body').css("height","auto").css("overflow","auto");
-//            }
-//        });
-//        $(".country-select .country-con li a").click(function(e){
-//            e.preventDefault();
-//            console.log("nnn");
-//            $("#country-select").css("display","none");
-//        })
-
     };
-
     showBankDom.addEventListener('click', function () {
-
+        alert(1);
     });
+
+
+    function  selectCountry() {
+        alert(1);
+    }
 
 </script>
 </body>
