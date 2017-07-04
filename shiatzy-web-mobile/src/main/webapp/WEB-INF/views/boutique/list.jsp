@@ -30,17 +30,17 @@
         .goods-item:nth-of-type(odd) {
 
         }
-.goods-item{
-    float: left;
-    padding: 1rem 0;
-    border-right: 1px solid #ccc;
-    text-align: center;
-    font-size: 1rem;
-    width: 50%;
-    border-bottom: 1px solid #ccc;
-    position: relative;
-}
-        .goods-item .do-list-icon{ top: 6rem;}
+        .goods-item{
+            float: left;
+            padding: 1rem 0;
+            border-right: 1px solid #ccc;
+            text-align: center;
+            font-size: 1rem;
+            width: 50%;
+            border-bottom: 1px solid #ccc;
+            position: relative;
+        }
+        .goods-item .do-list-icon{ top: 3rem;}
         .goods-item .pic {text-align: center;}
         .goods-item .pic img{    max-height: 100%;width: 10rem;}
     </style>
@@ -60,10 +60,10 @@
                     <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
                     <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
                 </div>
-                <p style="display: inline;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                <p style="display: inline;" class="price ${row.goodsDisPrice!=0?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
                 </p>
-                <c:if test="${not empty row.goodsDisPrice}">
+                <c:if test="${row.goodsDisPrice!=0}">
                     <p class="price xzc-dis-price" style="display: inline;margin-left: 1rem"><spring:message code="shoppingCart.disPrice"/>&nbsp;
                         <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span>
                     </p>

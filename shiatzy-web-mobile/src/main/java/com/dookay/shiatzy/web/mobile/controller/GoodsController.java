@@ -14,6 +14,7 @@ package com.dookay.shiatzy.web.mobile.controller;
         import com.dookay.coral.shop.goods.service.*;
         import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
         import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
+        import org.apache.commons.collections.CollectionUtils;
         import org.apache.shiro.session.Session;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
@@ -89,7 +90,7 @@ public class GoodsController extends BaseController{
             modelAndView.addObject("sizeList",getSizes(goodsList));
 
             //过滤开始
-            doFilter(query,modelAndView,goodsList,priceWay);
+            doFilter(query,modelAndView,goodsList,priceWay,goodsList.size());
 
             goodsService.withSizeDomain(goodsList);
         }
@@ -202,19 +203,21 @@ public class GoodsController extends BaseController{
             query.setCategoryId(categoryId);
         }
         //商品列表
-        System.out.println("query:"+query);
-
         //支持多分类查询
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsPublished(ValidEnum.YES.getValue());
         List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
         for (GoodsDomain goodsDomain :goodsListAll){
-            goodsDomain.setCategoryIdList(JSON.parseArray(goodsDomain.getCategoryIds(),Long.class));
+            List<Long> categoryIdList = JSON.parseArray(goodsDomain.getCategoryIds(),Long.class);
+            System.out.println("categoryIdList:"+JsonUtils.toJSONString(categoryIdList));
+            goodsDomain.setCategoryIdList(categoryIdList);
         }
         if(query.getCategoryId()!=null){
             goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
         }else{
-            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryIds())).collect(Collectors.toList());
+            System.out.println("getCategoryIdList:"+JsonUtils.toJSONString(query.getCategoryIds()));
+            goodsListAll  =goodsListAll.stream().filter(x->
+                    CollectionUtils.containsAny(x.getCategoryIdList(),query.getCategoryIds())).collect(Collectors.toList());
         }
 
         //List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
@@ -239,12 +242,12 @@ public class GoodsController extends BaseController{
         goodsService.withSizeDomain(goodsList);
 
         //过滤开始
-        doFilter(query,modelAndView,goodsList,priceWay);
+        doFilter(query,modelAndView,goodsList,priceWay,goodsListAll.size());
 
         return modelAndView;
     }
 
-    public void doFilter(GoodsQuery query,ModelAndView modelAndView,List<GoodsDomain> goodsList,Integer priceWay){
+    public void doFilter(GoodsQuery query,ModelAndView modelAndView,List<GoodsDomain> goodsList,Integer priceWay,int total){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         //清空session中筛选条件
@@ -271,29 +274,60 @@ public class GoodsController extends BaseController{
 
         System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         if(priceWay == null ){
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),query.getPageSize());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),total);
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         }else if(priceWay ==0 || priceWay ==1)
         {
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),query.getPageSize());
+            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),total);
             modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
         }
     }
 
-
     @RequestMapping(value = "listMore", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult listMore(String goodsName,Long categoryId,Integer priceWay,Integer offset,Integer nowPage){
-
         GoodsQuery query = new GoodsQuery();
+        GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
+        List <GoodsCategoryDomain> list =null;
+        if(goodsCategoryDomain.getLevel()==1){
+            List<Long> childCategoryIds = new ArrayList<>();
+            GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
+            goodsCategoryQuery.setParentId(goodsCategoryDomain.getId());
+            goodsCategoryQuery.setLevel(2);
+            goodsCategoryQuery.setIsValid(ValidEnum.YES.getValue());
+            list  = goodsCategoryService.getList(goodsCategoryQuery);
+            for (GoodsCategoryDomain line: list){
+                childCategoryIds.add(line.getId());
+            }
+            query.setCategoryIds(childCategoryIds);
+            query.setCategoryId(null);
+        }else{
+            query.setCategoryId(categoryId);
+        }
+
         //query.setOffset(offset);
        // query.setLimit(2);
         query.setName(goodsName);
         query.setPageIndex(nowPage);
-        query.setPageSize(10);
+        query.setPageSize(20);
         //商品列表
-        query.setCategoryId(categoryId);
-        List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();
+        //支持多分类查询
+        GoodsQuery goodsQuery = new GoodsQuery();
+        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
+        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
+        for (GoodsDomain goodsDomain :goodsListAll){
+            goodsDomain.setCategoryIdList(JSON.parseArray(goodsDomain.getCategoryIds(),Long.class));
+        }
+        if(query.getCategoryId()!=null){
+            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
+        }else{
+            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryIds())).collect(Collectors.toList());
+        }
+
+        //List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
+        Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
+        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
+
         goodsService.withGoodsItemList(goodsList);
 
         HttpServletRequest request = HttpContext.current().getRequest();
