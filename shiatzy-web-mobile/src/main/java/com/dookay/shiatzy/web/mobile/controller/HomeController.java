@@ -192,10 +192,8 @@ public class HomeController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         if("zh_CN".equals(nowLanguage)){
-            session.setAttribute("language",nowLanguage);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }else if("en_US".equals(nowLanguage)){
-            session.setAttribute("language",nowLanguage);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"en_US",MAX_COOKIE_AGE);
         }else{
             return errorResult("参数有错");

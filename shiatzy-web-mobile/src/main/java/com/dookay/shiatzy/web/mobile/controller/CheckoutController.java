@@ -161,7 +161,7 @@ public class CheckoutController  extends BaseController{
         Double fee = 0D;
         if(StringUtils.isNotBlank(countryId)){
             shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
-            Double rate = shippingCountryDomain.getRate();
+            Double rate = shippingCountryDomain.getRate()!=null?shippingCountryDomain.getRate():1D;
             //根据国家选择结算币种
             int currentCodeType = shippingCountryDomain.getRateType();
             if(currentCodeType==1){
@@ -417,18 +417,17 @@ public class CheckoutController  extends BaseController{
         for(int i=0 ;i<cartList.size();i++){
             shoppingCartService.removeFromCart(cartList.get(i).getId());
         }
-        //发送短信通知
-        smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
-        //发送邮件通知 TODO: 2017/6/15
 
+
+        /*//发送短信通知
+        smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
+        //发送邮件通知
         MessageTemplateQuery query = new MessageTemplateQuery();
         query.setType(1);
         query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
         query.setIsValid(1);
         MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
         //emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
-
-
         //生成模版
         Map<String,Object> freeMap = new HashMap<>();
         freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
@@ -447,7 +446,7 @@ public class CheckoutController  extends BaseController{
         emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
         emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
         emailMap.put(simpleAliDMSendMail.CONTENT,html);
-        simpleAliDMSendMail.sendEmail(emailMap);
+        simpleAliDMSendMail.sendEmail(emailMap);*/
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
