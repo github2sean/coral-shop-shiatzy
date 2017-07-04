@@ -35,6 +35,9 @@ public class IndexBlockGroupDomain implements Serializable {
 	
 	/*标题*/
 	private String title;
+
+	/*标题*/
+	private String enTitle;
 	
 	/*排版类型：1单图 2双图*/
 	private String type;

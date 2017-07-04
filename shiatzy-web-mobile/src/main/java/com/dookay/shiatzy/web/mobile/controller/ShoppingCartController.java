@@ -331,8 +331,8 @@ public class ShoppingCartController extends BaseController{
 
     private void updateStock(List<ShoppingCartItemDomain> cartList) {
         for(ShoppingCartItemDomain cartItemDomain:cartList){
-            String productNo = cartItemDomain.getGoodsCode().split("\\s+")[0];//库存商品编号
-            String color = cartItemDomain.getGoodsCode().split("\\s+")[1];//颜色标识
+                String productNo = cartItemDomain.getGoodsCode().split("\\s+")[0];//库存商品编号
+                String color = cartItemDomain.getGoodsCode().split("\\s+")[1];//颜色标识
             cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));
         }
     }

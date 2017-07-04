@@ -36,8 +36,8 @@
         </li>
         <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
             <ul class="do-sub-list-btm">
-                <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
-                <li><a class="language" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
+                <li><a class="language" id="CHINA" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
+                <li><a class="language" id="OTHER" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
             </ul>
         </li>
     </ul>
@@ -76,6 +76,16 @@
     </ul>
 </div>
 
+<div class="form-item item-line">
+    <label></label>
+    <div class="pc-box">
+        <input type="hidden" name="bank_id" id="bankId" value="">
+        <span id="showBank"></span>
+    </div>
+</div>
+
+<script src="${ctx}/static/js/iosSelect.js"></script>
+<script src="${ctx}/static/js/iscroll.js"></script>
 <!-- 核心js插件开始 -->
 <script src="${ctx}/static/js/dookayui.min.js"></script>
 <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
@@ -97,6 +107,8 @@
 <script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 <!-- 轮播 结束 -->
+
+
 
 <!-- js页面应用 开始 -->
 <script>
@@ -240,13 +252,43 @@
         auto:true
     });
 
+
+    function clickLanguage(id) {
+        if("1"==id||"14"==id||"31"==id){
+            postToSelectLanguage("zh_CN");
+        }else{
+            postToSelectLanguage("en_US");
+        }
+    }
+    function postToSelectLanguage(language) {
+        $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {
+            if(data.code==200){
+                var old = location.search;
+
+                console.log("old:"+old +" "+old.indexOf("?lang="))
+                if(old==''){
+                    old = old  +"?lang="+language;
+                }else if(old.indexOf("?lang=")!=-1){
+                    old = "?lang="+language;
+                    console.log(old);
+                }else if(old.indexOf("&lang=")!=-1){
+                    old = old.substr(0,old.indexOf("&lang="));
+                    old = old+"&lang="+language;
+                }else{
+                    old = old+"&lang="+language;
+                }
+                location.href = old;
+            }
+        });
+    }
+
     $(function () {
 
         $(".select_country").change(function(){
             var id =  $(this).find("option:selected").attr("value");
             $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
                 if(data.code==200){
-                    location.reload();
+                    clickLanguage(id);
                 }
             });
         });
@@ -272,26 +314,8 @@
 
         $(".language").click(function () {
             var language = $(this).attr("data-value");
-            $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {
-                console.log(data);
-                if(data.code==200){
-                    var old = location.search;
-
-                    console.log("old:"+old +" "+old.indexOf("?lang="))
-                    if(old==''){
-                        old = old  +"?lang="+language;
-                    }else if(old.indexOf("?lang=")!=-1){
-                       old = "?lang="+language;
-                        console.log(old);
-                    }else if(old.indexOf("&lang=")!=-1){
-                        old = old.substr(0,old.indexOf("&lang="));
-                        old = old+"&lang="+language;
-                    }else{
-                        old = old+"&lang="+language;
-                    }
-                    location.href = old;
-                }
-            });
+            alert('${web:selectLanguage()}'+"  "+language);
+            postToSelectLanguage(language);
         });
 
         $(".do-btn-subscribe").click(function () {
@@ -413,33 +437,48 @@
     //
 
     <c:if test="${empty web:selectCountry()}">
-        layer.config({
-            extend: 'selectCountry/style.css', //加载您的扩展样式
-            skin: 'layer-ext-selectCountry'
-        });
-        window.onload=function(){
 
-            layer.open({
-                type:1,
-                shade:0,
-                title:false,
-                closeBtn:0,
-                skin: 'selectCountry',
-                content:$(".country-select"),
-                area:['100%','100%'],
-                success: function(layero, index){
-                    $('html').css("height","100%").css("overflow","hidden");
-                    $('body').css("height","100%").css("overflow","hidden");
-                },
-                end:function () {
-                    $('html').css("height","auto").css("overflow","auto");
-                    $('body').css("height","auto").css("overflow","auto");
-                    document.body.style.overflow = "auto";
-                }
-            });
-            document.body.style.overflow = "hidden";
-        }
+    var showBankDom = document.querySelector('#showBank');
+    var bankIdDom = document.querySelector('#bankId');
+    var data = new Array();
+    $(".country-select").find("a").each(function (index) {
+        var id  = $(this).attr("data-value");
+        var name = $(this).text();
+        data[index] = {"id":id,"value":name};
+    });
+    window.onload=function(){
+        var bankId = showBankDom.dataset['id'];
+        var bankName = showBankDom.dataset['value'];
+
+        var bankSelect = new IosSelect(1,
+                [data],
+                {
+                    container: '.container',
+                    title: '选择您所在的地区',
+                    itemHeight: 50,
+                    itemShowCount: 5,
+                    oneLevelId: bankId,
+                    callback: function (selectOneObj) {
+                        bankIdDom.value = selectOneObj.id;
+                        showBankDom.innerHTML = selectOneObj.value;
+                        showBankDom.dataset['id'] = selectOneObj.id;
+                        showBankDom.dataset['value'] = selectOneObj.value;
+                        var id = selectOneObj.id;
+                        $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                         if(data.code==200){
+                           clickLanguage(id);
+                         }
+                         });
+                    }
+                });
+        $(".sure").html("确认");
+        $(".close").hide();
+    };
+
+
     </c:if>
+
+
 </script>
 <!-- js页面应用 结束 -->
 </body>

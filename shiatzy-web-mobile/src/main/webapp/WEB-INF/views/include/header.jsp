@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="${ctx}/static/css/nivo_slider.css">
     <link rel="stylesheet" href="${ctx}/static/css/default.css">
     <!-- 轮播 结束 -->
-
+    <link rel="stylesheet" href="${ctx}/static/css/iosSelect.css">
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {

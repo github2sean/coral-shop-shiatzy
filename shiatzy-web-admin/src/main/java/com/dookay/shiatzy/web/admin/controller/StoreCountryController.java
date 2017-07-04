@@ -24,7 +24,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping(value = "/api/store/country")
-@Api(tags="country",value = "/api/store/country", description = "门店国家相关接口")
+@Api(tags="store",value = "/api/store/country", description = "门店国家相关接口")
 public class StoreCountryController extends BaseApiController {
 
     @Autowired

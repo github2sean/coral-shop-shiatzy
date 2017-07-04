@@ -144,6 +144,13 @@ public class HomeController extends MobileBaseController {
             blockQuery.setOrderBy("rank");
             blockQuery.setIsValid(1);
             List<IndexBlockDomain> indexBlockDomainList  = indexBlockService.getList(blockQuery);
+            for(IndexBlockDomain row:indexBlockDomainList){
+              String image = row.getImage();
+                if(StringUtils.isNotBlank(image) && !image.contains("[{") && !image.contains("}]")){
+                    image = "[{\"alt\":\"首页图\",\"file\":\""+image+"\"}]";
+                }
+                row.setImage(image);
+            }
             System.out.println("indexBlockDomainList:"+indexBlockDomainList+"\n size:"+indexBlockDomainList.size());
             line.setIndexBlockDomainList(indexBlockDomainList);
         }
@@ -185,10 +192,8 @@ public class HomeController extends MobileBaseController {
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         if("zh_CN".equals(nowLanguage)){
-            session.setAttribute("language",nowLanguage);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"zh_CN",MAX_COOKIE_AGE);
         }else if("en_US".equals(nowLanguage)){
-            session.setAttribute("language",nowLanguage);
             CookieUtil.setCookieValueByKey(HttpContext.current().getResponse(),cookieName,"en_US",MAX_COOKIE_AGE);
         }else{
             return errorResult("参数有错");
