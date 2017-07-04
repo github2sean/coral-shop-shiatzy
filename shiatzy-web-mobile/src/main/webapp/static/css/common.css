@@ -1788,11 +1788,11 @@ h3 {
 .do-list-lang>li>a:active,
 .do-list-btm>li>a:hover,
 .do-list-lang>li>a:active {
-    background-color: #2a2a2a;
+   /* background-color: #2a2a2a;*/
 }
 
 .do-list-lang>li>a {
-    background-color: #2a2a2a;
+   /* background-color: #2a2a2a;*/
 }
 .do-list-btm>li>a {
     display: block;

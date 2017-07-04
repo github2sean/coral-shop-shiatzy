@@ -1,4 +1,5 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -24,12 +25,14 @@
         <div class="item">
             <div class="goods-list return-goods">
                 <c:forEach var="item" items="${cartList}">
+                    <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
+
                     <div class="goods-item clearfix ">
                         <div class="thumb">
                             <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                         </div>
                         <div class="goods-info">
-                            <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
                             <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>
@@ -64,11 +67,12 @@
                                 </font>&nbsp;<fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###"/></p>
                             </c:if>
                         </div>
-             
+
                     </div>
+                    <p class="status">退货理由：${returnReason}</p>
                 </c:forEach>
             </div>
-            <p style="padding-left: 3rem;padding-right: 1.5rem;font-size:1.2rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
+            <p style="font-size:1.2rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
                     <c:choose>
                         <c:when test="${order.currentCode=='CNY'}">
                             &nbsp;<spring:message code="coin.ZH"/>
@@ -85,8 +89,8 @@
     </div>
 
     <!--预计退回总额-->
-    <div class="verify-message-bottom" >
-        <h2 style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem;font-size: 1.4rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
+    <div class="verify-message-bottom" style="border-top: 2px solid #cccccc;padding: 0.6rem 0;text-align: right;margin-bottom: 2rem;">
+        <span style="font-size: 1.4rem;margin-top: 1rem;margin-right: 0.9rem;"><spring:message code="consignee.preBackAmt"/>：&nbsp;<font class="coinSymbol">
             <c:choose>
                 <c:when test="${order.currentCode=='CNY'}">
                     &nbsp;<spring:message code="coin.ZH"/>
@@ -98,11 +102,12 @@
                     &nbsp;<spring:message code="coin.EU"/>
                 </c:when>
             </c:choose>
-        </font>&nbsp;<fmt:formatNumber value="${preBackMoney}" pattern="#,###"/></h2>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney}" pattern="#,###"/></span>
     </div>
 
 
-    <div class="returnWay">
+    <div class="returnWay item-group">
+        <div class="item">
         <a href="/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
         <p><spring:message code="consignee.backWay"/>：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
@@ -124,6 +129,7 @@
             </c:when>
         </c:choose>
         </span></p>
+        </div>
     </div>
 
     <div class="return-btn">
@@ -156,11 +162,11 @@
         });
 
         $(".returnBtn").click(function () {
-            $(this).css("color","#333");
+
             var method = $("#backWay").attr("data-value");
             if(method==''){
                 layer.msg("选择退货方式");
-                $(this).css("color","#333");
+
                 return false;
             }
             var orderId = $(this).attr("data-value");

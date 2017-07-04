@@ -63,7 +63,7 @@
                             <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                         </div>
                         <div class="goods-info">
-                            <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
                             <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>
@@ -100,9 +100,11 @@
 
                         </div>
                     </div>
+                    <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
+                    <p class="status">退货理由：${returnReason}</p>
                 </c:forEach>
             </div>
-            <div style="padding-left: 3rem;font-size: 1.2rem" class="order-state"> <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">
+            <div style="font-size: 1.2rem" > <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
                                     &nbsp;<spring:message code="coin.ZH"/>
@@ -118,7 +120,7 @@
     </div>
     <div style="margin-bottom: 3rem;" class="verify-message-middle">
 
-        <p style="text-align: left;border-top: 2px solid #cccccc;line-height: 2.5rem;padding-left: 3.9rem;"> <spring:message code="return.detail.total"/>：&nbsp;<span style="float:right"><font class="coinSymbol">
+        <p style="text-align: right;border-top: 2px solid #cccccc;line-height: 2.5rem;padding-left: 3.9rem;margin-right: 0.9rem;"> <spring:message code="return.detail.total"/>：&nbsp;<font class="coinSymbol">
             <c:choose>
                 <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
                     &nbsp;<spring:message code="coin.ZH"/>
@@ -130,13 +132,13 @@
                     &nbsp;<spring:message code="coin.EU"/>
                 </c:when>
             </c:choose>
-        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/></span> </p>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/> </p>
     </div>
     </div>
 
 
     <div class="privacy">
-        <a href="#">
+        <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
             <span style="float: left;"><spring:message code="order.details.7day"/></span>
         </a>

@@ -20,7 +20,7 @@
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
     <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}"
                                                                          pattern="yyyy-MM-dd hh:mm:ss" type="date"
-                                                                         dateStyle="long"/></span></p>
+                                                                             dateStyle="long"/></span></p>
     <form method="post" class="goodsForm" action="/returnOrder/chooseGoodsAndReason">
         <!--商品列表-->
         <div class="goods-list return-goods clearfix">
@@ -34,7 +34,7 @@
                     <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                 </div>
                 <div class="goods-info">
-                    <div class="name">${item.goodsDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                     <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
 
                         <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
@@ -42,7 +42,7 @@
                             ：${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
 
                     <p class=""><spring:message code="shoppingCart.number"/>：${item.num} &nbsp;</p>
-                    <p class="${not empty item.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
+                    <p class="${not empty item.goodsDisPrice?'xzc-price':''}" ><spring:message code="shoppingCart.unitPrice"/>：<font class="coinSymbol">
                         <c:choose>
                             <c:when test="${order.currentCode=='CNY'}">
                                 &nbsp;<spring:message code="coin.ZH"/>
@@ -244,13 +244,12 @@
             // do something
         }
 
-        $(".i-radiobox").click(function () {
-            $(this).parents(".goods-item").siblings(".return-list").slideToggle(300);
+        $(".goods-item ").find(".i-radiobox").click(function () {
+            $(this).parents(".goods-item").next(".return-list").slideToggle(300);
         });
 
-
         $(".submitBtn").click(function () {
-            $(this).css("color", "#333");
+
             var data = $(".goodsForm").serializeArray();
             $.post("/returnOrder/chooseGoodsAndReason", data, function (data) {
                 if (data.code == 200) {

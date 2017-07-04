@@ -8,12 +8,12 @@
 </jsp:include>
 <style>
 
-    .categoryList{margin-top: 1rem;margin-left: 2rem;margin-right: 2rem;}
-    .categoryList .title{    border-bottom: 1px solid #000;display: inline-block;width: 100%;}
+    .categoryList{margin-top: 1rem;}
+    .categoryList .title{    border-bottom: 1px solid #000;display: block;margin-left: 2rem;margin-right: 2rem;font-size: 1.4rem;}
     .categoryList .title:after{
         content: ">";
         float: right;
-        margin-right: .7rem;
+
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
         -webkit-transition: -webkit-transform .5s;
@@ -24,20 +24,25 @@
     .categoryList .body{margin-top: 1rem;line-height: 2rem;display: none;}
     .categoryList.active .body{display: block;}
 
-    .categoryList .body .category-item{margin: 0 1rem;font-size:1.2rem;}
+    .categoryList .body .category-item{font-size:1.2rem;padding-left: 3rem;padding-top: 0.6rem;padding-bottom: 0.6rem;}
     .categoryList .body .category-item a{display:block;}
-    .categoryList .body .category-item:hover a,.categoryList .body .category-item.active a{background-color: #cccccc;}
+    .categoryList .body .category-item.active{background-color: #cccccc;}
     .j_collapse{}
     .price{
         display: inline;
-        margin-left: 1rem;
+
+    }
+    .dx-shopping .dx-GoodsDetails .do-list-icon{
+        margin-top: 1.3rem;
     }
 </style>
 <div class="dx-shopping clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
     <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
-    <div class="categoryList j_collapse">
-        <a href="javascript:void(0)" class="title"><spring:message code="wish.save"/></a>
-        <c:if test="${not empty wishList}">
+<c:choose>
+    <c:when test="${not empty wishList}">
+        <div class="categoryList j_collapse">
+            <a  class="title"><spring:message code="wish.save"/></a>
+
             <ul class="body">
                 <c:forEach var="row" items="${categoryList}">
                     <li class="category-item <c:if test='${categoryDomain.id==row.id}'>active</c:if>" >
@@ -45,24 +50,33 @@
                     </li>
                 </c:forEach>
             </ul>
-        </c:if>
-    </div>
+
+        </div>
+    </c:when>
+   <c:otherwise>
+       <div class="content dx-wish dx-shopping">
+           <div id="toggleDiv2">
+               <a href="/home/index"> <div class="message"><p>愿望清单&nbsp;(0)</p></div></a>
+           </div>
+       </div>
+</c:otherwise>
+</c:choose>
 
         <div class="dx-GoodsDetails" style="display: block">
             <c:forEach var="row" items="${wishList}">
-            <div class="goods clearfix goodsDiv">
+            <div class="goods clearfix goodsDiv" style="padding: 2rem 0;">
                 <div class="goods-left">
                     <div class="pic"> <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
                 </div>
                 <div class="goods-right" style="word-break: break-all">
-                    <div class="name" style="margin: 0;width: 100%">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
-                    <div class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</div>
-                    <div class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                    <p class="name" style="margin: 0;width: 100%">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</p>
+                    <p class="number"><spring:message code="shoppingCart.no"/>${row.goodsCode}</p>
+                    <p class="goods_color" data-value=${row.skuSpecifications}>${ web:selectLanguage()=='en_US'? row.goodsItemDomain.enName:row.goodsItemDomain.name}&nbsp;&nbsp;&nbsp;&nbsp;<span>
                        <spring:message code="shoppingCart.size"/>: ${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}
-                    </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></div>
-                    <div class="preferential-price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></div>
+                    </span>&nbsp;&nbsp;<c:if test="${row.stock<1}">（<spring:message code="sellout"/>）</c:if></p>
+                    <p class="preferential-price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/> &nbsp;<span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span></p>
                     <c:if test="${not empty row.goodsDisPrice}">
-                    <div class="price  xzc-dis-price"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span></div>
+                    <p class="price  xzc-dis-price"><spring:message code="wish.discountPrice"/>&nbsp; <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span></p>
                     </c:if>
 
                 </div>

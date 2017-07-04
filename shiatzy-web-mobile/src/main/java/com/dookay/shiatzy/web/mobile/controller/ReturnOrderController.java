@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
@@ -48,10 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by admin on 2017/4/25.
@@ -94,11 +92,13 @@ public class ReturnOrderController extends BaseController {
     private static String RETURN_ORDER = "return_order";
     private static String ORDER = "order";
     private static String BACK_WAY = "backWay";
+
+
     /**
-     * 初始化退货页面
+     * 退货详情页
+     * @param orderId
      * @return
      */
-
     @RequestMapping(value = "details" ,method = RequestMethod.GET)
     public ModelAndView details(Long orderId){
         ReturnRequestDomain returnRequestDomain = returnRequestService.get(orderId);
@@ -111,25 +111,37 @@ public class ReturnOrderController extends BaseController {
         Double fee = orderDomain.getShipFee();
         Double dis = orderDomain.getCouponDiscount();
         dis = dis==null?0D:dis;
+
+
+        HashMap<String, String> newReturnReasonMap =  new HashMap<>();
+
         for(ReturnRequestItemDomain line:returnOrderItemList){
             preBackMoney += line.getGoodsPrice()*line.getNum();
             GoodsQuery goodsQuery = new GoodsQuery();
             goodsQuery.setCode(line.getGoodsCode());
             line.setGoodsDomain(goodsService.getFirst(goodsQuery));
             line.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+ JSONObject.fromObject(line.getSkuSpecifications()).get("size"))));
+            newReturnReasonMap.put(line.getId().toString(),getReasonList(line.getReturnReason()));
         }
         preBackMoney = preBackMoney-dis;
         returnRequestItemService.withGoodsItem(returnOrderItemList);
+
+
         ModelAndView mv = new ModelAndView("user/returnOrder/details");
         mv.addObject("returnRequestDomain",returnRequestDomain);
         mv.addObject("returnOrderItemList",returnOrderItemList);
         mv.addObject("preBackMoney",preBackMoney);
+        mv.addObject("returnReasonMap",newReturnReasonMap);
         mv.addObject("fee",fee);
         mv.addObject("dis",dis);
         return mv;
     }
 
-
+    /**
+     * 申请退货
+     * @param orderId
+     * @return
+     */
     @RequestMapping(value = "initReturnOrder",method = RequestMethod.GET)
     public String initReturnOrder(Long orderId){
 
@@ -198,6 +210,10 @@ public class ReturnOrderController extends BaseController {
         return "redirect:returnOrderInfo";
     }
 
+    /**
+     * 选择退货商品和理由页面
+     * @return
+     */
     @RequestMapping(value = "returnOrderInfo" ,method = RequestMethod.GET)
     public ModelAndView returnOrderInfo(){
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -209,13 +225,53 @@ public class ReturnOrderController extends BaseController {
             return new ModelAndView("redirect:home/index");
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderInfo");
-        /*mv.addObject(CART_LIST,cartList);
-        mv.addObject(ORDER,orderDomain);*/
         session.setAttribute(CART_LIST,cartList);
         session.setAttribute(ORDER,orderDomain);
         return mv;
     }
 
+    /**
+     * 选择退货商品和退货理由
+     * @return
+     */
+    @RequestMapping(value = "chooseGoodsAndReason" ,method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult chooseGoods(@ModelAttribute ReturnInfoForm returnInfoForm){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        HashMap jsonMap = new HashMap();
+        List<ReturnReasonModel> reasonModels = returnInfoForm.getReturnList();
+        if(reasonModels==null||(reasonModels!=null&&reasonModels.size()<1)){
+            return errorResult("没有选择退货商品");
+        }
+        List<OrderItemDomain> list = (List<OrderItemDomain>)session.getAttribute(CART_LIST);
+        List<OrderItemDomain> newList = new ArrayList<OrderItemDomain>();
+
+        for(int i=0;i<list.size();i++){
+            for(ReturnReasonModel line:reasonModels){
+                if(!line.isChooseReason()){
+                    return errorResult("退货理由必选");
+                }
+                System.out.println("line:"+JsonUtils.toJSONString(line));
+                if(list.get(i).getId().equals(line.getOrderItemId())){
+                    newList.add(list.get(i));
+                    jsonMap.put(line.getOrderItemId()+"",line.allReason());
+                }
+            }
+        }
+        if(!(newList!=null && newList.size()>0)){
+            return errorResult("没有选择退货商品");
+        }
+        session.setAttribute(CART_LIST,newList);
+        session.setAttribute("returnJsonReason",jsonMap);
+        return successResult("选择成功");
+    }
+
+    /**
+     * 确认退货页面
+     * @param page
+     * @return
+     */
     @RequestMapping(value = "returnOrderConsigneeInfo" ,method = RequestMethod.GET)
     public ModelAndView returnOrderConsigneeInfo(String page){
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -229,16 +285,93 @@ public class ReturnOrderController extends BaseController {
         if(!(list!=null && list.size()>0)){
             return new ModelAndView("redirect:returnOrderInfo");
         }
+        HashMap<String, String> returnReasonMap =  (HashMap) session.getAttribute("returnJsonReason");
+        HashMap<String, String> newReturnReasonMap =  new HashMap<>();
+        for (String key : returnReasonMap.keySet()) {
+            String  value = returnReasonMap.get(key);
+            newReturnReasonMap.put(key,getReasonList(value));
+        }
+
+        //创建退货项目列表
+
         Double preBackMoney = 0D;
         for(OrderItemDomain line:list){
             preBackMoney += line.getGoodsPrice()*line.getNum();
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
+
         mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee());
+        mv.addObject("returnReasonMap",newReturnReasonMap);
         session.setAttribute("referrerPage",page);
         return mv;
     }
 
+    private String getReasonList(String reasonJson){
+        com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(reasonJson);
+        List<String> reasonList = new ArrayList<>();
+        if(jsonObject.containsKey("服务")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("服务");
+            if(jsonObject1.containsKey("reason1")){
+                reasonList.add(jsonObject1.getString("reason1"));
+            }
+            if(jsonObject1.containsKey("reason2")){
+                reasonList.add(jsonObject1.getString("reason2"));
+            }
+            if(jsonObject1.containsKey("reason3")){
+                reasonList.add(jsonObject1.getString("reason3"));
+            }
+            if(jsonObject1.containsKey("reason4")){
+                reasonList.add(jsonObject1.getString("reason4"));
+            }
+        }
+        if(jsonObject.containsKey("品质")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("品质");
+            if(jsonObject1.containsKey("reason1")){
+                reasonList.add(jsonObject1.getString("reason1"));
+            }
+            if(jsonObject1.containsKey("reason2")){
+                reasonList.add(jsonObject1.getString("reason2"));
+            }
+            if(jsonObject1.containsKey("reason3")){
+                reasonList.add(jsonObject1.getString("reason3"));
+            }
+            if(jsonObject1.containsKey("reason4")){
+                reasonList.add(jsonObject1.getString("reason4"));
+            }
+        }
+        if(jsonObject.containsKey("选择尺寸")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("选择尺寸");
+            if(jsonObject1.containsKey("reason1")){
+                reasonList.add(jsonObject1.getString("reason1"));
+            }
+            if(jsonObject1.containsKey("reason2")){
+                reasonList.add(jsonObject1.getString("reason2"));
+            }
+            if(jsonObject1.containsKey("reason3")){
+                reasonList.add(jsonObject1.getString("reason3"));
+            }
+            if(jsonObject1.containsKey("reason4")){
+                reasonList.add(jsonObject1.getString("reason4"));
+            }
+        }
+        if(jsonObject.containsKey("其他")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("其他");
+            if(jsonObject1.containsKey("reason1")){
+                reasonList.add(jsonObject1.getString("reason1"));
+            }
+            if(jsonObject1.containsKey("reason2")){
+                reasonList.add(jsonObject1.getString("reason2"));
+            }
+            if(jsonObject1.containsKey("reason3")){
+                reasonList.add(jsonObject1.getString("reason3"));
+            }
+            if(jsonObject1.containsKey("reason4")){
+                reasonList.add(jsonObject1.getString("reason4"));
+            }
+        }
+
+        return StringUtils.join(reasonList,",");
+    }
 
     /**
      * 查询退货地址
@@ -274,44 +407,7 @@ public class ReturnOrderController extends BaseController {
         return modelAndView;
     }
 
-    /**
-     * 选择退货商品和退货理由
-     *
-     * @return
-     */
 
-    @RequestMapping(value = "chooseGoodsAndReason" ,method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult chooseGoods(@ModelAttribute ReturnInfoForm returnInfoForm){
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-        HashMap jsonMap = new HashMap();
-        List<ReturnReasonModel> reasonModels = returnInfoForm.getReturnList();
-        if(reasonModels==null||(reasonModels!=null&&reasonModels.size()<1)){
-            return errorResult("没有选择退货商品");
-        }
-        List<OrderItemDomain> list = (List<OrderItemDomain>)session.getAttribute(CART_LIST);
-        List<OrderItemDomain> newList = new ArrayList<OrderItemDomain>();
-
-             for(int i=0;i<list.size();i++){
-                 for(ReturnReasonModel line:reasonModels){
-                     if(!line.isChooseReason()){
-                         return errorResult("退货理由必选");
-                     }
-                     System.out.println("line:"+JsonUtils.toJSONString(line));
-                     if(list.get(i).getId().equals(line.getOrderItemId())){
-                         newList.add(list.get(i));
-                         jsonMap.put(line.getOrderItemId()+"",line.allReason());
-                     }
-                 }
-             }
-        if(!(newList!=null && newList.size()>0)){
-            return errorResult("没有选择退货商品");
-        }
-        session.setAttribute(CART_LIST,newList);
-        session.setAttribute("returnJsonReason",jsonMap);
-        return successResult("选择成功");
-    }
 
     @RequestMapping(value = "fillReturnAddress" ,method = RequestMethod.POST)
     @ResponseBody

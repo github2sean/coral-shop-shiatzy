@@ -27,7 +27,7 @@
     <ul class="do-list-lang j_drop_down">
         <li>
             <a href="javascript:void(0)" id="trigger_select_country">
-                <select class="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                <select class="select_country" value="1" style="height: 100%;width: 100%;background: #000  ;border: 0;font-size: 1.1rem;">
                     <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
                     <c:forEach var="country" items="${web:countryList()}" begin="0">
                         <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>
@@ -48,7 +48,6 @@
                 <input type="text" style="width: 64%" placeholder="<spring:message code="inputEmail"/>" class="do-fill-email"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="inputEmail"/>'">
                 <button class="do-btn-subscribe"><spring:message code="subscribe"/></button>
             </form>
-
         </div>
         <p id="subscribe_msg"></p>
     </div>
