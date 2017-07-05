@@ -20,7 +20,7 @@
             </div>
         </c:if>
        <c:forEach var="row" items="${orderList.list}" varStatus="num">
-        <a href="/order/details?orderId=${row.id}" class="dx-reservaList clearfix clearfix${num.count-1} <c:if test='${num.count>9}'>hide</c:if>">
+        <a href="/u/order/details?orderId=${row.id}" class="dx-reservaList clearfix clearfix${num.count-1} <c:if test='${num.count>9}'>hide</c:if>">
             <div class="time"><fmt:formatDate value="${row.orderTime}" pattern="yyyy-MM-dd " type="date" dateStyle="long" /></div>
             <div class="orderNumber" style="padding-left: 5%">${row.orderNo}</div>
             <div class="status" style="padding-right: 1rem" >

@@ -170,10 +170,10 @@
                 return false;
             }
             var orderId = $(this).attr("data-value");
-            $.post("/returnOrder/applyReturn",{"orderId":orderId},function (data) {
+            $.post("/u/returnOrder/applyReturn",{"orderId":orderId},function (data) {
                 console.log(data);
                 if(data.code==200){
-                    location.href = "/returnOrder/details?orderId="+data.data;
+                    location.href = "/u/returnOrder/details?orderId="+data.data;
                 }else{
                     layer.msg(data.message);
                 }

@@ -91,7 +91,7 @@
              layer.msg("<spring:message code="consignee.selectBackWay"/>");
              return false;
              }
-            location.href="/returnOrder/returnOrderConsigneeInfo";
+            location.href="/u/returnOrder/returnOrderConsigneeInfo";
         });
 
         $(".fillAddress").on("click",function () {
@@ -115,7 +115,7 @@
             layer.msg('<spring:message code="consignee.chooseway.mustrenturnInfo"/>');
             return false;
         }else {
-            $.post("/returnOrder/fillReturnAddress",{"address":shipAddress,"name":name},function (data) {
+            $.post("/u/returnOrder/fillReturnAddress",{"address":shipAddress,"name":name},function (data) {
 
                 if(data.code==200){
                     $(".shipName").text(name);

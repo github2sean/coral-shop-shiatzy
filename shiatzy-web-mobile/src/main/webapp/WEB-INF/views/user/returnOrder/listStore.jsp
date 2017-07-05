@@ -225,9 +225,9 @@
                 layer.msg("<spring:message code="store.list.select.store"/>");
                 return false;
             }
-            $.post("/returnOrder/sureReturnWay",{"backWay":2,"addressId":storeId},function (data) {
+            $.post("/u/returnOrder/sureReturnWay",{"backWay":2,"addressId":storeId},function (data) {
                 if(data.code==200){
-                    location.href = "/returnOrder/chooseReturnWay";
+                    location.href = "/u/returnOrder/chooseReturnWay";
                 }else{
                     layer.msg(data.message);
                 }

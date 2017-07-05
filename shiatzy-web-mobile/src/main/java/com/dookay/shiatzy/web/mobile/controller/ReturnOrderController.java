@@ -56,7 +56,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping("returnOrder/")
+@RequestMapping("u/returnOrder/")
 public class ReturnOrderController extends BaseController {
 
     @Autowired
@@ -163,7 +163,7 @@ public class ReturnOrderController extends BaseController {
             line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
         if(cartList.size()==0){
-            return "redirect:order/list";
+            return "redirect:u/order/list";
         }
         orderService.withGoodItme(cartList);
         OrderDomain orderDomain = orderService.get(orderId);
@@ -241,7 +241,7 @@ public class ReturnOrderController extends BaseController {
         HttpSession session = request.getSession();
         HashMap jsonMap = new HashMap();
         List<ReturnReasonModel> reasonModels = returnInfoForm.getReturnList();
-        if(reasonModels==null||(reasonModels!=null&&reasonModels.size()<1)){
+        if(reasonModels == null || reasonModels.stream().filter(ReturnReasonModel::itemSelected).count()==0){
             return errorResult("没有选择退货商品");
         }
         List<OrderItemDomain> list = (List<OrderItemDomain>)session.getAttribute(CART_LIST);
@@ -249,7 +249,7 @@ public class ReturnOrderController extends BaseController {
 
         for(int i=0;i<list.size();i++){
             for(ReturnReasonModel line:reasonModels){
-                if(!line.isChooseReason()){
+                if(line.itemSelected() && !line.isChooseReason()){
                     return errorResult("退货理由必选");
                 }
                 System.out.println("line:"+JsonUtils.toJSONString(line));
@@ -259,9 +259,7 @@ public class ReturnOrderController extends BaseController {
                 }
             }
         }
-        if(!(newList!=null && newList.size()>0)){
-            return errorResult("没有选择退货商品");
-        }
+
         session.setAttribute(CART_LIST,newList);
         session.setAttribute("returnJsonReason",jsonMap);
         return successResult("选择成功");
