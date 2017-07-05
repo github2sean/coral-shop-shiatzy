@@ -13,14 +13,20 @@ import com.dookay.coral.adapter.payment.unionpay.acp.sdk.AcpService;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.LogUtil;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConstants;
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.BaseException;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.BaseController;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
+import com.dookay.coral.shop.content.query.MessageTemplateQuery;
+import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
+import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
@@ -30,12 +36,14 @@ import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import com.dookay.shiatzy.web.mobile.xml.IpayLinksReturnXml;
 import lombok.Data;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +52,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import sun.misc.BASE64Encoder;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -86,6 +95,15 @@ public class PaymentContoller extends BaseController{
 
     @Autowired
     private ICouponService couponService;
+
+    @Autowired
+    private ISmsService smsService;
+
+    @Autowired
+    private SimpleAliDMSendMail simpleAliDMSendMail;
+
+    @Autowired
+    private IMessageTemplateService messageTemplateService;
 
     /**
      * 支付宝支付提交页面
@@ -259,6 +277,8 @@ public class PaymentContoller extends BaseController{
                         seller_id.equals(alipayConfig.getSeller_id())){
 
                     orderService.updateOrderStatus(orderDomain);
+                    //发送短信及邮件
+                    sendInformation(orderDomain);
                 }
             }
             //该页面可做页面美工编辑
@@ -462,6 +482,8 @@ public class PaymentContoller extends BaseController{
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 orderService.updateOrderStatus(orderDomain);
+                //发送短信及邮件
+                sendInformation(orderDomain);
             }
             return new ModelAndView("redirect:paysuccess?orderId="+orderNo);
             //mv.addObject("order",orderDomain);
@@ -639,7 +661,10 @@ public class PaymentContoller extends BaseController{
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue()
                   /*  && amt.equals(orderDomain.getOrderTotal())*/ ){
                 //updateOrderStatus(orderDomain);
+                //更改状态减少库存及优惠券
                 orderService.updateOrderStatus(orderDomain);
+                //发送短信及邮件
+                sendInformation(orderDomain);
             }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&
                     amt.equals(orderDomain.getOrderTotal())){
                 message= "订单已支付";
@@ -829,4 +854,48 @@ public class PaymentContoller extends BaseController{
     public String formatUTF8(String str) throws UnsupportedEncodingException {
         return new String(str.getBytes("gb2312"),"utf-8");
     }
+
+    public void sendInformation(OrderDomain order){
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        if(accountDomain!=null){
+            CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+            OrderItemQuery orderItemquery = new OrderItemQuery();
+            orderItemquery.setOrderId(order.getId());
+            List<OrderItemDomain> orderItemDomainList = orderItemService.getList(orderItemquery);
+            //发送短信通知
+            smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
+            //发送邮件通知
+            MessageTemplateQuery query = new MessageTemplateQuery();
+            query.setType(1);
+            query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
+            query.setIsValid(1);
+            MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
+            //emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
+            //生成模版
+            Map<String,Object> freeMap = new HashMap<>();
+            freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
+            freeMap.put("title",messageTemplate.getTitle());
+            freeMap.put("name",customerDomain.getEmail());
+            freeMap.put("status",OrderStatusEnum.UNPAID.getValue());
+            freeMap.put("content",messageTemplate.getContent());
+            freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
+            orderService.withGoodItme(orderItemDomainList);
+            freeMap.put("order",order);
+            freeMap.put("orderItem",orderItemDomainList);
+            String html = FreemarkerUtil.printString("orderDelivered.ftl",freeMap);
+
+            HashMap<String,String> emailMap = new HashMap<>();
+            emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
+            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
+            emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+            emailMap.put(simpleAliDMSendMail.CONTENT,html);
+            try {
+                simpleAliDMSendMail.sendEmail(emailMap);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
