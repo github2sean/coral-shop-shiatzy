@@ -140,7 +140,7 @@
                  </c:choose>
             </font>&nbsp;<span id="discount" class="">0</span></span></div>
 
-            <div class="memDiscount" style="${empty order.memberDiscount?'display:none;':''}">ART CLUB 会员优惠<span><font class="coinSymbol">
+            <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">ART CLUB 会员优惠<span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -152,7 +152,7 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="memDiscount" class="">${empty order.memberDiscount?0:order.memberDiscount}</span></span></div>
+            </font>&nbsp;<span id="memDiscount" class=""><fmt:formatNumber value="${order.memberDiscount}" pattern="#,###"/></span></span></div>
 
             <div class="express"><spring:message code="orderinfo.freight"/> <span><font class="coinSymbol">
                 <c:choose>
