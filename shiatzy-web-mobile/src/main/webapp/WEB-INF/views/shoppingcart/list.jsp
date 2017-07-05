@@ -285,6 +285,7 @@
                 });
             }
         });
+
         $(".j_appointment").on("click",function () {
             setCartNum('sub');
             var $self = $(this);

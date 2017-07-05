@@ -56,6 +56,8 @@ public class GoodsController extends BaseController{
     private IGoodsItemService goodsItemService;
     @Autowired
     private IGoodsAttributeValueService goodsAttributeValueService;
+    @Autowired
+    private IGoodsSkinService goodsSkinService;
 
     private static Integer COLOR_FILTER = 1;
     private static Integer SIZE_FILTER = 0;
@@ -160,7 +162,9 @@ public class GoodsController extends BaseController{
         List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(newSizeIds);
-        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+        Comparator<PrototypeSpecificationOptionDomain> comparator = Comparator.comparing(PrototypeSpecificationOptionDomain::getName);
+        List<PrototypeSpecificationOptionDomain> sizeList
+                = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery).stream().sorted(comparator).collect(Collectors.toList());
         return sizeList;
     }
 
@@ -229,7 +233,13 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
 
         //材质列表
-        modelAndView.addObject("attributeList",getAttributes(goodsList));
+        List<Long> skinIds = new ArrayList<>();
+        goodsList.forEach(x->skinIds.addAll(JsonUtils.toLongArray(x.getSkinIds())));
+        List<Long> newSkinIds = skinIds.stream().distinct().collect(Collectors.toList());
+        GoodsSkinQuery goodsSkinQuery = new GoodsSkinQuery();
+        goodsSkinQuery.setIds(newSkinIds);
+        List<GoodsSkinDomain> goodsSkinDomainList = goodsSkinService.getList(goodsSkinQuery);
+        modelAndView.addObject("skinList",goodsSkinDomainList);
 
         //颜色列表
         modelAndView.addObject("colorList",getColors(goodsList));
@@ -445,7 +455,9 @@ public class GoodsController extends BaseController{
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
         prototypeSpecificationOptionQuery.setIds(sizeIds);
-        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
+        Comparator<PrototypeSpecificationOptionDomain> comparator = Comparator.comparing(PrototypeSpecificationOptionDomain::getName);
+
+        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery).stream().sorted(comparator).collect(Collectors.toList());
         System.out.println("sizeIds"+sizeIds);
         for(PrototypeSpecificationOptionDomain sizeDomain:sizeList){
             String productNo = goodsItemDomain.getGoodsNo().split("\\s+")[0];//库存商品编号
@@ -489,21 +501,9 @@ public class GoodsController extends BaseController{
     }
     //材质筛选
     public  List<GoodsDomain> attribute(List<GoodsDomain> goodsList,Integer type,List<Long> data){
-        List<GoodsDomain> list  = new ArrayList<GoodsDomain>();
-        for (GoodsDomain goodsDomain : goodsList){
-            GoodsAttributeValueDomain goodsAttributeValueDomain =goodsAttributeValueService.goodsAttributeValueDomain(goodsDomain.getId());//获取材质的id
-            for (Long attribute:data) {
-                if (type == ATTR_FILTER) {
-                    if (goodsAttributeValueDomain.getPrototypeAttributeOptionId()== Integer.parseInt(attribute.toString())) {
-                        list.add(goodsDomain);
-                        System.out.println("nowGoodsDomain:" + JsonUtils.toJSONString(goodsDomain));
-                    }
-                }
-            }
-
-        }
-        return list;
+      return  goodsList.stream().filter(x->CollectionUtils.containsAny(JsonUtils.toLongArray(x.getSkinIds()),data)).collect(Collectors.toList());
     }
+
     //价格筛选
     public  List<GoodsDomain> price(List<GoodsDomain> goodsList,Integer type){
         List<GoodsDomain> list  = new ArrayList<GoodsDomain>();

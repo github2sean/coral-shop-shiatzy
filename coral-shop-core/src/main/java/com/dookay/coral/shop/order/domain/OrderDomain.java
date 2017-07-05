@@ -148,4 +148,6 @@ public class 	OrderDomain implements Serializable {
 	@Transient
 	private ShippingCountryDomain shippingCountryDomain;
 
+	@Transient
+	private Boolean submitted;
 }

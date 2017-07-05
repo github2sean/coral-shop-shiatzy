@@ -28,7 +28,7 @@
 </style>
 <div class="order">
     <p class="pull-left">门市预约 / 详细</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">回上页</a>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">返回上页</a>
 </div>
 <div class="order-main clearfix">
     <c:forEach var="row" items="${preOderItemList}">
@@ -93,7 +93,7 @@
     </div>
     <div class="model-select-box" >
         <div class="model-select-city" data-value="" id="citySelect">
-            <a class="pl-2" id="chooseCity">请选择省/州</a>
+            <a class="pl-2" id="chooseCity">请选择城市</a>
 
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
@@ -222,6 +222,7 @@
         var json = "";
         $("#citySelect").click(function () {
             $(this).toggleClass("active");
+
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").on("click",function () {
@@ -241,6 +242,14 @@
                         {
                             $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
                         }
+                        $("#storeSelect").find(".model-select-store").addClass("active");
+                        $("#storeSelect").find(".model-select-option").show();
+                         $("#chooseStore").text("请选择门店");
+                         $("#storeName").text("");
+                        $("#storeAddress").text("");
+                        $("#storeTime").text("");
+                        $("#storeTel").text("");
+                        $(".sendBtn").attr("data-value","");
                     }else{
                         layer.msg("该城市下无门店");
                     }
@@ -248,20 +257,21 @@
             });
         });
 
+        $("#storeSelect").on("click","li",function () {
+            var index = $(this).attr("data-value");
+            $(this).addClass("active").siblings().removeClass("active");
+            var text = $(this).text();
+            $(this).parent().siblings("#chooseStore").text(text);
+            console.log(index);
+            $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
+                .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
+            $(".sendBtn").attr("data-value",json[index].id);
+        });
+
         $("#storeSelect").click(function () {
             $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
-            $option.find("li").on("click",function () {
-                var index = $(this).attr("data-value");
-                $(this).addClass("active").siblings().removeClass("active");
-                var text = $(this).text();
-                $(this).parent().siblings("#chooseStore").text(text);
-                console.log(index);
-                $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
-                        .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
-                $(".sendBtn").attr("data-value",json[index].id);
-            });
 
         });
 

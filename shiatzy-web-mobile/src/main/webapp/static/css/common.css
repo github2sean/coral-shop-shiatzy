@@ -2239,9 +2239,10 @@ h3 {
 
 .do-pro-list>li>a .do-pro-price {
     font-size: 0.85rem;
-    letter-spacing: 0.1rem;
+
     display: inline;
-    margin-left: 1rem;
+    margin:0 0.5rem;
+
 }
 
 .do-list-color>li {
@@ -2283,6 +2284,8 @@ h3 {
     justify-content: center;
     -webkit-box-align: center;
     -ms-flex-align: center;
+    text-align: center;
+    padding: 0 0.3rem;
 }
 
 .do-pro-list:after {
@@ -2532,7 +2535,7 @@ svg {
 }
 
 .do-list-icon>li {
-    margin-bottom: 2.1rem;
+    margin-bottom: 1.5rem;
 }
 
 .icon-bag svg {

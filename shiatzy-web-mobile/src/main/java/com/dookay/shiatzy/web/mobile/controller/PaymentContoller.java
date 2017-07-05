@@ -17,6 +17,7 @@ import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.BaseException;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.BaseController;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
@@ -57,6 +58,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -205,6 +207,10 @@ public class PaymentContoller extends BaseController{
                      /*   total_fee.equals(String.format("%.2f",orderDomain.getOrderTotal()))&&*/
                         seller_id.equals(alipayConfig.getSeller_id())){
                     orderService.updateOrderStatus(orderDomain);
+                    //发送短信及邮件
+                    sendInformation(orderDomain);
+                    //清除session
+                    clearSession(request);
                 }
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
@@ -221,6 +227,12 @@ public class PaymentContoller extends BaseController{
         //根据订单号获取订单
         //判断订单是否已经完成支付
         //如果订单状态不是已支付，调用订单支付服务
+    }
+
+    private void clearSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("order",null);
+        session.setAttribute("cartList",null);
     }
 
     /**
@@ -279,6 +291,8 @@ public class PaymentContoller extends BaseController{
                     orderService.updateOrderStatus(orderDomain);
                     //发送短信及邮件
                     sendInformation(orderDomain);
+                    //清除session
+                    clearSession(request);
                 }
             }
             //该页面可做页面美工编辑
@@ -416,7 +430,11 @@ public class PaymentContoller extends BaseController{
             OrderDomain orderDomain = orderService.getOrder(orderNo);
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
-                //orderService.updateOrderStatus(orderDomain);
+                orderService.updateOrderStatus(orderDomain);
+                //清除session
+                clearSession(req);
+                //发送短信及邮件
+                sendInformation(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -482,6 +500,8 @@ public class PaymentContoller extends BaseController{
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue() &&
                     txnAmt.equals(amtRemovePoint(orderDomain.getOrderTotal())) ){
                 orderService.updateOrderStatus(orderDomain);
+                //清除session
+                clearSession(req);
                 //发送短信及邮件
                 sendInformation(orderDomain);
             }
@@ -627,6 +647,10 @@ public class PaymentContoller extends BaseController{
             if(orderDomain.getStatus() == OrderStatusEnum.UNPAID.getValue()
                     /*&& amt.equals(orderDomain.getOrderTotal())*/ ){
                 orderService.updateOrderStatus(orderDomain);
+                //清除session
+                clearSession(request);
+                //发送短信及邮件
+                sendInformation(orderDomain);
             }else{
                 return errorResult("订单异常");
             }
@@ -663,6 +687,8 @@ public class PaymentContoller extends BaseController{
                 //updateOrderStatus(orderDomain);
                 //更改状态减少库存及优惠券
                 orderService.updateOrderStatus(orderDomain);
+                //清除session
+                clearSession(request);
                 //发送短信及邮件
                 sendInformation(orderDomain);
             }else if(orderDomain.getStatus() == OrderStatusEnum.PAID.getValue() &&

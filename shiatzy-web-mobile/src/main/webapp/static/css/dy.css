@@ -851,7 +851,7 @@
 }
 
 .delivery-detail p {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
 }
 
 .order-num h3 {
@@ -1313,5 +1313,5 @@
     background: #fff;
 }
 .ios-select-widget-box header.iosselect-header a.sure {
-    color: #000;
+    color: #fff;
 }
