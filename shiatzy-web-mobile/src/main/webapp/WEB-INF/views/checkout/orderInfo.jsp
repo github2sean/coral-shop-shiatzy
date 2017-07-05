@@ -63,10 +63,10 @@
             </div>
             <div class="alter j_alter"  data-value="${num.count-1}"><a href="javascript:;"><spring:message code="orderinfo.update"/></a></div>
         </div>
-            <div class="alter-popup alter-popup${num.count-1}">
+            <div class="alter-popup alter-popup${num.count-1}" style="padding-bottom: 2rem;">
                 <div class="dx-goods clearfix">
                     <div class="goods-pic">
-                        <span></span><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" style="width: 100px;">
+                        <span></span><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="" >
                     </div>
                     <div class="goods-details">
                         <div class="name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
@@ -98,7 +98,10 @@
                         <div class="quantity" data-value="${row.goodsDomain.goodsItemList[num.count-1].quantity}"><spring:message code="shoppingCart.number"/> <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
                     </div>
                 </div>
-                <button type="button" class="btn j_x_close" data-value="${row.id}"><spring:message code="orderinfo.enter"/></button>
+                <div class="button">
+                    <a type="button" class="btn-default j_x_close" data-value="${row.id}"><spring:message code="orderinfo.enter"/></a>
+                </div>
+
             </div>
         </c:forEach>
         <div class="privilege">
@@ -153,7 +156,7 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="memDiscount" class=""><fmt:formatNumber value="${order.memberDiscount}" pattern="#,###"/></span></span></div>
+            </font>&nbsp;<span id="memDiscount" class="">-<fmt:formatNumber value="${order.memberDiscount}" pattern="#,###"/></span></span></div>
 
             <div class="express"><spring:message code="orderinfo.freight"/> <span><font class="coinSymbol">
                 <c:choose>
@@ -225,7 +228,7 @@
                 title: false,
                 content:$(str),
                 shade:0.8,
-                area:['29rem','30rem']
+                area:['29rem','33rem']
             });
         });
 

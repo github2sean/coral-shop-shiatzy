@@ -1175,7 +1175,7 @@ i {
 .alter-popup .dx-goods .goods-details .number {
     font-size: .6rem;
     margin-bottom: 1.4rem;
-    text-align: center;
+    text-align: left;
 }
 
 .alter-popup .dx-goods .goods-details .color {
