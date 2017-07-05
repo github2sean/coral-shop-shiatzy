@@ -1204,31 +1204,46 @@
     }
 }
 /**选择国家**/
+/**选择国家**/
 .country-select {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    opacity: 0.8;
+    background: #000;
+    /*background: rgba(0,0,0,0.2);*/
+    position: absolute;
+    z-index: 100000;
 }
+/*.country-select {*/
+/*width: 100%;*/
+/*height: 100%;*/
+/*overflow-y: auto;*/
+/*!*background: #000;*!*/
+/**/
+/*position: absolute;*/
+/*top:0;*/
+/*left: 0;*/
+/*bottom: 0;*/
+/*right: 0;*/
+/*z-index: 100000;*/
+/*}*/
 .country-select .country-title {
     width: 100%;
     text-align: center;
     color: #fff;
-    background: #666;
+    background: #777777;
     margin-bottom: 0;
-    font-size: 1.6rem;
+    padding-top: 40px;
+    letter-spacing: 6px;
     position: fixed;
-    top:0;
-    height: 4rem;
+    top: 0;
 }
 .country-select .country-con {
     width: 100%;
     text-align: center;
     color: #fff;
     background: #111111;
-    height: 100%;
-    overflow: scroll;
-    margin-top: 6rem;
+    margin-bottom: 0;
 }
 .country-select .country-con li a {
     color: #ccc;
@@ -1236,9 +1251,67 @@
     line-height: 40px;
     letter-spacing: 5px;
 }
-.country-select .country-con li a:hover {
-    background: #333333;
-}
 .country-select .country-con li.active a {
     background: #333333;
+}
+.ios-select-body-class .close {
+    display: none;
+}
+.ios-select-widget-box header.iosselect-header {
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    z-index: 9999;
+    text-align: left;
+    padding-left: 15px;
+    color: #fff;
+    background: #777777;
+}
+.ios-select-widget-box #iosSelectTitle {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: normal;
+    color: #fff;
+}
+.ios-select-widget-box ul {
+    background-color: #000;
+}
+.ios-select-widget-box ul li {
+    font-size: 13px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #fff;
+    opacity: 1;
+}
+.ios-select-widget-box.olay > div {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    background-color: #f2f2f2;
+    top: 50%;
+    margin-top: -147px;
+    left: 0;
+    visibility: visible;
+}
+.ios-select-widget-box header.iosselect-header a {
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+}
+.chicun {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: #fff;
+}
+.ios-select-widget-box header.iosselect-header a.sure {
+    color: #000;
 }
