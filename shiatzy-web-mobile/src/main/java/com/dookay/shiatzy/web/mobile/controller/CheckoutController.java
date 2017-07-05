@@ -317,7 +317,7 @@ public class CheckoutController  extends BaseController{
 
         //处理未支付返回的情形
         if(Boolean.TRUE==orderDomain.getSubmitted()){
-            return new ModelAndView("redirect:payfailed?orderId="+orderDomain.getId());
+            return new ModelAndView("redirect:/payment/payfailed?orderId="+orderDomain.getOrderNo());
         }
         //商品金额
 

@@ -1,4 +1,6 @@
 <%@ taglib prefix="sping" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
@@ -15,8 +17,10 @@
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
           <div class="dx-bag-slide" >
             <ul class="j_s_slider">
-              <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
-                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 36rem;"></a></li>
+                <c:set var="photos" value="${ImageModel.toList(goodsItemDomain.photos)}"></c:set>
+                <c:set var="startIndex" value="${photos.size()-1 }"></c:set>
+                <c:forEach var="item" items="${photos}" varStatus="status">
+                <li><a href="javascript:;"><img src="${photos[startIndex-status.index].file}" alt="" style="height: 36rem;"></a></li>
               </c:forEach>
             </ul>
           </div>
@@ -56,7 +60,6 @@
           <div style="margin-top: 2rem;">
           <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
 
-
             <c:if test="${goodsDomain.isPre==1}">
               <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;margin-top: 1rem;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
               <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
@@ -65,7 +68,7 @@
 
           <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
-            <p class="text">${web:selectLanguage()=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
+            <p class="text">${web:selectLanguage()=='en_US'?goodsItemDomain.enDescription:goodsItemDomain.description}</p>
           </div>
         </div>
 
