@@ -20,8 +20,8 @@
               </c:forEach>
             </ul>
           </div>
-          <div class="price"><span class="do-pro-price <c:if test="${goodsItemDomain.discountPrice!=0}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
-              <c:if test="${goodsItemDomain.discountPrice!=0}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsItemDomain.discountPrice}">&nbsp;</span></c:if>
+          <div class="price"><span class="do-pro-price <c:if test="${not empty  goodsItemDomain.discountPrice}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
+              <c:if test="${not empty  goodsItemDomain.discountPrice}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsItemDomain.discountPrice}">&nbsp;</span></c:if>
             <a href="javascript:;" class="j_collect " style="margin-top:0.8rem;">
               <svg id="add_to_wish" style="transform:scale(2);-webkit-transform:scale(2)">
                 <use xlink:href="#heart-red"></use>
@@ -80,8 +80,8 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                   </div>
                   <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                  <p class="do-pro-price <c:if test="${goods.disPrice!=0}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
-                    <c:if test="${goods.disPrice!=0}">
+                  <p class="do-pro-price <c:if test="${not empty  goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                    <c:if test="${not empty  goods.disPrice}">
                         <p class="do-pro-price xzc-dis-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
                     </c:if>
                   <ul class="do-list-color" name="skuId" data-value="">

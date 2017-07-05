@@ -115,7 +115,7 @@ public class BoutiqueController extends BaseController{
                         shoppingCartItemDomain.setSizeDomain(sizeDomain);
                         String sizeValue = sizeDomain.getName();
                         Long colorId = goodsItemDomain.getColorId();
-                        shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
+                        //shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
                         System.out.println("shoppingCartItemDomain:"+shoppingCartItemDomain);
                         sessionCartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(sessionCartList);
@@ -138,11 +138,18 @@ public class BoutiqueController extends BaseController{
             cartList = sessionCartList;
         }
         shoppingCartService.withGoodsItem(cartList);
+        updateStock(cartList);
         ModelAndView mv = new ModelAndView("boutique/list");
         mv.addObject("cartList",cartList);
         return mv;
     }
-
+    private void updateStock(List<ShoppingCartItemDomain> cartList) {
+        for(ShoppingCartItemDomain cartItemDomain:cartList){
+            String productNo = cartItemDomain.getGoodsCode().split("\\s+")[0];//库存商品编号
+            String color = cartItemDomain.getGoodsCode().split("\\s+")[1];//颜色标识
+            cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));
+        }
+    }
 
     @RequestMapping(value = "addToBoutique" ,method = RequestMethod.POST)
     @ResponseBody
@@ -161,9 +168,10 @@ public class BoutiqueController extends BaseController{
         List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
         System.out.println("skuDomainList:"+JsonUtils.toJSONString(skuDomainList));
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+       GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
         if(skuDomain == null){
             return errorResult("没有对应颜色和尺寸的商品");
-        }else if(skuDomain.getIsPre()==0){
+        }else if(goodsDomain.getIsPre()==0){
             return errorResult("该商品不能预约");
         }else if(skuDomain.getQuantity()<1){
             return errorResult("该商品已售罄");

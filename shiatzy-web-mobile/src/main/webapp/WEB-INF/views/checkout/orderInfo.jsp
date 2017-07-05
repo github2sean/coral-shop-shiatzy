@@ -87,7 +87,8 @@
                             <ul>
                                 <c:forEach var="sizeRow" items="${row.sizeDomins}"  varStatus="line">
                                     <c:set var="sizeQuantity" value="${row.goodsDomain.goodsItemList[line.count-1].quantity}"></c:set>
-                                    <li class="<c:if test="${sizeRow.id == row.sizeDomain.id}">active</c:if> "  data-value="${sizeQuantity}" data-id="${sizeRow.id}"><a href="#">${sizeRow.name} <c:if test="${row.goodsDomain.goodsItemList[num.count-1].quantity<=0}"><span>(<spring:message code="sellout"/>)</span></c:if></a></li>
+                                    <li class="<c:if test="${sizeRow.id == row.sizeDomain.id}">active</c:if> "  data-value="${sizeQuantity}" data-id="${sizeRow.id}">
+                                        <a href="#">${sizeRow.name} <c:if test="${row.goodsDomain.goodsItemList[num.count-1].quantity<=0}"><span>(<spring:message code="sellout"/>)</span></c:if></a></li>
                                 </c:forEach>
                                     <%--<li><a href="">S</a> <span></span></li>
                                     <li class="active"><a href="">M</a> <span></span></li>
@@ -187,8 +188,6 @@
 </div>
 
 <!-------修改弹窗开始------->
-
-
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>

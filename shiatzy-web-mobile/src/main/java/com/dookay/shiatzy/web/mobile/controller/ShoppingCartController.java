@@ -80,6 +80,7 @@ public class ShoppingCartController extends BaseController{
         Long sizeId = addShoppingCartForm.getSizeId();
         System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
         SkuDomain skuDomain =  shoppingCartService.getSkubySizeAndItem(itemId,sizeId);
+        GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
         if(skuDomain == null) {
             return  errorResult("无此商品");
         }
@@ -97,7 +98,7 @@ public class ShoppingCartController extends BaseController{
                 listCart = new ArrayList<>();
                 listCart.add(addShoppingCartForm);
             }
-            if(shoppingCartType==ShoppingCartTypeEnum.RESERVATION.getValue()&&skuDomain.getIsPre()==0){
+            if(shoppingCartType==ShoppingCartTypeEnum.RESERVATION.getValue()&&goodsDomain.getIsPre()==0){
                 return  errorResult("该商品无法预约");
             }
             session.setAttribute(SESSION_CART,listCart);
@@ -311,14 +312,6 @@ public class ShoppingCartController extends BaseController{
             Long accountId = userContext.getAccountDomain().getId();
             CustomerDomain customerDomain = customerService.getAccount(accountId);
             cartList= shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),1);
-            for (ShoppingCartItemDomain cartItemDomain:cartList){
-                GoodsItemDomain  goodsItemDomain = goodsItemService.get(cartItemDomain.getItemId());
-                PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(JSONObject.fromObject(cartItemDomain.getSkuSpecifications()).getLong("size"));
-
-                String productNo = goodsItemDomain.getGoodsNo().split("\\s+")[0];//库存商品编号
-                String color = goodsItemDomain.getGoodsNo().split("\\s+")[1];//颜色标识
-                cartItemDomain.setStock(goodsService.getTempStock(productNo,color,sizeDomain.getName()));
-            }
             shoppingCartService.withGoodsItem(cartList);
             shoppingCartService.withSku(cartList);
             shoppingCartService.withSizeDomain(cartList);
@@ -413,6 +406,11 @@ public class ShoppingCartController extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
          ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+         GoodsItemDomain goodsItemDomain = goodsItemService.get(shoppingCartItemDomain.getItemId());
+         GoodsDomain goodsDomain = goodsService.get(goodsItemDomain.getGoodsId());
+         if(goodsDomain.getIsPre() != ValidEnum.NO.getValue()){
+             return errorResult("该商品不能预约");
+         }
          shoppingCartItemDomain.setShoppingCartType(3);
          shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
