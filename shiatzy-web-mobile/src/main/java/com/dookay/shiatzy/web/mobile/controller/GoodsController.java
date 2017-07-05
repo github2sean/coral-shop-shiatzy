@@ -15,6 +15,7 @@ package com.dookay.shiatzy.web.mobile.controller;
         import com.dookay.shiatzy.web.mobile.form.QueryGoodsForm;
         import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
         import org.apache.commons.collections.CollectionUtils;
+        import org.apache.commons.lang.StringUtils;
         import org.apache.shiro.session.Session;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
@@ -182,7 +183,6 @@ public class GoodsController extends BaseController{
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
-
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
         modelAndView.addObject("goodsCategoryDomain",goodsCategoryDomain);
@@ -209,13 +209,11 @@ public class GoodsController extends BaseController{
         List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
         for (GoodsDomain goodsDomain :goodsListAll){
             List<Long> categoryIdList = JSON.parseArray(goodsDomain.getCategoryIds(),Long.class);
-            System.out.println("categoryIdList:"+JsonUtils.toJSONString(categoryIdList));
             goodsDomain.setCategoryIdList(categoryIdList);
         }
         if(query.getCategoryId()!=null){
             goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
         }else{
-            System.out.println("getCategoryIdList:"+JsonUtils.toJSONString(query.getCategoryIds()));
             goodsListAll  =goodsListAll.stream().filter(x->
                     CollectionUtils.containsAny(x.getCategoryIdList(),query.getCategoryIds())).collect(Collectors.toList());
         }
@@ -224,7 +222,6 @@ public class GoodsController extends BaseController{
         Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
         List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
         goodsService.withGoodsItemList(goodsList);
-        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
         modelAndView.addObject("query",query);
 
         //同级分类列表
@@ -376,23 +373,29 @@ public class GoodsController extends BaseController{
     }
 
     @RequestMapping(value = "onSale" ,method = RequestMethod.GET)
-    public ModelAndView onSale(){
+    public ModelAndView onSale(GoodsQuery query,Integer priceWay){
         ModelAndView mv = new ModelAndView("goods/salelist");
 
         Integer onSale =1;
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsSale(onSale);
-        //商品是否打折
-        List<GoodsDomain> goodsDomainList = goodsService.getList(goodsQuery);
-        //颜色商品是否打折
-        goodsService.withGoodsItemList(goodsDomainList,onSale);
+        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
+
         //商品分类
-        mv.addObject("categoryName","SALE");
-        if(!(goodsDomainList!=null&&goodsDomainList.size()>0)){
-            return mv;
-        }else if(!(goodsDomainList.get(0).getGoodsItemList()!=null&&goodsDomainList.get(0).getGoodsItemList().size()>0)){
+        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
+        System.out.println("goodsListAll:"+goodsListAll);
+        for (GoodsDomain goodsDomain :goodsListAll){
+            List<Long> categoryIdList = JSON.parseArray(goodsDomain.getCategoryIds(),Long.class);
+            goodsDomain.setCategoryIdList(categoryIdList);
+        }
+        Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
+        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
+        goodsService.withGoodsItemList(goodsList);
+        mv.addObject("query",query);
+        if(!(goodsList!=null&&goodsList.size()>0)){
             return mv;
         }
+
         //商品分类同级列表
         GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
         goodsCategoryQuery.setLevel(1);
@@ -400,48 +403,17 @@ public class GoodsController extends BaseController{
         mv.addObject("categoryList",goodsCategoryDomainList);
 
         //材质列表
-        //获得原型Ids
-        List<Long> prototypeIds = new ArrayList<Long>();
-        goodsDomainList.forEach(x->prototypeIds.addAll(JsonUtils.toLongArray("["+x.getPrototypeId()+"]")));
-        List<Long> newPrototypeIds = prototypeIds.stream().distinct().collect(Collectors.toList());
-        //获得原型id属性
-        PrototypeAttributeQuery prototypeAttributeQuery = new PrototypeAttributeQuery();
-        prototypeAttributeQuery.setPrototypeIds(newPrototypeIds);
-        List<PrototypeAttributeDomain> prototypeAttributeDomainList = prototypeAttributeService.getList(prototypeAttributeQuery);
-        List<PrototypeAttributeDomain> newAttributeDomainList = prototypeAttributeDomainList.stream().distinct().collect(Collectors.toList());
-        //获得原型属性选项
-        List<Long> prototypeAttributeIds = new ArrayList<>();
-        for (PrototypeAttributeDomain attributeDomain:newAttributeDomainList) {
-            prototypeAttributeIds.add(attributeDomain.getPrototypeId());
-        }
-        List<Long> newPrototypeAttributeIds = prototypeAttributeIds.stream().distinct().collect(Collectors.toList());
-        PrototypeAttributeOptionQuery prototypeAttributeOptionQuery = new PrototypeAttributeOptionQuery();
-        prototypeAttributeOptionQuery.setPrototypeAttributeIds(newPrototypeAttributeIds);
-        List<PrototypeAttributeOptionDomain> prototypeAttributeOptionDomainList = prototypeAttributeOptionService.getList(prototypeAttributeOptionQuery);
-        mv.addObject("attributeList",prototypeAttributeOptionDomainList);
-        System.out.println("attributeList:"+JsonUtils.toJSONString(prototypeAttributeOptionDomainList));
+        mv.addObject("attributeList",getAttributes(goodsList));
 
         //颜色列表
-        List<Long> colorIds = new ArrayList<>();
-        goodsDomainList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
-        List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
-        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
-        goodsColorQuery.setIds(newColorIds);
-        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
-        mv.addObject("colorList",goodsColorDomainList);
+        mv.addObject("colorList",getColors(goodsList));
+
         //尺寸列表
-        List<Long> sizeIds = new ArrayList<>();
-        goodsDomainList.forEach(x->sizeIds.addAll(JsonUtils.toLongArray(x.getSizeIds())));
-        List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
-        PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
-        prototypeSpecificationOptionQuery.setIds(newSizeIds);
-        List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-        mv.addObject("sizeList",sizeList);
+        mv.addObject("sizeList",getSizes(goodsList));
+        goodsService.withSizeDomain(goodsList);
 
-
-
-        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsDomainList,goodsQuery.getPageIndex(),goodsQuery.getPageSize(),goodsDomainList.size());
-        mv.addObject("goodsDomainPageList",goodsDomainPageList);
+        //过滤开始
+        doFilter(query,mv,goodsList,priceWay,goodsListAll.size());
         return mv;
     }
 

@@ -35,11 +35,13 @@
             <p><spring:message code="order.details.time"/>：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
             <p><spring:message code="order.details.status"/>：
                 <c:choose>
-                    <c:when test="${orderDomain.status==1}"><spring:message code="order.status.waitPay"/>&nbsp;
-                        <a href="" id="cancelBtn" class="btn btn-primary hide" style="background-color: #2b2b2b;color: white"><spring:message code="order.details.cancel"/></a>
+                    <c:when test="${orderDomain.status==1}"><spring:message code="order.status.waitPay"/>
+                        <a href="javascript:void(0)" id="cancelBtn" class="btn btn-primary hide" style="margin-left: 2rem;background-color: #2b2b2b;color: white"><spring:message code="order.details.cancel"/></a>
                     </c:when>
                     <c:when test="${orderDomain.status==2}"><spring:message code="order.status.paid"/></c:when>
-                    <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/></c:when>
+                    <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/>
+                        <a href="javascript:void(0)" id="receivedBtn" class="btn btn-primary"   style="margin-left: 2rem;background-color: #2b2b2b;border-radius:1;color: white"><spring:message code="order.details.reseived"/></a>
+                    </c:when>
                     <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
                     <c:when test="${orderDomain.status==-1}"><spring:message code="order.status.cancel"/></c:when>
                 </c:choose>
@@ -52,12 +54,11 @@
             <div class="new-pay-way rePayWay" style="display: none;">
                 <h3 style="text-align: left"><spring:message code="payment.failed.paymentWay"/></h3>
                 <ul id="j_m_payment2" style="border-bottom: none">
-                    <li class="active"><label for="unionPay2"><input type="radio" data-value="1" name="methodOfPayment" id="unionPay2"  ><spring:message code="orderinfo.confirm.payway.zfb"/></label>
-                    </li>
-                    <li><label for="alipay2"><input type="radio" data-value="2" name="methodOfPayment" id="alipay2" ><spring:message code="orderinfo.confirm.payway.union"/></label></li>
-                    <li><label for="iPay2"><input type="radio" data-value="3" name="methodOfPayment" id="iPay2"  ><spring:message code="orderinfo.confirm.payway.credits"/></label></li>
+                    <li class="active ${web:selectCountry()!=1?'hide':''}"><label for="alipay2"><input type="radio" data-value="1" name="methodOfPayment" id="alipay2"  ><spring:message code="orderinfo.confirm.payway.zfb"/></label></li>
+                    <li class="${web:selectCountry()!=1?'hide':''}"><label for="unionPay2"><input type="radio" data-value="2" name="methodOfPayment" id="unionPay2" ><spring:message code="orderinfo.confirm.payway.union"/></label></li>
+                    <li class="${web:selectCountry()!=1?'active':''}"><label for="iPay2"><input type="radio" data-value="3" name="methodOfPayment" id="iPay2"  ><spring:message code="orderinfo.confirm.payway.credits"/></label></li>
                 </ul>
-                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="pay-btn"><spring:message code="order.details.pay"/></a>
+                <a href="'/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="pay-btn"><spring:message code="order.details.pay"/></a>
             </div>
         </div>
 
@@ -222,8 +223,13 @@
         <%--<h4>&lt;%&ndash;<spring:message code="payment.failed.shippingAddress"/>&ndash;%&gt;配送信息</h4>--%>
         <div class="item"  style="display: none">
             <ul>
-                <li>${orderDomain.shipCountry}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
-                <li>${orderDomain.shipFirstName}${orderDomain.shipLastName} ${orderDomain.shipTitle}</li>
+                <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
+                <c:if test="${web:selectCountry()!=1}">
+                    <li>${orderDomain.shipTitle}  ${orderDomain.shipFirstName}${orderDomain.shipLastName}</li>
+                </c:if>
+                <c:if test="${web:selectCountry()==1}">
+                    <li>${orderDomain.shipLastName}${orderDomain.shipFirstName} ${orderDomain.shipTitle}</li>
+                </c:if>
             </ul>
         </div>
     </div>
@@ -266,6 +272,13 @@
 <script>
 
     $(function () {
+        var orderNo = '${orderDomain.orderNo}';
+        if(${web:selectCountry()!=1}){
+            var ip = returnCitySN["cip"];
+            url = "/payment/buildIpayLinks?orderNo="+orderNo+"&ipAddress="+ip;
+            $("#payBtn").attr("href",url);
+        }
+
         $(".j_dropdown").on("click", function () {
             $(this).toggleClass("active");
             $(this).next().slideToggle();
@@ -276,7 +289,7 @@
         });
 
         var payMethod = 1;
-        var orderNo = '${orderDomain.orderNo}';
+
         var url = "/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
 
         //检查地址的正确性不然会报错
@@ -308,6 +321,15 @@
             console.log(1);
             var id = '${orderDomain.id}';
             $.post("/order/cancel",{"orderId":id},function (data) {
+                console.log(data);
+                if(data.code==200){
+                    location.reload();
+                }
+            })
+        });
+        $("#receivedBtn").click(function () {
+            var id = '${orderDomain.id}';
+            $.post("${ctx}/u/order/receipt",{"orderId":id},function (data) {
                 console.log(data);
                 if(data.code==200){
                     location.reload();

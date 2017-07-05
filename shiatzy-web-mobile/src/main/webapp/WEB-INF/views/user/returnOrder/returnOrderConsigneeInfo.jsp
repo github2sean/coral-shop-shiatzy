@@ -10,7 +10,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="returnOrderInfo.return"/></p>
-    <a style="float: right;" href="/returnOrder/returnOrderInfo?orderId=${order.id}" >< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/returnOrder/returnOrderInfo?orderId=${order.id}" >< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
@@ -69,7 +69,7 @@
                         </div>
 
                     </div>
-                    <p class="status">退货理由：${returnReason}</p>
+                        <p class="status">退货理由：${returnReason}</p>
                 </c:forEach>
             </div>
             <p style="font-size:1.2rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">
@@ -108,7 +108,7 @@
 
     <div class="returnWay item-group">
         <div class="item">
-        <a href="/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
+        <a href="/u/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
         <p><spring:message code="consignee.backWay"/>：<span data-value="${sessionScope.backWay}" id="backWay">
         <c:choose>
             <c:when test="${backWay==1}">

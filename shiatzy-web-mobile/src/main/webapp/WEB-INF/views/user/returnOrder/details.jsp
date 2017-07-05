@@ -11,7 +11,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="return.detail.tiltle"/></p>
-    <a style="float: right;" href="/order/list">< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/order/list">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="item-group">

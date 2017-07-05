@@ -8,8 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
-<jsp:useBean id="query" scope="request" type="com.dookay.coral.shop.goods.query.GoodsQuery"/>
-<jsp:useBean id="colorList" scope="request" type="java.util.List<com.dookay.coral.shop.goods.domain.GoodsColorDomain>"/>
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>

@@ -9,7 +9,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="returnOrderInfo.return"/></p>
-    <a style="float: right;" href="/order/details?orderId=${order.id}">< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/order/details?orderId=${order.id}">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
@@ -252,7 +252,7 @@
             var data = $(".goodsForm").serializeArray();
             $.post("/u/returnOrder/chooseGoodsAndReason", data, function (data) {
                 if (data.code == 200) {
-                    location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
+                    location.href = "/u/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
                 } else {
                     layer.msg(data.message);
                 }

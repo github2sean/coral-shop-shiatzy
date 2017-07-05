@@ -69,9 +69,9 @@
         <h3>3. <spring:message code="orderinfo.confirm.payway"/></h3>
             <ul>
             <li class=" payMethod" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
-            <li class=" payMethod" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
-            <li class=" payMethod" data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
-            <li class=" payMethod" id="cod" data-value="4">货到付款(仅限中国大陆地区）</li>
+            <li class=" payMethod ${web:selectCountry()!=1?'hide':''}" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
+            <li class=" payMethod ${web:selectCountry()!=1?'hide':''}"   data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
+            <li class=" payMethod ${web:selectCountry()!=1?'hide':''}"  id="cod" data-value="4">货到付款(仅限中国大陆地区）</li>
         </ul>
         <p style="margin-bottom: .5rem" class="moreBtn">${cartList.size()}&nbsp;<spring:message code="orderinfo.confirm.numofgoods"/>　v</p>
         <div class="clearfix dx-shopping moreGoods" style="display:none;">
