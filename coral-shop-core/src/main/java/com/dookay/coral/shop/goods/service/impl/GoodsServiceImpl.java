@@ -156,7 +156,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 
 			List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
 			System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
-			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> net.sf.json.JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
+			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
 			if(skuDomain == null)
 			{
 				throw new ServiceException("此商品无库存");
