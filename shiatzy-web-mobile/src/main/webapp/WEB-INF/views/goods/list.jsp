@@ -95,14 +95,14 @@
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down"><spring:message code="goods.list.attr"/></div>
             <div class="do-sort-group-wrap">
-                <c:forEach var="item" items="${attributeList}">
+                <c:forEach var="item" items="${skinList}">
                     <div class="do-sort-group">
                         <input type="checkbox" name="attributeIds"
                         <c:forEach var="row" items="${attrIds}">
                             <c:if test="${row==item.id}">checked="checked"</c:if>
                         </c:forEach>
                                id="color${item.id}" value="${item.id}">
-                        <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enValue:item.value}</label>
+                        <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enTitle:item.title}</label>
                     </div>
                 </c:forEach>
             </div>

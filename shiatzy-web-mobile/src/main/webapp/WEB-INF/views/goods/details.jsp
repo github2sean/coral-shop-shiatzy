@@ -36,7 +36,9 @@
             <c:if test="${goodsDomain.goodsItemList.size()>0}">
               <ul class="clearfix">
                 <c:forEach var="item" items="${goodsDomain.goodsItemList}">
-                  <li style="margin-bottom: 2rem; <c:if test="${item.id==goodsItemDomain.id}">background-color: #e6e6e6; </c:if>"><a href="/goods/details/${item.id}"><img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 10px;"></a></li>
+                  <li style="margin-bottom: 2rem;  ">
+                      <a href="/goods/details/${item.id}">
+                      <img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${item.id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
                 </c:forEach>
               </ul>
             </c:if>

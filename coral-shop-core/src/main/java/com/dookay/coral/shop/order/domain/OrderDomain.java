@@ -145,4 +145,6 @@ public class 	OrderDomain implements Serializable {
 	@Transient
 	private List<ReturnRequestItemDomain> returnRequestItemList;
 
+	@Transient
+	private Boolean submitted;
 }

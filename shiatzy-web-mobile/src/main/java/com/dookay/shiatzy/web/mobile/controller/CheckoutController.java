@@ -314,6 +314,11 @@ public class CheckoutController  extends BaseController{
         if(orderDomain==null){
             return new ModelAndView("redirect:/home/index");
         }
+
+        //处理未支付返回的情形
+        if(Boolean.TRUE==orderDomain.getSubmitted()){
+            return new ModelAndView("redirect:payfailed?orderId="+orderDomain.getId());
+        }
         //商品金额
 
         //购物车
@@ -325,6 +330,7 @@ public class CheckoutController  extends BaseController{
         ModelAndView mv=  new ModelAndView("checkout/confirm");
         //mv.addObject(CART_LIST,cartList);
         //mv.addObject(ORDER,orderDomain);
+        orderDomain.setSubmitted(false);//未提交
         session.setAttribute(CART_LIST,cartList);
         session.setAttribute(ORDER,orderDomain);
         session.setAttribute("referrerPage",page);
@@ -414,8 +420,9 @@ public class CheckoutController  extends BaseController{
             orderItemDomainList.add(orderItemDomain);
         }
 
+        order.setSubmitted(true);
         //清除session
-        session.setAttribute(ORDER,null);
+        session.setAttribute(ORDER,order);
         session.setAttribute(CART_LIST,null);
         //清除购物车
         for(int i=0 ;i<cartList.size();i++){

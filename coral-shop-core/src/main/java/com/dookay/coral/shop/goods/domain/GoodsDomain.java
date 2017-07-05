@@ -44,7 +44,7 @@ public class GoodsDomain implements Serializable {
 
 	/*拥有颜色*/
 	private String colorIds;
-	
+
 	/*拥有尺寸*/
 	private String sizeIds;
 
