@@ -213,7 +213,7 @@
         </div>
     </div>--%>
     <div class="return-btn">
-        <a href="#" class="submitBtn btn-default">< <spring:message code="orderinfo.next"/></a>
+        <a href="javascript:void(0)" class="submitBtn btn-default"> <spring:message code="orderinfo.next"/>></a>
     </div>
     <div class="privacy">
         <a href="#" class="returnOrchange">
@@ -228,7 +228,6 @@
         </a>
     </div>
 </div>
-
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
@@ -251,7 +250,7 @@
         $(".submitBtn").click(function () {
 
             var data = $(".goodsForm").serializeArray();
-            $.post("/returnOrder/chooseGoodsAndReason", data, function (data) {
+            $.post("/u/returnOrder/chooseGoodsAndReason", data, function (data) {
                 if (data.code == 200) {
                     location.href = "/returnOrder/returnOrderConsigneeInfo?page=/returnOrder/initReturnOrder&orderId=${order.id}";
                 } else {

@@ -23,7 +23,7 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <div class="order">
     <p style="float: left"><spring:message code="order.detail"/></p>
-    <a style="float: right;" href="/order/list" >< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/order/list" >< <spring:message code="goBack"/></a>
 </div>
 <div class="unfinished">
     <h3 class="title"><spring:message code="order.detail"/></h3>
@@ -83,7 +83,7 @@
                         <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                     </div>
                     <div class="goods-info">
-                        <div class="name">${item.goodsDomain.id}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <p class="code">产品编号：${item.goodsCode}</p>
                         <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
@@ -231,7 +231,7 @@
     <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
     <div class="item-group">
             <div class="item">
-                <a class="btn-item"  href="/returnOrder/initReturnOrder?orderId=${orderDomain.id}">
+                <a class="btn-item"  href="/u/returnOrder/initReturnOrder?orderId=${orderDomain.id}">
                     <spring:message code="order.details.applyReturn"/><span style="float: right">></span></a>
             </div>
     </div>
@@ -240,7 +240,7 @@
     <c:if test="${not empty orderDomain.returnRequestDomain}">
     <div class="item-group">
             <div class="item">
-            <a class="btn-item" href="/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}">
+            <a class="btn-item" href="/u/returnOrder/details?orderId=${orderDomain.returnRequestDomain.id}">
                 <spring:message code="order.details.searchReturn"/> <span style="float: right">></span>
             </a>
             </div>
@@ -331,7 +331,7 @@
             $childDiv.each(function () {
                 $(this).remove();
             });
-            $.post("/order/queryExpress",{"orderId":id},function (data) {
+            $.post("/u/order/queryExpress",{"orderId":id},function (data) {
                 if(data.code==200){
                     var trace =JSON.parse(data.data).Traces;
                     if(trace.length>0){

@@ -8,7 +8,7 @@
 </jsp:include>
 
 <div class="dx-shipping">
-    <div class="dx-title">送货地址设定 <a href="/returnOrder/chooseReturnWay">回上页</a></div>
+    <div class="dx-title">送货地址设定 <a href="/u/returnOrder/chooseReturnWay">回上页</a></div>
     <div class="content">
         <a href="/checkout/createShipAddress" class="new-address">新增地址 +</a>
         <c:forEach var="row" items="${addressList}" varStatus="num">
@@ -27,7 +27,6 @@
                 </div>
             </div>
         </c:forEach>
-
     </div>
     <div class="btn saveBtn" data-value="unChecked">
         <a href="#" type="button" class="accounts-btn">&lt; 确认</a>
@@ -44,7 +43,7 @@
             $(this).css("background-color","#333");
             $(this).parents(".addressDiv").siblings().find(".iconfont").css({"background-color":"white","border":"1px solid black"});
             var id = $(this).attr("data-value");
-            $.post("/returnOrder/sureReturnWay",{"backWay":1,"addressId":id},function (data) {
+            $.post("/u/returnOrder/sureReturnWay",{"backWay":1,"addressId":id},function (data) {
                 if(data.code==200){
                     $(".saveBtn").attr("data-value","checked");
                 }else{
@@ -57,7 +56,7 @@
                 layer.msg("请先选地址");
                 return false;
             }
-            location.href = "/returnOrder/chooseReturnWay";
+            location.href = "/u/returnOrder/chooseReturnWay";
         });
         $(".delBtn").click(function () {
             var $now = $(this);

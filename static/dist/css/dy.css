@@ -1201,3 +1201,6 @@
     z-index: 999;
     background: #fff;
 }
+.ios-select-widget-box header.iosselect-header a.sure {
+    color: #000;
+}
