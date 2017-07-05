@@ -216,7 +216,7 @@ public class CheckoutController  extends BaseController{
     public ModelAndView orderInfo(){
         UserContext userContext = UserContext.current();
 
-        Long accountId = UserContext.current().getAccountDomain().getId();
+        Long accountId = userContext.getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -247,7 +247,7 @@ public class CheckoutController  extends BaseController{
             PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-
+            System.out.println("sizeIds:"+sizeIds);
             for(Long id:sizeIds){
                 goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
             }
@@ -381,7 +381,11 @@ public class CheckoutController  extends BaseController{
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
         order.setOrderTime(new Date());
         CustomerAddressDomain customerAddressDomain = customerAddressService.get(order.getShipAddressId());
-        order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
+        if(order.getPaymentMethod()==3&&order.getShippingMethod()==1){//ipaylinks 必须要邮编
+            order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
+        }else{
+            order.setShipPostalCode("100000");//默认邮编
+        }
         orderService.create(order);
         //创建明细
         for(int j = 0;j<cartList.size();j++){
@@ -462,7 +466,7 @@ public class CheckoutController  extends BaseController{
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         if(accountDomain!=null){
             CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
-            if(customerDomain!=null&&customerDomain.getIsArtClubMember()==1){
+            if(customerDomain!=null&&customerDomain.getIsArtClubMember()!=null&&customerDomain.getIsArtClubMember()==1){
                 TempMemberQuery query = new TempMemberQuery();
                 query.setMobile(customerDomain.getValidMobile());
                 List<String> cardType = new ArrayList<>();

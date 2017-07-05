@@ -264,8 +264,6 @@
         $.post("/home/selectLanguage",{"nowLanguage":language},function (data) {
             if(data.code==200){
                 var old = location.search;
-
-                console.log("old:"+old +" "+old.indexOf("?lang="))
                 if(old==''){
                     old = old  +"?lang="+language;
                 }else if(old.indexOf("?lang=")!=-1){
@@ -314,7 +312,6 @@
 
         $(".language").click(function () {
             var language = $(this).attr("data-value");
-            alert('${web:selectLanguage()}'+"  "+language);
             postToSelectLanguage(language);
         });
 
