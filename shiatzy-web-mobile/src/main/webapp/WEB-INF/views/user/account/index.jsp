@@ -44,7 +44,7 @@
                 </a>
             </li>
             <li>
-                <a href="/order/list">
+                <a href="/u/order/list">
                     <span><svg><use xlink:href="#ac-order"></use></svg></span>
                     <span><spring:message code="account.order"/></span>
                     <span class="arrow">></span>

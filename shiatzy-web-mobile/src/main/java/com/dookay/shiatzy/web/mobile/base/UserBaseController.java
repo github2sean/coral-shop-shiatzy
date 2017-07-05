@@ -1,15 +1,5 @@
 package com.dookay.shiatzy.web.mobile.base;
 
-import com.dookay.coral.common.web.BaseController;
-import com.dookay.coral.common.web.HttpContext;
-import com.dookay.coral.host.user.context.UserContext;
-import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URLEncoder;
-
 /**
  * 前台控制器基类
  *

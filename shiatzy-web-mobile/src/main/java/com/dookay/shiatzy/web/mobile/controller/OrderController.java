@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 
 @Controller
-@RequestMapping("order/")
+@RequestMapping("u/order/")
 public class OrderController extends BaseController {
 
     @Autowired

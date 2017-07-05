@@ -17,6 +17,11 @@ public class ReturnReasonModel {
     private ReturnReasonTypeModel type3;
     private ReturnReasonTypeModel type4;
 
+
+    public Boolean itemSelected(){
+        return null !=orderItemId;
+    }
+
     public  Boolean isChooseReason(){
         Boolean result = false;
         if(type1NotNull()){
