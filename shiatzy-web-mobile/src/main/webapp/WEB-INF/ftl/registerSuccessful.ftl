@@ -16,8 +16,11 @@
             padding: 0;
         }
         .email-submit {
-            width: 95%;
+            width: 85%;
             margin: 0 auto;
+            border: 1px solid #000;
+            padding-left: 5%;
+            padding-right: 5%;
         }
         .email-submit .title {
             text-align: center;
@@ -62,8 +65,8 @@
             <div class="email-txt">
                 <p class="name">Dear ${name} ,</p>
                 <br>
-                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.${contentSuffix}</p>
-                <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
+                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>. ${contentSuffix}</p>
+            <a href="http://shop.shiatzychen.com/" target="_blank" style="text-decoration-line: none; padding: 10px 0px; display: block; width: 240px; margin: 30px auto; background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); letter-spacing: 2px; cursor: pointer; text-align: center;">SHOP NOW</a>
             </div>
         </div>
         <p class="email-footer">

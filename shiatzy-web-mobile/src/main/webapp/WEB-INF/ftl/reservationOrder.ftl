@@ -181,36 +181,74 @@
 </head>
 <body>
 <div class="email-submit">
-    <p class="title"><img src="images/logoSC.png" alt=""></p>
+    <p class="title"><img src="${picUrl}" alt=""></p>
     <div class="email-con">
-        <h1 class="email-title">确认退货</h1>
+        <h1 class="email-title">${title}</h1>
         <div class="email-txt">
-            <p class="name">亲爱的 SU SU,</p>
+            <p class="name">亲爱的 ${name},</p>
             <br>
             <p class="txt">
-                感谢您在夏姿·陈（SHIATZY CHEN）在线精品店购物。我们很高兴地通知您以下订单已为您进行脱货处理，将会于1-3个工作日帮您解决。您可于以下配送运单号或我的账户“订单详情”内，点击查询最新动态。 如有任何问题，请随时联系我们的客服人员。</p>
+            ${content}</p>
             <div class="dingdan">
                 <div class="xzc-detail">
-                    <p class="dingdan-title">确认退货</p>
+                    <p class="dingdan-title">预约单详情</p>
                     <div class="detail">
                         <ul class="detail-list">
                             <li>
-                                <span class="list-name">订单编号 : </span><span>20170602401</span>
+                                <span class="list-name">预约单编号 : </span><span>${order.reservationNo}</span>
                             </li>
                             <li>
-                                <span class="list-name">订单日期 : </span><span>2017-06-02 16:35:40</span>
+                                <span class="list-name">订单日期 : </span><span>${date}</span>
                             </li>
                             <li>
-                                <span class="list-name">订单状态 : </span><span>正在退货</span>
+                                <span class="list-name">预约门店 : </span><span>${order.storeDomain.name}</span>
                             </li>
-
+                            <li>
+                                <span class="list-name">地址 : </span><span>${order.storeDomain.address}</span>
+                            </li>
+                            <li>
+                                <span class="list-name">电话号码 : </span><span>${order.storeDomain.tel}</span>
+                            </li>
+                            <li>
+                                <span class="list-name">营业时间 : </span><span>${openDate}</span>
+                            </li>
+                            <li>
+                                <span class="list-name">订单状态 : </span><span>${status}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="dingdan-list">
                 <p class="yuyue-title">商品详情</p>
-                <div class="list-left"><img src="images/1C179-B_sb.jpg" alt=""></div>
+
+            <#if orderItem?? && (orderItem?size > 0) >
+                <#list orderItem as it>
+                    <div class="list-left"><img src="${it.goodsItemDomain.picUrl}" alt=""></div>
+                    <div class="list-right">
+                        <h3 class="pro-title">${it.goodsName} ${it.skuCode}</h3>
+                        <p class="pro-value">${it.goodsItemDomain.name}</p>
+                        <p class="pro-value">选择尺寸：  ${it.sizeDomain.name}</p>
+                        <p class="pro-value">数量：${it.num}</p>
+                        <p class="pro-value">单价：
+                            <#if order.currentCode=="USD">$
+                            <#elseif order.currentCode=="EUR">€
+                            <#else >¥
+                            </#if>
+                        ${it.goodsPrice}</p>
+                        <#if it.goodsDisPrice??>
+                        <p class="pro-value">折扣价：
+                            <#if order.currentCode=="USD">$
+                            <#elseif order.currentCode=="EUR">€
+                            <#else >¥
+                            </#if>
+                        ${it.goodsDisPrice}</p>
+                        </#if>
+                    </div>
+
+                </#list>
+            </#if>
+                <#--<div class="list-left"><img src="images/1C179-B_sb.jpg" alt=""></div>
                 <div class="list-right">
                     <h3 class="pro-title">凸面金属浮雕花朵戒指</h3>
                     <p class="pro-kind">1C179 B</p>
@@ -219,29 +257,14 @@
                     <p class="pro-value">尺寸 : S</p>
                     <p class="pro-value">数量 : 1</p>
                     <p class="pro-value">单价 : ¥1</p>
-                    <p class="pro-value">退货运费 : ￥25</p>
-                    <div class="pro-value">预计退回 : ￥25</div>
-                </div>
-
-
+                    <p class="pro-value">状态 : 已提交</p>
+                </div>-->
             </div>
             <div class="dingdan-sum">
-                <span class="dingdan-sum-tip">预计订单总额</span><span class="dingdan-money">¥1</span>
-            </div>
-            <div class="dingdan">
-                <div class="xzc-detail">
-                    <p class="dingdan-title">退货详情</p>
-                    <div class="detail">
-                        <ul class="detail-list">
-                            <li>
-                                <span class="list-name">所选退货方式 : </span><span>快递</span>
-                            </li>
-                            <li>
-                                <span class="list-name">退回地址 : </span><span>上海宝山</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <span class="dingdan-sum-tip">预计订单总额</span><span class="dingdan-money"><#if order.currentCode=="USD">$
+            <#elseif order.currentCode=="EUR">€
+            <#else >¥
+            </#if>${totalFee}</span>
             </div>
         </div>
     </div>

@@ -12,6 +12,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
+import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
@@ -84,6 +85,27 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
 					.filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			orderItemDomain.setGoodsItemDomain(goodsItemDomain);
+		}
+	}
+
+	@Override
+	public void returnWithGoodItem(List<ReturnRequestItemDomain> requestItemDomainList) {
+
+		List<Long> ids = requestItemDomainList.stream().map(ReturnRequestItemDomain::getItemId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIds(ids);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		HttpServletRequest request =  HttpContext.current().getRequest();
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+		for(GoodsItemDomain itemDomain:goodsItemDomainList){
+			itemDomain.setGoods(goodsService.get(itemDomain.getGoodsId()));
+			itemDomain.setPicUrl(basePath+ JSONObject.fromObject(JSONArray.fromObject(itemDomain.getThumb()).get(0)).getString("file"));
+		}
+		for (ReturnRequestItemDomain returnRequestItemDomain:requestItemDomainList){
+			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getId(), returnRequestItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
+			returnRequestItemDomain.setGoodsItemDomain(goodsItemDomain);
 		}
 	}
 
