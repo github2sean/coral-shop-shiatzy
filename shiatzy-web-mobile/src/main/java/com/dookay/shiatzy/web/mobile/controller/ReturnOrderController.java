@@ -92,7 +92,7 @@ public class ReturnOrderController extends BaseController {
     private static String RETURN_ORDER = "return_order";
     private static String ORDER = "order";
     private static String BACK_WAY = "backWay";
-
+    private static Double BACK_FEE = 0D;
 
     /**
      * 退货详情页
@@ -110,13 +110,16 @@ public class ReturnOrderController extends BaseController {
         returnRequestDomain.setOrderDomain(orderDomain);
         Double fee = orderDomain.getShipFee();
         Double dis = orderDomain.getCouponDiscount();
+        Double memDis = orderDomain.getMemberDiscount();
         dis = dis==null?0D:dis;
-
+        dis = memDis==null?dis:dis+memDis;
 
         HashMap<String, String> newReturnReasonMap =  new HashMap<>();
 
         for(ReturnRequestItemDomain line:returnOrderItemList){
-            preBackMoney += line.getGoodsPrice()*line.getNum();
+
+            Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
+            preBackMoney += goodsPrice*line.getNum();
             GoodsQuery goodsQuery = new GoodsQuery();
             goodsQuery.setCode(line.getGoodsCode());
             line.setGoodsDomain(goodsService.getFirst(goodsQuery));
@@ -170,12 +173,12 @@ public class ReturnOrderController extends BaseController {
         orderDomain.setOrderItemDomainList(cartList);
 
         HttpServletRequest request = HttpContext.current().getRequest();
-        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+        Long countryId = orderDomain.getShippingCountryId();
         ShippingCountryDomain shippingCountryDomain = null;
         String currentCode = "CNY";
         Double fee = 0D;
-        if(StringUtils.isNotBlank(countryId)){
-            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+        if(countryId!=null){
+            shippingCountryDomain = shippingCountryService.get(countryId);
             Double rate = shippingCountryDomain.getRate();
             //根据国家选择结算币种
             int currentCodeType = shippingCountryDomain.getRateType();
@@ -198,6 +201,7 @@ public class ReturnOrderController extends BaseController {
         returnRequestDomain.setShipName(customerDomain.getFirstName()+customerDomain.getLastName());
         returnRequestDomain.setOrderTime(orderDomain.getOrderTime());
         returnRequestDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        BACK_FEE = returnRequestDomain.getShipFee();
         returnRequestDomain.setCurrentCode(currentCode);
         returnRequestDomain.setStatus(1);
         //保存订单对象到session
@@ -294,11 +298,17 @@ public class ReturnOrderController extends BaseController {
 
         Double preBackMoney = 0D;
         for(OrderItemDomain line:list){
-            preBackMoney += line.getGoodsPrice()*line.getNum();
+            Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
+            preBackMoney += goodsPrice*line.getNum();
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
+        OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
+        Double dis = orderDomain.getCouponDiscount();
+        Double memDis = orderDomain.getMemberDiscount();
+        dis = dis==null?0D:dis;
+        dis = memDis==null?dis:dis+memDis;
 
-        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee());
+        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee()-dis);
         mv.addObject("returnReasonMap",newReturnReasonMap);
         session.setAttribute("referrerPage",page);
         return mv;
@@ -422,6 +432,7 @@ public class ReturnOrderController extends BaseController {
         returnRequest.setShipAddress(address);
         returnRequest.setShipName(name);
         returnRequest.setReturnShippingMethod(1);
+        returnRequest.setShipFee(BACK_FEE);
         return successResult("操作成功");
     }
 

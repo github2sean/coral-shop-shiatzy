@@ -116,7 +116,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; -<fmt:formatNumber value="${fee}" pattern="#,###"/></span></div>
+                        </font>&nbsp; <fmt:formatNumber value="${empty returnRequestDomain.shipFee?0:returnRequestDomain.shipFee}" pattern="#,###"/></span></div>
     </div>
     <div style="margin-bottom: 3rem;" class="verify-message-middle">
 
@@ -132,7 +132,7 @@
                     &nbsp;<spring:message code="coin.EU"/>
                 </c:when>
             </c:choose>
-        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/> </p>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-returnRequestDomain.shipFee}" pattern="#,###"/> </p>
     </div>
     </div>
 

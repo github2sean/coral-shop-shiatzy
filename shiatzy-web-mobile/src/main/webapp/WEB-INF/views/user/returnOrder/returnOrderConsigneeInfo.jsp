@@ -84,7 +84,7 @@
                             &nbsp;<spring:message code="coin.EU"/>
                         </c:when>
                     </c:choose>
-                </font>-&nbsp;<fmt:formatNumber value="${empty return_order.shipFee?0:return_order.shipFee}" pattern="#,###"/></span></p>
+                </font>&nbsp;<fmt:formatNumber value="${empty return_order.shipFee?0:return_order.shipFee}" pattern="#,###"/></span></p>
         </div>
     </div>
 

@@ -62,7 +62,6 @@ public class SimpleAliDMSendMail {
         message.setSubject("夏资陈 "+configMap.get(TITLE),"UTF-8");
         // 设置邮件的内容体
         message.setContent(configMap.get(CONTENT), "text/html;charset=UTF-8");
-
         // 发送邮件
         Transport.send(message);
     }
