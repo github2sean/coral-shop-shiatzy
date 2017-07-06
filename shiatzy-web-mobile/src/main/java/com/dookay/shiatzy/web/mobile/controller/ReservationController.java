@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
@@ -9,6 +10,9 @@ import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
+import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
+import com.dookay.coral.shop.content.query.MessageTemplateQuery;
+import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
@@ -37,6 +41,7 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
+import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +52,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by admin on 2017/5/4.
@@ -83,9 +88,8 @@ public class ReservationController extends BaseController{
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
     @Autowired
-    private ISmsService smsService;
-    @Autowired
     private IShippingCountryService shippingCountryService;
+
 
 
     public static int RESERVATION_TYPE=3;
@@ -204,12 +208,9 @@ public class ReservationController extends BaseController{
         Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
-        //发送短信
-        String phone = customerDomain.getPhone();
-        if(StringUtils.isNotBlank(phone)){
-            smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
-        }
-        //发送邮件
+
+
+
 
         return successResult("提交成功",reservationDomainId);
     }

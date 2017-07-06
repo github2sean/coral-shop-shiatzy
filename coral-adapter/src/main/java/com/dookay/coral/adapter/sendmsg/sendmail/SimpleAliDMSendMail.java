@@ -12,7 +12,7 @@ public class SimpleAliDMSendMail {
     private static final int ALIDM_SMTP_PORT = 25;
 
 
-    public static final String SEND_EMAIL_SINGEL = "customercare@ec.shiatzychen.com";
+    public static final String SEND_EMAIL_SINGEL = "customercare@ec.shiatzychen.com";//customercare@ec.shiatzychen.com
     public static final String SEND_EMAIL_MULTI = "publish@ec.shiatzychen.com";
     public static final String SEND_EMAIL = "sendEmail";
     public static final String RECEIVE_EMAIL = "receiveEmail";
@@ -52,8 +52,7 @@ public class SimpleAliDMSendMail {
         // 创建邮件消息
         MimeMessage message = new MimeMessage(mailSession);
         // 设置发件人
-        InternetAddress form = new InternetAddress(
-                props.getProperty("mail.user"));
+        InternetAddress form = new InternetAddress(props.getProperty("mail.user"));
         message.setFrom(form);
         // 设置收件人
         InternetAddress to = new InternetAddress(configMap.get(RECEIVE_EMAIL));
@@ -62,7 +61,6 @@ public class SimpleAliDMSendMail {
         message.setSubject("夏资陈 "+configMap.get(TITLE),"UTF-8");
         // 设置邮件的内容体
         message.setContent(configMap.get(CONTENT), "text/html;charset=UTF-8");
-
         // 发送邮件
         Transport.send(message);
     }

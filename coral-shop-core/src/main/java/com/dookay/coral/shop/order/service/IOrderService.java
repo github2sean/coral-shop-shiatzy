@@ -3,6 +3,7 @@ package com.dookay.coral.shop.order.service;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
+import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface IOrderService extends IBaseService<OrderDomain> {
 
     void withGoodItme(List<OrderItemDomain> cartList);
-
+    void returnWithGoodItem(List<ReturnRequestItemDomain> requestItemDomainList);
 
     OrderDomain getOrder(String orderNo);
 

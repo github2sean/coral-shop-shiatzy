@@ -160,7 +160,7 @@ public class GoodsController extends BaseController{
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
 
         Map<String,String> colorMap = new HashMap<>();
-        
+
         return goodsColorDomainList;
     }
 

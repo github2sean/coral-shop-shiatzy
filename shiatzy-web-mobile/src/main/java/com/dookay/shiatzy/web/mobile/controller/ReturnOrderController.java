@@ -1,6 +1,7 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
@@ -9,17 +10,22 @@ import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
+import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
+import com.dookay.coral.shop.content.query.MessageTemplateQuery;
+import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.*;
+import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
@@ -35,6 +41,7 @@ import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.ReturnInfoForm;
 import com.dookay.shiatzy.web.mobile.model.ChooseGoodsModel;
 import com.dookay.shiatzy.web.mobile.model.ReturnReasonModel;
+import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.NamedBean;
@@ -46,9 +53,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -88,11 +97,18 @@ public class ReturnOrderController extends BaseController {
     @Autowired
     private IShippingCountryService shippingCountryService;
 
+    @Autowired
+    private SimpleAliDMSendMail simpleAliDMSendMail;
+    @Autowired
+    private IMessageTemplateService messageTemplateService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
+
     private static String CART_LIST = "cartList";
     private static String RETURN_ORDER = "return_order";
     private static String ORDER = "order";
     private static String BACK_WAY = "backWay";
-
+    private static Double BACK_FEE = 0D;
 
     /**
      * 退货详情页
@@ -110,13 +126,16 @@ public class ReturnOrderController extends BaseController {
         returnRequestDomain.setOrderDomain(orderDomain);
         Double fee = orderDomain.getShipFee();
         Double dis = orderDomain.getCouponDiscount();
+        Double memDis = orderDomain.getMemberDiscount();
         dis = dis==null?0D:dis;
-
+        dis = memDis==null?dis:dis+memDis;
 
         HashMap<String, String> newReturnReasonMap =  new HashMap<>();
 
         for(ReturnRequestItemDomain line:returnOrderItemList){
-            preBackMoney += line.getGoodsPrice()*line.getNum();
+
+            Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
+            preBackMoney += goodsPrice*line.getNum();
             GoodsQuery goodsQuery = new GoodsQuery();
             goodsQuery.setCode(line.getGoodsCode());
             line.setGoodsDomain(goodsService.getFirst(goodsQuery));
@@ -170,12 +189,12 @@ public class ReturnOrderController extends BaseController {
         orderDomain.setOrderItemDomainList(cartList);
 
         HttpServletRequest request = HttpContext.current().getRequest();
-        String countryId = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+        Long countryId = orderDomain.getShippingCountryId();
         ShippingCountryDomain shippingCountryDomain = null;
         String currentCode = "CNY";
         Double fee = 0D;
-        if(StringUtils.isNotBlank(countryId)){
-            shippingCountryDomain = shippingCountryService.get(Long.parseLong(countryId));
+        if(countryId!=null){
+            shippingCountryDomain = shippingCountryService.get(countryId);
             Double rate = shippingCountryDomain.getRate();
             //根据国家选择结算币种
             int currentCodeType = shippingCountryDomain.getRateType();
@@ -198,6 +217,7 @@ public class ReturnOrderController extends BaseController {
         returnRequestDomain.setShipName(customerDomain.getFirstName()+customerDomain.getLastName());
         returnRequestDomain.setOrderTime(orderDomain.getOrderTime());
         returnRequestDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        BACK_FEE = returnRequestDomain.getShipFee();
         returnRequestDomain.setCurrentCode(currentCode);
         returnRequestDomain.setStatus(1);
         //保存订单对象到session
@@ -294,11 +314,17 @@ public class ReturnOrderController extends BaseController {
 
         Double preBackMoney = 0D;
         for(OrderItemDomain line:list){
-            preBackMoney += line.getGoodsPrice()*line.getNum();
+            Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
+            preBackMoney += goodsPrice*line.getNum();
         }
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
+        OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
+        Double dis = orderDomain.getCouponDiscount();
+        Double memDis = orderDomain.getMemberDiscount();
+        dis = dis==null?0D:dis;
+        dis = memDis==null?dis:dis+memDis;
 
-        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee());
+        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee()-dis);
         mv.addObject("returnReasonMap",newReturnReasonMap);
         session.setAttribute("referrerPage",page);
         return mv;
@@ -422,6 +448,7 @@ public class ReturnOrderController extends BaseController {
         returnRequest.setShipAddress(address);
         returnRequest.setShipName(name);
         returnRequest.setReturnShippingMethod(1);
+        returnRequest.setShipFee(BACK_FEE);
         return successResult("操作成功");
     }
 
@@ -470,6 +497,10 @@ public class ReturnOrderController extends BaseController {
     @ResponseBody
     public JsonResult applyReturn(Long orderId){
         OrderDomain orderDomain = orderService.get(orderId);
+        Double dis = orderDomain.getCouponDiscount();
+        Double memDis = orderDomain.getMemberDiscount();
+        dis = dis==null?0D:dis;
+        dis = memDis==null?dis:dis+memDis;
         //检查订单与用户是否匹配
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
@@ -496,7 +527,11 @@ public class ReturnOrderController extends BaseController {
         //生成退货单和退货单商品
         returnRequestService.create(returnRequestDomain);
         HashMap map =  (HashMap) session.getAttribute("returnJsonReason");
+        List<ReturnRequestItemDomain> requestList = new ArrayList<>();
+        Double totalAmt = 0D;
         for(OrderItemDomain line:orderItemDomains){
+            Double price = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
+            totalAmt = price*line.getNum();
             ReturnRequestItemDomain returnRequestItemDomain = new ReturnRequestItemDomain();
             returnRequestItemDomain.setReturnRequestId(returnRequestDomain.getId());
             returnRequestItemDomain.setOrderItemId(line.getId()+"");
@@ -512,7 +547,9 @@ public class ReturnOrderController extends BaseController {
             returnRequestItemDomain.setSkuSpecifications(line.getSkuSpecifications());
             returnRequestItemDomain.setSkuId(line.getSkuId());
             returnRequestItemDomain.setItemId(line.getItemId());
+            returnRequestItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
             returnRequestItemService.create(returnRequestItemDomain);
+            requestList.add(returnRequestItemDomain);
             //修改订单商品状态和退货数量
             OrderItemDomain orderItemDomain = orderItemService.get(Long.parseLong(returnRequestItemDomain.getOrderItemId()));
             orderItemDomain.setStatus(1);
@@ -530,8 +567,42 @@ public class ReturnOrderController extends BaseController {
         session.setAttribute("returnAddress",null);
 
         //发送短信
+        if(StringUtils.isNotBlank(customerDomain.getPhone())){
         smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
-        //发送邮件  TODO: 2017/6/15
+        }
+        //发送邮件
+        //1.查询发送内容
+        MessageTemplateQuery query = new MessageTemplateQuery();
+        query.setType(1);
+        query.setCode(MessageTypeEnum.RETURN_REQUEST.getValue());
+        query.setIsValid(1);
+        MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
+        //2.生成模版
+        Map<String,Object> freeMap = new HashMap<>();
+        freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
+        freeMap.put("title",messageTemplate.getTitle());
+        freeMap.put("name",customerDomain.getEmail());
+        freeMap.put("status", "申请中");
+        freeMap.put("content",messageTemplate.getContent());
+        freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(returnRequestDomain.getOrderTime()));
+        orderService.returnWithGoodItem(requestList);//会设置图片地址
+        freeMap.put("order",returnRequestDomain);
+        freeMap.put("orderItem",requestList);
+        freeMap.put("totalFee",totalAmt-returnRequestDomain.getShipFee()-dis);
+        freeMap.put("backWay",returnRequestDomain.getReturnShippingMethod()==1?"快递取件":"退回门店");
+        freeMap.put("backAddress",returnRequestDomain.getReturnShippingMethod()==1?returnRequestDomain.getShipAddress():returnRequestDomain.getStoreDomain().getAddress());
+        String html = FreemarkerUtil.printString("returnOrder.ftl",freeMap);
+        //3.设置发送邮件参数
+        HashMap<String,String> emailMap = new HashMap<>();
+        emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
+        emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
+        emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+        emailMap.put(simpleAliDMSendMail.CONTENT,html);
+        try {
+            simpleAliDMSendMail.sendEmail(emailMap);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();

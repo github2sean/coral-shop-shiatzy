@@ -16,8 +16,11 @@
             padding: 0;
         }
         .email-submit {
-            width: 95%;
+            width: 85%;
             margin: 0 auto;
+            border: 1px solid #000;
+            padding-left: 5%;
+            padding-right: 5%;
         }
         .email-submit .title {
             text-align: center;
@@ -61,17 +64,17 @@
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">Dear ,${name}</p>
+                <p class="name">Dear ${name},</p>
                 <br>
                 <p class="txt">We have just created a new password for you. For security reasons, we suggest to change this password with your next log-in of your choice. Should you have any questions, please contact us via: <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
                 <p class="txt">
                     Should you have any other questions, please contact us via<br>
                     <a href="#" class="link-web">customercare@shiatzychen.com</a>
                 </p>
-                <p class="txt" style="margin-bottom: 0">
-                    点击下面连接重新设置密码
+                <p class="txt" style="margin-bottom: 5px">
+                    您的新密码是
                 </p>
-                <a href="${setUrl}" target="_blank" style="padding: 10px 0; display:block; width: 100%; margin: 0px auto 30px; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">设置新密码</a>
+                <p style="padding: 10px ; display:block; width: 300px;   background: #eee; color: #000; letter-spacing: 2px; text-decoration: none; cursor:pointer ">${newPass}</p>
             </div>
         </div>
         <p class="email-footer">

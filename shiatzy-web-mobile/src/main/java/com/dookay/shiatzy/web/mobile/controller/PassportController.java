@@ -4,6 +4,7 @@ import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.utils.HttpClientUtil;
+import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
@@ -246,7 +247,7 @@ public class PassportController extends MobileBaseController{
         map.put("contentPrefix","We are pleased you’ve opened an account at");
         map.put("contentSuffix","From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
         String html = FreemarkerUtil.printString("registerSuccessful.ftl",map);
-        // 发邮件通知 TODO: 2017/6/15
+        // 发邮件通知
         String secretKey = UUID.randomUUID().toString();//密钥
         accountDomain.setActiveCode(secretKey);
         accountService.update(accountDomain);
@@ -292,18 +293,14 @@ public class PassportController extends MobileBaseController{
 
     @RequestMapping(value = "forgetPassword")
     @ResponseBody
-    public Map forgetPassword(@ModelAttribute ForgetForm forgetForm,HttpServletRequest request){
+    public JsonResult forgetPassword(@ModelAttribute ForgetForm forgetForm,HttpServletRequest request){
         beanValidator(forgetForm);
         String userName = forgetForm.getUserName();
         String validCode = forgetForm.getValidCode();
 
         AccountDomain users = accountService.getAccount(userName);
-        Map map = new HashMap<String ,String >();
-        String msg = "";
         if(users == null){//用户名不存在
-            msg = "用户名不存在!";
-            map.put("msg",msg);
-            return map;
+            return errorResult("用户名不存在!");
         }
         try{
             String secretKey= UUID.randomUUID().toString();//密钥
@@ -326,6 +323,10 @@ public class PassportController extends MobileBaseController{
             freeMap.put("title","夏资陈 找回密码");
             freeMap.put("name",userName);
             freeMap.put("setUrl",resetPassHref);
+            //生产新密码
+            String newPass = RandomUtils.randomNumbers(6);
+            accountService.resetPassword(users,newPass);
+            freeMap.put("newPass",newPass);
             String html = FreemarkerUtil.printString("resetPassword.ftl",freeMap);
 
             String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
@@ -339,14 +340,11 @@ public class PassportController extends MobileBaseController{
 
             //三方jar包未选择
             //SendMail.getInstatnce().sendHtmlMail(emailTitle,emailContent,userName);
-            msg = "操作成功,已经发送找回密码链接到您邮箱。请在30分钟内重置密码";
-
         }catch (Exception e){
             e.printStackTrace();
-            msg="邮箱不存在？未知错误,联系管理员吧。";
+            return errorResult("邮箱不存在？未知错误,联系管理员吧。");
         }
-        map.put("msg",msg);
-        return map;
+        return successResult("操作成功,已经发送找回密码链接到您邮箱，登录后请尽快修改次密码。");
     }
 
 
