@@ -21,7 +21,7 @@
     <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}"
                                                                          pattern="yyyy-MM-dd hh:mm:ss" type="date"
                                                                              dateStyle="long"/></span></p>
-    <form method="post" class="goodsForm" action="/returnOrder/chooseGoodsAndReason">
+    <form method="post" class="goodsForm" action="/u/returnOrder/chooseGoodsAndReason">
         <!--商品列表-->
         <div class="goods-list return-goods clearfix">
             <c:forEach var="item" items="${cartList}" varStatus="num">
