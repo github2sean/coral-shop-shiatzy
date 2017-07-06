@@ -1,4 +1,6 @@
 <%@ taglib prefix="sping" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
@@ -15,13 +17,15 @@
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
           <div class="dx-bag-slide" >
             <ul class="j_s_slider">
-              <c:forEach var="item" items="${ImageModel.toList(goodsItemDomain.photos)}">
-                <li><a href="javascript:;"><img src="${item.file}" alt="" style="height: 36rem;"></a></li>
+                <c:set var="photos" value="${ImageModel.toList(goodsItemDomain.photos)}"></c:set>
+                <c:set var="startIndex" value="${photos.size()-1 }"></c:set>
+                <c:forEach var="item" items="${photos}" varStatus="status">
+                <li><a href="javascript:;"><img src="${photos[startIndex-status.index].file}" alt="" style="height: 36rem;"></a></li>
               </c:forEach>
             </ul>
           </div>
-          <div class="price"><span class="do-pro-price <c:if test="${goodsItemDomain.discountPrice!=0}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
-              <c:if test="${goodsItemDomain.discountPrice!=0}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsItemDomain.discountPrice}">&nbsp;</span></c:if>
+          <div class="price"><span class="do-pro-price <c:if test="${not empty  goodsItemDomain.discountPrice}">xzc-price</c:if>" data-value="${goodsItemDomain.price}">&nbsp;</span>
+              <c:if test="${not empty  goodsItemDomain.discountPrice}"><span class="do-pro-price xzc-dis-price"  data-value="${goodsItemDomain.discountPrice}">&nbsp;</span></c:if>
             <a href="javascript:;" class="j_collect " style="margin-top:0.8rem;">
               <svg id="add_to_wish" style="transform:scale(2);-webkit-transform:scale(2)">
                 <use xlink:href="#heart-red"></use>
@@ -36,7 +40,9 @@
             <c:if test="${goodsDomain.goodsItemList.size()>0}">
               <ul class="clearfix">
                 <c:forEach var="item" items="${goodsDomain.goodsItemList}">
-                  <li style="margin-bottom: 2rem; <c:if test="${item.id==goodsItemDomain.id}">background-color: #e6e6e6; </c:if>"><a href="/goods/details/${item.id}"><img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 10px;"></a></li>
+                  <li style="margin-bottom: 2rem;  ">
+                      <a href="/goods/details/${item.id}">
+                      <img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${item.id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
                 </c:forEach>
               </ul>
             </c:if>
@@ -54,7 +60,6 @@
           <div style="margin-top: 2rem;">
           <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
 
-
             <c:if test="${goodsDomain.isPre==1}">
               <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;margin-top: 1rem;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
               <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
@@ -63,7 +68,7 @@
 
           <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
-            <p class="text">${web:selectLanguage()=='en_US'?goodsDomain.enDetails:goodsDomain.details}</p>
+            <p class="text">${web:selectLanguage()=='en_US'?goodsItemDomain.enDescription:goodsItemDomain.description}</p>
           </div>
         </div>
 
@@ -80,8 +85,8 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                   </div>
                   <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                  <p class="do-pro-price <c:if test="${goods.disPrice!=0}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
-                    <c:if test="${goods.disPrice!=0}">
+                  <p class="do-pro-price <c:if test="${not empty  goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                    <c:if test="${not empty  goods.disPrice}">
                         <p class="do-pro-price xzc-dis-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
                     </c:if>
                   <ul class="do-list-color" name="skuId" data-value="">

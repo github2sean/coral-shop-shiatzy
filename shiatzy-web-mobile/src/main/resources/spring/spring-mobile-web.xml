@@ -107,7 +107,7 @@
     </bean>
     <!--unionPay配置 -->
     <bean class="com.dookay.coral.adapter.payment.unionpay.acp.config.UnionConfig" name="unionConfig">
-        <property name="merId" value="802320056910501" />
+        <property name="merId" value="802320056910500" />
         <!--<property name="merId" value="777290058146843" />-->
         <!--<property name="backUrl" value="http://test-ip-41.coralcodes.com/payment/backRcvResponse"/>
         <property name="frontUrl" value="http://test-ip-41.coralcodes.com/payment/frontRcvResponse"/>-->

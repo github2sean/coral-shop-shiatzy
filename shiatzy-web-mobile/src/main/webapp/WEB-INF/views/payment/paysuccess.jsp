@@ -190,9 +190,8 @@
         </div>
     </div>
 
-
     <div class="again-btn">
-        <a href="/order/details?orderId=${order.id}" class="btn-default"><spring:message code="payment.failed.back"/></a>
+        <a href="/u/order/details?orderId=${order.id}" class="btn-default"><spring:message code="payment.failed.back"/></a>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

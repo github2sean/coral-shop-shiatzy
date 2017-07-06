@@ -9,11 +9,16 @@
 </jsp:include>
 <style>
     h3.title {
-        height: 4.2rem;
-        margin-left: 1rem;
-        font-size: 1.4rem;
-        line-height: 4.2rem;
-        text-align: left;
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 2rem;
+        text-align: center;
+    }
+    .order-finish .order-no{
+        font-size: 1rem;
+        text-align: center;
+        color: #999999;
+        margin-bottom: 2rem;
     }
     .order-group{border-bottom: 2px solid #cccccc;padding-top: 15px;}
 </style>
@@ -23,13 +28,13 @@
     <a style="float: right;" href="/u/account/index">< <spring:message code="myAccount"/></a>
 </div>
 <div class="unfinished">
-    <h3><spring:message code="payment.failed.tips"/></h3>
-    <p><spring:message code="payment.failed.orderNo"/>&nbsp;&nbsp;${order.orderNo}</p>
-    <div class="again-btn">
-        <a href="javascript:void(0)" id="payBtn"><spring:message code="payment.failed.repay"/></a>
+    <h3 class="title"><spring:message code="payment.failed.tips"/></h3>
+    <p class="order-no"><spring:message code="payment.failed.orderNo"/>：${order.orderNo}</p>
+    <div class="again-btn" style="margin-top: 2rem;margin-bottom: 2rem;">
+        <a href="javascript:void(0)" id="payBtn" class="btn-default"><spring:message code="payment.failed.repay"/></a>
     </div>
 
-    <h5 style="border-bottom: solid 1px #cccccc"><spring:message code="payment.failed.orderDetail"/></h5>
+    <h5 style="border-bottom: solid 2px #cccccc;text-indent: 0.8502rem;"><spring:message code="payment.failed.orderDetail"/></h5>
     <c:forEach var="row" items="${order.orderItemDomainList}">
         <c:set var="item" value="${row.goodsItemDomain}"></c:set>
         <div class="verify-message-middle">
@@ -149,7 +154,7 @@
 
     </div>
     <div class="delivery-detail">
-        <h4><spring:message code="payment.failed.shipping"/></h4>
+        <h4 style="font-size: 1.4rem"><spring:message code="payment.failed.shipping"/></h4>
         <c:if test="${order.shippingMethod==1 && not empty order.shippingMethod}">
             <p><spring:message code="payment.failed.shippingAddress"/>：${order.shipAddress}</p>
         </c:if>

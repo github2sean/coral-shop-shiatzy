@@ -210,7 +210,7 @@
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">亲爱的 ,${name}</p>
+                <p class="name">亲爱的 ${name},</p>
                 <br>
                 <p class="txt">
                     ${content}</p>
@@ -251,6 +251,14 @@
                                 <#else >¥
                                 </#if>
                                 ${it.goodsPrice}</p>
+                                <#if it.goodsDisPrice??>
+                                    <p class="pro-value">折扣价：
+                                        <#if order.currentCode=="USD">$
+                                        <#elseif order.currentCode=="EUR">€
+                                        <#else >¥
+                                        </#if>
+                                    ${it.goodsDisPrice}</p>
+                                </#if>
                             </div>
 
                         </#list>

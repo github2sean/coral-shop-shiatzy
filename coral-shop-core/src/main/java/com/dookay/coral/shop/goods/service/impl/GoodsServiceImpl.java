@@ -8,6 +8,7 @@ import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.*;
 import com.dookay.coral.shop.goods.service.*;
+import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.temp.domain.TempStockDomain;
 import com.dookay.coral.shop.temp.query.TempMemberQuery;
 import com.dookay.coral.shop.temp.query.TempStockQuery;
@@ -153,17 +154,16 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			SkuQuery skuQuery = new SkuQuery();
 			skuQuery.setItemId(line.getId());
 			skuQuery.setIsValid(ValidEnum.YES.getValue());
-
 			List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-			System.out.println("skuDomainList"+JsonUtils.toJSONString(skuDomainList));
-			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> net.sf.json.JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
-			if(skuDomain == null)
-			{
-				throw new ServiceException("此商品无库存");
+			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId || Long.parseLong(x.getSize())==sizeId).findFirst().orElse(null);
+			System.out.println("line:"+line+"\nskuDomainList:"+skuDomainList+"\n sizeId:"+sizeId);
+			if(skuDomain == null) {
+				line.setQuantity(0);
+			}else {
+				int quantity = skuDomain.getQuantity();
+				System.out.println("库存："+quantity);
+				line.setQuantity(quantity);
 			}
-			int quantity = skuDomain.getQuantity();
-			System.out.println("库存："+quantity);
-			line.setQuantity(quantity);
 		}
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
 	}

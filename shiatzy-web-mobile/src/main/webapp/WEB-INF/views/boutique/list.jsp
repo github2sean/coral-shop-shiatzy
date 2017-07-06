@@ -47,7 +47,7 @@
     <div class="goods-list clearfix">
         <c:forEach var="row" items="${cartList}">
             <div class="goods-item goodsDiv">
-                <p class="product-num"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</p>
+                <p class="product-num"><spring:message code="shoppingCart.no"/>${row.goodsName} ${row.goodsCode}</p>
                 <div class="pic">
                     <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
                 </div>

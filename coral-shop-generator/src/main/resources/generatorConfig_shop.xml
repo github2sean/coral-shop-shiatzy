@@ -1,7 +1,7 @@
-<context schema="coral_shop_shiatzy">
+<context schema="coral_shop_shiatzy_temp">
 
 	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-					connectionURL="jdbc:mysql://192.168.2.27:3306/coral_shop_shiatzy?characterEncoding=utf8"
+					connectionURL="jdbc:mysql://192.168.2.27:3306/coral_shop_shiatzy_temp?characterEncoding=utf8"
 					uName="root" password="dookay100001" />
 
 	<!-- 数据类型 -->	
@@ -29,6 +29,11 @@
 	</table>
 	<table tableName="t_goods_color" domainObjectName="GoodsColor"
 		   packageName="com.dookay.coral.shop.goods" desc="商品颜色" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+	<table tableName="t_goods_skin" domainObjectName="GoodsSkin"
+		   packageName="com.dookay.coral.shop.goods" desc="商品材质" author="luxor">
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>

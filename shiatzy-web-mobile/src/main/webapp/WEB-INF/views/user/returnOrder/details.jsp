@@ -11,7 +11,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="return.detail.tiltle"/></p>
-    <a style="float: right;" href="/order/list">< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/order/list">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="item-group">
@@ -116,7 +116,7 @@
                                     &nbsp;<spring:message code="coin.EU"/>
                                 </c:when>
                             </c:choose>
-                        </font>&nbsp; -<fmt:formatNumber value="${fee}" pattern="#,###"/></span></div>
+                        </font>&nbsp; <fmt:formatNumber value="${empty returnRequestDomain.shipFee?0:returnRequestDomain.shipFee}" pattern="#,###"/></span></div>
     </div>
     <div style="margin-bottom: 3rem;" class="verify-message-middle">
 
@@ -132,7 +132,7 @@
                     &nbsp;<spring:message code="coin.EU"/>
                 </c:when>
             </c:choose>
-        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-fee}" pattern="#,###"/> </p>
+        </font>&nbsp;<fmt:formatNumber value="${preBackMoney-returnRequestDomain.shipFee}" pattern="#,###"/> </p>
     </div>
     </div>
 

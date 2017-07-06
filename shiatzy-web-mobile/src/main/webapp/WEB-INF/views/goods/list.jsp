@@ -8,8 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
-<jsp:useBean id="query" scope="request" type="com.dookay.coral.shop.goods.query.GoodsQuery"/>
-<jsp:useBean id="colorList" scope="request" type="java.util.List<com.dookay.coral.shop.goods.domain.GoodsColorDomain>"/>
 <jsp:include page="/WEB-INF/views/include/header.jsp">
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
@@ -34,10 +32,11 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                <p class="do-pro-price <c:if test="${firstItem.discountPrice != 0}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</p>
-                <c:if test="${firstItem.discountPrice != 0}">
-                    <p class="do-pro-price xzc-dis-price"  data-value="${firstItem.discountPrice}">${firstItem.discountPrice}</p>
+                <p class="do-pro-t"><span class="do-pro-price <c:if test="${not empty firstItem.discountPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</span>
+                <c:if test="${not empty  firstItem.discountPrice }">
+                    <span class="do-pro-price xzc-dis-price"  data-value="${firstItem.discountPrice}">${firstItem.discountPrice}</span>
                 </c:if>
+                </p>
                 <ul class="do-list-color" name="skuId" data-value="">
                 <c:forEach var="item" items="${goods.goodsItemList}">
                     <li style="background: ${item.colorValue}"></li>
@@ -94,14 +93,14 @@
         <div class="do-sort-cat j_sort_cat">
             <div class="cat-t link-down"><spring:message code="goods.list.attr"/></div>
             <div class="do-sort-group-wrap">
-                <c:forEach var="item" items="${attributeList}">
+                <c:forEach var="item" items="${skinList}">
                     <div class="do-sort-group">
                         <input type="checkbox" name="attributeIds"
                         <c:forEach var="row" items="${attrIds}">
                             <c:if test="${row==item.id}">checked="checked"</c:if>
                         </c:forEach>
                                id="color${item.id}" value="${item.id}">
-                        <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enValue:item.value}</label>
+                        <label for="color${item.id}">${web:selectLanguage()=='en_US'?item.enTitle:item.title}</label>
                     </div>
                 </c:forEach>
             </div>

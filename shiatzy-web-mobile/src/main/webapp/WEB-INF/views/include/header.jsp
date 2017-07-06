@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="${ctx}/static/css/dookayui.css">
     <!-- 核心样式 结束 -->
     <!-- 页面样式 开始 -->
+    <link rel="stylesheet" href="${ctx}/static/css/iosSelect.css">
     <link rel="stylesheet" href="${ctx}/static/css/common.css">
     <link rel="stylesheet" href="${ctx}/static/css/dx.css">
     <link rel="stylesheet" href="${ctx}/static/css/dy.css">
@@ -27,7 +28,7 @@
     <link rel="stylesheet" href="${ctx}/static/css/nivo_slider.css">
     <link rel="stylesheet" href="${ctx}/static/css/default.css">
     <!-- 轮播 结束 -->
-    <link rel="stylesheet" href="${ctx}/static/css/iosSelect.css">
+
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {
@@ -263,7 +264,7 @@
                 <a href="/passport/toLogin"><spring:message code="login"/></a> | <a href="/passport/toRegister"><spring:message code="register"/></a></li>
             <li>
                 <a href="javascript:void(0)">
-                    <select class="select_country" value="1" style="height: 100%;width: 100%;background: #2a2a2a;border: 0;font-size: 1.1rem;">
+                    <select class="select_country" value="1" style="height: 100%;width: 100%;background: #000;border: 0;font-size: 1.1rem;">
                         <option value="-1"><spring:message code="selectOtherCountriesORRegions"/></option>
                         <c:forEach var="country" items="${web:countryList()}" begin="0">
                             <option value="${country.id}" <c:if test="${web:selectCountry()==country.id}">selected="selected"</c:if> >${web:selectLanguage()=='en_US'?country.enName:country.name}</option>

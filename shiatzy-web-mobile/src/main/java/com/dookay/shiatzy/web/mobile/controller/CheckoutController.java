@@ -216,7 +216,7 @@ public class CheckoutController  extends BaseController{
     public ModelAndView orderInfo(){
         UserContext userContext = UserContext.current();
 
-        Long accountId = UserContext.current().getAccountDomain().getId();
+        Long accountId = userContext.getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //获取订单session
         HttpServletRequest request = HttpContext.current().getRequest();
@@ -247,7 +247,7 @@ public class CheckoutController  extends BaseController{
             PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-
+            System.out.println("sizeIds:"+sizeIds);
             for(Long id:sizeIds){
                 goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
             }
@@ -314,6 +314,11 @@ public class CheckoutController  extends BaseController{
         if(orderDomain==null){
             return new ModelAndView("redirect:/home/index");
         }
+
+        //处理未支付返回的情形
+        if(Boolean.TRUE==orderDomain.getSubmitted()){
+            return new ModelAndView("redirect:/payment/payfailed?orderId="+orderDomain.getOrderNo());
+        }
         //商品金额
 
         //购物车
@@ -325,6 +330,7 @@ public class CheckoutController  extends BaseController{
         ModelAndView mv=  new ModelAndView("checkout/confirm");
         //mv.addObject(CART_LIST,cartList);
         //mv.addObject(ORDER,orderDomain);
+        orderDomain.setSubmitted(false);//未提交
         session.setAttribute(CART_LIST,cartList);
         session.setAttribute(ORDER,orderDomain);
         session.setAttribute("referrerPage",page);
@@ -381,7 +387,11 @@ public class CheckoutController  extends BaseController{
         order.setStatus(OrderStatusEnum.UNPAID.getValue());
         order.setOrderTime(new Date());
         CustomerAddressDomain customerAddressDomain = customerAddressService.get(order.getShipAddressId());
-        order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
+        if(order.getPaymentMethod()==3&&order.getShippingMethod()==1){//ipaylinks 必须要邮编
+            order.setShipPostalCode(customerAddressDomain.getPostalCode());//邮编
+        }else{
+            order.setShipPostalCode("100000");//默认邮编
+        }
         orderService.create(order);
         //创建明细
         for(int j = 0;j<cartList.size();j++){
@@ -410,8 +420,9 @@ public class CheckoutController  extends BaseController{
             orderItemDomainList.add(orderItemDomain);
         }
 
+        order.setSubmitted(true);
         //清除session
-        session.setAttribute(ORDER,null);
+        session.setAttribute(ORDER,order);
         session.setAttribute(CART_LIST,null);
         //清除购物车
         for(int i=0 ;i<cartList.size();i++){
@@ -462,7 +473,7 @@ public class CheckoutController  extends BaseController{
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         if(accountDomain!=null){
             CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
-            if(customerDomain!=null&&customerDomain.getIsArtClubMember()==1){
+            if(customerDomain!=null&&customerDomain.getIsArtClubMember()!=null&&customerDomain.getIsArtClubMember()==1){
                 TempMemberQuery query = new TempMemberQuery();
                 query.setMobile(customerDomain.getValidMobile());
                 List<String> cardType = new ArrayList<>();

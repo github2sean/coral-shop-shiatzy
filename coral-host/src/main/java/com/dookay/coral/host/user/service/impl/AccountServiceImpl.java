@@ -159,6 +159,9 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
         if (!StringUtils.isNotBlank(newPassword)) {
             throw new ServiceException("密码不能为空");
         }
+        if (!StringUtils.isNotBlank(oldPassword)) {
+            throw new ServiceException("原密码不能为空");
+        }
         accountDomain.setPassword(newPassword);
         encryptPassword(accountDomain);
         super.update(accountDomain);

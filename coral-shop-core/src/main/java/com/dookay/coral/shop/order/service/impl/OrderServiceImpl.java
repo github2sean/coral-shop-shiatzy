@@ -12,6 +12,7 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
+import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
@@ -88,6 +89,27 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	}
 
 	@Override
+	public void returnWithGoodItem(List<ReturnRequestItemDomain> requestItemDomainList) {
+
+		List<Long> ids = requestItemDomainList.stream().map(ReturnRequestItemDomain::getItemId).collect(Collectors.toList());
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIds(ids);
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+		HttpServletRequest request =  HttpContext.current().getRequest();
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+		for(GoodsItemDomain itemDomain:goodsItemDomainList){
+			itemDomain.setGoods(goodsService.get(itemDomain.getGoodsId()));
+			itemDomain.setPicUrl(basePath+ JSONObject.fromObject(JSONArray.fromObject(itemDomain.getThumb()).get(0)).getString("file"));
+		}
+		for (ReturnRequestItemDomain returnRequestItemDomain:requestItemDomainList){
+			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
+					.filter(x-> Objects.equals(x.getId(), returnRequestItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
+			returnRequestItemDomain.setGoodsItemDomain(goodsItemDomain);
+		}
+	}
+
+	@Override
 	public OrderDomain getOrder(String orderNo) {
 		OrderQuery orderQuery = new OrderQuery();
 		orderQuery.setOrderNo(orderNo);
@@ -111,6 +133,8 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			//temp_stock中库存减少
 			TempStockQuery tempStockQuery = new TempStockQuery();
 			tempStockQuery.setProductNo(orderItem.getGoodsCode());
+
+
 			tempStockQuery.setSize(prototypeSpecificationOptionService.get(JSONObject.fromObject(orderItem.getSkuSpecifications()).getLong("size")).getName());
 			tempStockQuery.setColor(goodsItemService.get(orderItem.getItemId()).getName());
 			TempStockDomain tempStockDomain = tempStockService.getFirst(tempStockQuery);
