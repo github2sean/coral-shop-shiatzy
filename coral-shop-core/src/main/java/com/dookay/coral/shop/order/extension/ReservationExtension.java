@@ -1,10 +1,11 @@
 package com.dookay.coral.shop.order.extension;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
@@ -13,6 +14,7 @@ import com.dookay.coral.shop.order.query.ReservationItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +33,10 @@ public class ReservationExtension {
     private IReservationItemService reservationItemService;
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
 
     public void withReservationItem(PageList<ReservationDomain> reservationDomainPageList){
@@ -47,6 +53,10 @@ public class ReservationExtension {
         ReservationItemQuery query = new ReservationItemQuery();
         query.setReservationId(reservationDomain.getId());
         List<ReservationItemDomain> reservationItemDomains = reservationItemService.getList(query);
+        for(ReservationItemDomain line :reservationItemDomains){
+            line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSpecifications()).getLong("size")));
+            line.setGoodsItemDomain(goodsItemService.get(line.getItemId()));
+        }
         reservationDomain.setReservationItemDomainList(reservationItemDomains);
     }
 

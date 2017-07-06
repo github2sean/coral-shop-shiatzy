@@ -450,7 +450,7 @@ public class CheckoutController  extends BaseController{
         orderService.withGoodItme(orderItemDomainList);
         freeMap.put("order",order);
         freeMap.put("orderItem",orderItemDomainList);
-        String html = FreemarkerUtil.printString("orderDelivered.ftl",freeMap);
+        String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
 
         HashMap<String,String> emailMap = new HashMap<>();
         emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);

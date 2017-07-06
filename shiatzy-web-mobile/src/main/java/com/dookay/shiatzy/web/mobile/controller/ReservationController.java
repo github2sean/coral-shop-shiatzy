@@ -208,10 +208,6 @@ public class ReservationController extends BaseController{
         Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
-
-
-
-
         return successResult("提交成功",reservationDomainId);
     }
 

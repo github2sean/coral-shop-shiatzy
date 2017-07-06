@@ -183,7 +183,7 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 	}
 
 
-
+	@Override
 	public void reservationWithGoodItem(List<ReservationItemDomain> reservationItemDomainList) {
 
 		List<Long> ids = reservationItemDomainList.stream().map(ReservationItemDomain::getItemId).collect(Collectors.toList());
@@ -201,6 +201,7 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
 					.filter(x-> Objects.equals(x.getId(), reservationItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			reservationItemDomain.setGoodsItemDomain(goodsItemDomain);
+			reservationItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(reservationItemDomain.getSpecifications()).getLong("size")));
 		}
 	}
 

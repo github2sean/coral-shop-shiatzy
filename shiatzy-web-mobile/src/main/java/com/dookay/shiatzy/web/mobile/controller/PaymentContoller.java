@@ -902,13 +902,13 @@ public class PaymentContoller extends BaseController{
             freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
             freeMap.put("title",messageTemplate.getTitle());
             freeMap.put("name",customerDomain.getEmail());
-            freeMap.put("status",OrderStatusEnum.UNPAID.getValue());
+            freeMap.put("status",OrderStatusEnum.PAID.getValue());
             freeMap.put("content",messageTemplate.getContent());
             freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
             orderService.withGoodItme(orderItemDomainList);
             freeMap.put("order",order);
             freeMap.put("orderItem",orderItemDomainList);
-            String html = FreemarkerUtil.printString("orderDelivered.ftl",freeMap);
+            String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
 
             HashMap<String,String> emailMap = new HashMap<>();
             emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
