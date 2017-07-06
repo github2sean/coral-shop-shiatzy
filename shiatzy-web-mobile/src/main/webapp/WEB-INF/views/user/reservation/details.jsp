@@ -23,6 +23,8 @@
             <div class="status"><spring:message code="order.details.status"/>  : <span>
             <c:choose>
                 <c:when test="${reservationDomain.status==0}"><spring:message code="reservation.list.submit"/> </c:when>
+                <c:when test="${reservationDomain.status==1}"><spring:message code="reservation.list.submit"/> </c:when>
+                <c:when test="${reservationDomain.status==2}"><spring:message code="reservation.list.submit"/> </c:when>
             </c:choose>
             </span></div>
           <%--  <div class="retentionTime"><spring:message code="reservation.detail.saveEndTime"/>: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>

@@ -3,6 +3,7 @@ package com.dookay.coral.shop.order.service;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
+import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
 
@@ -17,4 +18,5 @@ import java.util.List;
 public interface IReservationService extends IBaseService<ReservationDomain> {
 
     Long submit(List<ShoppingCartItemDomain> cartList, CustomerDomain customer,StoreDomain store);
+    void reservationWithGoodItem(List<ReservationItemDomain> reservationItemDomainList);
 }
