@@ -153,17 +153,17 @@
             if (data.code==200){
                 var obj = data.data;
                 var type = obj.rateType;
-                console.log("type2"+type);
+
                 if(obj.rateType == 1){
                     coinSymbol = '<spring:message code="coin.USA"/>';
                 }else if(obj.rateType == 2){
                     coinSymbol = '<spring:message code="coin.EU"/>';
                 }
                 rate = obj.rate;
-                console.log("rate1:"+rate);
+
             }
 
-            console.log("rate2:"+rate);
+
             $(".do-pro-price").each(function () {
                 var oldPri = $(this).attr("data-value")*1;
                 $(this).text(coinSymbol+" "+fmoney((oldPri/rate).toFixed(0),0)).attr("data-rate",rate);
@@ -182,7 +182,7 @@
             if (data.code==200){
                var country = data.data;
                 var json = JSON.parse(data);
-                console.log(json.rate);
+
                 return data.data.rate;
             }
         });
@@ -200,7 +200,7 @@
                     }
 
                     $(".cart_num").text(cartNum);
-                    console.log("cart:"+cartNum);
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -213,7 +213,7 @@
                     }
 
                     $(".boutique_num").text(cartNum);
-                    console.log("boutique:"+cartNum)
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -226,7 +226,7 @@
                         $(".cart_num").removeClass("hide");
                     }
                     $(".cart_num").text(cartNum);
-                    console.log("cart:"+cartNum);
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -237,7 +237,7 @@
                     if(cartNum>0){
                         $(".boutique_num").removeClass("hide");
                     }
-                    console.log("bou:"+cartNum);
+
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -268,7 +268,7 @@
                     old = old  +"?lang="+language;
                 }else if(old.indexOf("?lang=")!=-1){
                     old = "?lang="+language;
-                    console.log(old);
+
                 }else if(old.indexOf("&lang=")!=-1){
                     old = old.substr(0,old.indexOf("&lang="));
                     old = old+"&lang="+language;

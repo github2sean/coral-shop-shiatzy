@@ -256,7 +256,6 @@
                 </a>
             </li>
             </c:forEach>
-            <li><a href="/goods/onSale">SALE</a></li>
         </ul>
         <ul class="do-list-lang">
             <li><a href="/u/account/index"><spring:message code="myAccount"/></a></li>

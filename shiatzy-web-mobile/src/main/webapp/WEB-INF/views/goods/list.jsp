@@ -137,7 +137,7 @@
 </jsp:include>
 <script>
     function getJsonObjLength(jsonObj) {
-        console.log("jsonObjlength:"+jsonObj.length);
+
         return jsonObj.length;
     }
     function addToWish(now,type){
@@ -147,9 +147,9 @@
         var selectSizeId=selectSizeId;
          var itemId = selectItemId;
         var isAdd =  $(now).find("use").attr("xlink:href");
-        console.log(isAdd);
+
         var data = {"itemId":itemId,"num":1,"sizeId":selectSizeId,"type":2};
-        console.log(data);
+
         var url = "";
         if(type==1 && isAdd=="#heart-red"){
             url = "/cart/addToCart";
@@ -167,9 +167,8 @@
             $(now).find("use").attr("xlink:href","#heart");
             url = "/cart/removeFromSessionWish";
         }
-        console.log(url);
+
         $.post(url,data,function (result) {
-            console.log(result);
             if(result.code==200){
                 console.log(result.message);
             }
@@ -185,7 +184,7 @@
         });
         $(".btn-submit").click(function () {
             var data = $(".filterForm").serializeArray();
-            console.log(data)
+
             $(".filterForm").submit();
         });
         //价格点击事件
@@ -195,7 +194,7 @@
             var href = window.location.href;
             var priceWay="priceWay";
             var newHref = setQueryString(priceWay,priceorder,href);
-            console.log(newHref);
+
             location.href = newHref;
         });
         //reset
@@ -205,7 +204,7 @@
         //加载更多商品
         var offset = '${goodsDomainPageList.list.size()}'*1-1;
         var page = 2;
-        console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
+
         $(".moreGoods").click(function () {
             loadMore();
         });
@@ -214,9 +213,10 @@
     //加载更多商品
     var offset = '${goodsDomainPageList.list.size()}'*1-1;
     var page = 1;
-    console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
-
     var totalPage = parseInt('${goodsDomainPageList.totalPage}');
+    console.log("pageSize:"+'${goodsDomainPageList.pageSize}');
+    console.log("totalPage:"+totalPage)
+    console.log("totalRecord:${goodsDomainPageList.totalRecord}")
     function loadMore() {
         //当前分类
         var categoryId = '${goodsCategoryDomain.id}'
@@ -225,10 +225,10 @@
         //当前页
         page++;
 
-        var data2 = {"categoryId":categoryId,"priceWay":priceWay,"pageIndex":page}
-        console.log("data2:"+data2+" offset:"+offset);
+        var data2 = {"pageIndex":page}
+
         if(page<=totalPage){
-            $.get("/goods/list",data2,function (data) {
+            $.get(location.href,data2,function (data) {
                 $(".j_scroll_list").append($(data).find(".j_scroll_list").html())
                 setPrice();
             });

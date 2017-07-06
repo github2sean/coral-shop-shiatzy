@@ -40,12 +40,23 @@ public class IGoodsServiceTest extends BaseTest {
     private IGoodsItemService goodsItemService;
     @Autowired
     private IGoodsItemPhotoService goodsItemPhotoService;
-    @Test
-    public void updateSizes() throws Exception {
 
+
+    @Test
+    public void updateGoodsSizes() throws Exception {
         List<GoodsDomain> goodsList =  goodsService.getList(new GoodsQuery());
         for (GoodsDomain goodsDomain:goodsList){
             goodsService.updateSizes(goodsDomain);
+
+            logger.info(goodsDomain.getSizeIds());
+        }
+    }
+
+    @Test
+    public void updateGoodsColor() throws Exception {
+        List<GoodsDomain> goodsList =  goodsService.getList(new GoodsQuery());
+        for (GoodsDomain goodsDomain:goodsList){
+
             goodsService.updateColors(goodsDomain);
             logger.info(goodsDomain.getSizeIds());
         }

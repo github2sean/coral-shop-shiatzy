@@ -93,7 +93,7 @@ public class GoodsController extends BaseController{
             modelAndView.addObject("sizeList",getSizes(goodsList));
 
             //过滤开始
-            doFilter(query,modelAndView,goodsList,priceWay,goodsList.size());
+            doFilter(query,modelAndView,goodsList,priceWay);
 
             goodsService.withSizeDomain(goodsList);
         }
@@ -101,36 +101,19 @@ public class GoodsController extends BaseController{
     }
 
 
-    public List<GoodsDomain> filterParam(List<GoodsDomain> goodsList,List<Long> queryColorIds, List<Long> querySizeIds,List<Long> queryAttributeIds){
+    public List<GoodsDomain> filterParam(List<GoodsDomain> goodsList,List<Long> queryColorIds, List<Long> querySizeIds,List<Long> querySkinIds){
 
-        // 过滤goodsList
-        Boolean colorBoolean = queryColorIds!=null && queryColorIds.size()>0;//颜色
-        Boolean sizeBoolean = querySizeIds!=null && querySizeIds.size()>0;//尺寸
-        Boolean attributeBoolean = queryAttributeIds!=null && queryAttributeIds.size()>0; //材质
-        if(colorBoolean && !sizeBoolean && !attributeBoolean){ //颜色不为空，其他都为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-        }else if(colorBoolean && sizeBoolean && !attributeBoolean){//材质为空，颜色不为空，尺寸不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(colorBoolean && sizeBoolean && attributeBoolean){//都不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && sizeBoolean && !attributeBoolean){ //尺寸不为空，其他都为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-        }else if(!colorBoolean && sizeBoolean && attributeBoolean){//颜色为空，尺寸不为空，材质不为空
-            goodsList = filterGoods(goodsList,SIZE_FILTER,querySizeIds);
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(!colorBoolean && !sizeBoolean && attributeBoolean){//材质不为空，其他都为空
-            goodsList = attribute(goodsList,ATTR_FILTER,queryAttributeIds);
-        }else if(colorBoolean && !sizeBoolean && attributeBoolean){//尺寸为空 ，颜色不为空，材质不为空
-            goodsList = filterGoods(goodsList,COLOR_FILTER,queryColorIds);
-            goodsList =goodsList.stream().distinct().collect(Collectors.toList());
-            goodsList = attribute(goodsList, ATTR_FILTER, queryAttributeIds);
+        if(queryColorIds.size()>0){
+            goodsList  = goodsList.stream().filter(x->CollectionUtils.containsAny(JsonUtils.toLongArray(x.getColorIds()),queryColorIds)).collect(Collectors.toList());
         }
+        if(querySizeIds.size()>0){
+            goodsList  = goodsList.stream().filter(x->CollectionUtils.containsAny(JsonUtils.toLongArray(x.getSizeIds()),querySizeIds)).collect(Collectors.toList());
+        }
+
+        if(querySkinIds.size()>0){
+            goodsList  = goodsList.stream().filter(x->CollectionUtils.containsAny(JsonUtils.toLongArray(x.getSkinIds()),querySkinIds)).collect(Collectors.toList());
+        }
+
         return goodsList;
     }
 
@@ -175,18 +158,19 @@ public class GoodsController extends BaseController{
         GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
         goodsColorQuery.setIds(newColorIds);
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+
+        Map<String,String> colorMap = new HashMap<>();
+
         return goodsColorDomainList;
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list(GoodsQuery query,Integer priceWay){
-
-        query.setOrderBy("price");
-        query.setDesc(false);
         query.setPageSize(20);
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
         modelAndView.addObject("categoryId",categoryId);
+
         //商品分类
         GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
         modelAndView.addObject("goodsCategoryDomain",goodsCategoryDomain);
@@ -202,12 +186,11 @@ public class GoodsController extends BaseController{
                 childCategoryIds.add(line.getId());
             }
             query.setCategoryIds(childCategoryIds);
-            query.setCategoryId(null);
         }else{
             query.setCategoryId(categoryId);
         }
-        //商品列表
-        //支持多分类查询
+
+        //当前分类下的商品列表
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsPublished(ValidEnum.YES.getValue());
         List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
@@ -215,17 +198,18 @@ public class GoodsController extends BaseController{
             List<Long> categoryIdList = JSON.parseArray(goodsDomain.getCategoryIds(),Long.class);
             goodsDomain.setCategoryIdList(categoryIdList);
         }
-        if(query.getCategoryId()!=null){
+        if(query.getCategoryIds()==null){
             goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
         }else{
             goodsListAll  =goodsListAll.stream().filter(x->
                     CollectionUtils.containsAny(x.getCategoryIdList(),query.getCategoryIds())).collect(Collectors.toList());
         }
 
-        //List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
-        Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
-        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
-        goodsService.withGoodsItemList(goodsList);
+        //过滤开始
+        doFilter(query,modelAndView,goodsListAll,priceWay);
+
+        goodsService.withGoodsItemList(goodsListAll);
+        goodsService.withSizeDomain(goodsListAll);
         modelAndView.addObject("query",query);
 
         //同级分类列表
@@ -234,7 +218,11 @@ public class GoodsController extends BaseController{
 
         //材质列表
         List<Long> skinIds = new ArrayList<>();
-        goodsList.forEach(x->skinIds.addAll(JsonUtils.toLongArray(x.getSkinIds())));
+        for(GoodsDomain goodsDomain:goodsListAll){
+            if(StringUtils.isNotBlank(goodsDomain.getSkinIds()) ){
+                skinIds.addAll(JsonUtils.toLongArray(goodsDomain.getSkinIds()));
+            }
+        }
         List<Long> newSkinIds = skinIds.stream().distinct().collect(Collectors.toList());
         GoodsSkinQuery goodsSkinQuery = new GoodsSkinQuery();
         goodsSkinQuery.setIds(newSkinIds);
@@ -242,19 +230,15 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("skinList",goodsSkinDomainList);
 
         //颜色列表
-        modelAndView.addObject("colorList",getColors(goodsList));
+        modelAndView.addObject("colorList",getColors(goodsListAll));
 
         //尺寸列表
-        modelAndView.addObject("sizeList",getSizes(goodsList));
-        goodsService.withSizeDomain(goodsList);
-
-        //过滤开始
-        doFilter(query,modelAndView,goodsList,priceWay,goodsListAll.size());
+        modelAndView.addObject("sizeList",getSizes(goodsListAll));
 
         return modelAndView;
     }
 
-    public void doFilter(GoodsQuery query,ModelAndView modelAndView,List<GoodsDomain> goodsList,Integer priceWay,int total){
+    public void doFilter(GoodsQuery query,ModelAndView modelAndView,List<GoodsDomain> goodsList,Integer priceWay){
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         //清空session中筛选条件
@@ -276,157 +260,31 @@ public class GoodsController extends BaseController{
         if(querySizeIds!=null&&querySizeIds.size()>0){
             session.setAttribute(SIZE_IDS,querySizeIds);
         }
-        //参数过滤
+
+        if(queryColorIds == null)
+            queryColorIds = new ArrayList<>();
+        if(querySizeIds == null)
+            querySizeIds = new ArrayList<>();
+        if(queryAttributeIds == null)
+            queryAttributeIds = new ArrayList<>();
+        //筛选
         goodsList = filterParam(goodsList,queryColorIds,querySizeIds,queryAttributeIds);
-
-        System.out.println("goodsList:"+JsonUtils.toJSONString(goodsList));
-        if(priceWay == null ){
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),total);
-            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
-        }else if(priceWay ==0 || priceWay ==1)
-        {
-            PageList<GoodsDomain> goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),total);
-            modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
-        }
-    }
-
-    @RequestMapping(value = "listMore", method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResult listMore(String goodsName,Long categoryId,Integer priceWay,Integer offset,Integer nowPage){
-        GoodsQuery query = new GoodsQuery();
-        GoodsCategoryDomain goodsCategoryDomain = goodsCategoryService.getCategory(categoryId);
-        List <GoodsCategoryDomain> list =null;
-        if(goodsCategoryDomain.getLevel()==1){
-            List<Long> childCategoryIds = new ArrayList<>();
-            GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
-            goodsCategoryQuery.setParentId(goodsCategoryDomain.getId());
-            goodsCategoryQuery.setLevel(2);
-            goodsCategoryQuery.setIsValid(ValidEnum.YES.getValue());
-            list  = goodsCategoryService.getList(goodsCategoryQuery);
-            for (GoodsCategoryDomain line: list){
-                childCategoryIds.add(line.getId());
+        //排序
+        if (priceWay != null) {
+            if (Objects.equals(priceWay, HIGN_TO_LOW)) {
+                sortByPrice(goodsList, HIGN_TO_LOW);
             }
-            query.setCategoryIds(childCategoryIds);
-            query.setCategoryId(null);
-        }else{
-            query.setCategoryId(categoryId);
+            if (Objects.equals(priceWay, LOW_TO_HIGN)) {
+                sortByPrice(goodsList, LOW_TO_HIGN);
+            }
         }
-
-        //query.setOffset(offset);
-       // query.setLimit(2);
-        query.setName(goodsName);
-        query.setPageIndex(nowPage);
-        query.setPageSize(20);
-        //商品列表
-        //支持多分类查询
-        GoodsQuery goodsQuery = new GoodsQuery();
-        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
-        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
-        for (GoodsDomain goodsDomain :goodsListAll){
-            goodsDomain.setCategoryIdList(JSON.parseArray(goodsDomain.getCategoryIds(),Long.class));
-        }
-        if(query.getCategoryId()!=null){
-            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryId())).collect(Collectors.toList());
-        }else{
-            goodsListAll  =goodsListAll.stream().filter(x->x.getCategoryIdList().contains(query.getCategoryIds())).collect(Collectors.toList());
-        }
-
-        //List<GoodsDomain> goodsList =  goodsService.getPageList(query).getList();//goodsService.getList(query);
+        //分页
+        int totalRecord = goodsList.size();
         Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
-        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
-
-        goodsService.withGoodsItemList(goodsList);
-
-        HttpServletRequest request = HttpContext.current().getRequest();
-        HttpSession session = request.getSession();
-
-        //颜色尺寸材质过滤
-        List<Long> queryColorIds= (List<Long>)session.getAttribute(COLOR_IDS);
-        List<Long> querySizeIds = (List<Long>)session.getAttribute(SIZE_IDS);
-        List<Long> queryAttributeIds= (List<Long>)session.getAttribute(ATTR_IDS);
-        //参数过滤
-        goodsList = filterParam(goodsList,queryColorIds,querySizeIds,queryAttributeIds);
-
-        //把商品与自己的颜色和尺寸关联
-        for(GoodsDomain goodsDomain:goodsList){
-            List<Long> sizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
-            List<Long> colorIds = JsonUtils.toLongArray(goodsDomain.getColorIds());
-            //关联颜色
-            List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
-            GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
-            goodsColorQuery.setIds(newColorIds);
-            List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
-            goodsDomain.setGoodsColorDomainList(goodsColorDomainList);
-            //关联默认第一个尺寸
-            List<Long> newSizeIds = sizeIds.stream().distinct().collect(Collectors.toList());
-            PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
-            prototypeSpecificationOptionQuery.setIds(newSizeIds);
-            List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-            goodsDomain.setSizeDomainList(sizeList);
-            System.out.println("sizeIds:"+sizeIds+" sizeList"+sizeList);
-            goodsDomain.setFirstSizeDomain(sizeList.get(0));
-        }
-
-        PageList<GoodsDomain> goodsDomainPageList = null;
-        if(priceWay == null ){
-             goodsDomainPageList = new PageList<>(goodsList,query.getPageIndex(),query.getPageSize(),goodsList.size());
-
-        }else if(priceWay ==0 || priceWay ==1){
-            goodsDomainPageList = new PageList<>(priceWay==HIGN_TO_LOW?sortByPrice(goodsList,HIGN_TO_LOW):sortByPrice(goodsList,LOW_TO_HIGN),query.getPageIndex(),query.getPageSize(),goodsList.size());
-        }
-
-        for(GoodsDomain line : goodsDomainPageList.getList()){
-
-            System.out.println("line:"+JsonUtils.toJSONString(line));
-        }
-        return successResult("操作成功",goodsDomainPageList);
+        List<GoodsDomain> goodsList2 =goodsList.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
+        PageList<GoodsDomain> goodsDomainPageList = new PageList<>(goodsList2,query.getPageIndex(),query.getPageSize(),totalRecord);
+        modelAndView.addObject("goodsDomainPageList",goodsDomainPageList);
     }
-
-    @RequestMapping(value = "onSale" ,method = RequestMethod.GET)
-    public ModelAndView onSale(GoodsQuery query,Integer priceWay){
-        ModelAndView mv = new ModelAndView("goods/salelist");
-
-        Integer onSale =1;
-        GoodsQuery goodsQuery = new GoodsQuery();
-        goodsQuery.setIsSale(onSale);
-        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
-
-        //商品分类
-        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
-        System.out.println("goodsListAll:"+goodsListAll);
-        for (GoodsDomain goodsDomain :goodsListAll){
-            List<Long> categoryIdList = JSON.parseArray(goodsDomain.getCategoryIds(),Long.class);
-            goodsDomain.setCategoryIdList(categoryIdList);
-        }
-        Integer skip = query.getPageIndex() * query.getPageSize() - query.getPageSize();
-        List<GoodsDomain> goodsList =goodsListAll.stream().skip(skip).limit(query.getPageSize()).collect(Collectors.toList());
-        goodsService.withGoodsItemList(goodsList);
-        mv.addObject("query",query);
-        if(!(goodsList!=null&&goodsList.size()>0)){
-            return mv;
-        }
-
-        //商品分类同级列表
-        GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
-        goodsCategoryQuery.setLevel(1);
-        List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.getList(goodsCategoryQuery);
-        mv.addObject("categoryList",goodsCategoryDomainList);
-
-        //材质列表
-        mv.addObject("attributeList",getAttributes(goodsList));
-
-        //颜色列表
-        mv.addObject("colorList",getColors(goodsList));
-
-        //尺寸列表
-        mv.addObject("sizeList",getSizes(goodsList));
-        goodsService.withSizeDomain(goodsList);
-
-        //过滤开始
-        doFilter(query,mv,goodsList,priceWay,goodsListAll.size());
-        return mv;
-    }
-
 
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){

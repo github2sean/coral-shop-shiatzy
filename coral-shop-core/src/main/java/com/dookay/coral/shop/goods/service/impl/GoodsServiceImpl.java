@@ -25,6 +25,7 @@ import com.dookay.coral.shop.goods.mapper.GoodsMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +107,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			JSONObject jasonObject = JSONObject.fromObject(skuDomain.getSpecifications());
 			sizeIds.add(jasonObject.getLong("size"));
 		}
-		goodsDomain.setSizeIds(JsonUtils.toJSONString(sizeIds));
+		goodsDomain.setSizeIds(JsonUtils.toJSONString(sizeIds.stream().distinct().collect(Collectors.toList())));
 		super.update(goodsDomain);
 	}
 

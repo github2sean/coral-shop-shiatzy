@@ -1558,12 +1558,17 @@ i {
     display: none;
 }
 
+
 .dx-commodity .content .color.active ul {
     display: block;
+    white-space: nowrap;
+    overflow-x: scroll;
 }
 
+
 .dx-commodity .content .color li {
-    float: left;
+    float: none;
+    display: inline-block;
     margin-right: 1.2rem;
 }
 
