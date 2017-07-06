@@ -75,13 +75,14 @@
         <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down"><spring:message code="goods.list.filter"/><button type="reset" class="btn-reset"><spring:message code="goods.list.reset"/></button></div>
         <div class="do-sort-cat j_sort_cat">
-            <div class="cat-t link-down"><spring:message code="goods.detail.colors"/></div>
+            <div class="cat-t link-down"><spring:message code="goods.detail.colors"/>   </div>
             <div class="do-sort-group-wrap">
-            <c:forEach var="item" items="${colorList}">
+
+            <c:forEach var="item" items="${colorSeriesList}">
             <div class="do-sort-group">
                 <div class="do-color-show" style="background-color: ${item.color}"></div>
-                <input type="checkbox" name="colorIds"
-                <c:forEach var="row" items="${colorIds}">
+                <input type="checkbox" name="colorSeriesIds"
+                <c:forEach var="row" items="${query.colorSeriesIds}">
                        <c:if test="${row==item.id}">checked="checked"</c:if>
                 </c:forEach>
                        id="color${item.id}" value="${item.id}">

@@ -31,6 +31,9 @@ public class GoodsQuery extends Query {
 	private  String code;
 
 	private Integer isPublished;
+
+	private List<Long> colorSeriesIds;
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);

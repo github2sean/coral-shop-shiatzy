@@ -97,9 +97,9 @@
                                     </c:choose>
                                 </font>&nbsp;<fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###"/></p>
                             </c:if>
-
                         </div>
                     </div>
+
                     <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
                     <p class="status">退货理由：${returnReason}</p>
                 </c:forEach>

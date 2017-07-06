@@ -39,7 +39,9 @@
             width: 50%;
             border-bottom: 1px solid #ccc;
             position: relative;
+            height: 23rem;
         }
+        .goods-item .product-name{height: 2rem;}
         .goods-item .do-list-icon{ top: 3rem;}
         .goods-item .pic {text-align: center;}
         .goods-item .pic img{    max-height: 100%;width: 10rem;}
@@ -47,7 +49,7 @@
     <div class="goods-list clearfix">
         <c:forEach var="row" items="${cartList}">
             <div class="goods-item goodsDiv">
-                <p class="product-num"><spring:message code="shoppingCart.no"/>${row.goodsName} ${row.goodsCode}</p>
+                <p class="product-num"><spring:message code="shoppingCart.no"/>${row.goodsCode}</p>
                 <div class="pic">
                     <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
                 </div>
@@ -60,10 +62,10 @@
                     <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
                     <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
                 </div>
-                <p style="display: inline;" class="price ${row.goodsDisPrice!=0?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                <p style="display: inline;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
                 </p>
-                <c:if test="${row.goodsDisPrice!=0}">
+                <c:if test="${not empty  row.goodsDisPrice}">
                     <p class="price xzc-dis-price" style="display: inline;margin-left: 1rem"><spring:message code="shoppingCart.disPrice"/>&nbsp;
                         <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span>
                     </p>

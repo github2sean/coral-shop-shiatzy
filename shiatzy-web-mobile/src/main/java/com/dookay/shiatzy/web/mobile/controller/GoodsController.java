@@ -53,6 +53,8 @@ public class GoodsController extends BaseController{
     @Autowired
     private IGoodsColorService goodsColorService;
     @Autowired
+    private IGoodsColorSeriesService goodsColorSeriesService;
+    @Autowired
     private IGoodsItemService goodsItemService;
     @Autowired
     private IGoodsAttributeValueService goodsAttributeValueService;
@@ -151,21 +153,34 @@ public class GoodsController extends BaseController{
         return sizeList;
     }
 
-    public List<GoodsColorDomain> getColors(List<GoodsDomain> goodsList){
+
+    public List<GoodsColorSeriesDomain> getColorSeriesList(List<GoodsDomain> goodsList){
         List<Long> colorIds = new ArrayList<>();
         goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
         List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
         GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
         goodsColorQuery.setIds(newColorIds);
         List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+        List<Long> colorSeriesIds = goodsColorDomainList.stream().map(GoodsColorDomain::getSeriesId).distinct().collect(Collectors.toList());
+        GoodsColorSeriesQuery colorSeriesQuery = new GoodsColorSeriesQuery();
+        colorSeriesQuery.setIds(colorSeriesIds);
+        List<GoodsColorSeriesDomain> goodsColorSeriesDomainList = goodsColorSeriesService.getList(colorSeriesQuery);
+        return goodsColorSeriesDomainList;
+    }
 
-        Map<String,String> colorMap = new HashMap<>();
-
+    public   List<GoodsColorDomain> getColors(List<GoodsDomain> goodsList){
+        List<Long> colorIds = new ArrayList<>();
+        goodsList.forEach(x->colorIds.addAll(JsonUtils.toLongArray(x.getColorIds())));
+        List<Long> newColorIds = colorIds.stream().distinct().collect(Collectors.toList());
+        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
+        goodsColorQuery.setIds(newColorIds);
+        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
         return goodsColorDomainList;
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list(GoodsQuery query,Integer priceWay){
+        query.setOrderBy("rank");
         query.setPageSize(20);
         ModelAndView modelAndView = new ModelAndView("goods/list");
         Long categoryId = query.getCategoryId();//商品分类
@@ -232,6 +247,9 @@ public class GoodsController extends BaseController{
         //颜色列表
         modelAndView.addObject("colorList",getColors(goodsListAll));
 
+        //色系列表
+        modelAndView.addObject("colorSeriesList",getColorSeriesList(goodsListAll));
+
         //尺寸列表
         modelAndView.addObject("sizeList",getSizes(goodsListAll));
 
@@ -247,7 +265,12 @@ public class GoodsController extends BaseController{
         session.setAttribute(SIZE_IDS,null);
         session.setAttribute("priceWay",priceWay);
         //颜色尺寸材质过滤
-        List<Long> queryColorIds= query.getColorIds();
+        List<Long> queryColorSeriesIds = query.getColorSeriesIds();
+        GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
+        goodsColorQuery.setSeriesIds(queryColorSeriesIds);
+        List<GoodsColorDomain> goodsColorDomainList = goodsColorService.getList(goodsColorQuery);
+
+        List<Long> queryColorIds= goodsColorDomainList.stream().distinct().map(GoodsColorDomain::getId).collect(Collectors.toList());
         List<Long> querySizeIds = query.getSizeIds();
         List<Long> queryAttributeIds=query.getAttributeIds();
         //当前的筛选条件存入session中

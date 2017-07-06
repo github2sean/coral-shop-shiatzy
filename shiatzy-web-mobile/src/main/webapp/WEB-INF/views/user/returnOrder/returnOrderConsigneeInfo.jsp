@@ -105,7 +105,6 @@
         </font>&nbsp;<fmt:formatNumber value="${preBackMoney}" pattern="#,###"/></span>
     </div>
 
-
     <div class="returnWay item-group">
         <div class="item">
         <a href="/u/returnOrder/chooseReturnWay"><h4><spring:message code="consignee.selectBackWay"/>&nbsp;*<span style="float: right;">></span></h4></a>
