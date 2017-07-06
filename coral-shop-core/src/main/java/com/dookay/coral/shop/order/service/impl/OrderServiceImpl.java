@@ -111,6 +111,8 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			//temp_stock中库存减少
 			TempStockQuery tempStockQuery = new TempStockQuery();
 			tempStockQuery.setProductNo(orderItem.getGoodsCode());
+
+
 			tempStockQuery.setSize(prototypeSpecificationOptionService.get(JSONObject.fromObject(orderItem.getSkuSpecifications()).getLong("size")).getName());
 			tempStockQuery.setColor(goodsItemService.get(orderItem.getItemId()).getName());
 			TempStockDomain tempStockDomain = tempStockService.getFirst(tempStockQuery);

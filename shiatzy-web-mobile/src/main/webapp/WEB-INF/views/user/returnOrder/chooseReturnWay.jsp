@@ -8,7 +8,7 @@
 
 <div class="order">
     <p style="float: left"><spring:message code="consignee.selectBackWay"/></p>
-    <a style="float: right;" href="/returnOrder/returnOrderConsigneeInfo">< <spring:message code="goBack"/></a>
+    <a style="float: right;" href="/u/returnOrder/returnOrderConsigneeInfo">< <spring:message code="goBack"/></a>
 </div>
 <div class="verify-message">
     <div class="return-way clearfix">
@@ -31,7 +31,7 @@
                         <p><spring:message code="consignee.storebackWay"/></p>
                         <p>${web:selectLanguage()=='en_US'?return_order.storeDomain.enTitle:return_order.storeDomain.name}</p>
                         <p>${web:selectLanguage()=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}</p>
-                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
+                        <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
                 <c:if test="${backWay==1}">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="drugstore">
                         <p><spring:message code="consignee.storebackWay"/></p>
-                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
+                        <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
                 <c:if test="${backWay!=1 &&backWay!=2}">
@@ -55,7 +55,7 @@
                     </div>
                     <div class="drugstore">
                         <p><spring:message code="consignee.storebackWay"/></p>
-                        <a href="/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
+                        <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                 </c:if>
         </div>

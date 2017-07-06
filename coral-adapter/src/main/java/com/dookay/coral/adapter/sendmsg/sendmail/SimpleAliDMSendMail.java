@@ -26,6 +26,7 @@ public class SimpleAliDMSendMail {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host", ALIDM_SMTP_HOST);
         props.put("mail.smtp.port", ALIDM_SMTP_PORT);
+        //props.put("mail.smtp.","SHOP.SHIATZY.COM");
         // 如果使用ssl，则去掉使用25端口的配置，进行如下配置,
         // props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         // props.put("mail.smtp.socketFactory.port", "465");
@@ -54,11 +55,9 @@ public class SimpleAliDMSendMail {
         InternetAddress form = new InternetAddress(
                 props.getProperty("mail.user"));
         message.setFrom(form);
-
         // 设置收件人
         InternetAddress to = new InternetAddress(configMap.get(RECEIVE_EMAIL));
         message.setRecipient(MimeMessage.RecipientType.TO, to);
-
         // 设置邮件标题
         message.setSubject("夏资陈 "+configMap.get(TITLE),"UTF-8");
         // 设置邮件的内容体

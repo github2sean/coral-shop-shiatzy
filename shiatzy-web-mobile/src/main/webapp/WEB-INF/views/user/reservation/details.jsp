@@ -32,7 +32,7 @@
 
         <!--商品详情-->
         <div class="item-group" style="margin-top: 2rem">
-            <h4 class="title j_dropdown"><spring:message code="goods.detail.details"/> <span class="arrow">></span></h4>
+            <h4 class="title j_dropdown active"><spring:message code="goods.detail.details"/> <span class="arrow">></span></h4>
             <div class=" goods-list clearfix item">
 
                 <c:forEach var="item" items="${reservationDomain.reservationItemDomainList}">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="goods-info">
                             <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                            <p class="code">产品编号：${item.goodsItemDomain.goodsNo}</p>
+                            <p class="code"><spring:message code="shoppingCart.no"/> ${item.goodsItemDomain.goodsNo}</p>
                             <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                             <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>

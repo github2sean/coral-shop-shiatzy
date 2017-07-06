@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.order.domain;
 
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
+import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
 import lombok.Data;
 
@@ -144,6 +145,8 @@ public class 	OrderDomain implements Serializable {
 	private ReturnRequestDomain returnRequestDomain;
 	@Transient
 	private List<ReturnRequestItemDomain> returnRequestItemList;
+	@Transient
+	private ShippingCountryDomain shippingCountryDomain;
 
 	@Transient
 	private Boolean submitted;

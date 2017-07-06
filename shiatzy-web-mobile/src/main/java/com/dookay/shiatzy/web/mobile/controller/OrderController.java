@@ -20,6 +20,7 @@ import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.*;
 import com.dookay.coral.shop.order.service.*;
+import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +64,8 @@ public class OrderController extends BaseController {
     private ISmsService smsService;
     @Autowired
     private IGoodsService goodsService;
+    @Autowired
+    private IShippingCountryService shippingCountryService;
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
@@ -82,7 +85,7 @@ public class OrderController extends BaseController {
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> orderItemList  = orderItemService.getList(query);
-
+        orderDomain.setShippingCountryDomain(shippingCountryService.get(orderDomain.getShippingCountryId()));
         List<Long> ids = orderItemList.stream().map(OrderItemDomain::getItemId).collect(Collectors.toList());
         GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
         goodsItemQuery.setIds(ids);
