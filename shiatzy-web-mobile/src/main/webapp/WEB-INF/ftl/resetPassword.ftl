@@ -64,11 +64,11 @@
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">Dear ${name},</p>
+                <p class="name">亲爱的 ${name},</p>
                 <br>
-                <p class="txt">We have just created a new password for you. For security reasons, we suggest to change this password with your next log-in of your choice. Should you have any questions, please contact us via: <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
+                <p class="txt">我们刚刚为您创建了一个新密码。出于安全考虑，我们建议您在下一次登录时更改此密码。 <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
                 <p class="txt">
-                    Should you have any other questions, please contact us via<br>
+                    如果您还有其他问题，请与我们联系。<br>
                     <a href="#" class="link-web">customercare@shiatzychen.com</a>
                 </p>
                 <p class="txt" style="margin-bottom: 5px">

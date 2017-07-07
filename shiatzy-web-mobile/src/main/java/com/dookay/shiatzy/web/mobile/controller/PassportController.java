@@ -13,8 +13,11 @@ import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
+import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
 import com.dookay.coral.shop.content.query.ContentCategoryQuery;
+import com.dookay.coral.shop.content.query.MessageTemplateQuery;
 import com.dookay.coral.shop.content.service.IContentCategoryService;
+import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
@@ -25,6 +28,7 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
+import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
@@ -38,7 +42,6 @@ import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
-import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import com.sun.activation.registries.MailcapParseException;
@@ -91,6 +94,8 @@ public class PassportController extends MobileBaseController{
     private SimpleAliDMSendMail simpleAliDMSendMail;
     @Autowired
     private IShippingCountryService shippingCountryService;
+    @Autowired
+    private IMessageTemplateService messageTemplateService;
 
 
     public static final String CRAT_NUM = "cartNumber";
@@ -220,7 +225,7 @@ public class PassportController extends MobileBaseController{
         String validCode = registerForm.getValidCode();
 
         if (!JCaptcha.validateResponse(request, validCode)) {
-           return errorResult(DefaultTags.translate("验证码错误","Invalid code"));
+           return errorResult("验证码错误");
         }
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
@@ -233,22 +238,31 @@ public class PassportController extends MobileBaseController{
                 accountDomain.setCreateTime(new Date());
                 CustomerDomain retCustomer = customerService.register(null,accountDomain);
                 if(retCustomer==null) {
-                    return errorResult(DefaultTags.translate("注册失败","Register fail"));
+                    return errorResult("注册失败");
                 }
             }
         }
-            
+
         AccountDomain accountDomain = accountService.getAccount(userName);
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
+        //发送邮件通知
+        MessageTemplateQuery query = new MessageTemplateQuery();
+        query.setType(1);
+        query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
+        query.setIsValid(1);
+        MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
+
         //生成模版
+        Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
         Map<String,Object> map = new HashMap<>();
         map.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-        map.put("title","夏姿陈");
+        map.put("title",isEn?messageTemplate.getEnContent():messageTemplate.getTitle());
         map.put("name",userName);
-        map.put("contentPrefix","We are pleased you’ve opened an account at");
-        map.put("contentSuffix","From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
-        String html = FreemarkerUtil.printString("registerSuccessful.ftl",map);
+        map.put("contentPrefix",!isEn?messageTemplate.getContent():messageTemplate.getEnContent());
+        //map.put("contentSuffix",!isEn?"从现在起，您可以通过输入您的个人登录信息随时访问您的帐户。作为我们在线精品店的会员，你有幸成为第一个听到我们最新的收藏、特别活动和新闻的人。你可以充分利用一系列的好处和服务如下：在您的在线的时候":"From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
+        String html = FreemarkerUtil.printString(isEn?"registerSuccessful_en.ftl":"registerSuccessful.ftl",map);
         // 发邮件通知
         String secretKey = UUID.randomUUID().toString();//密钥
         accountDomain.setActiveCode(secretKey);
@@ -257,7 +271,7 @@ public class PassportController extends MobileBaseController{
         HashMap<String,String> emailMap = new HashMap<>();
         emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
         emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
-        emailMap.put(simpleAliDMSendMail.TITLE,"夏资陈 注册成功");
+        emailMap.put(simpleAliDMSendMail.TITLE,isEn?messageTemplate.getEnContent():messageTemplate.getTitle());
         //String resetPassHref =  basePath+"passport/activeEmail?userName="+userName+"&activeCode="+secretKey;
         //String emailContent = "如果您未申请夏资陈帐号,请删除此邮件，点击下面的链接,激活帐号<br/><a href="+resetPassHref+" target='_BLANK'>点击我重新设置密码</a>" ;
         emailMap.put(simpleAliDMSendMail.CONTENT,html);
@@ -314,22 +328,25 @@ public class PassportController extends MobileBaseController{
             accountService.update(users);//保存到数据库
             String key = users.getUserName()+"$"+date+"$"+secretKey;
             String digitalSignature = DigestUtils.md5Hex(key);//数字签名
-            String emailTitle = "夏资陈找回密码";
+
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             String resetPassHref =  basePath+"u/account/toSetNewPassword?sid="+digitalSignature+"&userName="+users.getUserName();
 
             //生成模版
+            Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
+            String emailTitle = isEn?"SHIATZY CHEN reset password":"夏资陈 找回密码";
             Map<String,Object> freeMap = new HashMap<>();
+
             freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-            freeMap.put("title","夏资陈 找回密码");
+            freeMap.put("title",emailTitle);
             freeMap.put("name",userName);
             freeMap.put("setUrl",resetPassHref);
             //生产新密码
             String newPass = RandomUtils.randomNumbers(6);
             accountService.resetPassword(users,newPass);
             freeMap.put("newPass",newPass);
-            String html = FreemarkerUtil.printString("resetPassword.ftl",freeMap);
+            String html = FreemarkerUtil.printString(isEn?"resetPassword_en.ftl":"resetPassword.ftl",freeMap);
 
             String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
                     "<br/>tips:本邮件超过30分钟,链接将会失效"+key+"\tmd5:"+digitalSignature;

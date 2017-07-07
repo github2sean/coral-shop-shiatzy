@@ -62,7 +62,7 @@
             <div class="email-txt">
                 <p class="name">Dear ${name} ,</p>
                 <br>
-                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.${contentSuffix}</p>
+                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.</p>
                 <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
             </div>
         </div>

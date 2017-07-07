@@ -63,10 +63,10 @@
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
             <div class="email-txt">
-                <p class="name">Dear ${name} ,</p>
+                <p class="name">亲爱的 ${name} ,</p>
                 <br>
-                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>. ${contentSuffix}</p>
-            <a href="http://shop.shiatzychen.com/" target="_blank" style="text-decoration-line: none; padding: 10px 0px; display: block; width: 240px; margin: 30px auto; background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); letter-spacing: 2px; cursor: pointer; text-align: center;">SHOP NOW</a>
+                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>. </p>
+            <a href="http://shop.shiatzychen.com/" target="_blank" style="text-decoration-line: none; padding: 10px 0px; display: block; width: 240px; margin: 30px auto; background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); letter-spacing: 2px; cursor: pointer; text-align: center;">立刻购买</a>
             </div>
         </div>
         <p class="email-footer">

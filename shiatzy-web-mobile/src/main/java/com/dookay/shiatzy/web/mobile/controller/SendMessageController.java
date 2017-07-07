@@ -41,9 +41,9 @@ public class SendMessageController extends BaseController {
 
     @RequestMapping(value = "sendToSMS",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult sendToSMS(String phone, Integer contentCode) {
+    public JsonResult sendToSMS(Boolean isEN,String phone, Integer contentCode) {
 
-        smsService.sendToSms(phone,contentCode);
+        smsService.sendToSms(isEN,phone,contentCode);
         return successResult("操作完成");
     }
 

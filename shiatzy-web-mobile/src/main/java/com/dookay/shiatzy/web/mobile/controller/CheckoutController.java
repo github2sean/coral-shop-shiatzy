@@ -117,10 +117,6 @@ public class CheckoutController  extends BaseController{
     private IStoreService storeService;
 
     @Autowired
-    private IStoreCountryService storeCountryService;
-    @Autowired
-    private IStoreCityService storeCityService;
-    @Autowired
     private IShippingCountryService shippingCountryService;
 
     @Autowired
@@ -141,6 +137,10 @@ public class CheckoutController  extends BaseController{
     private SimpleAliDMSendMail simpleAliDMSendMail;
     @Autowired
     private ITempMemberService tempMemberService;
+    @Autowired
+    private IStoreCityService storeCityService;
+    @Autowired
+    private IStoreCountryService storeCountryService;
 
 
     private static String CART_LIST = "cartList";
@@ -177,6 +177,7 @@ public class CheckoutController  extends BaseController{
         order.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
         //根据国家获取值
         order.setShippingCountryId(Long.parseLong(countryId));
+        order.setShipCountry("1".equals(countryId)?shippingCountryDomain.getEnName():shippingCountryDomain.getName());
         order.setCurrentCode(currentCode);
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
@@ -683,7 +684,23 @@ public class CheckoutController  extends BaseController{
         }
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
-        order.setStoreDomain(storeService.get(storeId));
+        StoreDomain store = storeService.get(storeId);
+        StoreCityDomain cityDomain = storeCityService.get(Long.parseLong(store.getCityId()));
+        order.setShipAddress(order.getShippingCountryId()!=1?store.getAddress():store.getEnAddress());
+        order.setStoreDomain(store);
+        order.setShipCity(order.getShippingCountryId()!=1?cityDomain.getEnName():cityDomain.getName());
+        order.setShipProvince(order.getShippingCountryId()!=1?cityDomain.getEnName():cityDomain.getName());
+
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        order.setShipPhone(customerDomain.getPhone());
+        order.setShipFirstName(customerDomain.getFirstName());
+        order.setShipLastName(customerDomain.getLastName());
+        order.setShipTitle("门店");
+        order.setShipMemo("门店");
+        order.setShipAddressId(store.getId());
+        order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
+
         order.setCustomerAddressDomain(null);
         session.setAttribute(ORDER,order);
         return successResult(ChooseLanguage.getI18N().getOperateSuccess());
