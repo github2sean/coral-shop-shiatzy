@@ -292,6 +292,7 @@ public class GoodsController extends BaseController{
             queryAttributeIds = new ArrayList<>();
         //筛选
         goodsList = filterParam(goodsList,queryColorIds,querySizeIds,queryAttributeIds);
+        goodsService.withGoodsItemList(goodsList);
         //排序
         if (priceWay != null) {
             if (Objects.equals(priceWay, HIGN_TO_LOW)) {
@@ -321,7 +322,7 @@ public class GoodsController extends BaseController{
         goodsItemService.withColor(goodsItemDomain);
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
         goodsService.withGoodsItemList(goodsDomain);
-
+        System.out.println("goodsItemDomain:"+goodsItemDomain);
         //调用工具类，把浏览记录存入Cookie
         HistoryUtil.setHistory(goodsId);
         //把获取的记录存到List集合
@@ -415,8 +416,11 @@ public class GoodsController extends BaseController{
         Comparator comparator = new Comparator<GoodsDomain>() {
             @Override
             public int compare(GoodsDomain good, GoodsDomain good2) {
-                Double price1 = good.getGoodsItemList().get(0).getPrice();
-                Double price2 = good2.getGoodsItemList().get(0).getPrice();
+
+                GoodsItemDomain itemDomain =   good.getGoodsItemList().get(0);
+                GoodsItemDomain itemDomain2 =  good2.getGoodsItemList().get(0);
+                Double price1 = itemDomain.getDiscountPrice()!=null?itemDomain.getDiscountPrice():itemDomain.getPrice();
+                Double price2 = itemDomain2.getDiscountPrice()!=null?itemDomain2.getDiscountPrice():itemDomain2.getPrice();
                 if(price1>price2){
                     return sortType==HIGN_TO_LOW?1:-1;
                 }

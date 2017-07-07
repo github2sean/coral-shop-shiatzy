@@ -5,6 +5,7 @@ import com.dookay.coral.common.web.MediaTypes;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
+import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.extension.OrderExtension;
 import com.dookay.coral.shop.order.extension.ReturnRequestExtension;
 import com.dookay.coral.shop.order.form.SendGoodsForm;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Luxor
@@ -83,8 +85,8 @@ public class ReturnRequestController extends BaseApiController {
 
     @ApiOperation(value = "是否同意退货", httpMethod = "POST")
     @RequestMapping(value = "/isAgree", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity isAgree(@RequestParam("id") Long id,Long isAgree,@RequestParam("adminMemo") String adminMemo) {
-        returnRequestService.isAgree(id,isAgree,adminMemo);
+    public ResponseEntity isAgree(@RequestParam("id") Long id,Integer isAgree,@RequestParam("returnItemList") List<ReturnRequestItemDomain> returnItemList) {
+        returnRequestService.isAgree(id,isAgree,returnItemList);
         return successResponse("操作成功");
     }
 

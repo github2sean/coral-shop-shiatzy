@@ -275,7 +275,7 @@
                 }else{
                     old = old+"&lang="+language;
                 }
-                location.href = old;
+                location.href = location.href.indexOf("checkout/confirm")!=-1?"/checkout/orderInfo":old;
             }
         });
     }

@@ -6,6 +6,8 @@ import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerQuery;
 import com.dookay.coral.shop.customer.service.ICustomerService;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
@@ -31,6 +33,10 @@ public class ReturnRequestExtension {
     private IReturnRequestItemService returnRequestItemService;
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
 
     public void withReturnRequestItem(PageList<ReturnRequestDomain> returnRequestDomainPageList){
@@ -47,6 +53,10 @@ public class ReturnRequestExtension {
         ReturnRequestItemQuery query = new ReturnRequestItemQuery();
         query.setReturnRequestId(returnRequestDomain.getId());
         List<ReturnRequestItemDomain> returnRequestItemDomainList = returnRequestItemService.getList(query);
+        for(ReturnRequestItemDomain line:returnRequestItemDomainList){
+            line.setSizeDomain(prototypeSpecificationOptionService.get(net.sf.json.JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
+            line.setGoodsItemDomain(goodsItemService.get(line.getItemId()));
+        }
         returnRequestDomain.setReturnRequestItemDomainList(returnRequestItemDomainList);
     }
 

@@ -2,6 +2,7 @@ package com.dookay.coral.shop.order.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
+import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.order.mapper.ReturnRequestMapper;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
 import com.dookay.coral.shop.order.service.IReturnRequestService;
+
+import java.util.List;
 
 /**
  * 订单退货申请的业务实现类
@@ -32,17 +35,20 @@ public class ReturnRequestServiceImpl extends BaseServiceImpl<ReturnRequestDomai
 
 
 	@Override
-	public void isAgree(Long id, Long isAgree,String adminMemo) {
-		if(id==null){
+	public void isAgree(Long id, Integer isAgree,List<ReturnRequestItemDomain> returnRequestItemDomain) {
+		if(id==null||isAgree==null){
 			throw new ServiceException("传入参数出错");
 		}
-		ReturnRequestItemDomain returnRequestItemDomain =  returnRequestItemService.get(id);
-		returnRequestItemDomain.setAdminMemo(adminMemo);
-		if(isAgree!=null&&isAgree==1){
-			returnRequestItemDomain.setStatus(AGREE_RETURN);
-		}else if(isAgree!=null&&isAgree==2){
-			returnRequestItemDomain.setStatus(DISAGREE_RETURN);
+		ReturnRequestDomain  returnRequestDomain = get(id);
+		if(isAgree!=null&&isAgree==2){
+			returnRequestDomain.setStatus(isAgree);//同意
+		}else if(isAgree!=null&&isAgree==3){
+			returnRequestDomain.setStatus(isAgree);//取消
 		}
-		returnRequestItemService.update(returnRequestItemDomain);
+		update(returnRequestDomain);
+		for(ReturnRequestItemDomain line: returnRequestItemDomain){
+			returnRequestItemService.update(line);
+		}
 	}
+
 }

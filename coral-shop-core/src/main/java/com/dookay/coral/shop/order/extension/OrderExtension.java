@@ -8,6 +8,8 @@ import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
 import com.dookay.coral.shop.customer.service.ICustomerAddressService;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
+import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
@@ -29,7 +31,10 @@ public class OrderExtension {
 
     @Autowired
     private IOrderItemService orderItemService;
-
+    @Autowired
+    private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+    @Autowired
+    private IGoodsItemService goodsItemService;
 
     public void withOrderItem(PageList<OrderDomain> orderDomainPageList){
         this.withOrderItem(orderDomainPageList.getList());
@@ -45,6 +50,10 @@ public class OrderExtension {
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> orderItemDomainList = orderItemService.getList(query);
+        for(OrderItemDomain line :orderItemDomainList){
+            line.setSizeDomain(prototypeSpecificationOptionService.get(net.sf.json.JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
+            line.setGoodsItemDomain(goodsItemService.get(line.getItemId()));
+        }
         orderDomain.setOrderItemDomainList(orderItemDomainList);
     }
 

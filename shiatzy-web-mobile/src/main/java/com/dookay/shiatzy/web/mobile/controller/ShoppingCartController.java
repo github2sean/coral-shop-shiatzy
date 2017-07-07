@@ -187,6 +187,10 @@ public class ShoppingCartController extends BaseController{
             while(it.hasNext()){
                 AddShoppingCartForm now = it.next();
                 if(now.getId().equals(formId)){
+                    GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(now.getItemId()).getGoodsId());
+                    if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue()&&goodsDomain.getIsPre()==0){
+                        return  errorResult("该商品无法预约");
+                    }
                     now.setType(goalType);
                 }
             }
@@ -408,7 +412,7 @@ public class ShoppingCartController extends BaseController{
          ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
          GoodsItemDomain goodsItemDomain = goodsItemService.get(shoppingCartItemDomain.getItemId());
          GoodsDomain goodsDomain = goodsService.get(goodsItemDomain.getGoodsId());
-         if(goodsDomain.getIsPre() != ValidEnum.NO.getValue()){
+         if(goodsDomain.getIsPre()== ValidEnum.NO.getValue()){
              return errorResult("该商品不能预约");
          }
          shoppingCartItemDomain.setShoppingCartType(3);
