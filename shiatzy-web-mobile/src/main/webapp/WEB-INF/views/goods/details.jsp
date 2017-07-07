@@ -53,7 +53,7 @@
             <ul  id="js_size" class="hide">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
-                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
+                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="javascript:void(0)">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
               </c:forEach>
             </ul>
           </div>
