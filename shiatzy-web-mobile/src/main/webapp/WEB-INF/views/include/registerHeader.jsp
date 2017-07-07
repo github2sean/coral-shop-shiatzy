@@ -16,6 +16,7 @@
     <!-- 核心样式 结束 -->
     <!-- 页面样式 开始 -->
     <link rel="stylesheet" href="${ctx}/static/js/plugins/jquery-bxslider/jquery.bxslider.css">
+    <link rel="stylesheet" href="${ctx}/static/js/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="${ctx}/static/css/dookayui.css">
     <link rel="stylesheet" href="${ctx}/static/css/main.css">
@@ -34,6 +35,8 @@
     <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
     <script src="${ctx}/static/js/lodash.min.js"></script>
     <script src="${ctx}/static/js/plugins/layer/layer.js"></script>
+    <script src="${ctx}/static/js/flatpickr/l10n/zh.js"></script>
+    <script src="${ctx}/static/js/flatpickr/flatpickr.min.js"></script>
     <script src="${ctx}/static/js/plugins/jquery-bxslider/jquery.bxslider.js"></script>
     <!-- 核心js插件 结束 -->
     <!-- 页面插件开始 -->

@@ -1166,6 +1166,7 @@
 }
 .ios-select-widget-box ul {
     background-color: #000;
+    width: 100%;
 }
 .ios-select-widget-box ul li {
     font-size: 13px;
@@ -1178,6 +1179,7 @@
     text-align: center;
     color: #fff;
     opacity: 1;
+    width: 100%;
 }
 .ios-select-widget-box.olay > div {
     position: absolute;

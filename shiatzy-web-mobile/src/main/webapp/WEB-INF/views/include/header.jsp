@@ -18,6 +18,7 @@
     <!-- 核心样式 结束 -->
     <!-- 页面样式 开始 -->
     <link rel="stylesheet" href="${ctx}/static/css/iosSelect.css">
+    <link rel="stylesheet" href="${ctx}/static/js/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="${ctx}/static/css/common.css">
     <link rel="stylesheet" href="${ctx}/static/css/dx.css">
     <link rel="stylesheet" href="${ctx}/static/css/dy.css">

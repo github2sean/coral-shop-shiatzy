@@ -12,11 +12,15 @@
     <link rel="stylesheet" href="iconfont/iconfont.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/dookayui.css">
-    <link rel="stylesheet" href="css/weui.css">
+    <!--<link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">-->
+    <!--<link rel="stylesheet" href="js/laydate/need/laydate.css">-->
+    <link rel="stylesheet" href="css/weui.min.css">
     <link rel="stylesheet" href="css/iosSelect.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/dx.css">
     <link rel="stylesheet" href="css/dy.css">
+    <link rel="stylesheet" href="js/example.css">
+    <!--<link rel="stylesheet" href="js/laydate/laydate.js">-->
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {
@@ -280,20 +284,21 @@
             <li>姓氏*</li>
             <li>
                 <span>生日</span>
-                <ul style="float:right;" class="date">
-                    <li>
-                        <span>v</span>
-                        <span>年</span>
-                    </li>
-                    <li>
-                        <span>v</span>
-                        <span>月</span>
-                    </li>
-                    <li>
-                        <span>v</span>
-                        <span>日</span>
-                    </li>
-                </ul>
+                <!--<ul style="float:right;" class="date">-->
+                    <!--<li>-->
+                        <!--<span>v</span>-->
+                        <!--<span>年</span>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<span>v</span>-->
+                        <!--<span>月</span>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<span>v</span>-->
+                        <!--<span>日</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+                <input type="text" name="customerDomain.birthday" id='datetime-picker-begin' value="" aria-required="true" aria-invalid="true" class="n-invalid" style="border: none;background: transparent;margin-left: 10px">
             </li>
             <li>电话号码*</li>
         </ul>
@@ -362,15 +367,61 @@
 </div>
 <script src="js/dookayui.min.js" merge="true"></script>
 <script src="js/zepto.min.js"></script>
-<script src="js/weui.js"></script>
+<!--<script src="js/flatpickr/flatpickr.min.js"></script>-->
+<!--<script src="js/flatpickr/l10n/zh.js"></script>-->
+<script src="js/weui.min.js"></script>
 <script src="js/iosSelect.js"></script>
 <script src="js/iscroll.js"></script>
 <script src="js/common.js"></script>
 <script src="js/layer/layer.js"></script>
+<script src="js/example.js"></script>
 <script>
     $(function(){
         commonApp.init();
     });
+
 </script>
+<script type="text/javascript" class="picker js_show">
+    $(function(){
+
+        $('#datetime-picker-begin').on('click', function () {
+            weui.datePicker({
+                start: 1990,
+                defaultValue: [2017,1,1],
+//                yearSplit: '-',
+//                monthSplit: '-',
+//                dateSplit: '-',
+                className: "datetime",
+                end: new Date().getFullYear(),
+                onChange: function (result) {
+                    console.log(result);
+                },
+                onConfirm: function (result) {
+                    console.log($(this));
+                    var yea = result[0].value;
+                    var mon = result[1].value;
+                    var day = result[2].value;
+
+                    $('#datetime-picker-begin').val(yea+"-"+mon+"-"+day)
+                }
+            });
+        });
+//        $('#datetime-picker-end').on('click', function () {
+//            weui.datePicker({
+//                start: 1990,
+//                defaultValue: [2017,1,1],
+//                className: "datetime",
+//                end: new Date().getFullYear(),
+//                onChange: function (result) {
+//                    console.log(result);
+//                },
+//                onConfirm: function (result) {
+//                    console.log(result);
+//                }
+//            });
+//        });
+    });
+
+    </script>
 </body>
 </html>
