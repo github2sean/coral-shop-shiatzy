@@ -82,6 +82,9 @@ public class ReservasionController extends BaseApiController {
         ReservationDomain reservationDomain = reservationService.get(id);
         reservationExtension.withReservationItem(reservationDomain);
         reservationExtension.withCustomer(reservationDomain);
+        reservationDomain.setStoreDomain(storeService.get(Long.parseLong(reservationDomain.getStoreTitle())));
+        reservationDomain.setIsVisible(1);
+        reservationService.update(reservationDomain);
         return ResponseEntity.ok().body(reservationDomain);
     }
 
