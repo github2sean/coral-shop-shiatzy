@@ -34,10 +34,10 @@
                 <div class="name form-item2" ><spring:message code="account.personal.lastName"/>* <input type="text" value="${address.lastName}" name="lastName" data-rule="<spring:message code='account.personal.lastName'/>:required;"></div>
                 <div class="appellation "><spring:message code="account.personal.update.title"/>
                     <select name="title" id="title" class="" value="${address.title}">
-                        <option value="女士"><spring:message code="add.delivery.ms"/></option>
-                        <option value="先生"><spring:message code="add.delivery.mr"/></option>
-                        <option value="小姐"><spring:message code="add.delivery.miss"/></option>
-                        <option value="无"><spring:message code="add.delivery.none"/></option>
+                        <option value="<spring:message code="add.delivery.ms"/>"><spring:message code="add.delivery.ms"/></option>
+                        <option value="<spring:message code="add.delivery.mr"/>"><spring:message code="add.delivery.mr"/></option>
+                        <option value="<spring:message code="add.delivery.miss"/>"><spring:message code="add.delivery.miss"/></option>
+                        <option value="<spring:message code="add.delivery.none"/>"><spring:message code="add.delivery.none"/></option>
                     </select>
                 </div>
                 <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel" value="${address.phone}" name="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
@@ -78,7 +78,6 @@
 </jsp:include>
 <script>
     $(function(){
-        commonApp.init();
 
         var title = '${address.title}';
         $("select[name=title]").find("option").each(function () {

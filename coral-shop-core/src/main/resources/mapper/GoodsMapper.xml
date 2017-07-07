@@ -8,19 +8,40 @@
 		    <trim suffixOverrides="," >
 		    	a.`id` as 'id',
 		    	a.`name` as 'name',
+		    	a.`en_name` as 'enName',
 		    	a.`brief` as 'brief',
 		    	a.`code` as 'code',
 		    	a.`description` as 'description',
+		    	a.`size_ids` as 'sizeIds',
+		    	a.`color_ids` as 'colorIds',
+		    	a.`skin_ids` as 'skinIds',
+		    	a.`en_details` as 'enDetails',
 		    	a.`details` as 'details',
+		    	a.`attributeIds` as 'attributeids',
 		    	a.`prototype_id` as 'prototypeId',
 		    	a.`category_id` as 'categoryId',
 		    	a.`is_published` as 'isPublished',
 		    	a.`create_time` as 'createTime',
 		    	a.`update_time` as 'updateTime',
 		    	a.`thumb` as 'thumb',
+		    	a.`dis_price` as 'disPrice',
+		    	a.`price` as 'price',
+		    	a.`is_sale` as 'isSale',
+		    	a.`is_pre` as 'isPre',
+		    	a.`category_ids` as 'categoryIds',
+		    	a.`rank` as 'rank',
 		    </trim>
 	   	from 
 	    	`t_goods` as a
 	</sql>
-  
+
+	<select id="getGoodsListByRand" resultType="com.dookay.coral.shop.goods.domain.GoodsDomain">
+		<include refid="selectSql"/>
+		ORDER BY RAND()
+		<if test="categoryId!=null">
+			and a.categoryId=#{categoryId}
+		</if>
+		LIMIT 0,#{limit}
+	</select>
+
 </mapper>

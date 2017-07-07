@@ -95,10 +95,9 @@ public class ReservationController extends BaseController{
     public static int RESERVATION_TYPE=3;
 
 
-/**
- * 预约单列表
- */
-
+    /**
+     * 预约单列表
+     */
     @RequestMapping(value = "list",method = RequestMethod.GET)
     public ModelAndView list(){
         Long accountId = UserContext.current().getAccountDomain().getId();

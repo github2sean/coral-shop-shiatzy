@@ -42,8 +42,8 @@
                         <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                     </div>
                     <div class="goods-info">
-                        <div class="name">${item.goodsItemDomain.goods.name}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                        <p class="code">产品编号：${item.goodsCode}</p>
+                        <div class="name">${web:selectLanguage()=='en_US'?item.goods.enName:item.goods.name}</div>
+                        <p class="code"><spring:message code="shoppingCart.no" />：${item.goodsCode}</p>
                         <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -158,7 +158,6 @@
         </div>
     </div>
 
-
     <div class="order-details item-group">
         <h4><spring:message code="payment.failed.paymentWay"/></h4>
         <c:if test="${order.paymentMethod==1}">
@@ -175,11 +174,23 @@
 
     <!--配送信息-->
     <div class="item-group">
-        <h4 class="title j_dropdown">配送信息 </h4>
+        <h4 class="title j_dropdown"><spring:message code="payment.failed.shipping"/> </h4>
         <div class="item">
             <ul>
-                <li>收货地址：${orderDomain.shipCountry}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
-                <li>收货人：${orderDomain.shipFirstName}${orderDomain.shipLastName} ${orderDomain.shipTitle}</li>
+                <c:if test="${order.shippingMethod==1 && not empty order.shippingMethod}">
+                    <li>${order.shipFirstName} ${order.shipLastName}</li>
+
+                    <li>${order.shipAddress}</li>
+                    <c:if test="${not empty order.shipMemo}">
+                        <li>${order.shipMemo}</li>
+                    </c:if>
+                    <li>${order.shipCity} ${order.shipPostalCode}</li>
+                    <li>${order.shipCountry}</li>
+                    <li>${order.shipPhone}</li>
+                </c:if>
+                <c:if test="${order.shippingMethod==2 && not empty order.shippingMethod}">
+                    <li><spring:message code="payment.failed.shippingStore"/>：${order.shipShopId}</li>
+                </c:if>
                 <c:if test="${order.billRequired==0 || empty order.billRequired}">
                     <li><spring:message code="payment.failed.bill"/>：<spring:message code="payment.failed.noNeed"/></li>
                 </c:if>

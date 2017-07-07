@@ -331,6 +331,7 @@ public class ReturnOrderController extends BaseController {
     }
 
     private String getReasonList(String reasonJson){
+        System.out.print(reasonJson);
         com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(reasonJson);
         List<String> reasonList = new ArrayList<>();
         if(jsonObject.containsKey("服务")){
@@ -378,8 +379,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("其他")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("其他");
+        if(jsonObject.containsKey("其它")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("其它");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }

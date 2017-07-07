@@ -29,7 +29,6 @@
                 </div>
             </div>
         </c:forEach>
-
     </div>
     <c:if test="${'index'!=way}">
         <div class="btn">

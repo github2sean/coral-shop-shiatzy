@@ -18,7 +18,7 @@
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
-    <form class="j_ajaxForm"  data-next="${ctx}/home/index">
+    <form class="j_ajaxForm"  data-next="${ctx}/u/account/index">
         <div class="dx-form">
             <h3 class="title"><spring:message code="login"/></h3>
             <div class="tips"><spring:message code="login.tips"/></div>
@@ -49,14 +49,14 @@
 <c:if test="${ not empty skuList}">
     <div class="dx-commodity">
     <div class="maybeLike clearfix" style="border-top: 2px solid #cccccc">
-    <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%">心愿单</div>
+    <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%"><spring:message code="wish"/></div>
     <c:forEach var="row" items="${skuList}" >
         <a href="/goods/details/${row.goodsItem.id}" style="width: 50%;">
             <div class="left">
                 <div class="pic" style="height: 100px">
                     <img style="width:80px;height: 100px;" src="${ImageModel.toFirst(row.goodsItem.thumb).file}" alt="">
                 </div>
-                <div class="name" style="text-align: center">${row.goods.name}</div>
+                <div class="name" style="text-align: center">${web:selectLanguage()=='en_US'?row.goods.enName:row.goods.name}</div>
                 <div class="price do-pro-price ${not empty row.goods.disPrice?'xzc-price':''}" data-value="${row.goodsItem.price}"></div>
                 <c:if test="${not empty row.goods.disPrice}">
                 <div class="price do-pro-price xzc-dis-price" data-value="${row.goods.disPrice}"></div>

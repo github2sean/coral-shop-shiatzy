@@ -22,13 +22,11 @@
         </div>
     </div>
 </c:if>
-
     <style>
         .goods-item:nth-of-type(even) {
             border-right: 0;
         }
         .goods-item:nth-of-type(odd) {
-
         }
         .goods-item{
             float: left;
