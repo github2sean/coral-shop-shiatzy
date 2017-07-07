@@ -68,7 +68,8 @@ public class ExceptionHandler implements HandlerExceptionResolver {
             errorMsg = errorMsg
                     .replace("优惠券代码无效","Invalid code")
                     .replace("优惠券代码已过期","Code expired")
-                    .replace("优惠券使用次数不足","Code use limited");
+                    .replace("优惠券使用次数不足","Code use limited")
+                    .replace("心愿单中已经存在","Already added");
         }
         if (JsonUtils.isAjax(handler)) {
             try {
