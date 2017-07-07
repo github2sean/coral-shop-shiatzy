@@ -1295,4 +1295,7 @@
 }
 .ios-select-widget-box header.iosselect-header a.sure {
     color: #fff;
+    position: absolute!important;
+    right: 0!important;
+
 }
