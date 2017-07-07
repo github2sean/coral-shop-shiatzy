@@ -32,6 +32,11 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
+	<table tableName="t_goods_color_series" domainObjectName="GoodsColorSeries"
+		   packageName="com.dookay.coral.shop.goods" desc="商品颜色系列" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
 	<table tableName="t_goods_skin" domainObjectName="GoodsSkin"
 		   packageName="com.dookay.coral.shop.goods" desc="商品材质" author="luxor">
 		<generatedKey column="id" identity="true" />
@@ -47,6 +52,12 @@
 		<generatedKey column="id" identity="true" />
 		<dto packageName="com.dookay.coral.shop.goods.query" />
 	</table>
+	<table tableName="t_goods_item_format" domainObjectName="GoodsItemFormat"
+		   packageName="com.dookay.coral.shop.goods" desc="商品项目参数" author="luxor">
+		<generatedKey column="id" identity="true" />
+		<dto packageName="com.dookay.coral.shop.goods.query" />
+	</table>
+
 	<table tableName="t_goods_attribute_value" domainObjectName="GoodsAttributeValue"
 		   packageName="com.dookay.coral.shop.goods" desc="商品属性值" author="luxor">
 		<generatedKey column="id" identity="true" />

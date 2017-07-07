@@ -256,6 +256,10 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	@Override
 	public void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId) {
 		ShoppingCartItemDomain shoppingCartItemDomain = get(shoppingCartItemId);
+		GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(shoppingCartItemDomain.getItemId()).getGoodsId());
+		if(goodsDomain.getIsPre()==0){
+			throw new  ServiceException("该商品无法预约");
+		}
 		shoppingCartItemDomain.setShoppingCartType(3);
 		update(shoppingCartItemDomain);
 	}

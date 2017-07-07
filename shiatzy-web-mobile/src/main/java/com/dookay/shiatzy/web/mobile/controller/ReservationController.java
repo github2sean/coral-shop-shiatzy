@@ -95,10 +95,9 @@ public class ReservationController extends BaseController{
     public static int RESERVATION_TYPE=3;
 
 
-/**
- * 预约单列表
- */
-
+    /**
+     * 预约单列表
+     */
     @RequestMapping(value = "list",method = RequestMethod.GET)
     public ModelAndView list(){
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -208,10 +207,6 @@ public class ReservationController extends BaseController{
         Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
-
-
-
-
         return successResult("提交成功",reservationDomainId);
     }
 

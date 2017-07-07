@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -187,6 +188,10 @@ public class ShoppingCartController extends BaseController{
             while(it.hasNext()){
                 AddShoppingCartForm now = it.next();
                 if(now.getId().equals(formId)){
+                    GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(now.getItemId()).getGoodsId());
+                    if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue()&&goodsDomain.getIsPre()==0){
+                        return  errorResult("该商品无法预约");
+                    }
                     now.setType(goalType);
                 }
             }
@@ -374,11 +379,14 @@ public class ShoppingCartController extends BaseController{
         mv.addObject("categoryList",categoryDomainList);
         mv.addObject("wishList",wishList);
 
-
-        //把获取的记录存到List集合
-        List<GoodsDomain> historyList = HistoryUtil.getHistory();
-        goodsService.withGoodsItemList(historyList);
-        mv.addObject("historyList",historyList);
+        //您也许也喜欢
+        GoodsQuery goodsQuery = new GoodsQuery();
+        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
+        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
+        Collections.shuffle(goodsListAll);
+        List<GoodsDomain> goodsDomainList = goodsListAll.subList(0,4);
+        goodsService.withGoodsItemList(goodsDomainList);
+        mv.addObject("likeGoodsList",goodsDomainList);
         return mv;
     }
 
@@ -408,7 +416,7 @@ public class ShoppingCartController extends BaseController{
          ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
          GoodsItemDomain goodsItemDomain = goodsItemService.get(shoppingCartItemDomain.getItemId());
          GoodsDomain goodsDomain = goodsService.get(goodsItemDomain.getGoodsId());
-         if(goodsDomain.getIsPre() != ValidEnum.NO.getValue()){
+         if(goodsDomain.getIsPre()== ValidEnum.NO.getValue()){
              return errorResult("该商品不能预约");
          }
          shoppingCartItemDomain.setShoppingCartType(3);

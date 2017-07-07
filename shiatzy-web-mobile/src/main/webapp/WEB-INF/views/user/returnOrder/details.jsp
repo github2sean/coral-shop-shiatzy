@@ -54,7 +54,13 @@
         </div>
     </div>
     <div class="item-group">
-        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/> (状态：${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) </h4>
+        <h4 class="title j_dropdown"><spring:message code="return.detail.tiltle"/>
+        <c:if test="${web:selectLanguage()=='en_US'}">
+            (Status：${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) </h4>
+        </c:if>
+        <c:if test="${web:selectLanguage()!='en_US'}">
+            (状态：${ReturnRequestStatusEnum.valueOf(returnRequestDomain.status).description}) </h4>
+        </c:if>
         <div class="item">
             <div class="goods-list return-goods">
                 <c:forEach var="item" items="${returnOrderItemList}">
@@ -97,11 +103,11 @@
                                     </c:choose>
                                 </font>&nbsp;<fmt:formatNumber value="${item.goodsDisPrice}" pattern="#,###"/></p>
                             </c:if>
-
                         </div>
                     </div>
+
                     <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
-                    <p class="status">退货理由：${returnReason}</p>
+                    <p class="status"><spring:message code="return.detail.returnReason"/>：${returnReason}</p>
                 </c:forEach>
             </div>
             <div style="font-size: 1.2rem" > <spring:message code="return.detail.fee"/>：<span class="fee" style="float: right">&nbsp;<font class="coinSymbol">

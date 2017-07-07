@@ -30,7 +30,6 @@
     .j_collapse{}
     .price{
         display: inline;
-
     }
     .dx-shopping .dx-GoodsDetails .do-list-icon{
         margin-top: 1.3rem;
@@ -90,30 +89,37 @@
 
         </div>
     <c:if test="${empty wishList}">
-    <div class="maybeLike clearfix" style="border-top: 2px solid #cccccc">
-        <div class="title" style="margin:auto;margin-top: 1rem;border-bottom: 2px solid #cccccc;width: 80%"><spring:message code="wish.recommends"/></div>
-        <c:forEach var="goods" items="${historyList}" begin="0" end="1">
-            <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-                <div class="left">
-                    <a href="/goods/details/${firstItem.id}">
-                    <div class="pic" style="height: 100px">
-                        <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
-                    </div>
-                    <div class="name">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</div>
-                    <div class="price do-pro-price ${not empty goods.disPrice?'xzc-price':''}" data-value="${goods.price}">&nbsp;</div>
-                    <c:if test="${not empty goods.disPrice}">
-                    <div class="price do-pro-price xzc-dis-price" data-value="${goods.disPrice}">&nbsp;</div>
-                    </c:if>
-                    <br/>
-                    <ul class="color clearfix">
-                        <c:forEach var="goodsItem" items="${goods.goodsItemList}">
-                            <li style="background: ${goodsItem.colorValue}"></li>
-                        </c:forEach>
-                    </ul>
-                     </a>
-                </div>
-        </c:forEach>
-    </div>
+        <!--也许喜欢-->
+        <div class="maybeLike clearfix">
+            <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
+            <div class="container">
+                <ul class="do-pro-list">
+                    <c:forEach var="goods" items="${likeGoodsList}" varStatus="num" begin="0" end="3">
+                        <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+                        <li>
+                            <a href="/goods/details/${firstItem.id}">
+                                <div class="do-img">
+                                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
+                                </div>
+                                <p class="do-pro-t ellipsis-25"
+                                   name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
+                                <p class="do-pro-price <c:if test="${not empty  goods.disPrice}">xzc-price</c:if>"
+                                   name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                                <c:if test="${not empty  goods.disPrice}">
+                                    <p class="do-pro-price xzc-dis-price" name="goodsPrice"
+                                       data-value="${goods.disPrice}">&nbsp;</p>
+                                </c:if>
+                                <ul class="do-list-color" name="skuId" data-value="">
+                                    <c:forEach var="item" items="${goods.goodsItemList}">
+                                        <li style="background: ${item.colorValue}"></li>
+                                    </c:forEach>
+                                </ul>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </div>
     </c:if>
         <div class="explain">
             <ul>

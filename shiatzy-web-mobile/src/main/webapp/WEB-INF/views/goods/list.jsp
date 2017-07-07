@@ -32,7 +32,7 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                <p class="do-pro-t"><span class="do-pro-price <c:if test="${not empty firstItem.discountPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</span>
+                <p ><span class="do-pro-price <c:if test="${not empty firstItem.discountPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</span>
                 <c:if test="${not empty  firstItem.discountPrice }">
                     <span class="do-pro-price xzc-dis-price"  data-value="${firstItem.discountPrice}">${firstItem.discountPrice}</span>
                 </c:if>
@@ -75,13 +75,14 @@
         <input type="hidden" name="categoryId" value="${categoryId}">
         <div class="do-sort link-down"><spring:message code="goods.list.filter"/><button type="reset" class="btn-reset"><spring:message code="goods.list.reset"/></button></div>
         <div class="do-sort-cat j_sort_cat">
-            <div class="cat-t link-down"><spring:message code="goods.detail.colors"/></div>
+            <div class="cat-t link-down"><spring:message code="goods.detail.colors"/>   </div>
             <div class="do-sort-group-wrap">
-            <c:forEach var="item" items="${colorList}">
+
+            <c:forEach var="item" items="${colorSeriesList}">
             <div class="do-sort-group">
                 <div class="do-color-show" style="background-color: ${item.color}"></div>
-                <input type="checkbox" name="colorIds"
-                <c:forEach var="row" items="${colorIds}">
+                <input type="checkbox" name="colorSeriesIds"
+                <c:forEach var="row" items="${query.colorSeriesIds}">
                        <c:if test="${row==item.id}">checked="checked"</c:if>
                 </c:forEach>
                        id="color${item.id}" value="${item.id}">
@@ -137,7 +138,7 @@
 </jsp:include>
 <script>
     function getJsonObjLength(jsonObj) {
-        console.log("jsonObjlength:"+jsonObj.length);
+
         return jsonObj.length;
     }
     function addToWish(now,type){
@@ -147,9 +148,9 @@
         var selectSizeId=selectSizeId;
          var itemId = selectItemId;
         var isAdd =  $(now).find("use").attr("xlink:href");
-        console.log(isAdd);
+
         var data = {"itemId":itemId,"num":1,"sizeId":selectSizeId,"type":2};
-        console.log(data);
+
         var url = "";
         if(type==1 && isAdd=="#heart-red"){
             url = "/cart/addToCart";
@@ -167,9 +168,8 @@
             $(now).find("use").attr("xlink:href","#heart");
             url = "/cart/removeFromSessionWish";
         }
-        console.log(url);
+
         $.post(url,data,function (result) {
-            console.log(result);
             if(result.code==200){
                 console.log(result.message);
             }
@@ -185,7 +185,7 @@
         });
         $(".btn-submit").click(function () {
             var data = $(".filterForm").serializeArray();
-            console.log(data)
+
             $(".filterForm").submit();
         });
         //价格点击事件
@@ -195,7 +195,7 @@
             var href = window.location.href;
             var priceWay="priceWay";
             var newHref = setQueryString(priceWay,priceorder,href);
-            console.log(newHref);
+
             location.href = newHref;
         });
         //reset
@@ -205,7 +205,7 @@
         //加载更多商品
         var offset = '${goodsDomainPageList.list.size()}'*1-1;
         var page = 2;
-        console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
+
         $(".moreGoods").click(function () {
             loadMore();
         });
@@ -214,9 +214,10 @@
     //加载更多商品
     var offset = '${goodsDomainPageList.list.size()}'*1-1;
     var page = 1;
-    console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
-
     var totalPage = parseInt('${goodsDomainPageList.totalPage}');
+    console.log("pageSize:"+'${goodsDomainPageList.pageSize}');
+    console.log("totalPage:"+totalPage)
+    console.log("totalRecord:${goodsDomainPageList.totalRecord}")
     function loadMore() {
         //当前分类
         var categoryId = '${goodsCategoryDomain.id}'
@@ -225,10 +226,10 @@
         //当前页
         page++;
 
-        var data2 = {"categoryId":categoryId,"priceWay":priceWay,"pageIndex":page}
-        console.log("data2:"+data2+" offset:"+offset);
+        var data2 = {"pageIndex":page}
+
         if(page<=totalPage){
-            $.get("/goods/list",data2,function (data) {
+            $.get(location.href,data2,function (data) {
                 $(".j_scroll_list").append($(data).find(".j_scroll_list").html())
                 setPrice();
             });

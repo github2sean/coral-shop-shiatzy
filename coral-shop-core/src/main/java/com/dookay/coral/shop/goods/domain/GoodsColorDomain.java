@@ -48,6 +48,9 @@ public class GoodsColorDomain implements Serializable {
 	/*更新时间*/
 	private Date updateTime;
 
+	/*顏色系列id*/
+	private Long seriesId;
+
 	/*库存*/
 	@Transient
 	private int stock;

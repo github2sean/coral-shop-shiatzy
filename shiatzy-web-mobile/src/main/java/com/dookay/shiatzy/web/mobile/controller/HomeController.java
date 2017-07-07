@@ -27,6 +27,7 @@ import com.dookay.coral.shop.index.query.IndexBlockGroupQuery;
 import com.dookay.coral.shop.index.query.IndexBlockQuery;
 import com.dookay.coral.shop.index.service.IIndexBlockGroupService;
 import com.dookay.coral.shop.index.service.IIndexBlockService;
+import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.query.CouponQuery;
 import com.dookay.coral.shop.promotion.service.ICouponService;
@@ -47,6 +48,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +87,7 @@ public class HomeController extends MobileBaseController {
     private final static String SHIPPING_COUNTRY_ID="shippingCountryId";
     private final static String LANGUAGE_HISTORY = "Language";
     private final static int MAX_COOKIE_AGE = 24*60*60*7;
-
+    private static String ORDER = "order";
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index() throws MessagingException {
 
@@ -169,6 +171,25 @@ public class HomeController extends MobileBaseController {
         HttpSession session = request.getSession();
         session.setAttribute(SHIPPING_COUNTRY_ID,shippingCountryId);
         CookieUtil.setCookieValueByKey(response,"shippingCountry",shippingCountryId+"",60*60*24*365);
+        String currentCode = "CNY";
+        Double fee = 0D;
+        if(shippingCountryId!=null){
+           ShippingCountryDomain shippingCountryDomain = shippingCountryService.get(shippingCountryId);
+            Double  rate = shippingCountryDomain.getRate()!=null?shippingCountryDomain.getRate():1D;
+            //根据国家选择结算币种
+            int currentCodeType = shippingCountryDomain.getRateType();
+            if(currentCodeType==1){
+                currentCode = "USD";
+            }else if(currentCodeType==2){
+                currentCode = "EUR";
+            }
+            fee = shippingCountryDomain.getShippingCost()/rate;
+        }
+        OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
+        if(orderDomain!=null){
+            orderDomain.setCurrentCode(currentCode);
+            orderDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        }
         return successResult("选择成功");
     }
 

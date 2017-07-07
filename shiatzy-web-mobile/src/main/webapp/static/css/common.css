@@ -1982,7 +1982,7 @@ h3 {
     color: #fff;
     background: transparent;
     outline: 0;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
     float: right
 }
 
@@ -2273,8 +2273,9 @@ h3 {
 }
 
 .do-pro-list .do-pro-t {
-    height: 2.5rem;
+    height: 3.5rem;
     line-height: 1.4rem;
+    margin-top: .3rem;
     margin-bottom: .3rem;
     display: -webkit-box;
     display: -webkit-flex;

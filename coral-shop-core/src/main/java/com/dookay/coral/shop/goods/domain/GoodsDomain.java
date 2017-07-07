@@ -90,6 +90,9 @@ public class GoodsDomain implements Serializable {
 	/*多分类*/
 	private String categoryIds;
 
+	/*排序*/
+	private Integer rank;
+
 	@Transient
 	private List<Long> categoryIdList;
 

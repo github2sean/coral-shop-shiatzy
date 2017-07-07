@@ -85,6 +85,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
 					.filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			orderItemDomain.setGoodsItemDomain(goodsItemDomain);
+			orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(orderItemDomain.getSkuSpecifications()).getLong("size")));
 		}
 	}
 

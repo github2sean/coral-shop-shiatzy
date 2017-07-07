@@ -99,7 +99,7 @@ public class BoutiqueController extends BaseController{
                         GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
                         GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
                         ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
-                        shoppingCartItemDomain.setGoodsCode(goodsDomain.getCode());
+                        shoppingCartItemDomain.setGoodsCode(goodsItemDomain.getGoodsNo());
                         shoppingCartItemDomain.setGoodsName(goodsDomain.getName());
                         shoppingCartItemDomain.setGoodsEnName(goodsDomain.getEnName());
                         shoppingCartItemDomain.setGoodsPrice(goodsItemDomain.getPrice());
@@ -143,10 +143,12 @@ public class BoutiqueController extends BaseController{
         mv.addObject("cartList",cartList);
         return mv;
     }
+
     private void updateStock(List<ShoppingCartItemDomain> cartList) {
         for(ShoppingCartItemDomain cartItemDomain:cartList){
-            String productNo = cartItemDomain.getGoodsCode().split("\\s+")[0];//库存商品编号
-            String color = cartItemDomain.getGoodsCode().split("\\s+")[1];//颜色标识
+            String[] codeArray = cartItemDomain.getGoodsCode().split("\\s+");
+            String productNo = codeArray[0];//库存商品编号
+            String color = codeArray[1];//颜色标识
             cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));
         }
     }

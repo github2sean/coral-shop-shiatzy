@@ -200,6 +200,15 @@ public class CheckoutController  extends BaseController{
         return "redirect:orderInfo";
     }
 
+    @RequestMapping(value = "resetShippingCountry",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult resetShippingCountry(Long countryId){
+
+
+        return successResult("操作成功");
+    }
+
+
 
     @RequestMapping(value = "getStockBySizeAndColor",method = RequestMethod.POST)
     @ResponseBody
@@ -253,7 +262,7 @@ public class CheckoutController  extends BaseController{
             }
             line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
-            Double rate = shippingCountryService.get(orderDomain.getShippingCountryId()).getRate();
+            Double rate = shippingCountryService.get(Long.parseLong(CookieUtil.getCookieValueByKey(request,"shippingCountry"))).getRate();
             line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
             Double disPrice = line.getGoodsDisPrice();
             if(disPrice!=null){
@@ -450,7 +459,7 @@ public class CheckoutController  extends BaseController{
         orderService.withGoodItme(orderItemDomainList);
         freeMap.put("order",order);
         freeMap.put("orderItem",orderItemDomainList);
-        String html = FreemarkerUtil.printString("orderDelivered.ftl",freeMap);
+        String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
 
         HashMap<String,String> emailMap = new HashMap<>();
         emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
@@ -492,14 +501,14 @@ public class CheckoutController  extends BaseController{
             Double disPrice = shoppingCartItemDomain.getGoodsDisPrice();
             Double price = disPrice==null?shoppingCartItemDomain.getGoodsPrice():disPrice;
             goodsTotal  = goodsTotal+  price* shoppingCartItemDomain.getNum();
-            memberDiscount = goodsTotal*(1-memDis)/rate;
         }
+        memberDiscount = goodsTotal*(1-memDis);
         orderDomain.setMemberDiscount(memberDiscount);
         orderDomain.setGoodsTotal(goodsTotal);
         Double couponDiscount = orderDomain.getCouponDiscount()==null?0D:orderDomain.getCouponDiscount();
         //memberDiscount = orderDomain.getMemberDiscount()==null?0D:orderDomain.getMemberDiscount();
         Double shipFee = orderDomain.getShipFee()==null?0D:orderDomain.getShipFee();
-        System.out.println("shipFee:"+shipFee+" couponDiscount:"+couponDiscount+" memberDiscount:"+memberDiscount+" goodsTotal:"+goodsTotal);
+        System.out.println("shipFee:"+shipFee+" couponDiscount:"+couponDiscount+" memDis:"+memDis+" memberDiscount:"+memberDiscount+" goodsTotal:"+goodsTotal);
         Double orderTotal = goodsTotal + shipFee -couponDiscount - memberDiscount;
         BigDecimal bd = new BigDecimal(orderTotal);
         orderDomain.setOrderTotal(bd.setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());

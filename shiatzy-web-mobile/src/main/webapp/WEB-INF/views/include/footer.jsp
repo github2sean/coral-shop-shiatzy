@@ -104,7 +104,7 @@
 <!-- 页面插件结束 -->
 
 <!-- 轮播 开始 -->
-<script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src="${ctx}/static/js/jquery.bxslider.min.js"></script>
 
 <!-- 轮播 结束 -->
 
@@ -153,17 +153,17 @@
             if (data.code==200){
                 var obj = data.data;
                 var type = obj.rateType;
-                console.log("type2"+type);
+
                 if(obj.rateType == 1){
                     coinSymbol = '<spring:message code="coin.USA"/>';
                 }else if(obj.rateType == 2){
                     coinSymbol = '<spring:message code="coin.EU"/>';
                 }
                 rate = obj.rate;
-                console.log("rate1:"+rate);
+
             }
 
-            console.log("rate2:"+rate);
+
             $(".do-pro-price").each(function () {
                 var oldPri = $(this).attr("data-value")*1;
                 $(this).text(coinSymbol+" "+fmoney((oldPri/rate).toFixed(0),0)).attr("data-rate",rate);
@@ -182,7 +182,7 @@
             if (data.code==200){
                var country = data.data;
                 var json = JSON.parse(data);
-                console.log(json.rate);
+
                 return data.data.rate;
             }
         });
@@ -200,7 +200,7 @@
                     }
 
                     $(".cart_num").text(cartNum);
-                    console.log("cart:"+cartNum);
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -213,7 +213,7 @@
                     }
 
                     $(".boutique_num").text(cartNum);
-                    console.log("boutique:"+cartNum)
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -226,7 +226,7 @@
                         $(".cart_num").removeClass("hide");
                     }
                     $(".cart_num").text(cartNum);
-                    console.log("cart:"+cartNum);
+
                 }else{
                     // layer.msg('更新购物车数量失败');
                 }
@@ -237,7 +237,7 @@
                     if(cartNum>0){
                         $(".boutique_num").removeClass("hide");
                     }
-                    console.log("bou:"+cartNum);
+
                     $(".boutique_num").text(cartNum);console.log(cartNum);
                 }else{
                     // layer.msg('更新购物车数量失败');
@@ -268,14 +268,14 @@
                     old = old  +"?lang="+language;
                 }else if(old.indexOf("?lang=")!=-1){
                     old = "?lang="+language;
-                    console.log(old);
+
                 }else if(old.indexOf("&lang=")!=-1){
                     old = old.substr(0,old.indexOf("&lang="));
                     old = old+"&lang="+language;
                 }else{
                     old = old+"&lang="+language;
                 }
-                location.href = old;
+                location.href = location.href.indexOf("checkout/confirm")!=-1?"/checkout/orderInfo":old;
             }
         });
     }
@@ -308,29 +308,26 @@
         });
         console.log("sessionScopeLanguage:"+'${sessionScope.language}'+"  cookieLanguage:"+'${web:selectLanguage()}');
 
-
-
         $(".language").click(function () {
             var language = $(this).attr("data-value");
             postToSelectLanguage(language);
         });
 
         $(".do-btn-subscribe").click(function () {
-
             var email = $(".do-fill-email").val();
             var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
             if(email==''){
-                $("#subscribe_msg").text("请输入邮件地址");
+                $("#subscribe_msg").text("<spring:message code="subscribe.message.info"/>");
                 return false;
             }else if(!reg.test(email)){
-                $("#subscribe_msg").text("请输入正确的邮件地址");
+                $("#subscribe_msg").text("<spring:message code="subscribe.message.warn"/>");
                 return false;
             }else{
                 $.post("/common/subscribe",{"email":email},function (data) {
                     if (data.code==200){
-                        $("#subscribe_msg").text("已成功订阅！");
+                        $("#subscribe_msg").text("<spring:message code="subscribe.message.success"/>");
                     }else{
-                        $("#subscribe_msg").text(data.message);
+                        $("#subscribe_msg").text("subscribe.message.fail");
                     }
                 });
             }

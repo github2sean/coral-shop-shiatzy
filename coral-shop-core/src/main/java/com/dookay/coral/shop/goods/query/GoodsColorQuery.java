@@ -19,6 +19,8 @@ import java.util.List;
 public class GoodsColorQuery extends Query {
 	private List<Long> ids;
 	private String name;
+
+	private List<Long> seriesIds;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsColorDomain.class);
@@ -28,6 +30,9 @@ public class GoodsColorQuery extends Query {
 		}
 		if(valid(name)){
 			criteria.andEqualTo("name",name);
+		}
+		if(valid(seriesIds)){
+			criteria.andIn("seriesId",seriesIds);
 		}
 		//todo 写查询逻辑
 		return queryCriteria;

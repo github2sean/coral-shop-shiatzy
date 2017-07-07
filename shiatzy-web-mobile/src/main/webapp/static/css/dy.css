@@ -209,7 +209,7 @@
 }
 
 .verify-main .img-message p:last-child {
-    text-align: right;
+
 }
 
 .order-state {
@@ -349,7 +349,7 @@
 
 .club,
 .club-card {
-    padding: 0 23px 0 28px;
+    margin: 0 23px 0 28px;
 }
 
 .club h3 {
@@ -405,53 +405,32 @@
 
 .card-title {
     position: absolute;
-    top: 3.401rem;
-    left: 25%;
+    top:3rem;
+    left: 0;
+    width: 100%;
     color: #fff;
     border-bottom: 1px solid #999999;
     padding: 0 2.5507rem;
 }
 
-/*.card-name {*/
-    /*position: absolute;*/
-    /*top: 10rem;*/
-    /*left: 40%;*/
-    /*color: #fff;*/
-/*}*/
 .card-name {
     position: absolute;
-    top: 10rem;
-    left: 50%;
-    margin-left: -50px;
+    top:10rem;
+    left: 0;
+
     color: #fff;
-    width: 100px;
+    width: 100%;
     text-align: center;
 }
 .card-num {
     position: absolute;
-    top: 15.5rem;
-    left: 14%;
+    top:14rem;
+    left: 0;
     color: #fff;
-    font-size: 16px;
+    width: 100%;
+    text-align: center;
 }
-@media screen and (max-width: 375px) {
-    .card-num {
-        position: absolute;
-        top: 14.5rem;
-        left: 14%;
-        color: #fff;
-        font-size: 16px;
-    }
-    .card-name {
-        position: absolute;
-        top: 9rem;
-        left: 50%;
-        margin-left: -42px;
-        color: #fff;
-        width: 84px;
-        text-align: center;
-    }
-}
+
 @media screen and (max-width: 320px) {
     .card-num {
         position: absolute;
@@ -1098,19 +1077,19 @@
 
 .return-list ul li:first-child {
     font-size: 1.1rem;
-    text-indent: 3rem;
+
     position: relative;
 }
 
 .return-list ul li:first-child:after {
     content: '';
     position: absolute;
-    width: 6rem;
+    width: 11rem;
     height: 1px;
     background-color: #cccccc;
     display: block;
     bottom: 0;
-    left: 3rem;
+    /* left: 3rem; */
 }
 
 .return-list ul {

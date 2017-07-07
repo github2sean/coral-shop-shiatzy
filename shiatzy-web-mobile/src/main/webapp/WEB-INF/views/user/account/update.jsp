@@ -27,11 +27,15 @@
             <ul>
                 <li class="form-item2">
                     <span><spring:message code="account.personal.update.title"/>*
-                        <input type="text"
-                               value="${customerAddressDomain.title}"
-                               name="customerAddressDomain.title"
-                               id="title"
-                               data-rule="<spring:message code="account.personal.update.title"/>:required;"/></span>
+                      <select name="customerAddressDomain.title" id="title" class="" value="${customerAddressDomain.title}"
+                              data-rule="<spring:message code="account.personal.update.title"/>:required;">
+                          <option value="<spring:message code="add.delivery.ms"/>"><spring:message code="add.delivery.ms"/></option>
+                        <option value="<spring:message code="add.delivery.mr"/>"><spring:message code="add.delivery.mr"/></option>
+                        <option value="<spring:message code="add.delivery.miss"/>"><spring:message code="add.delivery.miss"/></option>
+                        <option value="<spring:message code="add.delivery.none"/>"><spring:message code="add.delivery.none"/></option>
+                    </select>
+
+                       </span>
                     <span style="float:right;"></span>
                 </li>
                 <li class="form-item2">
@@ -195,39 +199,8 @@
     }
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
+         $("#title").val("${customerAddressDomain.title}");
 
-        /*$('#firstName').focus(function () {
-
-        }).blur(firstName);
-        $('#lastName').focus(function () {
-
-        }).blur(lastName);
-        $('#title').focus(function () {
-
-        }).blur(title);
-        $('#countryId').focus(function () {
-
-        }).blur(countryId);
-        $('#province').focus(function () {
-
-        }).blur(province);
-        $('#city').focus(function () {
-
-        }).blur(city);
-        $('#phone').focus(function () {
-
-        }).blur(phone);*/
-
-      /*  $(".updateBtn").click(function () {
-            var $updateAccountForm = $(".updateAccountForm");
-            var data = $updateAccountForm.serializeArray();
-
-            $.post("/u/account/update", data, function (data) {
-                console.log(data.message);
-                $("#showInfo").show().text(data.message);
-                location.href = "/u/account/details";
-            });
-        });*/
     });
 
 </script>

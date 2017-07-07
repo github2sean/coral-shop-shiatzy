@@ -167,6 +167,7 @@
 
         var json = "";
         $("#citySelect").click(function () {
+            $(this).toggleClass("active");
             var $option =  $(this).find(".model-select-option");
             $(this).find(".model-select-option").slideToggle(300).removeClass("hide");
             $option.find("li").on("click",function () {
@@ -174,44 +175,42 @@
                 var text = $(this).text();
                 $(this).parent().siblings("#chooseCity").text(text);
                 //初始化选择城市
-                $.post("/checkout/initStore",{"cityId":$(this).attr("data-option")},function (data) {
+                $.post("/reservation/chooseStore",{"cityId":$(this).attr("data-option")},function (data) {
                     var storeJson = data.data;
                     console.log(storeJson);
                     if(data.code==200 && storeJson!=null){
                         $("#storeFather").children("li").each(function () {
                             $(this).remove();
                         });
-                         json = eval(storeJson)
+                        json = eval(storeJson)
                         for(var i=0; i<json.length; i++)
                         {
-                            var name = isEn?json[i].enTitle:json[i].name;
-                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
+                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
                         }
-                        if($("#storeFather").find("li").length<1){
-                            layer.msg("<spring:message code='store.list.noStore'/>");
-                            return false;
-                        }
-                        $("#storeFather").css("display","block");
-                        $("#storeFather").find("li").on("click",function () {
-                            var index = $(this).attr("data-value");
-                            $(this).addClass("active").siblings().removeClass("active");
-                            var text = $(this).text();
-                            $(this).parent().siblings("#chooseStore").text(text);
-                            console.log(index);
-                            var name = isEn?json[index].enTitle:json[index].name;
-                            var address = isEn?json[index].enAddress:json[index].address;
-
-                            $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>："+name)
-                                    .siblings("#storeAddress").text("<spring:message code='account.personal.address'/>："+address).siblings("#storeTel").text("TEL："+json[index].tel);
-                            $(".saveBtn").attr("data-value",json[index].id);
-                        });
-
-
+                        $("#storeSelect").find(".model-select-store").addClass("active");
+                        $("#storeSelect").find(".model-select-option").show();
+                        $("#chooseStore").text("请选择门店");
+                        $("#storeName").text("");
+                        $("#storeAddress").text("");
+                        $("#storeTime").text("");
+                        $("#storeTel").text("");
+                        $(".sendBtn").attr("data-value","");
                     }else{
-                        layer.msg("<spring:message code='store.list.noStore'/>");
+                        layer.msg("该城市下无门店");
                     }
                 });
             });
+        });
+
+        $("#storeSelect").on("click","li",function () {
+            var index = $(this).attr("data-value");
+            $(this).addClass("active").siblings().removeClass("active");
+            var text = $(this).text();
+            $(this).parent().siblings("#chooseStore").text(text);
+            console.log(index);
+            $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
+                .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
+            $(".sendBtn").attr("data-value",json[index].id);
         });
 
         $("#storeSelect").click(function () {
