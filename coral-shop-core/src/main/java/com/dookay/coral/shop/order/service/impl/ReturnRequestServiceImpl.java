@@ -46,8 +46,10 @@ public class ReturnRequestServiceImpl extends BaseServiceImpl<ReturnRequestDomai
 			returnRequestDomain.setStatus(isAgree);//取消
 		}
 		update(returnRequestDomain);
-		for(ReturnRequestItemDomain line: returnRequestItemDomain){
-			returnRequestItemService.update(line);
+		if(returnRequestItemDomain!=null){
+			for(ReturnRequestItemDomain line: returnRequestItemDomain){
+				returnRequestItemService.update(line);
+			}
 		}
 	}
 

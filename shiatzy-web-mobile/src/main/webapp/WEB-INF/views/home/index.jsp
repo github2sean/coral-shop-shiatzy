@@ -24,18 +24,18 @@
     <c:forEach items="${groupList}" var="row">
         <c:if test="${row.type==1 && not empty row.indexBlockDomainList}">
             <c:if test="${row.indexBlockDomainList[0].isCover==0}">
-                <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover"><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></a>
                 <div class="do-title ${row.indexBlockDomainList[0].position}">
                     <div class="title-main">${row.indexBlockDomainList[0].title}</div>
                     <div class="title-sub">${row.indexBlockDomainList[0].subTitle}</div>
                 </div>
+                <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover"><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></a>
             </c:if>
             <c:if test="${row.indexBlockDomainList[0].isCover==1}">
                 <a href="${row.indexBlockDomainList[0].link}" class="do-block img-cover">
-                    <img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt="">
                     <span class="do-cover-title ${row.indexBlockDomainList[0].position}" >
                         <span class="cover-title-main">${row.indexBlockDomainList[0].title}</span>
                     </span>
+                    <img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt="">
                 </a>
             </c:if>
 
