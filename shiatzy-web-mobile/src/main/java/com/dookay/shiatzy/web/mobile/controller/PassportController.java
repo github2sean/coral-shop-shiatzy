@@ -42,6 +42,7 @@ import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import com.sun.activation.registries.MailcapParseException;
@@ -211,9 +212,9 @@ public class PassportController extends MobileBaseController{
                session.setAttribute(SESSION_CART,null);
            }
        }else{
-           return errorResult("账户不存在或者密码错误");
+           return errorResult(DefaultTags.translate("账户不存在或者密码错误","Login fail"));
        }
-        return successResult("登录成功");
+        return successResult(DefaultTags.translate("登录成功","Login success"));
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
@@ -225,7 +226,7 @@ public class PassportController extends MobileBaseController{
         String validCode = registerForm.getValidCode();
 
         if (!JCaptcha.validateResponse(request, validCode)) {
-           return errorResult("验证码错误");
+           return errorResult(DefaultTags.translate("验证码错误","Invalid code"));
         }
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
@@ -238,7 +239,7 @@ public class PassportController extends MobileBaseController{
                 accountDomain.setCreateTime(new Date());
                 CustomerDomain retCustomer = customerService.register(null,accountDomain);
                 if(retCustomer==null) {
-                    return errorResult("注册失败");
+                    return errorResult(DefaultTags.translate("注册失败","Register fail"));
                 }
             }
         }
@@ -277,7 +278,7 @@ public class PassportController extends MobileBaseController{
         emailMap.put(simpleAliDMSendMail.CONTENT,html);
         simpleAliDMSendMail.sendEmail(emailMap);
         UserContext.signIn(accountDomain);
-        return successResult("注册成功");
+        return successResult(DefaultTags.translate("注册成功","Register success"));
     }
 
     @RequestMapping(value = "activeEmail", method = RequestMethod.GET)
@@ -316,7 +317,7 @@ public class PassportController extends MobileBaseController{
 
         AccountDomain users = accountService.getAccount(userName);
         if(users == null){//用户名不存在
-            return errorResult("用户名不存在!");
+            return errorResult(DefaultTags.translate("用户名不存在!","username not exist"));
         }
         try{
             String secretKey= UUID.randomUUID().toString();//密钥
@@ -361,9 +362,9 @@ public class PassportController extends MobileBaseController{
             //SendMail.getInstatnce().sendHtmlMail(emailTitle,emailContent,userName);
         }catch (Exception e){
             e.printStackTrace();
-            return errorResult("邮箱不存在？未知错误,联系管理员吧。");
+            return errorResult(DefaultTags.translate("邮箱不存在？未知错误,联系管理员吧。","Wrong email"));
         }
-        return successResult("操作成功,已经发送找回密码链接到您邮箱，登录后请尽快修改次密码。");
+        return successResult(DefaultTags.translate("操作成功,已经发送找回密码链接到您邮箱，登录后请尽快修改次密码。","Send success"));
     }
 
 

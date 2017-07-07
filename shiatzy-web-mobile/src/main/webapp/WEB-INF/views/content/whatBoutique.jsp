@@ -41,13 +41,23 @@
 </head>
 <div class="dx-CommonProblems">
     <div class="content">
-        <p class="first-title j_toggle"><a href="#">精品店预约</a></p>
+        <c:if test="${web:selectLanguage()!='en_US'}">
         <ul class="second-title j_toggle2 ">
             <li><p href="#"> 1. 为了给您提供更为便捷的购物，在线商品部分提供精品店预约功能，您可在商品页面将喜爱的商品添加至“精品店预约”，于“精品店预约清单”内选择相关精品店进行线下体验。目前该服务仅限于中国大陆地区。</p>
             </li>
             <li><p href="#"> 2. 我们会将您预约清单内的商品配送至指定门店，便于您线下舒适快捷的体验，支付将于线下门店完成。</p>
             </li>
         </ul>
+        </c:if>
+        <c:if test="${web:selectLanguage()=='en_US'}">
+        <ul class="second-title j_toggle2 ">
+            <li><p href="#">  We offer ‘Store Reservation’ service for your convenient shopping. Click on ‘Store Reservation’ on the product detail page, you can add your favorite items to ‘Store Reservation List’ and choose your nearest offline store. We will deliver your reserved items to the designated store for your easy and convenient shopping. The order and payment will be completed offline.
+            </p>
+            </li>
+            <li><p href="#">  Note: At present, ‘Store Reservation’ service is avaliable in China Mainland region only.</p>
+            </li>
+        </ul>
+        </c:if>
 
     </div>
     <!-- 核心js插件开始 -->
