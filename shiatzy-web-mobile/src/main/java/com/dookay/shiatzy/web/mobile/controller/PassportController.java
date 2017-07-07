@@ -149,6 +149,7 @@ public class PassportController extends MobileBaseController{
             }
         }
         mv.addObject("skuList",skuDomainList);
+        mv.addObject("date",new Date());
         System.out.println("skuList:"+ JsonUtils.toJSONString(skuDomainList));
         return mv;
     }
