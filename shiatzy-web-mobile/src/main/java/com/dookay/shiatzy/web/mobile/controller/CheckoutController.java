@@ -25,6 +25,7 @@ import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
@@ -245,7 +246,7 @@ public class CheckoutController  extends BaseController{
         }
 
         int count = 0;
-
+        GoodsItemQuery query = new GoodsItemQuery();
         for(ShoppingCartItemDomain line :cartList){
             //准备商品数据
             GoodsItemDomain goodsItemDomain =  goodsItemService.get(line.getItemId());
@@ -258,12 +259,9 @@ public class CheckoutController  extends BaseController{
             PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-            System.out.println("sizeIds:"+sizeIds);
-            for(Long id:sizeIds){
-                goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
-            }
-            line.setSizeDomins(sizeList);
+            query.setColorIds(JsonUtils.toLongArray(goodsDomain.getColorIds()));
             line.setGoodsDomain(goodsDomain);
+            //colorWithSize(goodsItemService.getList(query),sizeList);
             Double rate = shippingCountryService.get(Long.parseLong(CookieUtil.getCookieValueByKey(request,"shippingCountry"))).getRate();
             line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
             Double disPrice = line.getGoodsDisPrice();
@@ -281,6 +279,20 @@ public class CheckoutController  extends BaseController{
         session.setAttribute(ORDER,orderDomain);
         return mv;
     }
+
+    public void colorWithSize(List<GoodsItemDomain> goodsItemDomains,List<PrototypeSpecificationOptionDomain> sizeDomains){
+        List<PrototypeSpecificationOptionDomain> sizeDomainList  = new ArrayList<>();
+        for(GoodsItemDomain line:goodsItemDomains){
+            String productNo = line.getGoodsNo().split("\\s+")[0];//库存商品编号
+            String color = line.getGoodsNo().split("\\s+")[1];//颜色标识
+            for(PrototypeSpecificationOptionDomain row:sizeDomains){
+                row.setStock(goodsService.getTempStock(productNo,color,row.getName()));
+                sizeDomainList.add(row);
+            }
+            line.setSizeDomains(sizeDomainList);
+        }
+    }
+
 
     @RequestMapping(value = "updateGoodsInCheck",method = RequestMethod.POST)
     @ResponseBody
