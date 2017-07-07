@@ -32,7 +32,7 @@
                     <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
                 </div>
                 <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                <p class="do-pro-t"><span class="do-pro-price <c:if test="${not empty firstItem.discountPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</span>
+                <p ><span class="do-pro-price <c:if test="${not empty firstItem.discountPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">${firstItem.price}</span>
                 <c:if test="${not empty  firstItem.discountPrice }">
                     <span class="do-pro-price xzc-dis-price"  data-value="${firstItem.discountPrice}">${firstItem.discountPrice}</span>
                 </c:if>

@@ -6,7 +6,14 @@
     <jsp:param name="nav" value="商品"/>
     <jsp:param name="pageTitle" value="商品列表"/>
 </jsp:include>
-
+<style>
+    .mr-2 {
+        font-size: 1rem;
+    }
+    .mr-2 .radiobox{
+        text-indent: 0rem;
+    }
+</style>
 <div class="order">
     <p style="float: left"><spring:message code="returnOrderInfo.return"/></p>
     <a style="float: right;" href="/u/order/details?orderId=${order.id}">< <spring:message code="goBack"/></a>
@@ -14,8 +21,7 @@
 <div class="verify-message">
     <div class="return-way clearfix">
         <h3><spring:message code="returnOrderInfo.chooseReason"/></h3>
-        <p><a href="#" class="returnOrchange"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message
-                code="returnOrderInfo.returnInfo"/></a></p>
+        <p><a href="#" class="returnOrchange"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message code="privacyPolicy"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
     <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}"
@@ -75,7 +81,7 @@
             </div>
             <div class="return-list clearfix" style="display: none">
                 <h4 class="title" style=""><spring:message code="returnOrderInfo.selectTips"/></h4>
-
+                <div style="margin-left: 2rem">
                     <%--服务--%>
                 <ul>
                     <li><spring:message code="returnOrderInfo.service"/></li>
@@ -201,6 +207,7 @@
                         </div>
                     </li>
                 </ul>
+                </div>
             </div>
             </c:forEach>
         </div>
@@ -218,7 +225,7 @@
     <div class="privacy">
         <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
-            <span style="float: left;"><spring:message code="order.details.7day"/></span>
+            <span style="float: left;"><spring:message code="returnPolicy"/></span>
         </a>
     </div>
     <div class="privacy">

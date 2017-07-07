@@ -12,7 +12,7 @@
 
       <div class="dx-commodity">
         <div class="content">
-          <div class="title">${web:selectLanguage()=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
+          <div class="goods-name">${web:selectLanguage()=='en_US'?goodsDomain.enName:goodsDomain.name}</div>
           <span class="number"><spring:message code="shoppingCart.no" /> ${goodsItemDomain.goodsNo}</span>
           <a href="javascript:;" class="icon iconfont magnify">&#xe630;</a>
           <div class="dx-bag-slide" >
@@ -67,23 +67,6 @@
             </c:if>
           </div>
 
-            <style>
-                .format li:before {
-                    content: '';
-                    width: 4px;
-                    height: 4px;
-                    margin: 0;
-                    display: inline-block;
-                    background: #000;
-                    position: absolute;
-                    left: 0;
-                    top: .8em;
-                }
-                .format li {
-                    position: relative;
-                    padding-left: 20px;
-                }
-            </style>
             <%--商品详情--%>
           <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>

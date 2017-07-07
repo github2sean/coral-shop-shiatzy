@@ -25,7 +25,7 @@
         <div class="item">
             <div class="goods-list return-goods">
                 <c:forEach var="item" items="${cartList}">
-                    <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
+
 
                     <div class="goods-item clearfix ">
                         <div class="thumb">
@@ -69,7 +69,8 @@
                         </div>
 
                     </div>
-                        <p class="status">退货理由：${returnReason}</p>
+                    <c:set var="returnReason" value="${returnReasonMap.get(item.id.toString())}"></c:set>
+                        <p class="status"><spring:message code="return.detail.returnReason"/>：${returnReason}</p>
                 </c:forEach>
             </div>
             <p style="font-size:1.2rem;margin-bottom: 0;margin-top: 0.4rem;"><spring:message code="payment.failed.fee"/><span style="float: right;">&nbsp;<font class="coinSymbol">

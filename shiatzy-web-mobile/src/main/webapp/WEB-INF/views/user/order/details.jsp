@@ -85,7 +85,7 @@
                     </div>
                     <div class="goods-info">
                         <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                        <p class="code">产品编号：${item.goodsCode}</p>
+                        <p class="code"><spring:message code="shoppingCart.no" />：${item.goodsCode}</p>
                         <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                         <p><spring:message code="shoppingCart.size"/>： &nbsp;${web:selectLanguage()=='en_US'?item.sizeDomain.enName:item.sizeDomain.name}</p>
                         <p><spring:message code="shoppingCart.number"/>：${item.num}&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -219,8 +219,8 @@
     </div>
     <!--配送信息-->
     <div class="item-group">
-        <h4 class="title j_dropdown">配送信息 <span class="arrow">></span></h4>
-        <%--<h4>&lt;%&ndash;<spring:message code="payment.failed.shippingAddress"/>&ndash;%&gt;配送信息</h4>--%>
+        <h4 class="title j_dropdown"><spring:message code="order.details.deliveryInfo"/> <span class="arrow">></span></h4>
+
         <div class="item"  style="display: none">
             <ul>
                 <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>

@@ -26,7 +26,7 @@ public class JsonTest {
 
     @Test
     public void  test2(){
-        String str = "{\"服务\":{\"reason1\":\"错误商品\",\"reason2\":\"货运过长\"},\"品质\":{\"reason1\":\"瑕紙品\"}}";
+        String str = "{\"服务\":{\"reason1\":\"错误商品\",\"reason2\":\"货运过长\"},\"其他\":{\"reason1\":\"瑕紙品\"}}";
         JSONObject jsonObject = JSON.parseObject(str);
         List<String> reasonList = new ArrayList<>();
         if(jsonObject.containsKey("服务")){

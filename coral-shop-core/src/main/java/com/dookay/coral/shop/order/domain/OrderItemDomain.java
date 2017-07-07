@@ -60,6 +60,9 @@ public class OrderItemDomain implements Serializable {
 	/*已退数量*/
 	private Integer returnNum;
 
+	public Double getSubTotal(){
+		return goodsPrice * num;
+	}
 
 	@Transient
 	private GoodsDomain goodsDomain;

@@ -27,18 +27,18 @@
         display: block;}
 </style>
 <div class="order">
-    <p class="pull-left">门市预约 / 详细</p>
-    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">返回上页</a>
+    <p class="pull-left"><spring:message code="reservation.selectStore"/></p>
+    <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< <spring:message code="goBack"/></a>
 </div>
 <div class="order-main clearfix">
     <c:forEach var="row" items="${preOderItemList}">
             <div class="order-main-left goodsDiv">
-                <p class="product-num">产品编号 ${row.leftItem.goodsCode}</p>
+                <p class="product-num"><spring:message code="shoppingCart.no"/>： ${row.leftItem.goodsCode}</p>
                 <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height:14rem;">
-                <p class="product-name">${row.leftItem.goodsName}</p>
+                <p class="product-name">${web:selectLanguage()=='en_US'?row.leftItem.goodsEnName:row.leftItem.goodsName}</p>
                 <div class="color-size">
-                    <p>${row.leftItem.goodsItemDomain.name}</p>
-                    <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}号</p>
+                    <p>${web:selectLanguage()=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
+                    <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
                 </div>
                 <p class="price ${not empty row.leftItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span>　</p>
                 <c:if test="${not empty row.leftItem.goodsDisPrice}">
@@ -54,12 +54,12 @@
             </div>
             <c:if test="${not empty row.rightItem}">
                 <div class="order-main-right goodsDiv">
-                    <p class="product-num">产品编号 ${row.rightItem.goodsCode}</p>
+                    <p class="product-num"><spring:message code="shoppingCart.no"/>： ${row.rightItem.goodsCode}</p>
                     <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 14rem;">
-                    <p class="product-name">${row.rightItem.goodsName}</p>
+                    <p class="product-name">${web:selectLanguage()=='en_US'?row.rightItem.goodsEnName:row.rightItem.goodsName}</p>
                     <div class="color-size">
-                        <p>${row.rightItem.goodsItemDomain.name}</p>
-                        <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}号</p>
+                        <p>${web:selectLanguage()=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
+                        <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
                     </div>
                     <p class="price ${not empty row.rightItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
                     <c:if test="${not empty row.rightItem.goodsDisPrice}">
@@ -76,10 +76,15 @@
     </c:forEach>
 </div>
 <div class="order-price hide" >
+    <c:if test="web:selectLanguage()=='en_US'">
     <p>预计订单总额：¥ </p>
+    </c:if>
+    <c:if test="web:selectLanguage()!='en_US'">
+        <p>Total：¥ </p>
+    </c:if>
 </div>
 <div class="order-stores">
-    <h1>选择预约门市</h1>
+    <h1><spring:message code="reservation.selectStore"/></h1>
     <div class="model-select-box">
         <div class="model-select-country j_collapse" data-value="" id="countrySelect">
             <a class="pl-2" id="chooseCountry">中国</a>

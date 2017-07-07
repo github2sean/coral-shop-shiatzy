@@ -104,7 +104,7 @@
 <!-- 页面插件结束 -->
 
 <!-- 轮播 开始 -->
-<script src="https://cdn.bootcss.com/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src="${ctx}/static/js/jquery.bxslider.min.js"></script>
 
 <!-- 轮播 结束 -->
 

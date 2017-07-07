@@ -30,8 +30,6 @@
           <%--  <div class="retentionTime"><spring:message code="reservation.detail.saveEndTime"/>: <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
             <div class="remake"><spring:message code="reservation.detail.mem"/> : <span>${reservationDomain.note}</span></div>--%>
         </div>
-
-
         <!--商品详情-->
         <div class="item-group" style="margin-top: 2rem">
             <h4 class="title j_dropdown active"><spring:message code="goods.detail.details"/> <span class="arrow">></span></h4>
@@ -91,7 +89,14 @@
             </div>
         </div>
 
-        <div class="dx-total" style="text-align: center;font-size: 1.4rem;padding-top: 0.5rem;">预计订单总额: &nbsp;<font class="coinSymbol">
+        <div class="dx-total" style="text-align: center;font-size: 1.4rem;padding-top: 0.5rem;">
+            <c:if test="${web:selectLanguage()=='en_US'}">
+                Total:
+            </c:if>
+<c:if test="${web:selectLanguage()!='en_US'}">
+    预计订单总额:
+</c:if>
+                &nbsp;<font class="coinSymbol">
             <c:choose>
                 <c:when test="${reservationDomain.currentCode=='CNY'}">
                     &nbsp;<spring:message code="coin.ZH"/>
