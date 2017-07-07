@@ -107,10 +107,10 @@
         <div class="privilege">
             <div class="title"><spring:message code="orderinfo.discountInput"/> <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" style="width: 69%" placeholder="<spring:message code="orderinfo.pleaseInputCode"/>" class="text couponCode"><button type="button" class="btn couponBtn"><spring:message code="orderinfo.enter"/></button><button type="button" class="btn cancelCouponBtn hide"><spring:message code="orderinfo.cancleCoupon"/></button>
+                <input type="text" style="width: 18rem;font-size: 1.2rem;" placeholder="<spring:message code="orderinfo.pleaseInputCode"/>" class="text couponCode"><button type="button" class="btn couponBtn"><spring:message code="orderinfo.enter"/></button><button type="button" class="btn cancelCouponBtn hide"><spring:message code="orderinfo.cancleCoupon"/></button>
             </form>
         </div>
-        <div class="showInfo" style="text-align: center;color: red"></div>
+        <div class="showInfo" style="text-align: center;color: red;margin-bottom: 1rem;"></div>
     </div>
     <div class="total">
         <div class="title"><spring:message code="orderinfo.checkout"/></div>
@@ -144,7 +144,8 @@
                  </c:choose>
             </font>&nbsp;<span id="discount" class="">0</span></span></div>
 
-            <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">ART CLUB 会员优惠<span><font class="coinSymbol">
+            <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">
+                ART CLUB ${web:selectLanguage()=='en_US'?"discount":"会员优惠"}<span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>

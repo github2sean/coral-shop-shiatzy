@@ -2273,7 +2273,7 @@ h3 {
 }
 
 .do-pro-list .do-pro-t {
-    height: 3.5rem;
+    height: 3.8rem;
     line-height: 1.4rem;
     margin-top: .3rem;
     margin-bottom: .3rem;
@@ -2815,8 +2815,8 @@ textarea {
     overflow: hidden;
 }
 
-body .layui-layer-title{position: fixed;top:0;left: 0; bottom: 0;width: 100%;z-index: 999999;}
-body .layui-layer-setwin{z-index: 9999999}
-body .layui-layer-content{position: fixed;top:42px;height: 100%;overflow-y: scroll;width: 100%;overflow-x: hidden}
+body .d-dialog .layui-layer-title{position: fixed;top:0;left: 0; bottom: 0;width: 100%;z-index: 999999;}
+body .d-dialog  .layui-layer-setwin{z-index: 9999999}
+body  .d-dialog .layui-layer-content{position: fixed;top:42px;height: 100%;overflow-y: scroll;width: 100%;overflow-x: hidden}
 /*body .table{width: 80%}*/
 /*body .table-responsive{width: 80%}*/

@@ -791,7 +791,7 @@ i {
 }
 
 .dx-shopping .message p {
-    width: 14rem;
+    width: 80%;
     font-size: 1.6rem;
     border-bottom: 2px solid #ccc;
     margin: 4.2rem auto;
@@ -1038,11 +1038,11 @@ i {
 .dx-accounts .privilege {
     border: 2px solid #d2d2d2;
     padding: 0 .7rem;
-    margin-bottom: 3.4rem;
+    margin-bottom: 1.4rem;
 }
 
 .dx-accounts .privilege .title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     padding-left: .7rem;
     border-bottom: 2px solid #d2d2d2;
@@ -1079,7 +1079,7 @@ i {
     border: 1px solid #ccc;
     float: right;
     margin-top: .5rem;
-    padding: 0 0.8rem;
+    padding: 0 0.6rem;
 }
 
 .dx-accounts .total {
@@ -1088,7 +1088,7 @@ i {
 }
 
 .dx-accounts .total .title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     padding-left: 2rem;
     border-bottom: 2px solid #d2d2d2;
@@ -1116,7 +1116,7 @@ i {
     margin-top: 1.3rem;
     line-height: 3.4rem;
     height: 3.4rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 .dx-accounts .accounts-btn {

@@ -26,6 +26,7 @@ import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.I18NReverse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -280,7 +281,7 @@ public class AccountController extends MobileBaseController {
                 UserContext.signOut();
             }
         }
-        return successResult(getI18N().getOperateSuccess());
+        return successResult(DefaultTags.translate("修改成功","Modify Successfully"));
     }
 
 
