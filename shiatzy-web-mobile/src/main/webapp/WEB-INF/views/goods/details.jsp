@@ -72,39 +72,38 @@
           </div>
         </div>
 
-        <!--也许喜欢-->
-        <div class="maybeLike clearfix">
-          <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
-          <div class="container">
-          <ul class="do-pro-list j_scroll_list">
-            <c:forEach var="goods" items="${historyList}" varStatus="num"  begin="0" end="3">
-              <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
-              <li>
-                <a href="/goods/details/${firstItem.id}">
-                  <div class="do-img">
-                    <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
-                  </div>
-                  <p class="do-pro-t ellipsis-25" name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
-                  <p class="do-pro-price <c:if test="${not empty  goods.disPrice}">xzc-price</c:if>" name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
-                    <c:if test="${not empty  goods.disPrice}">
-                        <p class="do-pro-price xzc-dis-price" name="goodsPrice" data-value="${goods.disPrice}">&nbsp;</p>
-                    </c:if>
-                  <ul class="do-list-color" name="skuId" data-value="">
-                    <c:forEach var="item" items="${goods.goodsItemList}">
-                      <li style="background: ${item.colorValue}"></li>
-                    </c:forEach>
+          <!--也许喜欢-->
+          <div class="maybeLike clearfix">
+              <div class="title"><spring:message code="goods.detail.maybeLike"/></div>
+              <div class="container">
+                  <ul class="do-pro-list">
+                      <c:forEach var="goods" items="${likeGoodsList}" varStatus="num" begin="0" end="3">
+                          <c:set var="firstItem" value="${goods.goodsItemList[0]}"></c:set>
+                          <li>
+                              <a href="/goods/details/${firstItem.id}">
+                                  <div class="do-img">
+                                      <img src="${ImageModel.toFirst(goods.thumb).file}" alt="">
+                                  </div>
+                                  <p class="do-pro-t ellipsis-25"
+                                     name="goodsName">${web:selectLanguage()=='en_US'?goods.enName:goods.name}</p>
+                                  <p class="do-pro-price <c:if test="${not empty  goods.disPrice}">xzc-price</c:if>"
+                                     name="goodsPrice" data-value="${firstItem.price}">&nbsp;</p>
+                                  <c:if test="${not empty  goods.disPrice}">
+                                      <p class="do-pro-price xzc-dis-price" name="goodsPrice"
+                                         data-value="${goods.disPrice}">&nbsp;</p>
+                                  </c:if>
+                                  <ul class="do-list-color" name="skuId" data-value="">
+                                      <c:forEach var="item" items="${goods.goodsItemList}">
+                                          <li style="background: ${item.colorValue}"></li>
+                                      </c:forEach>
+                                  </ul>
+                              </a>
+                          </li>
+                      </c:forEach>
                   </ul>
-                </a>
-                <!--Todo:收藏按钮-->
-                <i class="icon-collect j_collect hide" data-value="${firstItem.id}" data-ids="${goods.sizeDomainList[0].id}" >
-                  <svg class="do-heart"><use xlink:href="#heart"></use></svg>
-                </i>
-              </li>
-            </c:forEach>
-          </ul>
-          </div>
-
+              </div>
         </div>
+
       </div>
 
 

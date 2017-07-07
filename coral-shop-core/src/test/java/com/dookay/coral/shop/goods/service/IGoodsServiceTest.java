@@ -144,4 +144,28 @@ public class IGoodsServiceTest extends BaseTest {
             goodsItemService.update(goodsItemDomain);
         }
     }
+
+    @Test
+    public void  updateGoodsItemThumb(){
+        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(new GoodsItemQuery());
+        for(GoodsItemDomain goodsItemDomain :goodsItemDomainList){
+            GoodsItemPhotoQuery goodsItemPhotoQuery = new GoodsItemPhotoQuery();
+            goodsItemPhotoQuery.setItemId(goodsItemDomain.getId());
+            goodsItemPhotoQuery.setOrderBy("id");
+            goodsItemPhotoQuery.setDesc(false);
+            List<GoodsItemPhotoDomain> goodsItemPhotoDomainList = goodsItemPhotoService.getList(goodsItemPhotoQuery);
+            GoodsItemPhotoDomain goodsItemPhotoDomain =  new GoodsItemPhotoDomain();
+            if(goodsItemPhotoDomainList != null && goodsItemPhotoDomainList.size()>0)
+            {
+                goodsItemPhotoDomain = goodsItemPhotoDomainList.get(0);
+            }
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObject =  new JSONObject();
+            jsonObject.put("alt","thumb");
+            jsonObject.put("file",goodsItemPhotoDomain.getImage());
+            jsonArray.add(jsonObject);
+            goodsItemDomain.setThumb(JSON.toJSONString(jsonArray));
+            goodsItemService.update(goodsItemDomain);
+        }
+    }
 }

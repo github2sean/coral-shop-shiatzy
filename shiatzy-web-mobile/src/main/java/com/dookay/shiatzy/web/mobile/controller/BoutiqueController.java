@@ -143,10 +143,10 @@ public class BoutiqueController extends BaseController{
         mv.addObject("cartList",cartList);
         return mv;
     }
+
     private void updateStock(List<ShoppingCartItemDomain> cartList) {
         for(ShoppingCartItemDomain cartItemDomain:cartList){
             String[] codeArray = cartItemDomain.getGoodsCode().split("\\s+");
-            System.out.print(JSON.toJSONString(codeArray));
             String productNo = codeArray[0];//库存商品编号
             String color = codeArray[1];//颜色标识
             cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));

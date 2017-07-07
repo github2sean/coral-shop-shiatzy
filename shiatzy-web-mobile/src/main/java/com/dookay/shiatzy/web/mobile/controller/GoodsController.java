@@ -311,6 +311,7 @@ public class GoodsController extends BaseController{
 
     @RequestMapping(value = "details/{itemId}" ,method = RequestMethod.GET)
     public ModelAndView details(@PathVariable Long itemId){
+        ModelAndView mv = new ModelAndView("goods/details");
         //未发布，跳转到404页面
 
         //商品数据校验，没有sku，跳转到404页面
@@ -322,16 +323,14 @@ public class GoodsController extends BaseController{
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
         goodsService.withGoodsItemList(goodsDomain);
 
-        //调用工具类，把浏览记录存入Cookie
-        HistoryUtil.setHistory(goodsId);
-        //把获取的记录存到List集合
-        List<GoodsDomain> historyList = HistoryUtil.getHistory();
-        goodsService.withGoodsItemList(historyList);
-
-
-        //获取sku列表
-        List<SkuDomain> skuDomainList = skuService.getSkuByGoodsId(goodsId);
-
+        //您也许也喜欢
+        GoodsQuery goodsQuery = new GoodsQuery();
+        goodsQuery.setIsPublished(ValidEnum.YES.getValue());
+        List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
+        Collections.shuffle(goodsListAll);
+        List<GoodsDomain> goodsDomainList = goodsListAll.subList(0,4);
+        goodsService.withGoodsItemList(goodsDomainList);
+        mv.addObject("likeGoodsList",goodsDomainList);
         //尺寸
         List<Long> sizeIds =JsonUtils.toLongArray(goodsDomain.getSizeIds());
         PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
@@ -339,19 +338,16 @@ public class GoodsController extends BaseController{
         Comparator<PrototypeSpecificationOptionDomain> comparator = Comparator.comparing(PrototypeSpecificationOptionDomain::getName);
 
         List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery).stream().sorted(comparator).collect(Collectors.toList());
-        System.out.println("sizeIds"+sizeIds);
         for(PrototypeSpecificationOptionDomain sizeDomain:sizeList){
             String productNo = goodsItemDomain.getGoodsNo().split("\\s+")[0];//库存商品编号
             String color = goodsItemDomain.getGoodsNo().split("\\s+")[1];//颜色标识
-
             sizeDomain.setStock(goodsService.getTempStock(productNo,color,sizeDomain.getName()));
         }
 
-        ModelAndView mv = new ModelAndView("goods/details");
         mv.addObject("goodsItemDomain",goodsItemDomain);
         mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
-        mv.addObject("historyList",historyList);
+
         return mv;
     }
 
