@@ -2814,3 +2814,9 @@ textarea {
     height: 100%;
     overflow: hidden;
 }
+
+body .layui-layer-title{position: fixed;top:0;left: 0; bottom: 0;width: 100%;z-index: 999999;}
+body .layui-layer-setwin{z-index: 9999999}
+body .layui-layer-content{position: fixed;top:42px;height: 100%;overflow-y: scroll;width: 100%;overflow-x: hidden}
+/*body .table{width: 80%}*/
+/*body .table-responsive{width: 80%}*/

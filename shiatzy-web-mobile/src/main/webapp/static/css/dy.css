@@ -1245,6 +1245,7 @@
     padding-left: 15px;
     color: #fff;
     background: #777777;
+    position: relative;
 }
 .ios-select-widget-box #iosSelectTitle {
     margin: 0;
@@ -1297,5 +1298,5 @@
     color: #fff;
     position: absolute!important;
     right: 0!important;
-
+    top:0;
 }
