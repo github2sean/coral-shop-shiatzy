@@ -57,9 +57,10 @@
                            data-rule="<spring:message code="account.personal.lastName"/>:required;"/></li>
                 <li class="form-item2">
                     <spring:message code="account.personal.update.birthday"/>
-                    <input type="date" name="customerDomain.birthday"
-                           value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
-                           data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
+                   <input type="date" id="customerDomain.birthday" name="customerDomain.birthday"
+    value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
+    data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
+
                 </li>
                 <li class="form-item2 form-item3"><spring:message code="account.personal.phoneNum"/>*
                     <select name="customerDomain.phone">

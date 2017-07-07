@@ -1256,10 +1256,12 @@
 }
 .ios-select-widget-box ul {
     background-color: #000;
+    width: 100%;
 }
 .ios-select-widget-box ul li {
     font-size: 13px;
     height: 35px;
+    width: 100%;
     line-height: 35px;
     background-color: #000;
     white-space: nowrap;
@@ -1293,4 +1295,7 @@
 }
 .ios-select-widget-box header.iosselect-header a.sure {
     color: #fff;
+    position: absolute!important;
+    right: 0!important;
+
 }
