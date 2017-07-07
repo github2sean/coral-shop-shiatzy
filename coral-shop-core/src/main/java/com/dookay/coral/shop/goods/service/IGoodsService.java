@@ -3,10 +3,7 @@ package com.dookay.coral.shop.goods.service;
 import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.service.IBaseService;
 import com.dookay.coral.common.web.validate.FieldMatch;
-import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
-import com.dookay.coral.shop.goods.domain.GoodsColorDomain;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
+import com.dookay.coral.shop.goods.domain.*;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 
 import java.util.List;
@@ -38,6 +35,7 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
     void withGoodsItemList(List<GoodsDomain> goodsDomainList,Integer onSale);
     void withGoodsItemList(GoodsDomain goodsDomain);
     void withGoodsItemListAndQuantity(GoodsDomain goodsDomain, Long sizeId);
+    void withGoodsItemListAndQuantityByColor(GoodsDomain goodsDomain, List<Long> sizeId);
 
     void withSizeDomain(List<GoodsDomain> goodsList);
 

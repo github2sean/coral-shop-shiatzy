@@ -259,9 +259,13 @@ public class CheckoutController  extends BaseController{
             PrototypeSpecificationOptionQuery prototypeSpecificationOptionQuery = new PrototypeSpecificationOptionQuery();
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
-            query.setColorIds(JsonUtils.toLongArray(goodsDomain.getColorIds()));
+            System.out.println("sizeIds:"+sizeIds);
+            /*for(Long id:sizeIds){
+                goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
+            }*/
+            goodsService.withGoodsItemListAndQuantityByColor(goodsDomain,sizeIds);
+            line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
-            //colorWithSize(goodsItemService.getList(query),sizeList);
             Double rate = shippingCountryService.get(Long.parseLong(CookieUtil.getCookieValueByKey(request,"shippingCountry"))).getRate();
             line.setGoodsPrice(new BigDecimal(line.getGoodsPrice()/rate).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
             Double disPrice = line.getGoodsDisPrice();
