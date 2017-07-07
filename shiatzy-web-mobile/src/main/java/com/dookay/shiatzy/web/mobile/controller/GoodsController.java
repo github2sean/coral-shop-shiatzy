@@ -57,6 +57,8 @@ public class GoodsController extends BaseController{
     @Autowired
     private IGoodsItemService goodsItemService;
     @Autowired
+    private IGoodsItemFormatService goodsItemFormatService;
+    @Autowired
     private IGoodsAttributeValueService goodsAttributeValueService;
     @Autowired
     private IGoodsSkinService goodsSkinService;
@@ -323,6 +325,12 @@ public class GoodsController extends BaseController{
         GoodsDomain goodsDomain = goodsService.get(goodsId);//得到商品
         goodsService.withGoodsItemList(goodsDomain);
 
+        GoodsItemFormatQuery goodsItemFormatQuery = new GoodsItemFormatQuery();
+        goodsItemFormatQuery.setItemId(goodsItemDomain.getId());
+        List<GoodsItemFormatDomain> goodsItemFormatDomainList = goodsItemFormatService.getList(goodsItemFormatQuery);
+        mv.addObject("goodsItemDomain",goodsItemDomain);
+        mv.addObject("goodsDomain",goodsDomain);
+        mv.addObject("goodsItemFormatList",goodsItemFormatDomainList);
         //您也许也喜欢
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsPublished(ValidEnum.YES.getValue());
@@ -344,8 +352,6 @@ public class GoodsController extends BaseController{
             sizeDomain.setStock(goodsService.getTempStock(productNo,color,sizeDomain.getName()));
         }
 
-        mv.addObject("goodsItemDomain",goodsItemDomain);
-        mv.addObject("goodsDomain",goodsDomain);
         mv.addObject("sizeList",sizeList);
 
         return mv;

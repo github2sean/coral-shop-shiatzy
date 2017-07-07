@@ -57,6 +57,7 @@
               </c:forEach>
             </ul>
           </div>
+            <%--加入购物袋--%>
           <div style="margin-top: 2rem;">
           <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
 
@@ -66,9 +67,32 @@
             </c:if>
           </div>
 
+            <style>
+                .format li:before {
+                    content: '';
+                    width: 4px;
+                    height: 4px;
+                    margin: 0;
+                    display: inline-block;
+                    background: #000;
+                    position: absolute;
+                    left: 0;
+                    top: .8em;
+                }
+                .format li {
+                    position: relative;
+                    padding-left: 20px;
+                }
+            </style>
+            <%--商品详情--%>
           <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${web:selectLanguage()=='en_US'?goodsItemDomain.enDescription:goodsItemDomain.description}</p>
+            <ul class="format text">
+                <c:forEach var="item" items="${goodsItemFormatList}">
+                <li>${web:selectLanguage()=='en_US'?item.enName:item.name}</li>
+                </c:forEach>
+            </ul>
           </div>
         </div>
 

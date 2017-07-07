@@ -308,29 +308,26 @@
         });
         console.log("sessionScopeLanguage:"+'${sessionScope.language}'+"  cookieLanguage:"+'${web:selectLanguage()}');
 
-
-
         $(".language").click(function () {
             var language = $(this).attr("data-value");
             postToSelectLanguage(language);
         });
 
         $(".do-btn-subscribe").click(function () {
-
             var email = $(".do-fill-email").val();
             var reg =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
             if(email==''){
-                $("#subscribe_msg").text("请输入邮件地址");
+                $("#subscribe_msg").text("<spring:message code="subscribe.message.info"/>");
                 return false;
             }else if(!reg.test(email)){
-                $("#subscribe_msg").text("请输入正确的邮件地址");
+                $("#subscribe_msg").text("<spring:message code="subscribe.message.warn"/>");
                 return false;
             }else{
                 $.post("/common/subscribe",{"email":email},function (data) {
                     if (data.code==200){
-                        $("#subscribe_msg").text("已成功订阅！");
+                        $("#subscribe_msg").text("<spring:message code="subscribe.message.success"/>");
                     }else{
-                        $("#subscribe_msg").text(data.message);
+                        $("#subscribe_msg").text("subscribe.message.fail");
                     }
                 });
             }
