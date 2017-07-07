@@ -260,7 +260,7 @@ public class AccountController extends MobileBaseController {
         query.setUserName(userName);
         AccountDomain accountDomain = accountService.getFirst(query);
         if(accountDomain!=null&&new Timestamp(accountDomain.getRegisterDate()).getTime()<= System.currentTimeMillis()){
-            return errorResult("修改时间已过期");
+            return errorResult(getI18N().getTimeOut());
         }
         String secretKey = accountDomain.getValidateCode();
         long date = accountDomain.getRegisterDate();//忽略毫秒数
@@ -268,7 +268,7 @@ public class AccountController extends MobileBaseController {
         String key = userName+"$"+date+"$"+secretKey;
         String digitalSignature = DigestUtils.md5Hex(key);//数字签名
         if(!digitalSignature.equals(sid)){
-            return errorResult("加密数据不正确");
+            return errorResult(getI18N().getEncrypDataErro());
         }
         accountService.setNewPassword(accountDomain,updatePasswordForm.getNewPassword());
         UserContext userContext = UserContext.current();
@@ -327,7 +327,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
         if(!(StringUtils.isNotBlank(customerDomain.getValidMobile())&&customerDomain.getIsArtClubMember()==1)){
-            throw new ServiceException("暂未绑定会员");
+            throw new ServiceException(getI18N().getNoBindVip());
         }
         query.setMobile(customerDomain.getValidMobile());
         List<String> cardType = new ArrayList<>();

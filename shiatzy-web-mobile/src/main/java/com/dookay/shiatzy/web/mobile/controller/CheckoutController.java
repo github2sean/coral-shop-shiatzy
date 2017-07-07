@@ -64,6 +64,7 @@ import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.coral.shop.temp.service.ITempStockService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
+import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -205,7 +206,7 @@ public class CheckoutController  extends BaseController{
     public JsonResult resetShippingCountry(Long countryId){
 
 
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
 
@@ -213,7 +214,7 @@ public class CheckoutController  extends BaseController{
     @RequestMapping(value = "getStockBySizeAndColor",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult getStockBySizeAndColor(String goodsNo,Long colorId,Long sizeId){
-        return successResult("查询成功",tempStockService.getStockBySizeAndColor(goodsNo,colorId,sizeId));
+        return successResult(ChooseLanguage.getI18N().getSearchSuccess(),tempStockService.getStockBySizeAndColor(goodsNo,colorId,sizeId));
     }
 
 
@@ -287,7 +288,7 @@ public class CheckoutController  extends BaseController{
         if(shoppingCartService.get(cartId)!=null){
             shoppingCartService.removeFromCart(cartId);
         }else{
-            return errorResult("参数出错");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
@@ -304,11 +305,11 @@ public class CheckoutController  extends BaseController{
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
         if(skuDomain == null)
         {
-            throw new ServiceException("参数错误");
+            throw new ServiceException(ChooseLanguage.getI18N().getParamErro());
         }
         skuDomain.setItemId(itemId);
         shoppingCartService.addToCart(customerDomain, skuDomain,ShoppingCartTypeEnum.SHOPPING_CART.getValue(),num);
-        return successResult("修改成功");
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
 
@@ -362,13 +363,13 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order== null){
-            return errorResult("订单已经失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
 
         //购物车
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         if(cartList== null || cartList.size() ==0){
-            return errorResult("订单已经失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         shoppingCartService.withGoodsItem(cartList);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
@@ -470,9 +471,9 @@ public class CheckoutController  extends BaseController{
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
-            return successResult("商品库存不足",itemIds);
+            return successResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
         }
-        return successResult("操作成功",order);
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),order);
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
@@ -550,7 +551,7 @@ public class CheckoutController  extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         customerAddressService.createByCustomer(customerDomain,addressModel);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "updateShipAddress",method = RequestMethod.GET)
@@ -572,14 +573,14 @@ public class CheckoutController  extends BaseController{
     @ResponseBody
     public  JsonResult updateShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
         customerAddressService.update(addressModel);
-        return successResult("修改成功");
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
     @RequestMapping(value = "removeAddress",method = RequestMethod.POST)
     @ResponseBody
     public  JsonResult removeAddress(Long addressId){
         customerAddressService.delete(addressId);
-        return successResult("删除成功");
+        return successResult(ChooseLanguage.getI18N().getDelSuccess());
     }
 
 
@@ -610,7 +611,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setCustomerAddressDomain(customerAddressDomain);
         orderDomain.setStoreDomain(null);
         if(orderDomain == null) {
-            return errorResult("页面失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
         orderDomain.setShipFirstName(customerAddressDomain.getFirstName());
@@ -625,7 +626,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipAddressId(customerAddressDomain.getId());
         orderDomain.setShippingMethod(ShippingMethodEnum.EXPRESS.getValue());
         session.setAttribute(ORDER,orderDomain);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
 
@@ -672,20 +673,20 @@ public class CheckoutController  extends BaseController{
     @ResponseBody
     public JsonResult setStore(Long storeId){
         if(storeId==null){
-            return errorResult("参数为空");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
         order.setStoreDomain(storeService.get(storeId));
         order.setCustomerAddressDomain(null);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -699,11 +700,11 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单已过期");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setPaymentMethod(paymentId);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -718,25 +719,25 @@ public class CheckoutController  extends BaseController{
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setShippingMethod(shippingMethodId);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "isNeedBill", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult isNeedBill(Integer isNeed,String info){
         if(isNeed==null){
-            return errorResult("参数为空");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单已过期");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setBillRequired(isNeed);
         order.setBillTitle(info);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -765,7 +766,7 @@ public class CheckoutController  extends BaseController{
                     if(couponDomain.getSatisfyTop()/rate>=orderTotal){
                         trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     }else{
-                        return errorResult("优惠条件不符");
+                        return errorResult(ChooseLanguage.getI18N().getInconsistentCondition());
                     }
                     System.out.println(1);
                     break;
@@ -783,7 +784,7 @@ public class CheckoutController  extends BaseController{
             order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }
-        return successResult("操作成功",trueDiscountPrice);
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),trueDiscountPrice);
     }
 
     /**
@@ -799,14 +800,14 @@ public class CheckoutController  extends BaseController{
         order.setCouponId(null);
         order.setCouponDiscount(0D);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult deleteGoods(Long orderItemId){
         if(orderItemId==null){
-            return errorResult("参数错误");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
@@ -819,7 +820,7 @@ public class CheckoutController  extends BaseController{
             }
         }
         session.setAttribute(CART_LIST,cartList);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
