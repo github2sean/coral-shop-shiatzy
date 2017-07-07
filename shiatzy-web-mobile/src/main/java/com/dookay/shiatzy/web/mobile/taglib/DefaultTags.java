@@ -64,6 +64,12 @@ public class DefaultTags {
 		return  selectLanguage;
 	}
 
+	public static String translate(String cnString,String enString) {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
+		return selectLanguage.equals("en_US")?enString:cnString;
+	}
+
 	public static Integer getCartNum(Integer type) {
 		IShoppingCartService shoppingCartService = SpringContextHolder.getBean("shoppingCartService");
 		ICustomerService customerService = SpringContextHolder.getBean("customerService");

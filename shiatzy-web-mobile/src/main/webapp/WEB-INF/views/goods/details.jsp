@@ -716,6 +716,7 @@
 
             layer.open({
               type: 2,
+                skin:'d-dialog',
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],

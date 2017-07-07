@@ -68,7 +68,7 @@
 
 <!--选择国家或地区-->
 <div class="country-select" id="country-select" style="display: none">
-    <h3 class="country-title">选择国家或地区</h3>
+    <h3 class="country-title">${web:selectLanguage()=='en_US'?"Choose your location":"选择国家或地区"}</h3>
     <ul class="country-con" style="">
         <c:forEach var="row" items="${web:countryList()}">
             <li><a href="#"  data-value="${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a></li>
@@ -327,7 +327,7 @@
                     if (data.code==200){
                         $("#subscribe_msg").text("<spring:message code="subscribe.message.success"/>");
                     }else{
-                        $("#subscribe_msg").text("subscribe.message.fail");
+                        $("#subscribe_msg").text("<spring:message code="subscribe.message.fail"/>");
                     }
                 });
             }
@@ -448,7 +448,7 @@
                 [data],
                 {
                     container: '.container',
-                    title: '选择您所在的地区',
+                    title: '${web:selectLanguage()=='en_US'?"Choose your location":"选择您所在的地区"}',
                     itemHeight: 50,
                     itemShowCount: 5,
                     oneLevelId: bankId,
@@ -465,7 +465,7 @@
                          });
                     }
                 });
-        $(".sure").html("确认");
+        $(".sure").html("${web:selectLanguage()=='en_US'?"DONE":"确认"}");
         $(".close").hide();
     };
 

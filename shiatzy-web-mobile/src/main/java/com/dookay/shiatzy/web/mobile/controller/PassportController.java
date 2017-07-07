@@ -38,6 +38,7 @@ import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import com.sun.activation.registries.MailcapParseException;
@@ -219,7 +220,7 @@ public class PassportController extends MobileBaseController{
         String validCode = registerForm.getValidCode();
 
         if (!JCaptcha.validateResponse(request, validCode)) {
-           return errorResult("验证码错误");
+           return errorResult(DefaultTags.translate("验证码错误","Invalid code"));
         }
 
         if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
@@ -232,18 +233,18 @@ public class PassportController extends MobileBaseController{
                 accountDomain.setCreateTime(new Date());
                 CustomerDomain retCustomer = customerService.register(null,accountDomain);
                 if(retCustomer==null) {
-                    return errorResult("注册失败");
+                    return errorResult(DefaultTags.translate("注册失败","Register fail"));
                 }
             }
         }
-
+            
         AccountDomain accountDomain = accountService.getAccount(userName);
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
         //生成模版
         Map<String,Object> map = new HashMap<>();
         map.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-        map.put("title","夏资陈");
+        map.put("title","夏姿陈");
         map.put("name",userName);
         map.put("contentPrefix","We are pleased you’ve opened an account at");
         map.put("contentSuffix","From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");

@@ -39,7 +39,9 @@ public class GoodsQuery extends Query {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
 		if (valid(name)){
-			criteria.andLike("name","%"+name+"%");
+			String likeStr = "%" + name + "%";
+			queryCriteria.or().andLike("name",likeStr);
+			queryCriteria.or().andLike("enName",likeStr);
 		}
 
 		if (valid(categoryId)){

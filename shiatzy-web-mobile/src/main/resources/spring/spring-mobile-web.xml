@@ -64,7 +64,7 @@
     </bean>
 
     <!-- 全局异常处理 -->
-    <bean class="com.dookay.coral.common.exception.ExceptionHandler">
+    <bean class="com.dookay.shiatzy.web.mobile.handler.ExceptionHandler">
         <property name="errorUrl" value="/error/500"></property>
     </bean>
 

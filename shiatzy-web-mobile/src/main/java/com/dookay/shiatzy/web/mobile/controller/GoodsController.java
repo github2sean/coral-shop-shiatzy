@@ -78,8 +78,6 @@ public class GoodsController extends BaseController{
         //查询页面进入模糊查询，主页面进入根据商品所有信息匹配查询
         GoodsQuery query = new GoodsQuery();
         query.setName(queryGoodsForm.getGoodsName());
-        query.setCategoryId(queryGoodsForm.getCategoryId());
-        query.setPrototypeId(queryGoodsForm.getPrototypeId());
         query.setDesc(false);
         query.setPageSize(20);
         List<GoodsDomain> goodsList =  goodsService.getList(query);

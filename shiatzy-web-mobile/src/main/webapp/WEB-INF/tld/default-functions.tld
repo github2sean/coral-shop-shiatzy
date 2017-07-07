@@ -37,6 +37,13 @@
     </function>
 
     <function>
+        <description>翻译</description>
+        <name>t</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.String translate(java.lang.String,java.lang.String)</function-signature>
+    </function>
+
+    <function>
         <description>获取购物车数量</description>
         <name>getCartNum</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>

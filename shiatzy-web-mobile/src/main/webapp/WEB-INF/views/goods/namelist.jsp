@@ -8,13 +8,13 @@
 </jsp:include>
 
 <div class="container">
-    <div class="do-list-header">
+<%--    <div class="do-list-header">
         <a href="javascript:;" class="link-down font-14 j_panel_trigger" data-panel="j_panel_cat"><spring:message code="goods.all"/></a>
         <div class="pull-right font-14">
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_filter"><spring:message code="goods.list.filter"/></a>
             <a href="javascript:;" class="link-down j_panel_trigger" data-panel="j_panel_sort"><spring:message code="goods.list.sort"/></a>
         </div>
-    </div>
+    </div>--%>
 
 
     <ul class="do-pro-list">
@@ -42,10 +42,14 @@
                 </i>
             </li>
         </c:forEach>
-    <c:if test="${ empty goodsDomainPageList.list}" >
-        <h4 style="margin: auto;text-align: center;margin-top: 5rem"><spring:message code="goods.none"/></h4>
-    </c:if>
+
     </ul>
+    <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>19}" >
+        <div class="font-12 text-center do-load-list">
+            <span class="link-down-before moreGoods"><spring:message code="goods.list.autoLoad"/></span>
+            <span class="overGoods" style="display: none">-<spring:message code="goods.list.downOver"/>-</span>
+        </div>
+    </c:if>
 </div>
 <div id="j_panel_cat" class="pro-filter-panel panel-cat">
     <a href="javascript:;" class="iconfont j_close_panel do-close-panel">&#xe67d;</a>
@@ -165,88 +169,26 @@
     var offset = '${goodsDomainPageList.list.size()}'*1-1;
     var page = 2;
     console.log("pageSize:"+'${goodsDomainPageList.startRowIndex}');
+    var totalPage = parseInt('${goodsDomainPageList.totalPage}');
     function loadMore() {
         //当前分类
-        var goodsName = '${keyword}'
+
         //当前排列的方式
         var priceWay = "${sessionScope.priceWay}";
         //当前页
-        var nowPage = page++;
+        page++;
 
-        var data2 = {"goodsName":goodsName,"priceWay":priceWay,"offset":offset,"nowPage":nowPage}
-        console.log("data2:"+data2+" offset:"+offset);
-        $.post("/goods/listMore",data2,function (data) {
+        var data2 = {"pageIndex":page}
 
-            if(data.code==200){
-                var moreListJson = eval(data.data);
-                var moreList = moreListJson.list;
-                var nowSize = getJsonObjLength(moreList);
-                offset = offset+nowSize;
-                console.log(moreList+" nowSize:"+nowSize);
+        if(page<=totalPage){
+            $.get(location.href,data2,function (data) {
+                $(".j_scroll_list").append($(data).find(".j_scroll_list").html())
+                setPrice();
+            });
+        }else{
+            $(".moreGoods").text("${web:selectLanguage()=='en_US'?"-The end-":"-已到底部-"}")
+        }
 
-                if(moreList!=''){
-                    console.log("exe")
-                    var isEn = ${web:selectLanguage()=='en_US'};
-                    for(var i=0;i<nowSize;i++){
-                        var firstItem = moreList[i].goodsItemList[0];
-                        var srcJson = eval(firstItem.thumb);
-                        var src = srcJson[0].file;
-                        var sizeIds = new Array();
-                        var strrrr = '${sizeList}';
-                        console.log("moreList:"+moreList[i]);
-                        var colorList  = moreList[i].goodsColorDomainList;
-                        console.log("moreList:"+moreList[i]+" colorList:"+colorList);
-                        var colorStr ="<ul class='do-list-color' name='skuId' data-value=''>";
-                        for(var j=0;j<getJsonObjLength(colorList);j++){
-                            var nowJson =colorList[j];
-                            var nowColor = nowJson.color;
-                            colorStr += "<li style='background:"+nowColor+"'></li> ";
-                        }
-                        colorStr += "</ul>";
-                        // var colorStr = "<ul class='do-list-color' name='skuId' data-value=''><li style='background: #000000'></li> </ul>";
-                        var firstSizeid = moreList[i].firstSizeDomain.id;
-                        var goodsName = moreList[i].name;
-                        if(isEn){
-                            goodsName = moreList[i].enName;
-                        }
-
-                        var disPri = firstItem.disPrice;
-                        var priceStr = disPri!=''
-                                ?" <p class='do-pro-price xzc-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
-                        +"&nbsp;"+" </p><p class='do-pro-price xzc-dis-price' name='goodsPrice' data-value='"+firstItem.disPrice+"'>"
-                        +"&nbsp;"+" </p> "
-                                :" <p class='do-pro-price' name='goodsPrice' data-value='"+firstItem.price+"'>"
-                        +"&nbsp;"+" </p> ";
-
-                        var now = 't'+'h'+'i'+'s';
-                        var str = " <li>" +
-                                " <a href='/goods/details/"
-                                +firstItem.id+
-                                "' ><div class='do-img'><img src="
-                                +src+
-                                " alt='' style='height: 120px;'/></div>  " +
-                                " <p class='do-pro-t ellipsis-25' name='goodsName'>"
-                                +goodsName+
-                                " </p> " + priceStr +
-                                colorStr +
-                                "</a> " +
-                                "<i class='icon-collect j_collect hide' onclick='addToWish("+now+","+2+")'  data-value="
-                                +firstItem.id+
-                                " data-ids="+firstSizeid+"> <svg class='do-heart hide'><use xlink:href='#heart'></use></svg> </i> </li>";
-                        //console.log(str);
-                        //滚动条滚动一段距离
-                        $(".j_scroll_list").append(str);
-                        setPrice();
-                        /*  var t = $(window).scrollTop();
-                         $('body,html').animate({scrollTop:t+500},100);*/
-                    }
-                }else {
-                    $(".moreGoods").hide().siblings(".overGoods").show();
-                }
-            }else {
-                layer.msg('<spring:message  code="goods.list.loadFailed"/>');
-            }
-        });
     };
 
 </script>

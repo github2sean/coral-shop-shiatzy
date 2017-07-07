@@ -120,4 +120,7 @@ public class I18NReverse {
         return languageType==0?"操作成功":"Operate Success";
     }
 
+    public String getInvalidCode() {
+        return languageType==0?"优惠券代码无效":"Invalid code";
+    }
 }
