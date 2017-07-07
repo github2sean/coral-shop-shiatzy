@@ -140,11 +140,11 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 			//从精品店中移除
 			shoppingCartService.removeFromCart(line.getId());
 		}
-
+		Boolean isEN = !"CNY".equals(currentCode)?true:false;
 		//发送短信
 		String phone = customerDomain.getPhone();
 		if(StringUtils.isNotBlank(phone)){
-			smsService.sendToSms(customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
+			smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.STORE_RESERVATION.getValue());
 		}
 		//发送邮件
 		//1.查询发送内容
@@ -157,17 +157,17 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Map<String,Object> freeMap = new HashMap<>();
 		freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-		freeMap.put("title",messageTemplate.getTitle());
+		freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
 		freeMap.put("name",customerDomain.getEmail());
-		freeMap.put("status", "处理中");
-		freeMap.put("content",messageTemplate.getContent());
+		freeMap.put("status", isEN?"Processing":"处理中");
+		freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
 		freeMap.put("date",simpleDateFormat.format(reservationDomain.getCreateTime()));
 		freeMap.put("order",reservationDomain);
 		freeMap.put("orderItem",requestList);
 		reservationWithGoodItem(requestList);
 		freeMap.put("totalFee",totalAmt);
 		freeMap.put("openDate",reservationDomain.getStoreDomain().getTime());
-		String html = FreemarkerUtil.printString("reservationOrder.ftl",freeMap);
+		String html = FreemarkerUtil.printString(isEN?"reservationOrder_en.ftl":"reservationOrder.ftl",freeMap);
 		//3.设置发送邮件参数
 		HashMap<String,String> emailMap = new HashMap<>();
 		emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);

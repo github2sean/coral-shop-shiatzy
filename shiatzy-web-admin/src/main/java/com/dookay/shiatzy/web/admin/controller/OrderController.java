@@ -32,6 +32,7 @@ import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import com.dookay.shiatzy.web.admin.utils.FreemarkerUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -138,8 +139,12 @@ public class OrderController extends BaseApiController {
                 OrderItemQuery orderItemquery = new OrderItemQuery();
                 orderItemquery.setOrderId(order.getId());
                 List<OrderItemDomain> orderItemDomainList = orderItemService.getList(orderItemquery);
-                //发送短信通知
-                smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.SEND_GOODS.getValue());
+
+                Boolean isEN = "CNY".equals(order.getCurrentCode())?false:true;
+                if(StringUtils.isNotBlank(order.getShipPhone())){
+                    //发送短信通知
+                    smsService.sendToSms(isEN,order.getShipPhone(), MessageTypeEnum.SEND_GOODS.getValue());
+                }
                 //发送邮件通知
                 MessageTemplateQuery query = new MessageTemplateQuery();
                 query.setType(1);
@@ -150,20 +155,20 @@ public class OrderController extends BaseApiController {
                 //生成模版
                 Map<String,Object> freeMap = new HashMap<>();
                 freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-                freeMap.put("title",messageTemplate.getTitle());
+                freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
                 freeMap.put("name",customerDomain.getEmail());
-                freeMap.put("status", OrderStatusEnum.SHIPPED.getValue());
-                freeMap.put("content",messageTemplate.getContent());
+                freeMap.put("status", isEN?"SHIPPED":OrderStatusEnum.SHIPPED.getDescription());
+                freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
                 freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
                 orderService.withGoodItme(orderItemDomainList);
                 freeMap.put("order",order);
                 freeMap.put("orderItem",orderItemDomainList);
-                String html = FreemarkerUtil.printString("orderSend.ftl",freeMap);
+                String html = FreemarkerUtil.printString(isEN?"orderSend_en.ftl":"orderSend.ftl",freeMap);
 
                 HashMap<String,String> emailMap = new HashMap<>();
                 emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
                 emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-                emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+                emailMap.put(simpleAliDMSendMail.TITLE,isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
                 emailMap.put(simpleAliDMSendMail.CONTENT,html);
                 try {
                     simpleAliDMSendMail.sendEmail(emailMap);

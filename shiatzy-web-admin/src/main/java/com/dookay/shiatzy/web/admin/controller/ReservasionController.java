@@ -130,9 +130,10 @@ public class ReservasionController extends BaseApiController {
         //发送取消预约的短信及邮件
         CustomerDomain customerDomain = customerService.get(reservationDomain.getCustomerId());
         //发送短信
+        Boolean isEN = "CNY".equals(reservationDomain.getCurrentCode())?false:true;
         String phone = reservationDomain.getTel();
         if(StringUtils.isNotBlank(phone)){
-            smsService.sendToSms(reservationDomain.getTel(), MessageTypeEnum.FAILED_RESERVATION.getValue());
+            smsService.sendToSms(isEN,reservationDomain.getTel(), MessageTypeEnum.FAILED_RESERVATION.getValue());
         }
         //发送邮件
         //1.查询发送内容
@@ -145,22 +146,22 @@ public class ReservasionController extends BaseApiController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Map<String,Object> freeMap = new HashMap<>();
         freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-        freeMap.put("title",messageTemplate.getTitle());
+        freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
         freeMap.put("name",customerDomain.getEmail());
-        freeMap.put("status", MessageTypeEnum.FAILED_RESERVATION.getDescription());
-        freeMap.put("content",messageTemplate.getContent());
+        freeMap.put("status", isEN?"FAILED":MessageTypeEnum.FAILED_RESERVATION.getDescription());
+        freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
         freeMap.put("date",simpleDateFormat.format(reservationDomain.getCreateTime()));
         freeMap.put("order",reservationDomain);
         freeMap.put("orderItem",requestList);
         reservationService.reservationWithGoodItem(requestList);
         freeMap.put("totalFee",totalAmt);
         freeMap.put("openDate",reservationDomain.getStoreDomain().getTime());
-        String html = FreemarkerUtil.printString("reservationFailed.ftl",freeMap);
+        String html = FreemarkerUtil.printString(isEN?"reservationFailed_en.ftl":"reservationFailed.ftl",freeMap);
         //3.设置发送邮件参数
         HashMap<String,String> emailMap = new HashMap<>();
         emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
         emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-        emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+        emailMap.put(simpleAliDMSendMail.TITLE,isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
         emailMap.put(simpleAliDMSendMail.CONTENT,html);
 
         try {

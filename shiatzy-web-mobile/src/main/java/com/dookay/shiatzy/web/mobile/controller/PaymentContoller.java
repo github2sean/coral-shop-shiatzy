@@ -889,8 +889,9 @@ public class PaymentContoller extends BaseController{
             OrderItemQuery orderItemquery = new OrderItemQuery();
             orderItemquery.setOrderId(order.getId());
             List<OrderItemDomain> orderItemDomainList = orderItemService.getList(orderItemquery);
+            Boolean isEN = order.getShippingCountryId()!=1?true:false;
             //发送短信通知
-            smsService.sendToSms(order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
+            smsService.sendToSms(isEN,order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
             //发送邮件通知
             MessageTemplateQuery query = new MessageTemplateQuery();
             query.setType(1);
@@ -901,20 +902,20 @@ public class PaymentContoller extends BaseController{
             //生成模版
             Map<String,Object> freeMap = new HashMap<>();
             freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-            freeMap.put("title",messageTemplate.getTitle());
+            freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
             freeMap.put("name",customerDomain.getEmail());
-            freeMap.put("status",OrderStatusEnum.PAID.getValue());
-            freeMap.put("content",messageTemplate.getContent());
+            freeMap.put("status",isEN?"PAID":OrderStatusEnum.PAID.getValue());
+            freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
             freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
             orderService.withGoodItme(orderItemDomainList);
             freeMap.put("order",order);
             freeMap.put("orderItem",orderItemDomainList);
-            String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
+            String html = FreemarkerUtil.printString(isEN?"orderPaid_en.ftl":"orderPaid.ftl",freeMap);
 
             HashMap<String,String> emailMap = new HashMap<>();
             emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
             emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-            emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
+            emailMap.put(simpleAliDMSendMail.TITLE,isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
             emailMap.put(simpleAliDMSendMail.CONTENT,html);
             try {
                 simpleAliDMSendMail.sendEmail(emailMap);

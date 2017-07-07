@@ -1,4 +1,6 @@
 package com.dookay.coral.adapter.sendmsg.sendmail;
+import com.dookay.coral.common.web.utils.SpringContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
@@ -58,10 +60,11 @@ public class SimpleAliDMSendMail {
         InternetAddress to = new InternetAddress(configMap.get(RECEIVE_EMAIL));
         message.setRecipient(MimeMessage.RecipientType.TO, to);
         // 设置邮件标题
-        message.setSubject("夏资陈 "+configMap.get(TITLE),"UTF-8");
+        message.setSubject(configMap.get(TITLE),"UTF-8");
         // 设置邮件的内容体
         message.setContent(configMap.get(CONTENT), "text/html;charset=UTF-8");
         // 发送邮件
         Transport.send(message);
+
     }
 }

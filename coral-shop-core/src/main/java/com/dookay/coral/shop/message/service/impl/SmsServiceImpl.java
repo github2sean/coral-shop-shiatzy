@@ -44,7 +44,7 @@ public class SmsServiceImpl extends BaseServiceImpl<SmsDomain> implements ISmsSe
 
 
 	@Override
-	public void sendToSms(String phone, Integer code) {
+	public void sendToSms(Boolean isEN,String phone, Integer code) {
 
 		if(StringUtils.isBlank(phone)||code==null){
 			throw  new ServiceException("参数不能为空");
@@ -62,7 +62,7 @@ public class SmsServiceImpl extends BaseServiceImpl<SmsDomain> implements ISmsSe
 		map.put("pswd",sendToPhoneConfig.getPswd());
 		map.put("mobile",phone);
 		map.put("needstatus",sendToPhoneConfig.getNeedstatus());
-		map.put("msg",messageTemplate.getContent());
+		map.put("msg",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
 		map.put("product",sendToPhoneConfig.getProduct());
 		Object obj = null;
 		try {
@@ -73,7 +73,7 @@ public class SmsServiceImpl extends BaseServiceImpl<SmsDomain> implements ISmsSe
 		}
 		//加入发送历史
 		SmsHistoryDomain smsDomain = new SmsHistoryDomain();
-		smsDomain.setBody(messageTemplate.getContent());
+		smsDomain.setBody(isEN?messageTemplate.getEnContent():messageTemplate.getContent());
 		smsDomain.setMobile(phone);
 		smsDomain.setMobile(new Date().toString());
 		smsHistoryService.create(smsDomain);

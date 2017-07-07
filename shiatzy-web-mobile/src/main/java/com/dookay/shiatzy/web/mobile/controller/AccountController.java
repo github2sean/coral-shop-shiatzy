@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -147,8 +148,9 @@ public class AccountController extends MobileBaseController {
         AccountDomain updateAccount = accountService.get(accountId);
         CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());
         //第一次填写手机号发送短信通知
+        Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"shippingCountry"));
         if(StringUtils.isNotBlank(phone)&& oldCustomer!=null && StringUtils.isBlank(oldCustomer.getPhone())){
-            smsService.sendToSms(phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
+            smsService.sendToSms(isEn,phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
         }
 
         Long countryId = getCustomeAddress.getCountryId();
