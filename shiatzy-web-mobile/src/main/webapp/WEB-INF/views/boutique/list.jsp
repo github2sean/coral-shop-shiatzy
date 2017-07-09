@@ -105,8 +105,8 @@
     </div>
     </c:if>
     <ul>
-        <li><a href="/goods/list?categoryId=17"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
-        <li><a href="/goods/list?categoryId=18"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=2"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=3"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
         <li><a href="#" class="whatBoutique"><spring:message code="reservation.what"/>?<span>></span></a></li>
     </ul>
 </div>

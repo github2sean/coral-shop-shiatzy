@@ -86,9 +86,9 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 
 		Long customerId = customerDomain.getId();
 		List<ShoppingCartItemDomain>  shoppingCartItemDomainList = this.listShoppingCartItemByCustomerId(customerId,shoppingCartType);
-		if(shoppingCartItemDomainList.size()>=8){
+		/*if(shoppingCartItemDomainList.size()>=8){
 			throw new ServiceException(ShoppingCartTypeEnum.valueOf(shoppingCartType).getDescription()+"商品数量不能超过8个");
-		}
+		}*/
 
 		ShoppingCartItemDomain existShoppingCartItem =
 				shoppingCartItemDomainList.stream().filter(x-> Objects.equals(x.getSkuId(), skuDomain.getId())).findFirst().orElse(null);

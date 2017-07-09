@@ -13,7 +13,7 @@ import tk.mybatis.mapper.entity.Example;
  * @version : v0.0.1
  */
 public class ShippingCountryQuery extends Query {
-	
+
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(ShippingCountryDomain.class);

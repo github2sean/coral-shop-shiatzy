@@ -57,7 +57,13 @@ public class DefaultTags {
 		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
 		return  selectCountry;
 	}
-
+	public static List<ShippingCountryDomain> getSelectCountryPhoneList() {
+		IShippingCountryService shippingCountryService = SpringContextHolder.getBean("shippingCountryService");
+		ShippingCountryQuery query = new ShippingCountryQuery();
+		query.setDesc(false);
+		query.setOrderBy("rank");
+		return  shippingCountryService.getList(query);
+	}
 	public static String getSelectLanguage() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
