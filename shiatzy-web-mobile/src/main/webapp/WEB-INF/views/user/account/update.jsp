@@ -11,9 +11,6 @@
         border: none;
         margin-left: 10px;
     }
-    .date {
-        　-webkit-appearance:normal;
-    }
 </style>
 
 <div class="order">
@@ -24,24 +21,30 @@
 
 <div class="setting">
     <form class="j_ajaxForm" method="post" action="/u/account/update">
-        <input type="hidden"  value="${accountDomain.id}"/>
+        <input type="hidden" value="${accountDomain.id}"/>
         <div class="data-setting">
             <h3><spring:message code="account.personal.update.info"/></h3>
             <ul>
                 <li class="form-item2">
                     <span><spring:message code="account.personal.update.title"/>*
-                      <select name="customerAddressDomain.title" id="title" class="" value="${customerAddressDomain.title}"
+                      <select name="customerAddressDomain.title" id="title" class=""
+                              value="${customerAddressDomain.title}"
                               data-rule="<spring:message code="account.personal.update.title"/>:required;">
-                          <option value="<spring:message code="add.delivery.ms"/>"><spring:message code="add.delivery.ms"/></option>
-                        <option value="<spring:message code="add.delivery.mr"/>"><spring:message code="add.delivery.mr"/></option>
-                        <option value="<spring:message code="add.delivery.miss"/>"><spring:message code="add.delivery.miss"/></option>
-                        <option value="<spring:message code="add.delivery.none"/>"><spring:message code="add.delivery.none"/></option>
+                          <option value="<spring:message code="add.delivery.ms"/>"><spring:message
+                                  code="add.delivery.ms"/></option>
+                        <option value="<spring:message code="add.delivery.mr"/>"><spring:message
+                                code="add.delivery.mr"/></option>
+                        <option value="<spring:message code="add.delivery.miss"/>"><spring:message
+                                code="add.delivery.miss"/></option>
+                        <option value="<spring:message code="add.delivery.none"/>"><spring:message
+                                code="add.delivery.none"/></option>
                     </select>
 
                        </span>
                     <span style="float:right;"></span>
                 </li>
                 <li class="form-item2">
+
                     <span><spring:message code="account.personal.firstName"/>*
                         <input type="text"
                                value="${customerDomain.firstName}"
@@ -58,18 +61,19 @@
                            data-rule="<spring:message code="account.personal.lastName"/>:required;"/></li>
                 <li class="form-item2">
                     <spring:message code="account.personal.update.birthday"/>
-                   <input type="date" id="customerDomain.birthday" class="date" name="customerDomain.birthday"
-                        value="<fmt:formatDate value="${customerDomain.birthday}" pattern="yyyy-MM-dd"/>"
-                        data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
+                    <input type="date" id="customerDomain.birthday" name="customerDomain.birthday"
+                           max="<fmt:formatDate value="${now}" type="date" pattern="yyyy-MM-dd"/>"
+                           value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
+                           data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
                 </li>
                 <li class="form-item2 form-item3"><spring:message code="account.personal.phoneNum"/>*
                     <select name="customerDomain.phone">
                         <option value="86">86</option>
                         <option value="88">88</option>
                     </select>&nbsp;+<input type="text"
-                           value="${customerDomain.phone}"
-                           name="customerDomain.phone" id="phone"
-                           data-rule="<spring:message code="account.personal.phoneNum"/>:required;"/>
+                                           value="${customerDomain.phone}"
+                                           name="customerDomain.phone" id="phone"
+                                           data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile"/>
                 </li>
             </ul>
         </div>
@@ -101,7 +105,8 @@
                            value="${customerAddressDomain.city}"
                            data-rule="<spring:message code="account.personal.update.city"/>:required;">
                 </li>
-                <li class="form-item2"><span style="margin-top: 0"><spring:message code="account.personal.address"/>*</span>
+                <li class="form-item2"><span style="margin-top: 0"><spring:message
+                        code="account.personal.address"/>*</span>
                     <input style="width: 70%;" type="text" name="customerAddressDomain.address"
                            value="${customerAddressDomain.address}"
                            data-rule="<spring:message code="account.personal.address"/>:required;">
@@ -110,14 +115,15 @@
                 <li class="form-item2"><spring:message code="account.personal.update.postalCode"/>*
                     <input type="text" name="customerAddressDomain.postalCode"
                            value="${customerAddressDomain.postalCode}"
-                            data-rule="<spring:message code="account.personal.update.postalCode"/>:required;"
+                           data-rule="<spring:message code="account.personal.update.postalCode"/>:required;"
                     />
                     <input type="hidden" value="${customerAddressDomain.id}" name="addressId"/></li>
             </ul>
         </div>
         <div id="showInfo" style="display: none;color: red;text-align: center;width: 100%"></div>
         <div class="complete">
-            <button type="submit" class="btn btn-default"><spring:message code="account.personal.update.enter"/></button>
+            <button type="submit" class="btn btn-default"><spring:message
+                    code="account.personal.update.enter"/></button>
         </div>
     </form>
 
@@ -199,7 +205,7 @@
     }
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
-         $("#title").val("${customerAddressDomain.title}");
+        $("#title").val("${customerAddressDomain.title}");
 
     });
 

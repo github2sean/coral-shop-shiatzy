@@ -25,10 +25,9 @@
             margin-top: 20px;
         }
         .email-submit .email-con {
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            padding-top: 30px;
-            padding-bottom: 30px;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            padding: 30px 15px;
         }
         .email-con .email-title {
             font-family: "lucida Grande",Verdana,"Microsoft YaHei";
@@ -39,10 +38,12 @@
         .email-con .email-txt {
             margin-top: 10px;
             margin-bottom: 10px;
+            height: auto;
         }
         .email-con .email-txt .txt {
             font-size: 14px;
             line-height: 22px;
+            border: none;
         }
         .email-con .email-txt .txt .link-web {
             text-decoration: underline;

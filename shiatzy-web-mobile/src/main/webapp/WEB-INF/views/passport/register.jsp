@@ -39,7 +39,7 @@
                            name="validCode" id="validCode" onfocus="this.placeholder=''"
                            onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'"
                            data-rule="${web:t("验证码","ValidCode")}:required;">
-                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
+                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg" class="j_captcha"></div>
                 </div>
             </div>
             <div class="form-item button">
@@ -53,4 +53,11 @@
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
 
-
+<script>
+    $(function () {
+        $('.j_captcha').click(function () {
+            var $this = $(this);
+            $this.attr('src', '/captcha');
+        });
+    });
+</script>

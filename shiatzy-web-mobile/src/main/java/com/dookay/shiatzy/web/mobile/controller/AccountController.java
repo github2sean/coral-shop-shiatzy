@@ -128,6 +128,8 @@ public class AccountController extends MobileBaseController {
         //查询出配送国家
         List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(new ShippingCountryQuery());
         mv.addObject("countryList",shippingCountryDomainList);
+        Date now  = new Date();
+        mv.addObject("now",now);
         return mv;
     }
 
