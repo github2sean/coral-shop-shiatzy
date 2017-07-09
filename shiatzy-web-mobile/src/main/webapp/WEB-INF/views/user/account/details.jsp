@@ -43,7 +43,7 @@
                     <li><spring:message code="account.personal.lastName"/>：${customerDomain.lastName}</li>
                     <li><spring:message code="account.personal.email"/>：${accountDomain.email}</li>
                     <li><spring:message code="account.personal.phoneNum"/>：${customerDomain.phone}</li>
-                    <li><spring:message code="account.personal.address"/>：${customerAddressDomain.address}</li>
+                    <li><spring:message code="account.personal.address"/>：${customerAddressDomain.city}&nbsp;${customerAddressDomain.address}</li>
                 </ol>
             </li>
 

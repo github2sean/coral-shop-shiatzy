@@ -217,7 +217,7 @@
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
                 area: ['100%', '50%'],
-                content: ['${ctx}/content/whatWish'],//iframe的url，no代表不显示滚动条
+                content: ['${ctx}/content/whatWish?id=33'],//iframe的url，no代表不显示滚动条
                 shadeClose: true
             });
         });

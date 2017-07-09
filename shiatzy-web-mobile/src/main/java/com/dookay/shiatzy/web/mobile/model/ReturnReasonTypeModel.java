@@ -44,10 +44,10 @@ public class ReturnReasonTypeModel {
                 allReason += allReason.contains("reason1")?",\"reason2\":"+"\""+this.reason2+"\"":"\"reason2\":"+"\""+this.reason2+"\"";
             }
             if(StringUtils.isNotBlank(this.getReason3())){
-                allReason += allReason.contains("reason1")||allReason.contains("reason2")?",\"reason3\":"+"\""+this.reason3+"\"":"\"reason3\":"+this.reason3+"\"";
+                allReason += allReason.contains("reason1")||allReason.contains("reason2")?",\"reason3\":"+"\""+this.reason3+"\"":"\"reason3\":\""+this.reason3+"\"";
             }
             if(StringUtils.isNotBlank(this.getReason4())){
-                allReason += allReason.contains("reason1")||allReason.contains("reason2")||allReason.contains("reason3")?",\"reason4\":"+"\""+this.reason4+"\"":"\"reason4\":"+this.reason4+"\"";
+                allReason += allReason.contains("reason1")||allReason.contains("reason2")||allReason.contains("reason3")?",\"reason4\":"+"\""+this.reason4+"\"":"\"reason4\":\""+this.reason4+"\"";
             }
 
             allReason += "}";

@@ -42,12 +42,22 @@
 <div class="dx-CommonProblems">
     <div class="content">
         <p class=" j_toggle"><a href="#"><spring:message code="wish.whatWish"/>?</a></p>
+        <c:if test="${web:selectLanguage()!='en_US'}">
         <ul class="second-title j_toggle2 ">
             <li><p href="#">  输入相应的“优惠代码/优惠券号”、点击“应用”，即刻享有相应优惠礼遇。请注意使用时间和相应条款。
             </p>
             </li>
             </li>
         </ul>
+        </c:if>
+        <c:if test="${web:selectLanguage()=='en_US'}">
+            <ul class="second-title j_toggle2 ">
+                <li><p href="#"> Enter the corresponding "discount code / coupon number", click "apply" and enjoy the privileges immediately. Please pay attention to the usage time and the corresponding terms
+                </p>
+                </li>
+                </li>
+            </ul>
+        </c:if>
     </div>
     <!-- 核心js插件开始 -->
     <script src="${ctx}/static/js/dookayui.min.js"></script>
