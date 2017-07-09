@@ -1733,6 +1733,8 @@ i {
     font-size: 1rem;
     margin-bottom: 1.5rem;
     height: 2rem;
+    padding: 0 .6rem;
+    word-wrap: break-word;
 }
 
 .dx-commodity .maybeLike .price {

@@ -11,6 +11,9 @@
         border: none;
         margin-left: 10px;
     }
+    .date {
+        　-webkit-appearance:normal;
+    }
 </style>
 
 <div class="order">
@@ -39,7 +42,6 @@
                     <span style="float:right;"></span>
                 </li>
                 <li class="form-item2">
-
                     <span><spring:message code="account.personal.firstName"/>*
                         <input type="text"
                                value="${customerDomain.firstName}"
@@ -47,7 +49,6 @@
                                id="lastName"
                                data-rule="<spring:message code="account.personal.firstName"/>:required;"/></span>
                     <span style="float:right;"></span>
-
                 </li>
                 <li class="form-item2"><spring:message code="account.personal.lastName"/>*
                     <input type="text"
@@ -57,10 +58,9 @@
                            data-rule="<spring:message code="account.personal.lastName"/>:required;"/></li>
                 <li class="form-item2">
                     <spring:message code="account.personal.update.birthday"/>
-                   <input type="date" id="customerDomain.birthday" name="customerDomain.birthday"
-    value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
-    data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
-
+                   <input type="date" id="customerDomain.birthday" class="date" name="customerDomain.birthday"
+                        value="<fmt:formatDate value="${customerDomain.birthday}" pattern="yyyy-MM-dd"/>"
+                        data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
                 </li>
                 <li class="form-item2 form-item3"><spring:message code="account.personal.phoneNum"/>*
                     <select name="customerDomain.phone">
@@ -69,7 +69,7 @@
                     </select>&nbsp;+<input type="text"
                            value="${customerDomain.phone}"
                            name="customerDomain.phone" id="phone"
-                           data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile"/>
+                           data-rule="<spring:message code="account.personal.phoneNum"/>:required;"/>
                 </li>
             </ul>
         </div>

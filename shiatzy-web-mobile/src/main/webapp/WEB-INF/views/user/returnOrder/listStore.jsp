@@ -62,7 +62,7 @@
             <p id="storeTime"></p>
             <p id="storeTel"></p>
         </div>
-        <div class="submit-btn saveBtn" data-value="">
+        <div class="submit-btn saveBtn" id="save_store" data-value="">
             <a href="#" class="btn-default">< <spring:message code="store.list.enter"/></a>
         </div>
 
@@ -194,6 +194,7 @@
                         $("#storeAddress").text("");
                         $("#storeTime").text("");
                         $("#storeTel").text("");
+
                         $(".sendBtn").attr("data-value","");
                     }else{
                         layer.msg("该城市下无门店");
@@ -210,7 +211,8 @@
             console.log(index);
             $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
                 .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
-            $(".sendBtn").attr("data-value",json[index].id);
+            $("#save_store").attr("data-value",json[index].id);
+            console.log(json[index].id);
         });
 
         $("#storeSelect").click(function () {
