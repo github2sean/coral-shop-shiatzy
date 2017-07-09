@@ -118,14 +118,22 @@ public class AccountController extends MobileBaseController {
         }
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
         String phone = customerDomain.getPhone();
+        ShippingCountryDomain shippingCountryDomain=null;
         if(StringUtils.isNotBlank(phone)){
-            customerDomain.setPhone(phone.substring(2,phone.length()));
+          String  countryId= CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"shippingCountry");
+          if(countryId.equals("")||countryId ==null)
+          {
+              countryId="1";
+          }
+            shippingCountryDomain=shippingCountryService.get(Long.valueOf(countryId));
+
+            customerDomain.setPhone(phone.substring(shippingCountryDomain.getPhonePrefix().length(),phone.length()));
         }
         ModelAndView mv = new ModelAndView("user/account/update");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
         mv.addObject("customerAddressDomain",customerAddressDomain);
-
+        mv.addObject("countryPhone",shippingCountryDomain.getPhonePrefix());
         //查询出配送国家
         List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(new ShippingCountryQuery());
         mv.addObject("countryList",shippingCountryDomainList);
@@ -148,9 +156,11 @@ public class AccountController extends MobileBaseController {
         //生日...
         String phone = getCustomer.getPhone();
         if (phone.contains(",")){
-            phone = phone.replaceAll("\\,","");
+            String   phones = phone.split("\\,")[0];
+            phone =  shippingCountryService.get(Long.valueOf(phones)).getPhonePrefix()+phone.split("\\,")[1];
         }
         System.out.println("up-phone:"+phone);
+
         Long accountId = UserContext.current().getAccountDomain().getId();
         AccountDomain updateAccount = accountService.get(accountId);
         CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());

@@ -107,7 +107,7 @@ public class OrderController extends BaseController {
             returnRequestItemQuery.setReturnRequestId(returnRequestDomain.getId());
             orderDomain.setReturnRequestItemList(returnRequestItemService.getList(returnRequestItemQuery));
         }
-        orderDomain.setCanReturnNum(orderNum-returnNum);
+        orderDomain.setCanReturnNum(returnNum);
         ModelAndView mv = new ModelAndView("user/order/details");
         mv.addObject("orderDomain",orderDomain);
         mv.addObject("orderItemList",orderItemList);

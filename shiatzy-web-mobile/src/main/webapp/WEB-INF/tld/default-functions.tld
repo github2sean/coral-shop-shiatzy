@@ -21,7 +21,12 @@
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.util.List getShippingCountryList()</function-signature>
     </function>
-
+    <function>
+        <description>获取配送国家电话前缀列表</description>
+        <name>countryPhoneList</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.util.List getSelectCountryPhoneList()</function-signature>
+    </function>
     <function>
         <description>获取选择国家</description>
         <name>selectCountry</name>
@@ -53,6 +58,13 @@
         <name>getCartNum</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.lang.Integer getCartNum(java.lang.Integer)</function-signature>
+    </function>
+
+    <function>
+        <description>是否点击过付款</description>
+        <name>isSubmited</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature> java.lang.Boolean isSubmited()</function-signature>
     </function>
 
 

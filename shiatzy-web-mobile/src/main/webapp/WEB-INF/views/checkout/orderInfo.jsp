@@ -135,20 +135,6 @@
                 </c:choose>
             </font>&nbsp;<span id="subtotal" class="" data-value="${order.goodsTotal}"><fmt:formatNumber value="${order.goodsTotal}" pattern="#,###"/></span></span>
             </div>
-            <div class="discount" style="color: red;display: none"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
-                <c:choose>
-                    <c:when test="${order.currentCode=='CNY'}">
-                        &nbsp;<spring:message code="coin.ZH"/>
-                    </c:when>
-                    <c:when test="${order.currentCode=='USD'}">
-                        &nbsp;<spring:message code="coin.USA"/>
-                    </c:when>
-                    <c:when test="${order.currentCode=='EUR'}">
-                        &nbsp;<spring:message code="coin.EU"/>
-                    </c:when>
-                 </c:choose>
-            </font>&nbsp;<span id="discount" class="">0</span></span></div>
-
             <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">
                 ART CLUB ${web:selectLanguage()=='en_US'?"discount":"会员优惠"}<span><font class="coinSymbol">
                 <c:choose>
@@ -162,7 +148,21 @@
                         &nbsp;<spring:message code="coin.EU"/>
                     </c:when>
                 </c:choose>
-            </font>&nbsp;<span id="memDiscount" class="">-<fmt:formatNumber value="${order.memberDiscount}" pattern="#,###"/></span></span></div>
+            </font>&nbsp;-<span id="memDiscount" class=""><fmt:formatNumber value="${order.memberDiscount}" pattern="#,###"/></span></span></div>
+
+            <div class="discount" style="display: none"><spring:message code="orderinfo.discount"/> <span><font class="coinSymbol">
+                <c:choose>
+                    <c:when test="${order.currentCode=='CNY'}">
+                        &nbsp;<spring:message code="coin.ZH"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='USD'}">
+                        &nbsp;<spring:message code="coin.USA"/>
+                    </c:when>
+                    <c:when test="${order.currentCode=='EUR'}">
+                        &nbsp;<spring:message code="coin.EU"/>
+                    </c:when>
+                </c:choose>
+            </font>&nbsp;-<span id="discount" class="">0</span></span></div>
 
             <div class="express"><spring:message code="orderinfo.freight"/> <span><font class="coinSymbol">
                 <c:choose>

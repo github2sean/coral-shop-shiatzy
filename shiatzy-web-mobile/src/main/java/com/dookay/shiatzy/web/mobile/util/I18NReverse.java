@@ -36,6 +36,7 @@ public class I18NReverse {
     private  String paramError;
     private  String orderTimeOut;
     private  String stockOut;
+    private  String someStockOut;
     private  String inconsistentCondition;
 
     public I18NReverse(int languageType){
@@ -44,6 +45,9 @@ public class I18NReverse {
 
     public String getStockOut() {
         return languageType==0?"库存不足":"The goods selled out";
+    }
+    public String getSomeStockOut() {
+        return languageType==0?"抱歉，部分商品没有库存":"Sorry, out of stock";
     }
     public String getInconsistentCondition() {
         return languageType==0?"优惠条件不符":"Don't match Condition";

@@ -178,23 +178,27 @@
         });
     };
 
-    function reloadUrl() {
 
-        var backUrl = document.referrer;
-        console.log(backUrl.indexOf("orderInfo")==-1);
-        console.log(backUrl.indexOf("listShipAddress")==-1);
-        console.log(backUrl.indexOf("confirm")==-1);
-        console.log("url:"+backUrl);
-        if(backUrl.indexOf("orderInfo")==-1 && backUrl.indexOf("listShipAddress")==-1 && backUrl.indexOf("confirm")==-1){
-            location.reload();
-        }
+    function reloadUrl() {
+        $.post("/checkout/isSubmited",function (data) {
+            console.log('order'+'${order.id}');
+            if(data.data){
+                console.log('data'+data.data);
+                layer.msg('${web:t("订单已超时","Order time out")}',{time: 1000},function () {
+                    if(${empty order.id}){
+                        location.href = "/payment/payfailed?orderId=${order.id}";
+                    }else{
+                        location.reload();
+                    }
+                });
+            }
+        })
     }
 
     $(function(){
         reloadUrl();
         setPrice();
         noNeedBill();
-
         $(".moreBtn").click(function () {
             $(".moreGoods").slideToggle();
         });

@@ -11,6 +11,7 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
+import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
@@ -57,7 +58,13 @@ public class DefaultTags {
 		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
 		return  selectCountry;
 	}
-
+	public static List<ShippingCountryDomain> getSelectCountryPhoneList() {
+		IShippingCountryService shippingCountryService = SpringContextHolder.getBean("shippingCountryService");
+		ShippingCountryQuery query = new ShippingCountryQuery();
+		query.setDesc(false);
+		query.setOrderBy("rank");
+		return  shippingCountryService.getList(query);
+	}
 	public static String getSelectLanguage() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
@@ -101,5 +108,11 @@ public class DefaultTags {
 		return  cartList!=null&&cartList.size()>0?cartList.size():0;
 	}
 
+	public static Boolean isSubmited() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		OrderDomain order = (OrderDomain)request.getSession().getAttribute("order");
+		System.out.println("order:"+order==null?true:false);
+		return order==null?true:false;
+	}
 
 }
