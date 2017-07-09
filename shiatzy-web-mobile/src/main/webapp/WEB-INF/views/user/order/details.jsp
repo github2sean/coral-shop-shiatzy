@@ -32,7 +32,7 @@
             <spring:message code="order.details.no"/>：${orderDomain.orderNo}
         </h4>
         <div class="item border">
-            <p><spring:message code="order.details.time"/>：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></p>
+            <p><spring:message code="order.details.time"/>：<fmt:formatDate value="${orderDomain.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date" dateStyle="long" /></p>
             <p><spring:message code="order.details.status"/>：
                 <c:choose>
                     <c:when test="${orderDomain.status==1}"><spring:message code="order.status.waitPay"/>

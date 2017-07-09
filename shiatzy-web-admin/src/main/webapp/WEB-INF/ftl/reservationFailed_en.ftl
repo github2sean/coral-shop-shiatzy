@@ -20,6 +20,18 @@
             margin: 0;
             padding: 0;
         }
+        .qmbox ul li {
+            list-style: none!important;
+        }
+        .body ul li, .mycontent ul li {
+            list-style-type: none!important;
+        }
+        .qmbox .email-con .email-txt {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            text-align: left;
+            
+        }
         .email-submit {
             width: 85%;
             margin: 0 auto;
@@ -53,7 +65,7 @@
         .email-con .email-txt .name {
             font-family: "宋体";
         }
-        .email-con .email-txt .txt {
+        .email-con .email-txt .mode-txt {
             font-size: 14px;
             line-height: 22px;
             font-family: "宋体";
@@ -187,7 +199,7 @@
         <div class="email-txt">
             <p class="name">dear ${name},</p>
             <br>
-            <p class="txt">
+            <p class="mode-txt">
             ${content}</p>
             <div class="dingdan">
                 <div class="xzc-detail">

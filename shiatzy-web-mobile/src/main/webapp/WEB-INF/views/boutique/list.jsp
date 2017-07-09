@@ -49,7 +49,7 @@
             <div class="goods-item goodsDiv">
                 <p class="product-num"><spring:message code="shoppingCart.no"/>${row.goodsCode}</p>
                 <div class="pic">
-                    <img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt="">
+                    <a href="/goods/details/${row.goodsItemDomain.id}"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></a>
                 </div>
                 <p class="product-name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</p>
                 <div class="color-size">
