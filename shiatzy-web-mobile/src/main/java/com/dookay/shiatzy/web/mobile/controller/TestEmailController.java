@@ -1,17 +1,14 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.utils.RandomUtils;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
-import com.dookay.coral.shop.order.domain.OrderDomain;
-import com.dookay.coral.shop.order.domain.OrderItemDomain;
-import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
-import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
+import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
+import com.dookay.coral.shop.order.query.ReservationItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
-import com.dookay.coral.shop.order.service.IOrderItemService;
-import com.dookay.coral.shop.order.service.IOrderService;
-import com.dookay.coral.shop.order.service.IReturnRequestItemService;
-import com.dookay.coral.shop.order.service.IReturnRequestService;
+import com.dookay.coral.shop.order.service.*;
+import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.dookay.coral.shop.message.util.EmailUtil;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +46,18 @@ public class TestEmailController extends MobileBaseController {
 
     @Autowired
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
+
+    @Autowired
+    private IReservationService reservationService;
+
+    @Autowired
+    private IReservationItemService reservationItemService;
+
+    @Autowired
+    private IGoodsItemService goodsItemService;
+
+    @Autowired
+    private IStoreService storeService;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -90,8 +100,22 @@ public class TestEmailController extends MobileBaseController {
         query.setReturnRequestId(id);
         List<ReturnRequestItemDomain>requstList=returnRequestItemService.getList(query);
         for (ReturnRequestItemDomain item : requstList){
-//            item.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
+           item.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(item.getSkuSpecifications()).getLong("size")));
         }
         EmailUtil.applyReturn(isEn,userName,returnRequestDomain,requstList,10.0);
+    }
+
+    @RequestMapping(value = "/submitOrder/{id}", method = RequestMethod.GET)
+    public void submitOrder(@PathVariable Long id, Boolean isEn) throws Exception{
+        ReservationDomain reservationDomain=reservationService.get(id);
+        reservationDomain.setStoreDomain(storeService.get(Long.parseLong(reservationDomain.getStoreTitle())));
+        ReservationItemQuery query=new ReservationItemQuery();
+        query.setReservationId(id);
+        List<ReservationItemDomain> requestList =reservationItemService.getList(query);
+        for (ReservationItemDomain item:requestList){
+            item.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(item.getSpecifications()).getLong("size")));
+            item.setGoodsItemDomain(goodsItemService.get(item.getItemId()));
+        }
+        EmailUtil.submitOrder(isEn,userName,reservationDomain,requestList,10.0);
     }
 }
