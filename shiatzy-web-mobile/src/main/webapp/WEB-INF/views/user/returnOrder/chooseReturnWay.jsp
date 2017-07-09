@@ -16,7 +16,7 @@
         <p><a href="#" class="returnOrchange"><img src="${ctx}/static/images/questionMark.png" alt=""><spring:message code="returnOrderInfo.returnInfo"/></a></p>
     </div>
     <p><spring:message code="order.details.no"/>：<span>${order.orderNo}</span></p>
-    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></p>
+    <p><spring:message code="order.details.time"/>：<span><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date" dateStyle="long" /></span></p>
     <div class="order-finish">
         <div class="delivery">
 

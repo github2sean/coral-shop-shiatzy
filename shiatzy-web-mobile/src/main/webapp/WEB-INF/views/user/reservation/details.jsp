@@ -15,7 +15,7 @@
         <div class="dx-reservation"><spring:message code="reservation.detail"/></div>
         <div class="orderNumber"><spring:message code="reservation.detail.no"/>：${reservationDomain.reservationNo}</div>
         <div class="dx-details">
-            <div class="date"><spring:message code="order.details.time"/> : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" /></span></div>
+            <div class="date"><spring:message code="order.details.time"/> : <span><fmt:formatDate value="${reservationDomain.createTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date" dateStyle="long" /></span></div>
             <div class="retail"><spring:message code="reservation.detail.store"/> : <span>${web:selectLanguage()=='en_US'?reservationDomain.storeDomain.enTitle:reservationDomain.storeDomain.name}</span> <a href="javascript:void(0)" class="alertMap"><spring:message code="reservation.detail.map"/></a></div>
             <div class="site"><spring:message code="account.personal.address"/>: <span>${reservationDomain.storeDomain.address}</span></div>
             <div class="telephone"><spring:message code="account.personal.phoneNum"/> : ${reservationDomain.tel}<span></span></div>

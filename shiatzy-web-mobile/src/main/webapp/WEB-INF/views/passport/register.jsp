@@ -45,7 +45,13 @@
             <div class="form-item button">
                 <button type="submit" class="btn btn-default"><spring:message code="register"/></button>
             </div>
-            <div class="form-item text-center"><spring:message code="register.endInfo"/></div>
+            <c:if test="${web:selectLanguage()!='en_US'}">
+                <div class="form-item text-center" style="word-break: break-all;">完成注册，表示您已同意接受Shop.shiatzychen.com 的<a href="#" class="privacyNotice" style="color:#000;text-decoration:underline;">隐私政策</a>及相关线上条例。</div>
+            </c:if>
+            <c:if test="${web:selectLanguage()=='en_US'}">
+                <div class="form-item text-center" style="word-break: break-all;">Complete the registration, you have agreed to accept shop.shiatzychen.com's <a href="#" class="privacyNotice" style="color:#000;text-decoration:underline;">privacy policies</a> and regulations related to online.
+                </div>
+            </c:if>
         </div>
     </form>
 </div>

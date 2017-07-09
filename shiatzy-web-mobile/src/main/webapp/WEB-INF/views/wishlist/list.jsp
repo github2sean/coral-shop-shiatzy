@@ -123,8 +123,8 @@
     </c:if>
         <div class="explain">
             <ul>
-                <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/><span>&gt;</span></a></li>
-                <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/><span>&gt;</span></a></li>
+                <li><a href="/goods/list?categoryId=17"><spring:message code="shoppingCart.selectWoman"/><span>&gt;</span></a></li>
+                <li><a href="/goods/list?categoryId=18"><spring:message code="shoppingCart.selectMan"/><span>&gt;</span></a></li>
                 <li class="last whatWish"><a href="#"><spring:message code="wish.whatWish"/>?<span>&gt;</span></a></li>
             </ul>
         </div>
