@@ -34,7 +34,9 @@
         </a>
         </c:forEach>
     </div>
+    <c:if test="${not empty reservationList &&reservationList.size()>8}">
     <p class="text-center" id="auto_load"><span style="display:inline-block;transform:rotate(90deg);-webkit-transform:rotate(90deg)">&gt;&nbsp;</span><spring:message code="order.list.loadmore"/></p>
+    </c:if>
 </div>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp">

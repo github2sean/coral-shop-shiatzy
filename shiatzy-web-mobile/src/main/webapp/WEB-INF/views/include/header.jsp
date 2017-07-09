@@ -239,7 +239,7 @@
         <div class="do-search">
             <form action="/goods/search" method="get" id="contentForm">
                 <input type="text" id="searchKey" placeholder="<spring:message code="searchKey"/>" class="j_search" name="goodsName"onfocus="this.placeholder=''" onblur="this.placeholder='<spring:message code="searchKey"/>'"/>
-                <button class="iconfont" id="searchBtn">&#xe610;</button>
+                <button class="iconfont" id="searchBtn" type="submit">&#xe610;</button>
             </form>
         </div>
         <ul class="guide-nav j_drop_down">

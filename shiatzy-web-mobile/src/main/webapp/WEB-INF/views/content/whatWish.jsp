@@ -41,7 +41,8 @@
 </head>
 <div class="dx-CommonProblems">
     <div class="content">
-        <p class=" j_toggle"><a href="#"><spring:message code="wish.whatWish"/>?</a></p>
+        <p class=" j_toggle"><a href="#"><spring:message code="wish.whatWish"/>?</a></p
+        <%--<c:if test="${web:selectLanguage()!='en_US'}">
         <ul class="second-title j_toggle2 ">
             <li><p href="#">  在“我的账户”下点击“愿望清单”，可查看您所添加的所有愿望单品。您可任意移除或添加新的单品。
             </p>
@@ -50,7 +51,26 @@
             </p>
             </li>
         </ul>
-
+        </c:if>
+        <c:if test="${web:selectLanguage()=='en_US'}">
+            <ul class="second-title j_toggle2 ">
+                <li><p href="#"> In the "my account" and click on "wish list", you can see all desires that you add a single product. You can remove or add any new items.
+                </p>
+                </li>
+                <li><p href="#">  Please note: some of you have added commodities may be sold, but later re distribution may be on the line again, available for purchase.
+                </p>
+                </li>
+            </ul>
+        </c:if>--%>
+        <c:forEach var="itemDomain" items="${domainList}">
+            <ul class="second-title j_toggle2 ">
+                <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
+                    <li>
+                        <p class="answer">${web:selectLanguage()=='en_US'?domainlist.en_content:domainlist.content}</p>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:forEach>
     </div>
     <!-- 核心js插件开始 -->
     <script src="${ctx}/static/js/dookayui.min.js"></script>
@@ -65,13 +85,13 @@
         $(function(){
             //常见问题页面JS
             //下拉菜单展开收起
-            $(".j_toggle").on("click",function () {
+         /*   $(".j_toggle").on("click",function () {
                 $(this).next().toggleClass("hide");
             });
 
             $(".j_toggle2>li").on("click",function () {
                 $(this).find(".answer").toggleClass("hide");
-            });
+            });*/
         });
     </script>
 

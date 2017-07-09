@@ -20,6 +20,17 @@
             margin: 0;
             padding: 0;
         }
+        .qmbox ul li {
+            list-style: none!important;
+        }
+        .qmbox .email-con .email-txt {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            text-align: left;
+        }
+        .body ul li, .mycontent ul li {
+            list-style-type: none!important;
+        }
         .email-submit {
             width: 85%;
             margin: 0 auto;

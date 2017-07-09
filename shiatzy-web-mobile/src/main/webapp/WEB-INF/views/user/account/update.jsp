@@ -52,6 +52,7 @@
                                id="lastName"
                                data-rule="<spring:message code="account.personal.firstName"/>:required;"/></span>
                     <span style="float:right;"></span>
+
                 </li>
                 <li class="form-item2"><spring:message code="account.personal.lastName"/>*
                     <input type="text"
