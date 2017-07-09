@@ -23,6 +23,7 @@ import com.dookay.coral.shop.goods.service.ISkuService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
+import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
@@ -56,7 +57,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("boutique/")
-public class BoutiqueController extends BaseController{
+public class BoutiqueController extends BaseController {
 
 
     @Autowired
@@ -73,30 +74,29 @@ public class BoutiqueController extends BaseController{
     private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
 
-
-    private static int  SHOPPINGCART_TYPE = 3;//精品店
+    private static int SHOPPINGCART_TYPE = 3;//精品店
     //Session 购物车
-    private static final String SESSION_CART ="session_cart";
+    private static final String SESSION_CART = "session_cart";
 
 
-    @RequestMapping(value = "list" ,method = RequestMethod.GET)
-    public ModelAndView list(){
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public ModelAndView list() {
         UserContext userContext = UserContext.current();
 
         List<ShoppingCartItemDomain> sessionCartList = new ArrayList<>();
-        if(userContext.isGuest()){
+        if (userContext.isGuest()) {
             //构建虚拟购物车商品
             HttpServletRequest request = HttpContext.current().getRequest();
             HttpSession session = request.getSession();
-            List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
-            if(listCart!=null&&listCart.size()>0) {
-                for(AddShoppingCartForm form:listCart){
-                    System.out.println("from:"+form);
-                    if(form.getType()== ShoppingCartTypeEnum.RESERVATION.getValue()){
-                        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(form.getItemId(),form.getSizeId());
-                           if(skuDomain==null){
-                               continue;
-                           }
+            List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>) session.getAttribute(SESSION_CART);
+            if (listCart != null && listCart.size() > 0) {
+                for (AddShoppingCartForm form : listCart) {
+                    System.out.println("from:" + form);
+                    if (form.getType() == ShoppingCartTypeEnum.RESERVATION.getValue()) {
+                        SkuDomain skuDomain = shoppingCartService.getSkubySizeAndItem(form.getItemId(), form.getSizeId());
+                        if (skuDomain == null) {
+                            continue;
+                        }
                         GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
                         GoodsItemDomain goodsItemDomain = goodsItemService.get(skuDomain.getItemId());
                         ShoppingCartItemDomain shoppingCartItemDomain = new ShoppingCartItemDomain();
@@ -117,7 +117,7 @@ public class BoutiqueController extends BaseController{
                         String sizeValue = sizeDomain.getName();
                         Long colorId = goodsItemDomain.getColorId();
                         //shoppingCartItemDomain.setStock(goodsService.getTempStock(goodsDomain.getCode(),sizeValue,colorId));
-                        System.out.println("shoppingCartItemDomain:"+shoppingCartItemDomain);
+                        System.out.println("shoppingCartItemDomain:" + shoppingCartItemDomain);
                         sessionCartList.add(shoppingCartItemDomain);
                         shoppingCartService.withGoodsItem(sessionCartList);
                         shoppingCartService.withSku(sessionCartList);
@@ -126,76 +126,84 @@ public class BoutiqueController extends BaseController{
             }
         }
         List<ShoppingCartItemDomain> cartList = null;
-        if(!userContext.isGuest()) {
+        if (!userContext.isGuest()) {
             List<ShoppingCartItemDomain> allList = shoppingCartService.listShoppingCartItemByCustomerId(customerService.getAccount(userContext.getAccountDomain().getId()).getId(), SHOPPINGCART_TYPE);
-            for(ShoppingCartItemDomain line :allList){
-            line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
+            for (ShoppingCartItemDomain line : allList) {
+                line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
                 Long colorId = goodsItemService.get(line.getItemId()).getColorId();
                 String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")).getName();
-                line.setStock(goodsService.getTempStock(line.getGoodsCode(),sizeValue,colorId));
+                line.setStock(goodsService.getTempStock(line.getGoodsCode(), sizeValue, colorId));
             }
             cartList = allList;
-        }else{
+        } else {
             cartList = sessionCartList;
         }
         shoppingCartService.withGoodsItem(cartList);
         updateStock(cartList);
         ModelAndView mv = new ModelAndView("boutique/list");
-        mv.addObject("cartList",cartList);
+        mv.addObject("cartList", cartList);
         return mv;
     }
 
     private void updateStock(List<ShoppingCartItemDomain> cartList) {
-        for(ShoppingCartItemDomain cartItemDomain:cartList){
+        for (ShoppingCartItemDomain cartItemDomain : cartList) {
             String[] codeArray = cartItemDomain.getGoodsCode().split("\\s+");
             String productNo = codeArray[0];//库存商品编号
             String color = codeArray[1];//颜色标识
-            cartItemDomain.setStock(goodsService.getTempStock(productNo,color,cartItemDomain.getSizeDomain().getName()));
+            cartItemDomain.setStock(goodsService.getTempStock(productNo, color, cartItemDomain.getSizeDomain().getName()));
         }
     }
 
-    @RequestMapping(value = "addToBoutique" ,method = RequestMethod.POST)
+    @RequestMapping(value = "addToBoutique", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult addToBoutique(@ModelAttribute AddShoppingCartForm addShoppingCartForm){
+    public JsonResult addToBoutique(@ModelAttribute AddShoppingCartForm addShoppingCartForm) {
+        //获取用户的预约订单数量
+        UserContext userContext = UserContext.current();
+        ShoppingCartItemQuery query = new ShoppingCartItemQuery();
+        query.setCustomerId(userContext.getAccountDomain().getId());
+        List<ShoppingCartItemDomain> shoppingCartItemDomainList = shoppingCartService.getList(query);
+        if (shoppingCartItemDomainList.size() >= 5) {
+            return errorResult(ChooseLanguage.getI18N().getAdderror());
+        }
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
 
         /*获取SKU*/
         Long itemId = addShoppingCartForm.getItemId();
         Long sizeId = addShoppingCartForm.getSizeId();
-        System.out.println("sizeId:"+sizeId+"\nitemId:"+itemId);
+        System.out.println("sizeId:" + sizeId + "\nitemId:" + itemId);
         SkuQuery skuQuery = new SkuQuery();
         skuQuery.setItemId(itemId);
         skuQuery.setIsValid(ValidEnum.YES.getValue());
-        System.out.println("skuQuery"+JsonUtils.toJSONString(skuQuery));
+        System.out.println("skuQuery" + JsonUtils.toJSONString(skuQuery));
         List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-        System.out.println("skuDomainList:"+JsonUtils.toJSONString(skuDomainList));
-        SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
-       GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
-        if(skuDomain == null){
+        System.out.println("skuDomainList:" + JsonUtils.toJSONString(skuDomainList));
+        SkuDomain skuDomain = skuDomainList.stream().filter(x -> JSONObject.fromObject(x.getSpecifications()).getLong("size") == sizeId).findFirst().orElse(null);
+        GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
+        if (skuDomain == null) {
             return errorResult(ChooseLanguage.getI18N().getNoMatchGoods());
-        }else if(goodsDomain.getIsPre()==0){
+        } else if (goodsDomain.getIsPre() == 0) {
             return errorResult(ChooseLanguage.getI18N().getUnPre());
-        }else if(skuDomain.getQuantity()<1){
+        } else if (skuDomain.getQuantity() < 1) {
             return errorResult(ChooseLanguage.getI18N().getSellOut());
         }
 
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
-        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain,skuDomain,SHOPPINGCART_TYPE);
-        if(shoppingCartItemDomain!=null){
-            return  errorResult(ChooseLanguage.getI18N().getExistInPre());
-        }else{
-            shoppingCartService.addToCart(customerDomain, skuDomain, SHOPPINGCART_TYPE,num);
+        ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain, skuDomain, SHOPPINGCART_TYPE);
+        if (shoppingCartItemDomain != null) {
+            return errorResult(ChooseLanguage.getI18N().getExistInPre());
+        } else {
+            shoppingCartService.addToCart(customerDomain, skuDomain, SHOPPINGCART_TYPE, num);
         }
-        return  successResult(ChooseLanguage.getI18N().getAddSuccess());
+        return successResult(ChooseLanguage.getI18N().getAddSuccess());
     }
 
-    @RequestMapping(value = "removeFromBoutique" ,method = RequestMethod.POST)
+    @RequestMapping(value = "removeFromBoutique", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult removeFromBoutique(Long shoppingcartId){
+    public JsonResult removeFromBoutique(Long shoppingcartId) {
         shoppingCartService.removeFromCart(shoppingcartId);
-        return  successResult(ChooseLanguage.getI18N().getDelSuccess());
+        return successResult(ChooseLanguage.getI18N().getDelSuccess());
     }
 
 

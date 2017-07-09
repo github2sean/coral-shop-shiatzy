@@ -60,11 +60,11 @@
                     <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
                     <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
                 </div>
-                <p style="display: inline;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                <p style="margin-bottom: 0px;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
                     <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
                 </p>
                 <c:if test="${not empty  row.goodsDisPrice}">
-                    <p class="price xzc-dis-price" style="display: inline;margin-left: 1rem"><spring:message code="shoppingCart.disPrice"/>&nbsp;
+                    <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>&nbsp;
                         <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span>
                     </p>
                 </c:if>
@@ -105,8 +105,8 @@
     </div>
     </c:if>
     <ul>
-        <li><a href="/goods/list?categoryId=1"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
-        <li><a href="/goods/list?categoryId=8"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=17"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=18"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
         <li><a href="#" class="whatBoutique"><spring:message code="reservation.what"/>?<span>></span></a></li>
     </ul>
 </div>
@@ -250,7 +250,7 @@
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
                 area: ['100%', '100%'],
-                content: ['${ctx}/content/whatBoutique'],//iframe的url，no代表不显示滚动条
+                content: ['${ctx}/content/whatBoutique?id=32'],//iframe的url，no代表不显示滚动条
                 shadeClose: true,
                 success: function(layero, index){
                     $('html').addClass("open-c");

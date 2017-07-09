@@ -55,7 +55,7 @@
 
     </ul>
     <c:if test="${not empty goodsDomainPageList.list && goodsDomainPageList.list.size()>19}" >
-    <div class="font-12 text-center do-load-list">
+    <div class="font-12 text-center do-load-list" id="auto_load">
         <span class="link-down-before moreGoods"><spring:message code="goods.list.autoLoad"/></span>
         <span class="overGoods" style="display: none">-<spring:message code="goods.list.downOver"/>-</span>
     </div>
@@ -215,9 +215,6 @@
     var offset = '${goodsDomainPageList.list.size()}'*1-1;
     var page = 1;
     var totalPage = parseInt('${goodsDomainPageList.totalPage}');
-    console.log("pageSize:"+'${goodsDomainPageList.pageSize}');
-    console.log("totalPage:"+totalPage)
-    console.log("totalRecord:${goodsDomainPageList.totalRecord}")
     function loadMore() {
         //当前分类
         var categoryId = '${goodsCategoryDomain.id}'
@@ -250,11 +247,8 @@
         var maxHeight = $(window).height();//可视区域
         scrollTop = parseInt(scrollTop);
         var pageNum = Math.abs(scrollTop%moveHeight);
-
-        if(0==pageNum){
-            console.log("加载下一页了");
-            loadMore();
-        }else if(getWindowHeight()+scrollTop==getScrollHeight()){
+        var top2 = $("#auto_load").offset().top;
+        if(getWindowHeight()+scrollTop>top2){
             loadMore();
             console.log("底部");
         }

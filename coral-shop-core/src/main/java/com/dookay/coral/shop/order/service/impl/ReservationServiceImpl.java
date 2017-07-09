@@ -15,12 +15,11 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
+import com.dookay.coral.shop.message.util.FreemarkerUtil;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
-import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
-import com.dookay.coral.shop.order.utils.FreemarkerUtil;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreDomain;
@@ -30,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.order.mapper.ReservationMapper;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
@@ -39,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -123,7 +120,9 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 			reservationItemDomain.setReservationId(reservationDomain.getId());
 			reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
 			reservationItemDomain.setGoodsPrice(formatDouble(line.getGoodsPrice()/rate));
-			reservationItemDomain.setGoodsDisPrice(formatDouble(line.getGoodsDisPrice()/rate));
+			if (line.getGoodsDisPrice()!=null) {
+				reservationItemDomain.setGoodsDisPrice(formatDouble(line.getGoodsDisPrice() / rate));
+			}
 			reservationItemDomain.setSkuCode(line.getSkuId()+"");
 			reservationItemDomain.setNum(line.getNum());
 			reservationItemDomain.setItemId(line.getItemId());

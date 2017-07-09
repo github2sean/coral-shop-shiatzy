@@ -112,6 +112,9 @@ public class AccountController extends MobileBaseController {
     public ModelAndView toUpdate(){
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        if(customerDomain.getBirthday() == null){
+            customerDomain.setBirthday(new Date());
+        }
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
         String phone = customerDomain.getPhone();
         if(StringUtils.isNotBlank(phone)){
@@ -150,11 +153,6 @@ public class AccountController extends MobileBaseController {
         Long accountId = UserContext.current().getAccountDomain().getId();
         AccountDomain updateAccount = accountService.get(accountId);
         CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());
-        //第一次填写手机号发送短信通知
-        Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"shippingCountry"));
-        if(StringUtils.isNotBlank(phone)&& oldCustomer!=null && StringUtils.isBlank(oldCustomer.getPhone())){
-            smsService.sendToSms(isEn,phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
-        }
 
         Long countryId = getCustomeAddress.getCountryId();
 
@@ -172,6 +170,10 @@ public class AccountController extends MobileBaseController {
 
         Long addressId = updateAccountForm.getAddressId();
         CustomerAddressDomain updaCustomerAddress = customerAddressService.get(addressId);
+        if(updaCustomerAddress == null){
+            updaCustomerAddress = new CustomerAddressDomain();
+        }
+        updaCustomerAddress.setCustomerId(updateCustomer.getId());
         updaCustomerAddress.setTitle(title);
         updaCustomerAddress.setCountryId(countryId);
         updaCustomerAddress.setProvince(getCustomeAddress.getProvince());
@@ -181,6 +183,9 @@ public class AccountController extends MobileBaseController {
         updaCustomerAddress.setFirstName(firstName);
         updaCustomerAddress.setPhone(phone);
         updaCustomerAddress.setPostalCode(getCustomeAddress.getPostalCode());
+        if(updaCustomerAddress.getId() == null){
+            customerAddressService.create(updaCustomerAddress);
+        }
 
         System.out.print("updaCustomerAddress:"+ JsonUtils.toJSONString(updaCustomerAddress) +"\n updateCustomer:"+JsonUtils.toJSONString(updateCustomer)+"\n updateAccount:"+updateAccount);
 

@@ -228,7 +228,7 @@ public class GoodsController extends BaseController{
         modelAndView.addObject("query",query);
 
         //同级分类列表
-        List<GoodsCategoryDomain> goodsCategoryDomainList =list!=null&&list.size()>0?list:goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId());
+        List<GoodsCategoryDomain> goodsCategoryDomainList =list!=null&&list.size()>0?list:goodsCategoryService.listCategoryByParentId(goodsCategoryDomain.getParentId(),false);
         modelAndView.addObject("categoryList",goodsCategoryDomainList);
 
         //材质列表
