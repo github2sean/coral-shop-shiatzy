@@ -671,7 +671,7 @@ i {
 /*常见问题*/
 
 .dx-CommonProblems .content {
-    /*padding: 1.8rem 1.3rem 0;*/
+    padding: 1.8rem 1.3rem 0;
     margin: 0 auto;
 }
 
@@ -683,7 +683,9 @@ i {
     padding-left: .8rem;
     border-bottom: 2px solid #ccc;
 }
-
+.dx-CommonProblems .content .first-title:first-child {
+    margin-top: 2.2rem;
+}
 .dx-CommonProblems .content .first-title {
     margin-bottom: 2.2rem;
     font-size: 1.2rem;
@@ -691,10 +693,17 @@ i {
     padding-left: .8rem;
     /* border-bottom: 2px solid #ccc;*/
 }
-
+.dx-CommonProblems .content .first-title a {
+    display: block;
+    padding-right: 1.2rem;
+    position: relative;
+}
 .dx-CommonProblems .content .first-title>a:after {
     content: ">";
-    float: right;
+    /*float: right;*/
+    position: absolute;
+    top: 0;
+    right: 0.7rem;
     margin-right: .7rem;
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
@@ -710,7 +719,12 @@ i {
 }
 
 .dx-CommonProblems .content .second-title li a {
-    padding-left: 2.8rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .dx-CommonProblems .content .second-title li a:after {
@@ -718,6 +732,9 @@ i {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
     float: right;
+    position: absolute;
+    right: -1rem;
+    top: 0;
     margin-right: 2.4rem;
     -webkit-transition: -webkit-transform .5s;
     transition: -webkit-transform .5s;
@@ -751,8 +768,8 @@ i {
     position: relative;
 }
 
-
-/*.dx-shopping .dx-title:after{
+/*
+.dx-shopping .dx-title:after{
     content: "";
     width: 0;
     height: 0;
@@ -1733,6 +1750,8 @@ i {
     font-size: 1rem;
     margin-bottom: 1.5rem;
     height: 2rem;
+    padding: 0 .6rem;
+    word-wrap: break-word;
 }
 
 .dx-commodity .maybeLike .price {
@@ -1812,7 +1831,8 @@ i {
 /*相册*/
 
 .gallery-block {
-    position: absolute;
+    /*position: absolute;*/
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
@@ -1842,8 +1862,10 @@ i {
 
 .gallery-block .iconfont {
     position: absolute;
-    right: 50px;
-    top: 50px;
+    right: 30px;
+    top: 40px;
+    /*right: 50px;*/
+    /*top: 50px;*/
     color: #333;
     font-size: 24px;
     z-index: 99;
