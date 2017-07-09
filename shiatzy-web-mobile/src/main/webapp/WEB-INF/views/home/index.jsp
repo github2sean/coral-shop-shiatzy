@@ -47,7 +47,7 @@
                     <div><img src="${ImageModel.toFirst(row.indexBlockDomainList[0].image).file}" alt=""></div>
                 </a>
                 <a href="${row.indexBlockDomainList[1].link}" style="padding-left: 5px">
-                    <c:if test="${not empty row.indexBlockDomainList[1].title}"><p class="guide-link-before">${web:selectLanguage()=='en_US'?row.indexBlockDomainList[0].enTitle:row.indexBlockDomainList[0].title}</p></c:if>
+                    <c:if test="${not empty row.indexBlockDomainList[1].title}"><p class="guide-link-before">${web:selectLanguage()=='en_US'?row.indexBlockDomainList[1].enTitle:row.indexBlockDomainList[1].title}</p></c:if>
                     <div><img src="${ImageModel.toFirst(row.indexBlockDomainList[1].image).file}" alt=""></div>
                 </a>
             </div>

@@ -1701,7 +1701,7 @@ h3 {
 .do-title .title-main {
     font-weight: bold;
     color: #333;
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 
 .do-title .title-sub {
@@ -1727,6 +1727,7 @@ h3 {
     color: #fff;
     text-align: center;
     width: 100%;
+    font-size: 1.2rem;
 }
 
 .do-cover-start {
