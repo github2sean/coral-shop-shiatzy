@@ -39,16 +39,16 @@
             font-weight: 300;
             margin: 0;
         }
-        .email-con .email-txt {
+        .email-con .email-txt-p {
             margin-top: 10px;
             margin-bottom: 10px;
         }
-        .email-con .email-txt .txt {
+        .email-con .email-txt-p .txt-p {
             font-size: 14px;
             line-height: 22px;
             margin-bottom: 15px;
         }
-        .email-con .email-txt .txt .link-web {
+        .email-con .email-txt-p .txt-p .link-web {
             text-decoration: underline;
             color: #2a586f;
         }
@@ -63,15 +63,14 @@
         <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
-            <div class="email-txt">
+            <div class="email-txt-p">
                 <p class="name">亲爱的 ${name},</p>
                 <br>
-                <p class="txt">我们刚刚为您创建了一个新密码。出于安全考虑，我们建议您在下一次登录时更改此密码。 <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
-                <p class="txt">
-                    如果您还有其他问题，请与我们联系。<br>
-                    <a href="#" class="link-web">customercare@shiatzychen.com</a>
+                <p class="txt-p">我们刚刚为您创建了一个新密码。出于安全考虑，我们建议您在下一次登录时更改此密码。 <a href="#" class="link-web">customercare@shiatzychen.com</a>.</p>
+                <p class="txt-p">
+                    如果您还有其他问题，请与我们联系。
                 </p>
-                <p class="txt" style="margin-bottom: 5px">
+                <p class="txt-p" style="margin-bottom: 5px">
                     您的新密码是
                 </p>
                 <p style="padding: 10px ; display:block; width: 300px;   background: #eee; color: #000; letter-spacing: 2px; text-decoration: none; cursor:pointer ">${newPass}</p>

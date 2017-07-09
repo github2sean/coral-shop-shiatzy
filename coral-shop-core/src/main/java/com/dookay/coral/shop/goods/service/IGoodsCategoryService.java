@@ -26,7 +26,7 @@ public interface IGoodsCategoryService extends IBaseService<GoodsCategoryDomain>
      * @param parentId
      * @return
      */
-    List<GoodsCategoryDomain> listCategoryByParentId(Long parentId);
+    List<GoodsCategoryDomain> listCategoryByParentId(Long parentId,Boolean isBack);
 
     GoodsCategoryDomain getCategory(Long categoryId);
 

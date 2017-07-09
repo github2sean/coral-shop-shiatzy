@@ -1,20 +1,14 @@
-package com.dookay.shiatzy.web.mobile.util;
-
-import java.io.*;
-import java.util.*;
+package com.dookay.coral.shop.message.util;
 
 import com.dookay.coral.common.web.HttpContext;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateModel;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Map;
 
 
 /**
@@ -32,9 +26,7 @@ public class FreemarkerUtil {
             //通过Freemaker的Configuration读取相应的ftl
             Configuration cfg = new Configuration();
             //设定去哪里读取相应的ftl模板文件
-            String path = FreemarkerUtil.class.getResource("").getPath();
             String root= getWebAppPath("/WEB-INF/ftl");
-            System.out.println("path:"+path+" root:"+root);
             cfg.setDirectoryForTemplateLoading(new File(root));
             //cfg.setClassForTemplateLoading(FreemarkerUtil.class,"/ftl");
             //在模板文件目录中找到名称为name的文件

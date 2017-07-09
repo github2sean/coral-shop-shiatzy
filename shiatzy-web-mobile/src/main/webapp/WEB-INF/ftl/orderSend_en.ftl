@@ -45,20 +45,20 @@
             margin: 0;
             text-align: center;
         }
-        .email-con .email-txt-p {
+        .email-con .email-txt {
             margin-top: 10px;
             margin-bottom: 10px;
             text-align: center;
         }
-        .email-con .email-txt-p .name {
+        .email-con .email-txt .name {
             font-family: "宋体";
         }
-        .email-con .email-txt-p .txt-p {
+        .email-con .email-txt .txt {
             font-size: 14px;
             line-height: 22px;
             font-family: "宋体";
         }
-        /*.email-con .email-txt-p .txt-p .link-web {*/
+        /*.email-con .email-txt .txt .link-web {*/
             /*text-decoration: underline;*/
             /*color: #2a586f;*/
         /*}*/
@@ -106,7 +106,7 @@
         .dingdan .list-name {
             /*font-weight: bold;*/
         }
-        .email-txt-p .summary {
+        .email-txt .summary {
             font-family: 宋体;
             text-align: center;
             font-size: 14px;
@@ -209,24 +209,24 @@
         <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
-            <div class="email-txt-p">
-                <p class="name">亲爱的 ${name},</p>
+            <div class="email-txt">
+                <p class="name">dear ${name},</p>
                 <br>
-                <p class="txt-p">
+                <p class="txt">
                     ${content}</p>
                 <div class="dingdan">
                     <div class="xzc-detail goods-detail">
-                        <p class="dingdan-title">订单详情</p>
+                        <p class="dingdan-title">order details</p>
                         <div class="detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="list-name">订单编号 : </span><span> ${order.orderNo}</span>
+                                    <span class="list-name">orderNo : </span><span> ${order.orderNo}</span>
                                 </li>
                                 <li>
-                                    <span class="list-name">订单日期 : </span><span>${date}</span>
+                                    <span class="list-name">order time : </span><span>${date}</span>
                                 </li>
                                 <li>
-                                    <span class="list-name">订单状态 : </span><span>${status}</span>
+                                    <span class="list-name">status : </span><span>${status}</span>
                                 </li>
 
                             </ul>
@@ -234,7 +234,7 @@
                     </div>
                 </div>
                 <div class="dingdan-list">
-                    <p class="goods-detail">商品详情</p>
+                    <p class="goods-detail">goods details</p>
 
 
                     <#if orderItem?? && (orderItem?size > 0) >
@@ -242,17 +242,17 @@
                             <div class="list-left"><img src="${it.goodsItemDomain.picUrl}" alt=""></div>
                             <div class="list-right">
                                 <h3 class="pro-title">${it.goodsName} ${it.goodsCode}</h3>
-                                <p class="pro-value">${it.goodsItemDomain.name}</p>
-                                <p class="pro-value">选择尺寸：  ${it.sizeDomain.name}</p>
-                                <p class="pro-value">数量：${it.num}</p>
-                                <p class="pro-value">单价：
+                                <p class="pro-value">${it.goodsItemDomain.enName}</p>
+                                <p class="pro-value">size：  ${it.sizeDomain.enName}</p>
+                                <p class="pro-value">number：${it.num}</p>
+                                <p class="pro-value">unit price：
                                 <#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>
                                 ${it.goodsPrice}</p>
                                 <#if it.goodsDisPrice??>
-                                    <p class="pro-value">折扣价：
+                                    <p class="pro-value">discount price：
                                         <#if order.currentCode=="USD">$
                                         <#elseif order.currentCode=="EUR">€
                                         <#else >¥
@@ -267,35 +267,35 @@
                 </div>
                 <div class="dingdan">
                     <div class="xzc-detail">
-                        <p class="bill-title">账单详情</p>
+                        <p class="bill-title">account</p>
                         <div class="detail bill-detail">
                             <ul class="detail-list">
                                 <li>
-                                    <span class="bill-lf">优惠前 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                    <span class="bill-lf">before discount : </span><span class="bill-rt"><#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>   ${order.goodsTotal}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">优惠应用 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                    <span class="bill-lf">discount : </span><span class="bill-rt"><#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>   -${order.couponDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">Art Club 会员优惠 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                    <span class="bill-lf">Art Club discount : </span><span class="bill-rt"><#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>   -${order.memberDiscount!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">运费 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                    <span class="bill-lf">shipping fee : </span><span class="bill-rt"><#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>   ${order.shipFee!'0'}</span>
                                 </li>
                                 <li>
-                                    <span class="bill-lf">总计 : </span><span class="bill-rt"><#if order.currentCode=="USD">$
+                                    <span class="bill-lf">total : </span><span class="bill-rt"><#if order.currentCode=="USD">$
                                 <#elseif order.currentCode=="EUR">€
                                 <#else >¥
                                 </#if>   ${order.orderTotal}</span>
@@ -304,7 +304,7 @@
                         </div>
                     </div>
                     <div class="xzc-detail">
-                        <p class="diverse-title">配送信息</p>
+                        <p class="diverse-title">shipping information</p>
                         <div class="detail">
                             <ul class="detail-list">
                                 <li>

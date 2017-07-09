@@ -45,20 +45,20 @@
             margin: 0;
             text-align: center;
         }
-        .email-con .email-txt-p {
+        .email-con .email-txt {
             margin-top: 10px;
             margin-bottom: 10px;
             text-align: center;
         }
-        .email-con .email-txt-p .name {
+        .email-con .email-txt .name {
             font-family: "宋体";
         }
-        .email-con .email-txt-p .txt-p {
+        .email-con .email-txt .txt {
             font-size: 14px;
             line-height: 22px;
             font-family: "宋体";
         }
-        /*.email-con .email-txt-p .txt-p .link-web {*/
+        /*.email-con .email-txt .txt .link-web {*/
             /*text-decoration: underline;*/
             /*color: #2a586f;*/
         /*}*/
@@ -106,7 +106,7 @@
         .dingdan .list-name {
             /*font-weight: bold;*/
         }
-        .email-txt-p .summary {
+        .email-txt .summary {
             font-family: 宋体;
             text-align: center;
             font-size: 14px;
@@ -209,10 +209,10 @@
         <p class="title"><img src="${picUrl}" alt=""></p>
         <div class="email-con">
             <h1 class="email-title">${title}</h1>
-            <div class="email-txt-p">
+            <div class="email-txt">
                 <p class="name">亲爱的 ${name},</p>
                 <br>
-                <p class="txt-p">
+                <p class="txt">
                     ${content}</p>
                 <div class="dingdan">
                     <div class="xzc-detail goods-detail">
