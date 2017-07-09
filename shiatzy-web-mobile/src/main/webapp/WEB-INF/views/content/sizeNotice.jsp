@@ -95,7 +95,7 @@
                 <td>40</td>
               </tr>
               <tr>
-                <td>台湾 (TW)</td>
+                <td>${web:selectLanguage()=='en_US'?"TAIWAN":"台湾 (TW)"}</td>
                 <td>6</td>
                 <td>8</td>
                 <td>10</td>
@@ -103,7 +103,7 @@
                 <td>14</td>
               </tr>
               <tr>
-                <td>日本 (JP)</td>
+                <td>${web:selectLanguage()=='en_US'?"JAPAN":"日本 (JP)"}</td>
                 <td>7</td>
                 <td>9</td>
                 <td>11</td>
@@ -111,7 +111,7 @@
                 <td>15</td>
               </tr>
               <tr>
-                <td>美国 (US)</td>
+                <td>${web:selectLanguage()=='en_US'?"US":"美国 (US)"}</td>
                 <td>0</td>
                 <td>2-4</td>
                 <td>6</td>
@@ -119,7 +119,7 @@
                 <td>10-12</td>
               </tr>
               <tr>
-                <td>澳大利亚 (AUS)</td>
+                <td>${web:selectLanguage()=='en_US'?"AUSTRALIA":"澳大利亚 (AUS)"}</td>
                 <td>4</td>
                 <td>6-8</td>
                 <td>10</td>
@@ -127,7 +127,7 @@
                 <td>14-16</td>
               </tr>
               <tr>
-                <td>英国 (UK)</td>
+                <td>${web:selectLanguage()=='en_US'?"UK":"英国 (UK)"}</td>
                 <td>4</td>
                 <td>6-8</td>
                 <td>10</td>
@@ -135,7 +135,7 @@
                 <td>14-16</td>
               </tr>
               <tr>
-                <td>国际 (Intl)</td>
+                <td>${web:selectLanguage()=='en_US'?"INTERNATIONAL":"国际 (Intl)"}</td>
                 <td>XS</td>
                 <td>X</td>
                 <td>S-M</td>
@@ -143,7 +143,7 @@
                 <td>L</td>
               </tr>
               <tr>
-                <td>中国 (CN)</td>
+                <td>${web:selectLanguage()=='en_US'?"CHINA":"中国 (CN)"}</td>
                 <td>155</td>
                 <td>160</td>
                 <td>165</td>
@@ -151,7 +151,7 @@
                 <td>175</td>
               </tr>
               <tr>
-                <td>胸围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"BUST (cm)":"胸围 (厘米)"}</td>
                 <td>78-82</td>
                 <td>83-87 </td>
                 <td>88-92</td>
@@ -159,7 +159,7 @@
                 <td>98-102</td>
               </tr>
               <tr>
-                <td>腰围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"WAIST (cm)":"腰围 (厘米)"}</td>
                 <td>59-63</td>
                 <td>64-68 </td>
                 <td>69-73</td>
@@ -167,7 +167,7 @@
                 <td>79-83</td>
               </tr>
               <tr>
-                <td>臀围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"HIPS (cm)":"臀围 (厘米)"}</td>
                 <td>85-89</td>
                 <td>90-94 </td>
                 <td>95-99</td>
@@ -179,14 +179,20 @@
           <table class="table table-bordered ">
             <thead style="font-size:12px ">
               <tr>
-                <th COLSPAN="6" STYLE="text-align: center">男士成衣尺码对照表
+                <th COLSPAN="6" STYLE="text-align: center">
+                  <c:if test="${web:selectLanguage()!='en_US'}">
+                    男士成衣尺码对照表
+                  </c:if>
+                  <c:if test="${web:selectLanguage()=='en_US'}">
+                    MEN'S READY TO WEAR SIZE CHART
+                  </c:if>
                 </th>
               </tr>
             </thead>
             <tbody style="font-size:10px ">
 
               <tr>
-                <td>法国 (FR)</td>
+                <td>${web:selectLanguage()=='en_US'?"FRANCE":"法国 (FR)"}</td>
                 <td>46</td>
                 <td>48</td>
                 <td>50</td>
@@ -194,7 +200,7 @@
                 <td>54</td>
               </tr>
               <tr>
-                <td>国际 (Intl)</td>
+                <td>${web:selectLanguage()=='en_US'?"INTERNATIONAL":"国际 (Intl)"}</td>
                 <td>S</td>
                 <td>M</td>
                 <td>L</td>
@@ -202,7 +208,7 @@
                 <td>XXL</td>
               </tr>
               <tr>
-                <td>中国 (CN)</td>
+                <td>${web:selectLanguage()=='en_US'?"CHINA":"中国 (CN)"}</td>
                 <td>170</td>
                 <td>175</td>
                 <td>180</td>
@@ -210,7 +216,7 @@
                 <td>190</td>
               </tr>
               <tr>
-                <td>胸围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"BUST (cm)":"胸围 (厘米)"}</td>
                 <td>83-87</td>
                 <td>88-92 </td>
                 <td>93-97</td>
@@ -218,7 +224,7 @@
                 <td>103-107</td>
               </tr>
               <tr>
-                <td>腰围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"WAIST (cm)":"腰围 (厘米)"}</td>
                 <td>74-78</td>
                 <td>79-83 </td>
                 <td>84-88</td>
@@ -226,7 +232,7 @@
                 <td>94-98</td>
               </tr>
               <tr>
-                <td>臀围 (厘米)</td>
+                <td>${web:selectLanguage()=='en_US'?"HIPS (cm)":"臀围 (厘米)"}</td>
                 <td>93-97</td>
                 <td>98-102</td>
                 <td>103-107</td>
@@ -239,30 +245,19 @@
             <table class="table table-bordered ">
               <thead style="font-size:12px ">
                 <tr>
-                  <th COLSPAN="13" STYLE="text-align: center">女士鞋履尺码对照表
+                  <th COLSPAN="13" STYLE="text-align: center">
+                    <c:if test="${web:selectLanguage()!='en_US'}">
+                      女士鞋履尺码对照表
+                    </c:if>
+                    <c:if test="${web:selectLanguage()=='en_US'}">
+                      WOMEN'S SHOE SIZE CHART
+                    </c:if>
                   </th>
                 </tr>
               </thead>
               <tbody style="font-size:10px ">
-
                 <tr>
-                  <td>法国 (FR)</td>
-                  <td>35</td>
-                  <td>36</td>
-                  <td>36.5</td>
-                  <td>37</td>
-                  <td>37.5</td>
-                  <td>38.5</td>
-                  <td>38.5</td>
-                  <td>39</td>
-                  <td>40</td>
-                  <td>41</td>
-                  <td>42</td>
-                  <td>43</td>
-
-                </tr>
-                <tr>
-                  <td>中国 (CN)</td>
+                  <td>${web:selectLanguage()=='en_US'?"FRANCE":"法国 (FR)"}</td>
                   <td>35</td>
                   <td>36</td>
                   <td>36.5</td>
@@ -277,7 +272,22 @@
                   <td>43</td>
                 </tr>
                 <tr>
-                  <td>意大利(IT)</td>
+                  <td>${web:selectLanguage()=='en_US'?"CHINA":"中国 (CN)"}</td>
+                  <td>35</td>
+                  <td>36</td>
+                  <td>36.5</td>
+                  <td>37</td>
+                  <td>37.5</td>
+                  <td>38.5</td>
+                  <td>38.5</td>
+                  <td>39</td>
+                  <td>40</td>
+                  <td>41</td>
+                  <td>42</td>
+                  <td>43</td>
+                </tr>
+                <tr>
+                  <td>${web:selectLanguage()=='en_US'?"ITALY":"意大利(IT)"}</td>
                   <td>34</td>
                   <td>35</td>
                   <td>35.5</td>
@@ -292,7 +302,7 @@
                   <td>42</td>
                 </tr>
                 <tr>
-                  <td>美国 (US)</td>
+                  <td>${web:selectLanguage()=='en_US'?"US":"美国 (US)"}</td>
                   <td>4</td>
                   <td>5</td>
                   <td>5.5</td>
@@ -307,7 +317,7 @@
                   <td>12</td>
                 </tr>
                 <tr>
-                  <td>英国 (UK)</td>
+                  <td>${web:selectLanguage()=='en_US'?"UK":"英国 (UK)"}</td>
                   <td>1</td>
                   <td>2</td>
                   <td>2.5</td>
@@ -328,14 +338,19 @@
             <table class="table table-bordered ">
              <thead style="font-size:12px ">
                <tr>
-                 <th COLSPAN="13" STYLE="text-align: center">男士鞋履尺码对照表
+                 <th COLSPAN="13" STYLE="text-align: center">
+                   <c:if test="${web:selectLanguage()!='en_US'}">
+                     男士鞋履尺码对照表
+                   </c:if>
+                   <c:if test="${web:selectLanguage()=='en_US'}">
+                     MEN'S SHOE SIZE CHART
+                   </c:if>
                  </th>
                </tr>
              </thead>
              <tbody style="font-size:10px ">
-
                <tr>
-                 <td>欧洲码 (EU)</td>
+                 <td>${web:selectLanguage()=='en_US'?"EUROPEAN (EU)":"欧洲码 (EU)"}</td>
                  <td>40</td>
                  <td>41</td>
                  <td>42</td>
@@ -348,7 +363,7 @@
                  <td>46</td>
                </tr>
                <tr>
-                 <td>美国 (US)</td>
+                 <td>${web:selectLanguage()=='en_US'?"US":"美国 (US)"}</td>
                  <td>7</td>
                  <td>8</td>
                  <td>9</td>
@@ -361,7 +376,7 @@
                  <td>13</td>
                </tr>
                <tr>
-                 <td>英国 (UK)</td>
+                 <td>${web:selectLanguage()=='en_US'?"UK":"英国 (UK)"}</td>
                  <td>6</td>
                  <td>7</td>
                  <td>8</td>
@@ -379,13 +394,19 @@
           <table class="table table-bordered " style="table-layout: fixed">
             <thead style="font-size:12px ">
               <tr>
-                <th COLSPAN="8" STYLE="text-align: center">其它配饰尺码对照表（腰带）
+                <th COLSPAN="8" STYLE="text-align: center">
+                  <c:if test="${web:selectLanguage()!='en_US'}">
+                    其它配饰尺码对照表（腰带）
+                  </c:if>
+                  <c:if test="${web:selectLanguage()=='en_US'}">
+                    BELT SIZE CHART
+                  </c:if>
                 </th>
               </tr>
             </thead>
             <tbody style="font-size:10px">
               <tr>
-                <td >法国 </td>
+                <td>${web:selectLanguage()=='en_US'?"FRANCE":"法国 (FR)"}</td>
                 <td>70</td>
                 <td>75</td>
                 <td>80</td>
@@ -395,7 +416,7 @@
                 <td>100</td>
               </tr>
               <tr>
-                <td>意大利 (ITALY)</td>
+                <td>${web:selectLanguage()=='en_US'?"ITALY":"意大利(IT)"}</td>
                 <td>38</td>
                 <td>40</td>
                 <td>42</td>
@@ -405,7 +426,7 @@
                 <td>50</td>
               </tr>
               <tr>
-                <td>英国 (UK)</td>
+                <td>${web:selectLanguage()=='en_US'?"UK":"英国 (UK)"}</td>
                 <td>6</td>
                 <td>8</td>
                 <td>10</td>
@@ -415,7 +436,7 @@
                 <td>18</td>
               </tr>
               <tr>
-                <td>美国 (US)</td>
+                <td>${web:selectLanguage()=='en_US'?"US":"美国 (US)"}</td>
                 <td>0</td>
                 <td>2-4</td>
                 <td>4-6</td>
