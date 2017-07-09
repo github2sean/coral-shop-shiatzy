@@ -3,7 +3,6 @@ package com.dookay.shiatzy.web.mobile.controller;
 import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
-import com.dookay.coral.common.utils.HttpClientUtil;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
@@ -13,14 +12,10 @@ import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.host.user.service.IAccountService;
 import com.dookay.coral.shop.content.domain.ContentCategoryDomain;
-import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
 import com.dookay.coral.shop.content.query.ContentCategoryQuery;
-import com.dookay.coral.shop.content.query.MessageTemplateQuery;
 import com.dookay.coral.shop.content.service.IContentCategoryService;
 import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
-import com.dookay.coral.shop.customer.query.CustomerAddressQuery;
-import com.dookay.coral.shop.customer.service.ICustomerAddressService;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
@@ -28,14 +23,12 @@ import com.dookay.coral.shop.goods.domain.SkuDomain;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
-import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
+import com.dookay.coral.shop.message.util.EmailUtil;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
-import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
-import com.dookay.coral.shop.shipping.query.ShippingCountryQuery;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
@@ -43,27 +36,19 @@ import com.dookay.shiatzy.web.mobile.form.ForgetForm;
 import com.dookay.shiatzy.web.mobile.form.LoginForm;
 import com.dookay.shiatzy.web.mobile.form.RegisterForm;
 import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
-import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
-import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
-import com.sun.activation.registries.MailcapParseException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.util.StringUtil;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -247,40 +232,13 @@ public class PassportController extends MobileBaseController{
         AccountDomain accountDomain = accountService.getAccount(userName);
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        String secretKey = UUID.randomUUID().toString();//密钥
+        accountDomain.setActiveCode(secretKey);
+        accountService.update(accountDomain);
+        //生成模版
+        Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
+        EmailUtil.Register(userName, isEn);
         UserContext.signIn(accountDomain);
-        try{
-            //发送邮件通知
-            MessageTemplateQuery query = new MessageTemplateQuery();
-            query.setType(1);
-            query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
-            query.setIsValid(1);
-            MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
-
-            //生成模版
-            Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
-            Map<String,Object> map = new HashMap<>();
-            map.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-            map.put("title",isEn?messageTemplate.getEnContent():messageTemplate.getTitle());
-            map.put("name",userName);
-            map.put("contentPrefix",!isEn?messageTemplate.getContent():messageTemplate.getEnContent());
-            //map.put("contentSuffix",!isEn?"从现在起，您可以通过输入您的个人登录信息随时访问您的帐户。作为我们在线精品店的会员，你有幸成为第一个听到我们最新的收藏、特别活动和新闻的人。你可以充分利用一系列的好处和服务如下：在您的在线的时候":"From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
-            String html = FreemarkerUtil.printString(isEn?"registerSuccessful_en.ftl":"registerSuccessful.ftl",map);
-            // 发邮件通知
-            String secretKey = UUID.randomUUID().toString();//密钥
-            accountDomain.setActiveCode(secretKey);
-            accountService.update(accountDomain);
-
-            HashMap<String,String> emailMap = new HashMap<>();
-            emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
-            emailMap.put(simpleAliDMSendMail.TITLE,isEn?messageTemplate.getEnContent():messageTemplate.getTitle());
-            //String resetPassHref =  basePath+"passport/activeEmail?userName="+userName+"&activeCode="+secretKey;
-            //String emailContent = "如果您未申请夏资陈帐号,请删除此邮件，点击下面的链接,激活帐号<br/><a href="+resetPassHref+" target='_BLANK'>点击我重新设置密码</a>" ;
-            emailMap.put(simpleAliDMSendMail.CONTENT,html);
-            simpleAliDMSendMail.sendEmail(emailMap);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         return successResult(DefaultTags.translate("注册成功","Register success"));
     }
 
@@ -330,36 +288,12 @@ public class PassportController extends MobileBaseController{
             users.setValidateCode(secretKey);
             users.setRegisterDate(date);
             accountService.update(users);//保存到数据库
-            String key = users.getUserName()+"$"+date+"$"+secretKey;
-            String digitalSignature = DigestUtils.md5Hex(key);//数字签名
-
-            String path = request.getContextPath();
-            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-            String resetPassHref =  basePath+"u/account/toSetNewPassword?sid="+digitalSignature+"&userName="+users.getUserName();
-
-            //生成模版
-            Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
-            String emailTitle = isEn?"SHIATZY CHEN reset password":"夏资陈 找回密码";
-            Map<String,Object> freeMap = new HashMap<>();
-
-            freeMap.put("picUrl",FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-            freeMap.put("title",emailTitle);
-            freeMap.put("name",userName);
-            freeMap.put("setUrl",resetPassHref);
             //生产新密码
             String newPass = RandomUtils.randomNumbers(6);
             accountService.resetPassword(users,newPass);
-            freeMap.put("newPass",newPass);
-            String html = FreemarkerUtil.printString(isEn?"resetPassword_en.ftl":"resetPassword.ftl",freeMap);
-
-            String emailContent = "请勿回复本邮件.点击下面的链接,重设密码<br/><a href="+resetPassHref +" target='_BLANK'>点击我重新设置密码</a>" +
-                    "<br/>tips:本邮件超过30分钟,链接将会失效"+key+"\tmd5:"+digitalSignature;
-            HashMap<String,String> emailMap = new HashMap<>();
-            emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,userName);
-            emailMap.put(simpleAliDMSendMail.TITLE,emailTitle);
-            emailMap.put(simpleAliDMSendMail.CONTENT,html);
-            simpleAliDMSendMail.sendEmail(emailMap);
+            //生成模版
+            Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(request,"shippingCountry"));
+            EmailUtil.forgetPwd(users.getUserName(),date,secretKey,newPass,isEn);
 
             //三方jar包未选择
             //SendMail.getInstatnce().sendHtmlMail(emailTitle,emailContent,userName);

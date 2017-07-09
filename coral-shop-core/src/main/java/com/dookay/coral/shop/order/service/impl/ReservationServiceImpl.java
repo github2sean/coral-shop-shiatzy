@@ -1,6 +1,7 @@
 package com.dookay.coral.shop.order.service.impl;
 
 import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
+import com.dookay.coral.common.utils.ImageUtil;
 import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
@@ -15,12 +16,12 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
+import com.dookay.coral.shop.message.util.EmailUtil;
+import com.dookay.coral.shop.message.util.FreemarkerUtil;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
-import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
-import com.dookay.coral.shop.order.utils.FreemarkerUtil;
 import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreDomain;
@@ -30,7 +31,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.order.mapper.ReservationMapper;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -123,7 +122,9 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 			reservationItemDomain.setReservationId(reservationDomain.getId());
 			reservationItemDomain.setGoodsName("en_US".equals(en_US)?line.getGoodsEnName():line.getGoodsName());
 			reservationItemDomain.setGoodsPrice(formatDouble(line.getGoodsPrice()/rate));
-			reservationItemDomain.setGoodsDisPrice(formatDouble(line.getGoodsDisPrice()/rate));
+			if (line.getGoodsDisPrice()!=null) {
+				reservationItemDomain.setGoodsDisPrice(formatDouble(line.getGoodsDisPrice() / rate));
+			}
 			reservationItemDomain.setSkuCode(line.getSkuId()+"");
 			reservationItemDomain.setNum(line.getNum());
 			reservationItemDomain.setItemId(line.getItemId());
@@ -148,37 +149,7 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 		}
 		//发送邮件
 		//1.查询发送内容
-		MessageTemplateQuery query = new MessageTemplateQuery();
-		query.setType(1);
-		query.setCode(MessageTypeEnum.STORE_RESERVATION.getValue());
-		query.setIsValid(1);
-		MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
-		//2.生成模版
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		Map<String,Object> freeMap = new HashMap<>();
-		freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-		freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
-		freeMap.put("name",customerDomain.getEmail());
-		freeMap.put("status", isEN?"Processing":"处理中");
-		freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
-		freeMap.put("date",simpleDateFormat.format(reservationDomain.getCreateTime()));
-		freeMap.put("order",reservationDomain);
-		freeMap.put("orderItem",requestList);
-		reservationWithGoodItem(requestList);
-		freeMap.put("totalFee",totalAmt);
-		freeMap.put("openDate",reservationDomain.getStoreDomain().getTime());
-		String html = FreemarkerUtil.printString(isEN?"reservationOrder_en.ftl":"reservationOrder.ftl",freeMap);
-		//3.设置发送邮件参数
-		HashMap<String,String> emailMap = new HashMap<>();
-		emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-		emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-		emailMap.put(simpleAliDMSendMail.TITLE,messageTemplate.getTitle());
-		emailMap.put(simpleAliDMSendMail.CONTENT,html);
-		try {
-			simpleAliDMSendMail.sendEmail(emailMap);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		EmailUtil.submitOrder(isEN,customerDomain.getEmail(),reservationDomain,requestList,totalAmt);
 		return reservationDomain.getId();
 	}
 
@@ -195,7 +166,7 @@ public class ReservationServiceImpl extends BaseServiceImpl<ReservationDomain> i
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 		for(GoodsItemDomain itemDomain:goodsItemDomainList){
 			itemDomain.setGoods(goodsService.get(itemDomain.getGoodsId()));
-			itemDomain.setPicUrl(basePath+ JSONObject.fromObject(JSONArray.fromObject(itemDomain.getThumb()).get(0)).getString("file"));
+			itemDomain.setPicUrl(basePath+ ImageUtil.toFileModel(itemDomain.getThumb()).getFile());
 		}
 		for (ReservationItemDomain reservationItemDomain:reservationItemDomainList){
 			GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()

@@ -15,6 +15,17 @@
             margin: 0;
             padding: 0;
         }
+        .qmbox ul li {
+            list-style: none!important;
+        }
+        .body ul li, .mycontent ul li {
+            list-style-type: none!important;
+        }
+        .qmbox .email-con .email-txt {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            text-align: left;
+        }
         .email-submit {
             width: 95%;
             margin: 0 auto;
@@ -64,7 +75,7 @@
                 <p class="name">Dear ${name} ,</p>
                 <br>
                 <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.</p>
-                <a href="http://shop.shiatzychen.com/" target="_blank" style="padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
+                <a href="http://shop.shiatzychen.com/" target="_blank" style="text-align: center;padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
             </div>
         </div>
         <p class="email-footer">

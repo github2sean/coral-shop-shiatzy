@@ -20,10 +20,10 @@
             <c:forEach var="row" items="${cartList}">
             <div class="goods clearfix goodsDiv">
                 <div class="goods-left">
-                    <div class="pic"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></div>
+                   <div class="pic"><a href="/goods/details/${row.goodsItemDomain.id}"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></a></div>
                 </div>
                 <div class="goods-right" style="word-break: break-all">
-                    <div class="name">${ web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</div>
+                    <div class="name"><a href="/goods/details/${row.goodsItemDomain.id}">${ web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</a></div>
                     <div class="number"><spring:message code="shoppingCart.no"/> ${row.goodsCode}</div>
                     <div class="color" >${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}<span ><spring:message code="shoppingCart.size"/>:${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span></div>
                     <div class="quantity"><spring:message code="shoppingCart.number"/>:
@@ -317,7 +317,7 @@
                 title: '<spring:message code="shoppingCart.returnAndExchange"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '80%'],
+                area: ['100%', '100%'],
                 content: ['${ctx}/content/returnOrchange?id=27'],//iframe的url，no代表不显示滚动条
                 shadeClose: true
             });
@@ -328,7 +328,7 @@
                 title: '<spring:message code="shoppingCart.deliveryTime"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '80%'],
+                area: ['100%', '100%'],
                 content: ['${ctx}/content/deliveryTime'],//iframe的url，no代表不显示滚动条
                 shadeClose: true
             });

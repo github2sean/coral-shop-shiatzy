@@ -1,8 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.dookay.coral.adapter.payment.alipay.config.AlipayConfig;
-import com.dookay.coral.adapter.payment.alipay.sign.MD5;
 import com.dookay.coral.adapter.payment.alipay.util.AlipayNotify;
 import com.dookay.coral.adapter.payment.alipay.util.AlipaySubmit;
 import com.dookay.coral.adapter.payment.ipaylinks.base.IpayLinksStatics;
@@ -14,20 +12,17 @@ import com.dookay.coral.adapter.payment.unionpay.acp.sdk.LogUtil;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConfig;
 import com.dookay.coral.adapter.payment.unionpay.acp.sdk.SDKConstants;
 import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
-import com.dookay.coral.common.exception.BaseException;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.web.BaseController;
-import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
-import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
-import com.dookay.coral.shop.content.query.MessageTemplateQuery;
 import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
+import com.dookay.coral.shop.message.util.EmailUtil;
 import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.OrderItemDomain;
 import com.dookay.coral.shop.order.enums.OrderStatusEnum;
@@ -35,34 +30,22 @@ import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.order.service.IOrderService;
-import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
-import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
-import com.dookay.shiatzy.web.mobile.xml.IpayLinksReturnXml;
-import lombok.Data;
-import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import sun.misc.BASE64Encoder;
 
-import javax.mail.MessagingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -892,36 +875,7 @@ public class PaymentContoller extends BaseController{
             Boolean isEN = order.getShippingCountryId()!=1?true:false;
             //发送短信通知
             smsService.sendToSms(isEN,order.getShipPhone(), MessageTypeEnum.CREATE_ORDER.getValue());
-            //发送邮件通知
-            MessageTemplateQuery query = new MessageTemplateQuery();
-            query.setType(1);
-            query.setCode(MessageTypeEnum.CREATE_ORDER.getValue());
-            query.setIsValid(1);
-            MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
-            //emailService.sendSingleEmail(customerDomain.getEmail(),messageTemplate.getTitle(),messageTemplate.getContent());
-            //生成模版
-            Map<String,Object> freeMap = new HashMap<>();
-            freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-            freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
-            freeMap.put("name",customerDomain.getEmail());
-            freeMap.put("status",isEN?"PAID":OrderStatusEnum.PAID.getValue());
-            freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
-            freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
-            orderService.withGoodItme(orderItemDomainList);
-            freeMap.put("order",order);
-            freeMap.put("orderItem",orderItemDomainList);
-            String html = FreemarkerUtil.printString(isEN?"orderPaid_en.ftl":"orderPaid.ftl",freeMap);
-
-            HashMap<String,String> emailMap = new HashMap<>();
-            emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-            emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-            emailMap.put(simpleAliDMSendMail.TITLE,isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
-            emailMap.put(simpleAliDMSendMail.CONTENT,html);
-            try {
-                simpleAliDMSendMail.sendEmail(emailMap);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
+            EmailUtil.sendInformation(isEN,customerDomain.getEmail(),order,orderItemDomainList);
         }
     }
 

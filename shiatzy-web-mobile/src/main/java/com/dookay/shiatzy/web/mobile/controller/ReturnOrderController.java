@@ -5,7 +5,6 @@ import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.web.BaseController;
-import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -24,9 +23,9 @@ import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
+import com.dookay.coral.shop.message.util.EmailUtil;
+import com.dookay.coral.shop.message.util.FreemarkerUtil;
 import com.dookay.coral.shop.order.domain.*;
-import com.dookay.coral.shop.order.enums.OrderStatusEnum;
-import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.*;
@@ -35,16 +34,12 @@ import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
 import com.dookay.coral.shop.store.domain.StoreDomain;
 import com.dookay.coral.shop.store.query.StoreCountryQuery;
-import com.dookay.coral.shop.store.query.StoreQuery;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.ReturnInfoForm;
-import com.dookay.shiatzy.web.mobile.model.ChooseGoodsModel;
 import com.dookay.shiatzy.web.mobile.model.ReturnReasonModel;
-import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -568,43 +563,14 @@ public class ReturnOrderController extends BaseController {
         session.setAttribute("returnAddress",null);
 
         Boolean isEN = orderDomain.getShippingCountryId()!=1?true:false;
+        Double totalFee=totalAmt-returnRequestDomain.getShipFee()-dis;
         //发送短信
         if(StringUtils.isNotBlank(customerDomain.getPhone())){
         smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
         }
         //发送邮件
         //1.查询发送内容
-        MessageTemplateQuery query = new MessageTemplateQuery();
-        query.setType(1);
-        query.setCode(MessageTypeEnum.RETURN_REQUEST.getValue());
-        query.setIsValid(1);
-        MessageTemplateDomain messageTemplate = messageTemplateService.getFirst(query);
-        //2.生成模版
-        Map<String,Object> freeMap = new HashMap<>();
-        freeMap.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-        freeMap.put("title",isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
-        freeMap.put("name",customerDomain.getEmail());
-        freeMap.put("status", isEN?"applying":"申请中");
-        freeMap.put("content",isEN?messageTemplate.getEnContent():messageTemplate.getContent());
-        freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(returnRequestDomain.getOrderTime()));
-        orderService.returnWithGoodItem(requestList);//会设置图片地址
-        freeMap.put("order",returnRequestDomain);
-        freeMap.put("orderItem",requestList);
-        freeMap.put("totalFee",totalAmt-returnRequestDomain.getShipFee()-dis);
-        freeMap.put("backWay",returnRequestDomain.getReturnShippingMethod()==1?(isEN?"EXPRESS":"快递取件"):(isEN?"TO STORE":"退回门店"));
-        freeMap.put("backAddress",returnRequestDomain.getReturnShippingMethod()==1?returnRequestDomain.getShipAddress():(isEN?returnRequestDomain.getStoreDomain().getEnAddress():returnRequestDomain.getStoreDomain().getAddress()));
-        String html = FreemarkerUtil.printString(isEN?"returnOrder_en.ftl":"returnOrder.ftl",freeMap);
-        //3.设置发送邮件参数
-        HashMap<String,String> emailMap = new HashMap<>();
-        emailMap.put(simpleAliDMSendMail.SEND_EMAIL,simpleAliDMSendMail.SEND_EMAIL_SINGEL);
-        emailMap.put(simpleAliDMSendMail.RECEIVE_EMAIL,customerDomain.getEmail());
-        emailMap.put(simpleAliDMSendMail.TITLE,isEN?messageTemplate.getEnTitle():messageTemplate.getTitle());
-        emailMap.put(simpleAliDMSendMail.CONTENT,html);
-        try {
-            simpleAliDMSendMail.sendEmail(emailMap);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        EmailUtil.applyReturn(isEN,customerDomain.getEmail(),returnRequestDomain,requestList,totalFee);
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();

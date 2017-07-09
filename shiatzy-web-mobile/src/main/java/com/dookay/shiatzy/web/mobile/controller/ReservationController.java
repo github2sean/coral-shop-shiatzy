@@ -1,27 +1,16 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSON;
-import com.dookay.coral.adapter.sendmsg.sendmail.SimpleAliDMSendMail;
 import com.dookay.coral.common.json.JsonUtils;
-import com.dookay.coral.common.utils.RandomUtils;
 import com.dookay.coral.common.web.BaseController;
-import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
-import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
-import com.dookay.coral.shop.content.query.MessageTemplateQuery;
-import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
-import com.dookay.coral.shop.message.enums.MessageTypeEnum;
-import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.ReservationDomain;
 import com.dookay.coral.shop.order.domain.ReservationItemDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
-import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ReservationItemQuery;
 import com.dookay.coral.shop.order.query.ReservationQuery;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
@@ -29,7 +18,6 @@ import com.dookay.coral.shop.order.service.IReservationItemService;
 import com.dookay.coral.shop.order.service.IReservationService;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
 import com.dookay.coral.shop.order.service.IShoppingCartService;
-import com.dookay.coral.shop.shipping.domain.ShippingCountryDomain;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
 import com.dookay.coral.shop.store.domain.StoreCityDomain;
 import com.dookay.coral.shop.store.domain.StoreCountryDomain;
@@ -41,21 +29,16 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
-import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

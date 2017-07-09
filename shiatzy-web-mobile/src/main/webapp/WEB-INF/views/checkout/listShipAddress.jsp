@@ -1,4 +1,6 @@
+<%@ taglib prefix="web" uri="http://dookay.com/tags/default-functions" %>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="java.lang.String" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -18,7 +20,7 @@
                 <div class="title"><spring:message code="delivery.address"/>&nbsp;${num.count} <span data-value="${row.id}" class="icon iconfont" style="display: none;background-color: inherit;border:1px solid #333">&#xe618;</span></div>
                 <div class="text clearfix">
                     <div class="text-left">
-                        <div class="postcode">${row.title}</div>
+                        <div class="postcode">${web:selectLanguage()!='en_US'?(row.lastName):(row.firstName)}${web:selectLanguage()!='en_US'?(row.firstName):(row.lastName)}${row.title}</div>
                         <div class="street">${row.address}</div>
                         <div class="tel"><spring:message code="delivery.address.phone"/>：${row.phone}</div>
                     </div>
