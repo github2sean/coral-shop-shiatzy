@@ -36,7 +36,7 @@
             </c:if>
             <c:if test="${web:selectLanguage()!='en_US'}">
                 <p>退货申请,于<fmt:formatDate value="${returnRequestDomain.createTime}" pattern="yyyy-MM-dd hh:mm:ss" type="date" dateStyle="long" />
-                    提交，总计&nbsp;<font class="coinSymbol">
+                    提交，总计<br/><font class="coinSymbol">
                         <c:choose>
                             <c:when test="${returnRequestDomain.orderDomain.currentCode=='CNY'}">
                                 &nbsp;<spring:message code="coin.ZH"/>

@@ -40,7 +40,7 @@
                     </c:when>
                     <c:when test="${orderDomain.status==2}"><spring:message code="order.status.paid"/></c:when>
                     <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/>
-                        <a href="javascript:void(0)" id="receivedBtn hide" class="btn btn-primary"   style="margin-left: 2rem;background-color: #2b2b2b;border-radius:1;color: white"><spring:message code="order.details.reseived"/></a>
+                        <a href="javascript:void(0)" id="receivedBtn" class="btn btn-primary hide"   style="margin-left: 2rem;background-color: #2b2b2b;border-radius:1;color: white"><spring:message code="order.details.reseived"/></a>
                     </c:when>
                     <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
                     <c:when test="${orderDomain.status==5}"><spring:message code="order.status.returned"/></c:when>
@@ -225,18 +225,26 @@
 
         <div class="item"  style="display: none">
             <ul>
-                <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}${orderDomain.shipProvince}${orderDomain.shipCity}${orderDomain.shipAddress}</li>
+
                 <c:if test="${web:selectCountry()!=1}">
                     <li>${orderDomain.shipTitle}  ${orderDomain.shipFirstName}${orderDomain.shipLastName}</li>
                 </c:if>
                 <c:if test="${web:selectCountry()==1}">
                     <li>${orderDomain.shipLastName}${orderDomain.shipFirstName} ${orderDomain.shipTitle}</li>
                 </c:if>
+
+                <li>${orderDomain.shipAddress}</li>
+                <c:if test="${not empty orderDomain.shipMemo}">
+                    <li>${orderDomain.shipMemo}</li>
+                </c:if>
+                <li>${orderDomain.shipCity} ${order.shipPostalCode}</li>
+                <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}</li>
+                <li>${orderDomain.shipPhone}</li>
             </ul>
         </div>
     </div>
    <!--申请退货-->
-    <c:if test="${ orderDomain.status!=null && orderDomain.status!=1 && orderDomain.status!=-1 && orderDomain.canReturnNum>0}">
+    <c:if test="${ orderDomain.status!=null && orderDomain.status==3 && orderDomain.canReturnNum>0}">
     <div class="item-group">
             <div class="item">
                 <a class="btn-item"  href="/u/returnOrder/initReturnOrder?orderId=${orderDomain.id}">

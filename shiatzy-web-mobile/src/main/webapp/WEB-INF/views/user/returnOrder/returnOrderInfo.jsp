@@ -112,7 +112,7 @@
                     <li>
                         <div>
                     <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="quanlity" name="returnList[${num.count-1}].type2.name">
+                        <input type="hidden" value="quality" name="returnList[${num.count-1}].type2.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="${Web:t("瑕疵品","Defective Goods")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.quality.defectiveGoods"/></label></span>
