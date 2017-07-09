@@ -185,11 +185,12 @@
                         json = eval(storeJson)
                         for(var i=0; i<json.length; i++)
                         {
-                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                            var name = isEn?json[i].enTitle:json[i].name;
+                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                         }
                         $("#storeSelect").find(".model-select-store").addClass("active");
                         $("#storeSelect").find(".model-select-option").show();
-                        $("#chooseStore").text("请选择门店");
+                        $("#chooseStore").text('<spring:message code="store.list.select.store"/>');
                         $("#storeName").text("");
                         $("#storeAddress").text("");
                         $("#storeTime").text("");
@@ -197,7 +198,7 @@
 
                         $(".sendBtn").attr("data-value","");
                     }else{
-                        layer.msg("该城市下无门店");
+                        layer.msg("<spring:message code='store.list.noStoreInCountry'/>");
                     }
                 });
             });
@@ -209,8 +210,12 @@
             var text = $(this).text();
             $(this).parent().siblings("#chooseStore").text(text);
             console.log(index);
-            $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
-                .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
+
+            var name = isEn?json[index].enTitle:json[index].name;
+            var address = isEn?json[index].enAddress:json[index].address;
+
+            $(".storeInfo").show().find("#storeName").text("<spring:message code='store.list.store'/>："+name)
+                .siblings("#storeAddress").text("<spring:message code='delivery.address'/>："+address).siblings("#storeTel").text("TEL："+json[index].tel);
             $("#save_store").attr("data-value",json[index].id);
             console.log(json[index].id);
         });

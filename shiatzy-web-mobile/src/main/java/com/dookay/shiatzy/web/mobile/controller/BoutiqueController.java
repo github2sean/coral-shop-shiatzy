@@ -161,6 +161,7 @@ public class BoutiqueController extends BaseController {
         UserContext userContext = UserContext.current();
         ShoppingCartItemQuery query = new ShoppingCartItemQuery();
         query.setCustomerId(userContext.getAccountDomain().getId());
+        query.setShoppingCartType(ShoppingCartTypeEnum.RESERVATION.getValue());
         List<ShoppingCartItemDomain> shoppingCartItemDomainList = shoppingCartService.getList(query);
         if (shoppingCartItemDomainList.size() >= 5) {
             return errorResult(ChooseLanguage.getI18N().getAdderror());

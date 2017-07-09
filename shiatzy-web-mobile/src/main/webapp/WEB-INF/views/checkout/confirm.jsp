@@ -63,12 +63,17 @@
             <span class="mr-2"><label class="radiobox"><input type="radio" name="isNeed" id="need"><i class="i-radiobox iconfont icon-duigou"></i><spring:message code="orderinfo.confirm.billinfo.need"/></label></span>
         </div>
         <p id="showBill" style="display: none;margin-left: 2.3rem;font-size: 1.0821rem;margin-top: 2.7rem;border-bottom: 2px solid #cccccc;">
-            <spring:message code="orderinfo.confirm.billinfo.title"/>*<input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right"></p>
+            <spring:message code="orderinfo.confirm.billinfo.title"/><input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right">
+            <br/><spring:message code="orderinfo.confirm.billinfo.code"/>
+            <br/>
+            <input id="billCode" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right">
+        </p>
     </div>
+
     <div class="delivery">
         <h3>3. <spring:message code="orderinfo.confirm.payway"/></h3>
             <ul>
-            <li class=" payMethod" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
+            <li class=" payMethod ${web:selectCountry()!=1?'active':''}" data-value="3"><spring:message code="orderinfo.confirm.payway.credits"/></li>
             <li class=" payMethod ${web:selectCountry()!=1?'hide':''}" data-value="1"><spring:message code="orderinfo.confirm.payway.zfb"/></li>
             <li class=" payMethod ${web:selectCountry()!=1?'hide':''}"   data-value="2"><spring:message code="orderinfo.confirm.payway.union"/></li>
             <li class=" payMethod ${web:selectCountry()!=1?'hide':''}"  id="cod" data-value="4">货到付款(仅限中国大陆地区）</li>
@@ -173,22 +178,53 @@
         });
     };
 
+    function reloadUrl() {
+
+        var backUrl = document.referrer;
+        console.log(backUrl.indexOf("orderInfo")==-1);
+        console.log(backUrl.indexOf("listShipAddress")==-1);
+        console.log(backUrl.indexOf("confirm")==-1);
+        console.log("url:"+backUrl);
+        if(backUrl.indexOf("orderInfo")==-1 && backUrl.indexOf("listShipAddress")==-1 && backUrl.indexOf("confirm")==-1){
+            location.reload();
+        }
+    }
+
     $(function(){
+        reloadUrl();
         setPrice();
         noNeedBill();
 
         $(".moreBtn").click(function () {
             $(".moreGoods").slideToggle();
         });
-
         var isCheckPayWay = false;
+        if(${web:selectCountry()!=1}){
+            $.post("/checkout/setPaymentMethod",{"paymentId":3},function (data) {
+                if(data.code==200){
+                    isCheckPayWay = true;
+                }else{
+                    layer.msg(data.message,{time: 1000},function () {
+                        location.reload();
+                    });
+                }
+            });
+        }
         var isCheckSendWay = ${order.storeDomain==null&&order.customerAddressDomain==null}?false:true;
         $("#need").click(function () {
             $("#showBill").show();
         });
         $("#billTitle").blur(function () {
             var $now = $(this);
-            $.post("/checkout/isNeedBill",{"isNeed":1,"info":$now.val()},function (data) {
+            $.post("/checkout/isNeedBill",{"isNeed":1,"info":$now.val(),"type":"0"},function (data) {
+                if(data.code==200){
+                }
+                console.log(data);
+            });
+        });
+        $("#billCode").blur(function () {
+            var $now = $(this);
+            $.post("/checkout/isNeedBill",{"isNeed":1,"info":$now.val(),"type":"1"},function (data) {
                 if(data.code==200){
                 }
                 console.log(data);
@@ -206,12 +242,12 @@
                         shade: [0.4,'#fff'] //0.1透明度的白色背景
                     });
                     $.post("/checkout/submitOrder",{"payWay":"COD"},function (data) {
-                        console.log(data);
+                        console.log("paymentMe:"+data);
                         //loading层
                         if(data.code==200){
                             layer.msg(data.message);
                             var orderId = data.data.id;
-                            location.href = '/order/details?orderId='+orderId;
+                            location.href = '/u/order/details?orderId='+orderId;
                         }
                     });
                 }else{
@@ -225,13 +261,16 @@
             $.post("/checkout/setPaymentMethod",{"paymentId":id},function (data) {
                 if(data.code==200){
                     isCheckPayWay = true;
+                }else{
+                    layer.msg(data.message,{time: 1000},function () {
+                        location.reload();
+                    });
                 }
-                console.log(data);
             });
         });
 
         $(".submitBtn").click(function () {
-            console.log(isCheckPayWay+""+isCheckSendWay);
+            console.log(isCheckPayWay);
             //校验 运送方式 支付方式 发票信息
             if(!isCheckPayWay){
                 layer.msg('<spring:message code="orderinfo.confirm.tip1"/>');
@@ -241,12 +280,16 @@
                 return false;
             }
             $.post("/checkout/submitOrder",function (data) {
-                console.log(data);
+                console.log("data:"+data);
                 if(data.code==200){
                     layer.msg(data.message);
                     var orderNo  = data.data.orderNo;
                     var payMethod = data.data.paymentMethod;
-                    console.log(orderNo+" "+payMethod)
+                    console.log(orderNo+" "+payMethod);
+
+                    if(${web:selectCountry()!=1}){
+                        payMethod = 3;
+                    }
                     if(payMethod=='1'){
                         location.href="/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
                     }else if(payMethod=='2'){
@@ -257,6 +300,10 @@
                         location.href="/payment/buildIpayLinks?orderNo="+orderNo+"&ipAddress="+ip;
                     }
 
+                }else{
+                    layer.msg(data.message,{time: 1000},function () {
+                        location.reload();
+                    });
                 }
             });
         });

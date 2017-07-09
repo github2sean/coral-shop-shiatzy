@@ -328,8 +328,8 @@ public class ReturnOrderController extends BaseController {
         System.out.print(reasonJson);
         com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(reasonJson);
         List<String> reasonList = new ArrayList<>();
-        if(jsonObject.containsKey("服务")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("服务");
+        if(jsonObject.containsKey("service")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("service");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -343,8 +343,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("品质")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("品质");
+        if(jsonObject.containsKey("quality")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("quality");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -358,8 +358,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("选择尺寸")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("选择尺寸");
+        if(jsonObject.containsKey("size")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("size");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -373,8 +373,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("其它")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("其它");
+        if(jsonObject.containsKey("other")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("other");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
