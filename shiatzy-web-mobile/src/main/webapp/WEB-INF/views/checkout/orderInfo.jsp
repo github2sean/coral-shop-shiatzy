@@ -84,16 +84,21 @@
                         </div>
                         <div class="size">
                             <div class="title"><spring:message code="shoppingCart.size"/></div>
-                            <ul>
-                                <c:forEach var="sizeRow" items="${row.sizeDomins}"  varStatus="line">
-                                    <c:set var="sizeQuantity" value="${row.goodsDomain.goodsItemList[line.count-1].quantity}"></c:set>
-                                    <li class="<c:if test="${sizeRow.id == row.sizeDomain.id}">active</c:if> "  data-value="${sizeQuantity}" data-id="${sizeRow.id}">
-                                        <a href="#">${sizeRow.name} <c:if test="${row.goodsDomain.goodsItemList[num.count-1].quantity<=0}"><span>(<spring:message code="sellout"/>)</span></c:if></a></li>
-                                </c:forEach>
+
+
+                            <c:forEach var="colors" items="${row.goodsDomain.goodsItemList}" varStatus="status">
+                                <ul class="sizeLi${colors.id} ${colors.id!=row.goodsItemDomain.id?'hide':''}">
+                                    <c:forEach var="sizeRow" items="${colors.sizeDomains}"  varStatus="line">
+                                        <li class="<c:if test="${sizeRow.id == row.sizeDomain.id}">active</c:if> " data-value="${sizeRow.stock}" data-id="${sizeRow.id}">
+                                            <a href="#">${sizeRow.name} <c:if test="${sizeRow.stock<=0}"><span>(<spring:message code="sellout"/>)</span></c:if></a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:forEach>
                                     <%--<li><a href="">S</a> <span></span></li>
                                     <li class="active"><a href="">M</a> <span></span></li>
                                     <li><a href="">L</a> <span>(已售完)</span></li>--%>
-                            </ul>
+
                         </div>
                         <div class="quantity" data-value="${row.goodsDomain.goodsItemList[num.count-1].quantity}"><spring:message code="shoppingCart.number"/> <a href="javascript:;" class="minus">-</a> <input class="quantitys" type="text" value="1"> <a href="javascript:;" class="add">+</a></div>
                     </div>
@@ -107,10 +112,10 @@
         <div class="privilege">
             <div class="title"><spring:message code="orderinfo.discountInput"/> <a href="javascript:;" class="icon iconfont j_alter2 ">&#xe77d;</a></div>
             <form action="" class="clearfix">
-                <input type="text" style="width: 69%" placeholder="<spring:message code="orderinfo.pleaseInputCode"/>" class="text couponCode"><button type="button" class="btn couponBtn"><spring:message code="orderinfo.enter"/></button><button type="button" class="btn cancelCouponBtn hide"><spring:message code="orderinfo.cancleCoupon"/></button>
+                <input type="text" style="width: 18rem;font-size: 1.2rem;" placeholder="<spring:message code="orderinfo.pleaseInputCode"/>" class="text couponCode"><button type="button" class="btn couponBtn"><spring:message code="orderinfo.enter"/></button><button type="button" class="btn cancelCouponBtn hide"><spring:message code="orderinfo.cancleCoupon"/></button>
             </form>
         </div>
-        <div class="showInfo" style="text-align: center;color: red"></div>
+        <div class="showInfo" style="text-align: center;color: red;margin-bottom: 1rem;"></div>
     </div>
     <div class="total">
         <div class="title"><spring:message code="orderinfo.checkout"/></div>
@@ -144,7 +149,8 @@
                  </c:choose>
             </font>&nbsp;<span id="discount" class="">0</span></span></div>
 
-            <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">ART CLUB 会员优惠<span><font class="coinSymbol">
+            <div class="memDiscount" style="${empty order.memberDiscount||0==order.memberDiscount?'display:none;':''}">
+                ART CLUB ${web:selectLanguage()=='en_US'?"discount":"会员优惠"}<span><font class="coinSymbol">
                 <c:choose>
                     <c:when test="${order.currentCode=='CNY'}">
                         &nbsp;<spring:message code="coin.ZH"/>
@@ -269,68 +275,61 @@
         });
 
         $(".alter-popup").find(".size").find("li").click(function () {
-           $(this).addClass("active").siblings().removeClass("active");
+            if($(this).attr("data-value")==0){
+                layer.msg('<spring:message code="sellout"/>');
+                return false;
+            }
+            $(this).addClass("active").siblings().removeClass("active");
         });
         $(".alter-popup").find(".color").find("li").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
+            var className = '.sizeLi'+$(this).attr("data-id");
+            $(className).removeClass("hide").siblings("ul").addClass("hide");
         });
 
         //修改颜色与尺寸
         $(".j_x_close").click(function () {
           var  goodsItemId ;
           var  sizeId;
-            var $checked = $(this).siblings(".dx-goods").find(".size").find("li").each(function () {
-                if($(this).hasClass("active")){
-                    sizeId = $(this).attr("data-id");
-                }
-            });
-            var $checked = $(this).siblings(".dx-goods").find(".color").find("li").each(function () {
-                if($(this).hasClass("active")){
-                    goodsItemId = $(this).attr("data-id");
-                }
-            });
-            var checkedNo = $(".alter-popup").find(".checkedNo").attr("data-value");
+            var sizeId = $(this).parents(".alter-popup").find(".size").find("ul:not([class*=hide])").find("li[class*=active]").attr("data-id");
+            var goodsItemId = $(this).parents(".alter-popup").find(".color").find("li[class*=active]").attr("data-id");
             //查询当前选择的商品的库存
             var $now = $(this);
-            var data = {"goodsNo":checkedNo,"colorId":goodsItemId,"sizeId":sizeId};
+            var data = {"colorId":goodsItemId,"sizeId":sizeId};
             console.log("data:"+data);
 
             if(goodsItemId==''||sizeId==''){
                 layer.msg('<spring:message code="orderinfo.mustcolorandsize"/>');
                 return false;
             }
-
-            $.post("/checkout/getStockBySizeAndColor",data,function (data) {
-                if(data.code==200 && data.data>0){
-                    var num = $now.siblings(".dx-goods").find(".quantitys").val();
-                    var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$now.attr("data-value"),"num":num};
-                    console.log(sendData);
-                    if(goodsItemId!=''&& sizeId!=''&& num!=null){
-                        //移除原来商品，把新的商品加入购物车，更新下当前的session
-                        $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
-                            console.log(data);
-                            if(data.code==200){
-                                location.href = "${ctx}/checkout/initOrder";
-                            }
-                        });
+            var num = $now.parents(".alter-popup").find(".quantitys").val();
+            var sendData = {"goodsItemId":goodsItemId,"sizeId":sizeId,"cartId":$now.attr("data-value"),"num":num};
+            console.log(sendData);
+            if(goodsItemId!=''&& sizeId!=''&& num!=null){
+                //移除原来商品，把新的商品加入购物车，更新下当前的session
+                $.post("/checkout/updateGoodsInCheck",sendData,function (data) {
+                    console.log(data);
+                    if(data.code==200){
+                        location.href = "${ctx}/checkout/initOrder";
                     }
-                }else{
-                    layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
-                }
+                });
+            }
+
             });
 
-        });
+
 
 
         //点击数量增加减少
         $(".add").on("click",function () {
-
             var colorId;
             var sizeId;
+            var stock;
             var checkedNo = $(".alter-popup").find(".checkedNo").attr("data-value");
-            $(this).parents(".quantity").siblings(".size").find("li").each(function () {
-                if($(this).hasClass("active")){
-                    sizeId = $(this).attr("data-id");
+            $(this).parents(".quantity").siblings(".size").find("ul").each(function () {
+                if(!$(this).hasClass("hide")){
+                    sizeId = $(this).find("li[class*=active]").attr("data-id");
+                    stock =  $(this).find("li[class*=active]").attr("data-value");
                 }
             });
             $(this).parents(".quantity").siblings(".color").find("li").each(function () {
@@ -343,28 +342,11 @@
                 return false;
             }
 
+            var num = $(this).siblings(".quantity").val();
+            num = num+1>stock?stock:num+1;
             //查询当前选择的商品的库存
-            var $now = $(this);
-            var data = {"goodsNo":checkedNo,"colorId":colorId,"sizeId":sizeId};
-            console.log("data:"+data);
-            $.post("/checkout/getStockBySizeAndColor",data,function (data) {
-               if(data.code==200){
-                   var num  = data.data;
-                   console.log("num:"+num);
-                   num = num==''?0:num;
-                   var t = $now.parent().find(".quantitys");
-                   var addNum =  parseInt(t.val())+1;
-                   if(addNum>num && num>0){
-                       layer.msg('<spring:message code="orderinfo.lessthanstock"/>');
-                   }else if(addNum>num && num==0){
-                       layer.msg('<spring:message code="goods.detail.thisIsSellOut"/>');
-                   }
-                   t.val(addNum>num?num:addNum);
-                   $(".minus").removeAttr("disabled");
-               }else{
 
-               }
-            });
+
         });
 
         $(".minus").on("click",function () {

@@ -68,10 +68,10 @@
                     Should you have any other questions, please contact us via<br>
                     <a href="#" class="link-web">customercare@shiatzychen.com</a>
                 </p>
-                <p class="txt" style="margin-bottom: 0">
-                    点击下面连接重新设置密码
+                <p class="txt" style="margin-bottom: 5px">
+                    your new password
                 </p>
-                <a href="${setUrl}" target="_blank" style="padding: 10px 0; display:block; width: 100%; margin: 0px auto 30px; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">设置新密码</a>
+                <p style="padding: 10px ; display:block; width: 300px;   background: #eee; color: #000; letter-spacing: 2px; text-decoration: none; cursor:pointer ">${newPass}</p>
             </div>
         </div>
         <p class="email-footer">

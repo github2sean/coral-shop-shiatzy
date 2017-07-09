@@ -18,7 +18,7 @@
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
-    <form class="j_ajaxForm"  data-next="${ctx}/u/account/index">
+    <form class="j_ajaxForm" action="${ctx}/passport/login"  data-next="${ctx}/u/account/index">
         <div class="dx-form">
             <h3 class="title"><spring:message code="login"/></h3>
             <div class="tips"><spring:message code="login.tips"/></div>
@@ -27,19 +27,19 @@
                        id="userName"
                        onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="login.holderAccount"/>'"
-                       data-rule="电子邮箱:required;email">
+                       data-rule="${web:t("电子邮箱","Email")}:required;email">
             </div>
             <div class="form-item">
                 <input type="password" placeholder='<spring:message code="login.holderPassword"/>' name="password"
                        id="userPwd" onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="login.holderPassword"/>'"
-                       data-rule="密码:required;password">
+                       data-rule="${web:t("密码","Password")}:required;password">
             </div>
             <div class="form-item text-center"><a href="${ctx}/passport/toForget"><spring:message code="login.forgotPassword"/>？</a>
             </div>
 
             <div class="form-item button">
-            <button type="button"  class="btn btn-default login"><spring:message code="login"/></button>
+            <button type="submit"  class="btn btn-default login"><spring:message code="login"/></button>
             </div>
             <div class="form-item text-center"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
@@ -97,7 +97,7 @@
             dataNext = backUrl;
         }
         console.log("dataNext:"+dataNext);
-        $(".login").click(function () {
+      /*  $(".login").click(function () {
             var data = $(".j_ajaxForm").serializeArray();
             $.post("/passport/login",data,function(data){
                if(data.code==200){
@@ -107,6 +107,6 @@
                    layer.msg(data.message);
                }
             });
-        });
+        });*/
     });
 </script>

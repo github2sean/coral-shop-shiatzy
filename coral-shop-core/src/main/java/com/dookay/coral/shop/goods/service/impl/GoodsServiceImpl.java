@@ -153,21 +153,56 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for(GoodsItemDomain line:goodsItemDomainList){
-			SkuQuery skuQuery = new SkuQuery();
-			skuQuery.setItemId(line.getId());
-			skuQuery.setIsValid(ValidEnum.YES.getValue());
-			List<SkuDomain> skuDomainList = skuService.getList(skuQuery);
-			SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId || Long.parseLong(x.getSize())==sizeId).findFirst().orElse(null);
-			System.out.println("line:"+line+"\nskuDomainList:"+skuDomainList+"\n sizeId:"+sizeId);
-			if(skuDomain == null) {
+			TempStockQuery query2 = new TempStockQuery();
+			query2.setProductNo(line.getGoodsNo().split("\\s+")[0]);
+			query2.setSize(line.getGoodsNo().split("\\s+")[1]);
+			query2.setColor(line.getName());
+			TempStockDomain tempStockDomain = tempStockService.getFirst(query2);
+
+			if(tempStockDomain == null) {
 				line.setQuantity(0);
 			}else {
-				int quantity = skuDomain.getQuantity();
+				int quantity = tempStockDomain.getNum();
 				System.out.println("库存："+quantity);
 				line.setQuantity(quantity);
 			}
 		}
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
+	}
+
+	@Override
+	public void withGoodsItemListAndQuantityByColor(GoodsDomain goodsDomain,List<Long> sizeIds) {
+		GoodsItemQuery query = new GoodsItemQuery();
+		query.setGoodsId(goodsDomain.getId());
+		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
+
+		for(GoodsItemDomain line:goodsItemDomainList){
+			line.setSizeDomains(withStock(sizeIds,line));
+		}
+		goodsDomain.setGoodsItemList(goodsItemDomainList);
+	}
+
+
+	public List<PrototypeSpecificationOptionDomain> withStock(List<Long> sizeIds,GoodsItemDomain line){
+		List<PrototypeSpecificationOptionDomain> ret  = new ArrayList<>();
+		TempStockQuery query2 = new TempStockQuery();
+		for(Long id:sizeIds){
+			PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(id);
+			query2.setProductNo(line.getGoodsNo().split("\\s+")[0]);
+			query2.setSize(sizeDomain.getName());
+			query2.setColor(line.getGoodsNo().split("\\s+")[1]);
+			TempStockDomain tempStockDomain = tempStockService.getFirst(query2);
+			System.out.println("query2:"+query2+" tempStockDomain:"+tempStockDomain);
+			if(tempStockDomain == null) {
+				sizeDomain.setStock(0L);
+			}else {
+				int quantity = tempStockDomain.getNum();
+				System.out.println("库存："+quantity);
+				sizeDomain.setStock(Long.parseLong(quantity+""));
+			}
+			ret.add(sizeDomain);
+		}
+		return ret;
 	}
 
 	@Override

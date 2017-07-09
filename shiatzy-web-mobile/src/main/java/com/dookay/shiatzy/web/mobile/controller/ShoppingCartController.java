@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("cart/")
-public class ShoppingCartController extends BaseController{
+public class ShoppingCartController extends  BaseController{
     @Autowired
     private IGoodsService goodsService;
     @Autowired

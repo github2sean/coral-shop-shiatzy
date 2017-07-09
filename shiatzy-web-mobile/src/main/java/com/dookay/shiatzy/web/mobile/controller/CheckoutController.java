@@ -25,6 +25,7 @@ import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
 import com.dookay.coral.shop.goods.domain.PrototypeSpecificationOptionDomain;
 import com.dookay.coral.shop.goods.domain.SkuDomain;
+import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.PrototypeSpecificationOptionQuery;
 import com.dookay.coral.shop.goods.query.SkuQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
@@ -64,6 +65,7 @@ import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.coral.shop.temp.service.ITempStockService;
 import com.dookay.shiatzy.web.mobile.model.AddressModel;
+import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import com.dookay.shiatzy.web.mobile.util.FreemarkerUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -116,10 +118,6 @@ public class CheckoutController  extends BaseController{
     private IStoreService storeService;
 
     @Autowired
-    private IStoreCountryService storeCountryService;
-    @Autowired
-    private IStoreCityService storeCityService;
-    @Autowired
     private IShippingCountryService shippingCountryService;
 
     @Autowired
@@ -140,6 +138,10 @@ public class CheckoutController  extends BaseController{
     private SimpleAliDMSendMail simpleAliDMSendMail;
     @Autowired
     private ITempMemberService tempMemberService;
+    @Autowired
+    private IStoreCityService storeCityService;
+    @Autowired
+    private IStoreCountryService storeCountryService;
 
 
     private static String CART_LIST = "cartList";
@@ -176,6 +178,7 @@ public class CheckoutController  extends BaseController{
         order.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
         //根据国家获取值
         order.setShippingCountryId(Long.parseLong(countryId));
+        order.setShipCountry("1".equals(countryId)?shippingCountryDomain.getEnName():shippingCountryDomain.getName());
         order.setCurrentCode(currentCode);
        /* order.setOrderNo(RandomUtils.buildNo());
         order.setCustomerId(customerDomain.getId());
@@ -205,7 +208,7 @@ public class CheckoutController  extends BaseController{
     public JsonResult resetShippingCountry(Long countryId){
 
 
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
 
@@ -213,7 +216,7 @@ public class CheckoutController  extends BaseController{
     @RequestMapping(value = "getStockBySizeAndColor",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult getStockBySizeAndColor(String goodsNo,Long colorId,Long sizeId){
-        return successResult("查询成功",tempStockService.getStockBySizeAndColor(goodsNo,colorId,sizeId));
+        return successResult(ChooseLanguage.getI18N().getSearchSuccess(),tempStockService.getStockBySizeAndColor(goodsNo,colorId,sizeId));
     }
 
 
@@ -243,7 +246,7 @@ public class CheckoutController  extends BaseController{
         }
 
         int count = 0;
-
+        GoodsItemQuery query = new GoodsItemQuery();
         for(ShoppingCartItemDomain line :cartList){
             //准备商品数据
             GoodsItemDomain goodsItemDomain =  goodsItemService.get(line.getItemId());
@@ -257,9 +260,10 @@ public class CheckoutController  extends BaseController{
             prototypeSpecificationOptionQuery.setIds(sizeIds);
             List<PrototypeSpecificationOptionDomain> sizeList = prototypeSpecificationOptionService.getList(prototypeSpecificationOptionQuery);
             System.out.println("sizeIds:"+sizeIds);
-            for(Long id:sizeIds){
+            /*for(Long id:sizeIds){
                 goodsService.withGoodsItemListAndQuantity(goodsDomain,id);
-            }
+            }*/
+            goodsService.withGoodsItemListAndQuantityByColor(goodsDomain,sizeIds);
             line.setSizeDomins(sizeList);
             line.setGoodsDomain(goodsDomain);
             Double rate = shippingCountryService.get(Long.parseLong(CookieUtil.getCookieValueByKey(request,"shippingCountry"))).getRate();
@@ -280,6 +284,20 @@ public class CheckoutController  extends BaseController{
         return mv;
     }
 
+    public void colorWithSize(List<GoodsItemDomain> goodsItemDomains,List<PrototypeSpecificationOptionDomain> sizeDomains){
+        List<PrototypeSpecificationOptionDomain> sizeDomainList  = new ArrayList<>();
+        for(GoodsItemDomain line:goodsItemDomains){
+            String productNo = line.getGoodsNo().split("\\s+")[0];//库存商品编号
+            String color = line.getGoodsNo().split("\\s+")[1];//颜色标识
+            for(PrototypeSpecificationOptionDomain row:sizeDomains){
+                row.setStock(goodsService.getTempStock(productNo,color,row.getName()));
+                sizeDomainList.add(row);
+            }
+            line.setSizeDomains(sizeDomainList);
+        }
+    }
+
+
     @RequestMapping(value = "updateGoodsInCheck",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult updateGoodsInCheck(Long goodsItemId,Long sizeId,Long cartId,Integer num){
@@ -287,7 +305,7 @@ public class CheckoutController  extends BaseController{
         if(shoppingCartService.get(cartId)!=null){
             shoppingCartService.removeFromCart(cartId);
         }else{
-            return errorResult("参数出错");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
@@ -304,11 +322,11 @@ public class CheckoutController  extends BaseController{
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
         if(skuDomain == null)
         {
-            throw new ServiceException("参数错误");
+            throw new ServiceException(ChooseLanguage.getI18N().getParamErro());
         }
         skuDomain.setItemId(itemId);
         shoppingCartService.addToCart(customerDomain, skuDomain,ShoppingCartTypeEnum.SHOPPING_CART.getValue(),num);
-        return successResult("修改成功");
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
 
@@ -362,13 +380,13 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order== null){
-            return errorResult("订单已经失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
 
         //购物车
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute(CART_LIST);
         if(cartList== null || cartList.size() ==0){
-            return errorResult("订单已经失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         shoppingCartService.withGoodsItem(cartList);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
@@ -470,9 +488,9 @@ public class CheckoutController  extends BaseController{
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
-            return successResult("商品库存不足",itemIds);
+            return successResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
         }
-        return successResult("操作成功",order);
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),order);
     }
 
     private void calcOrderTotal(OrderDomain orderDomain, List<ShoppingCartItemDomain> cartList) {
@@ -550,7 +568,7 @@ public class CheckoutController  extends BaseController{
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         customerAddressService.createByCustomer(customerDomain,addressModel);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "updateShipAddress",method = RequestMethod.GET)
@@ -572,14 +590,14 @@ public class CheckoutController  extends BaseController{
     @ResponseBody
     public  JsonResult updateShipAddress(@ModelAttribute CustomerAddressDomain addressModel){
         customerAddressService.update(addressModel);
-        return successResult("修改成功");
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
     @RequestMapping(value = "removeAddress",method = RequestMethod.POST)
     @ResponseBody
     public  JsonResult removeAddress(Long addressId){
         customerAddressService.delete(addressId);
-        return successResult("删除成功");
+        return successResult(ChooseLanguage.getI18N().getDelSuccess());
     }
 
 
@@ -610,7 +628,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setCustomerAddressDomain(customerAddressDomain);
         orderDomain.setStoreDomain(null);
         if(orderDomain == null) {
-            return errorResult("页面失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         orderDomain.setShipPhone(customerAddressDomain.getPhone());
         orderDomain.setShipFirstName(customerAddressDomain.getFirstName());
@@ -625,7 +643,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipAddressId(customerAddressDomain.getId());
         orderDomain.setShippingMethod(ShippingMethodEnum.EXPRESS.getValue());
         session.setAttribute(ORDER,orderDomain);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
 
@@ -672,20 +690,36 @@ public class CheckoutController  extends BaseController{
     @ResponseBody
     public JsonResult setStore(Long storeId){
         if(storeId==null){
-            return errorResult("参数为空");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单失效");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
         order.setStoreId(storeId);
-        order.setStoreDomain(storeService.get(storeId));
+        StoreDomain store = storeService.get(storeId);
+        StoreCityDomain cityDomain = storeCityService.get(Long.parseLong(store.getCityId()));
+        order.setShipAddress(order.getShippingCountryId()!=1?store.getAddress():store.getEnAddress());
+        order.setStoreDomain(store);
+        order.setShipCity(order.getShippingCountryId()!=1?cityDomain.getEnName():cityDomain.getName());
+        order.setShipProvince(order.getShippingCountryId()!=1?cityDomain.getEnName():cityDomain.getName());
+
+        AccountDomain accountDomain = UserContext.current().getAccountDomain();
+        CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
+        order.setShipPhone(customerDomain.getPhone());
+        order.setShipFirstName(customerDomain.getFirstName());
+        order.setShipLastName(customerDomain.getLastName());
+        order.setShipTitle("门店");
+        order.setShipMemo("门店");
+        order.setShipAddressId(store.getId());
+        order.setShippingMethod(ShippingMethodEnum.STORE.getValue());
+
         order.setCustomerAddressDomain(null);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -699,11 +733,11 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单已过期");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setPaymentMethod(paymentId);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -718,25 +752,25 @@ public class CheckoutController  extends BaseController{
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         order.setShippingMethod(shippingMethodId);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "isNeedBill", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult isNeedBill(Integer isNeed,String info){
         if(isNeed==null){
-            return errorResult("参数为空");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         OrderDomain order = (OrderDomain)session.getAttribute(ORDER);
         if(order==null){
-            return errorResult("订单已过期");
+            return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setBillRequired(isNeed);
         order.setBillTitle(info);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**
@@ -765,7 +799,7 @@ public class CheckoutController  extends BaseController{
                     if(couponDomain.getSatisfyTop()/rate>=orderTotal){
                         trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     }else{
-                        return errorResult("优惠条件不符");
+                        return errorResult(ChooseLanguage.getI18N().getInconsistentCondition());
                     }
                     System.out.println(1);
                     break;
@@ -783,7 +817,7 @@ public class CheckoutController  extends BaseController{
             order.setCouponDiscount(trueDiscountPrice);
             session.setAttribute(ORDER,order);
         }
-        return successResult("操作成功",trueDiscountPrice);
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),trueDiscountPrice);
     }
 
     /**
@@ -799,14 +833,14 @@ public class CheckoutController  extends BaseController{
         order.setCouponId(null);
         order.setCouponDiscount(0D);
         session.setAttribute(ORDER,order);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult deleteGoods(Long orderItemId){
         if(orderItemId==null){
-            return errorResult("参数错误");
+            return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
@@ -819,7 +853,7 @@ public class CheckoutController  extends BaseController{
             }
         }
         session.setAttribute(CART_LIST,cartList);
-        return successResult("操作成功");
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
     /**

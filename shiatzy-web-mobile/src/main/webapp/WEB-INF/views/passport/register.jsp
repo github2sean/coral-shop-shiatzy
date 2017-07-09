@@ -18,28 +18,28 @@
                        id="userName"
                        onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="register.holderEmail"/>'"
-                       data-rule="电子邮箱:required;email">
+                       data-rule="${web:t("电子邮箱","Email")}:required;email">
             </div>
             <div class="form-item">
                 <input type="password" placeholder='<spring:message code="register.holderPass"/>' name="password"
                        id="password" onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="register.holderPass"/>'"
-                       data-rule="密码:required;password">
+                       data-rule="${web:t("密码","Password")}:required;password">
             </div>
             <div class="form-item">
                 <input type="password" placeholder='<spring:message code="register.holderRePass"/>'
                        name="confirm_password"
                        id="confirm_password" onfocus="this.placeholder=''"
                        onblur="this.placeholder='<spring:message code="register.holderRePass"/>'"
-                       data-rule="确认密码:required;password;match(password)">
+                       data-rule="${web:t("确认密码","Confirm password")}:required;password;match(password)">
             </div>
             <div class="form-item">
                 <div class="dx-verify clearfix">
                     <input type="text" class="verify" placeholder='<spring:message code="register.holderValidCode"/>'
                            name="validCode" id="validCode" onfocus="this.placeholder=''"
                            onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'"
-                           data-rule="验证码:required;">
-                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
+                           data-rule="${web:t("验证码","ValidCode")}:required;">
+                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg" class="j_captcha"></div>
                 </div>
             </div>
             <div class="form-item button">
@@ -52,96 +52,12 @@
 <jsp:include page="/WEB-INF/views/include/footer.jsp">
     <jsp:param name="nav" value="首页"/>
 </jsp:include>
+
 <script>
-
     $(function () {
-    });
-
-    /*//邮箱验证
-    function userName() {
-        var userName = $("#userName").val();
-        var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (userName == '') {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validNull"/>');
-            return false;
-        } else if (!reg.test(userName)) {
-            $(".remind").show().css("color", "red").text("<spring:message code="register.validEmail"/>");
-            return false;
-        }
-        $(".remind").hide();
-
-        return true;
-
-    };
-    //密码验证
-    function userPwd() {
-        var userPwd = $('#userPwd').val();
-        var reg = /^[a-zA-Z]\w{5,17}$/;
-        if (userPwd == '') {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validNull"/>');
-            return false;
-        } else if (!reg.test(userPwd)) {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validPassStyle"/>');
-            return false;
-        }
-        $(".remind").hide();
-
-        return true;
-    };
-    //再次输入密码验证
-    function confirm_password() {
-        var userPwd = $('#userPwd').val();
-        var confirm_password = $('#confirm_password').val();
-        if (confirm_password == '') {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validNull"/>');
-            return false;
-        } else if (confirm_password != userPwd) {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validPass"/>');
-            return false;
-        }
-        $(".remind").hide();
-
-        return true;
-    }
-    //验证码验证
-    function validCode() {
-        var validCode = $('#validCode').val();
-        if (validCode == '') {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validNull"/>');
-            return false;
-        }
-        $(".remind").hide();
-
-        return true;
-    }
-    $(function () {
-        $('#userName').focus(function () {
-            $(".remind").show().css("color", "red").text("<spring:message code="register.validEmail"/>");
-        }).blur(userName);
-        $('#userPwd').focus(function () {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validPassStyle"/>');
-        }).blur(userPwd);
-        $('#confirm_password').focus(function () {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.validPass"/>');
-        }).blur(confirm_password);
-        $('#validCode').focus(function () {
-            $(".remind").show().css("color", "red").text('<spring:message code="register.holderValidCode"/>');
-        }).blur(validCode);
-
-        $(".registerBtn").click(function () {
-            var $form = $(".registerForm");
-            var data = $form.serializeArray();
-            $.post("/passport/register.do", data, function (data) {
-                // alert(data.message);
-
-                if (data.code == 200) {
-                    location.href = "${ctx}/passport/toLogin";
-                } else {
-                    $(".remind").text(data.message);
-                }
-
-            })
+        $('.j_captcha').click(function () {
+            var $this = $(this);
+            $this.attr('src', '/captcha');
         });
-    });*/
+    });
 </script>
-

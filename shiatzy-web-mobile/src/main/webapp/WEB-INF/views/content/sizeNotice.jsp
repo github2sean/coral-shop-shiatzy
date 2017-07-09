@@ -1,7 +1,7 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-    <html>
+    <html style="width: 100%">
       <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -24,7 +24,10 @@
         <link rel="stylesheet" href="${ctx}/static/css/dy.css">
         <link rel="stylesheet" href="${ctx}/static/js/plugins/validator/css/jquery.validator.css">
         <!-- 页面样式 结束 -->
+        <style>
+          p{width: 100%}
 
+        </style>
         <!--设置浏览器根元素的值-->
         <script>
           (function (doc, win) {
@@ -41,21 +44,34 @@
           })(document, window);
         </script>
       </head>
-      <body >
-      <div class="dx-CommonProblems" style="width: 100%;font-size: 1.2rem">
-        <div class="content">
-          <h3 style="text-align: center;font-size: 1.6rem">尺码建议</h3>
-          <p class=""><a href="#">如无特别说明，我们统一采用法码标准，以下表格可以帮助您根据实际尺寸所对应的各地区不同尺码进行参照。</a></p>
+      <body  style="width: 88%;padding-left: 10px;padding-right: 10px;">
+      <div class="dx-CommonProblems" style="width: 90%;font-size: 1.2rem;">
+        <div class="content" style="width: 100%;padding-bottom: 50px">
+          <h3 style="text-align: center;font-size: 1.6rem">${web:selectLanguage()=='en_US'?"SIZE GUIDE":"尺码建议"}</h3>
+          <p class="">
+            <c:if test="${web:selectLanguage()!='en_US'}">
+            如无特别说明，我们统一采用法码标准，以下表格可以帮助您根据实际尺寸所对应的各地区不同尺码进行参照。
+            </c:if>
+            <c:if test="${web:selectLanguage()=='en_US'}">
+              The following charts will help you match the size scheme for different product (indicated in the dropdown) to your usual size. All sizes on SHOP.SHIATZYCHEN.COM are French unless otherwise stated.
+            </c:if>
+          </p>
           <table class="table table-bordered ">
             <thead style="font-size:12px ">
               <tr>
-                <th COLSPAN="6" STYLE="text-align: center">女士成衣尺码对照表
+                <th COLSPAN="6" STYLE="text-align: center">
+                  <c:if test="${web:selectLanguage()!='en_US'}">
+                  女士成衣尺码对照表
+                  </c:if>
+                  <c:if test="${web:selectLanguage()=='en_US'}">
+                    WOMEN'S READY TO WEAR SIZE CHART
+                  </c:if>
                 </th>
               </tr>
             </thead>
             <tbody style="font-size:10px ">
               <tr>
-                <td>意大利(IT)</td>
+                <td>${web:selectLanguage()=='en_US'?"ITALY":"意大利(IT)"}</td>
                 <td>38</td>
                 <td>40</td>
                 <td>42</td>
@@ -63,7 +79,7 @@
                 <td>46</td>
               </tr>
               <tr>
-                <td>法国 (FR)</td>
+                <td>${web:selectLanguage()=='en_US'?"FRANCE":"法国 (FR)"}</td>
                 <td>36</td>
                 <td>38</td>
                 <td>40</td>
@@ -71,7 +87,7 @@
                 <td>44</td>
               </tr>
               <tr>
-                <td>德国 (DE)</td>
+                <td>${web:selectLanguage()=='en_US'?"GERMANY":"德国 (DE)"}</td>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
@@ -319,7 +335,7 @@
                </tr>
              </thead>
              <tbody style="font-size:10px ">
-           
+
                <tr>
                  <td>欧洲码 (EU)</td>
                  <td>40</td>
@@ -362,17 +378,16 @@
              </tbody>
            </table>
          </div>
-          <table class="table table-bordered ">
+          <table class="table table-bordered " style="table-layout: fixed">
             <thead style="font-size:12px ">
               <tr>
                 <th COLSPAN="8" STYLE="text-align: center">其它配饰尺码对照表（腰带）
                 </th>
               </tr>
             </thead>
-            <tbody style="font-size:10px ">
-
+            <tbody style="font-size:10px">
               <tr>
-                <td>法国 (FRANCE)</td>
+                <td >法国 </td>
                 <td>70</td>
                 <td>75</td>
                 <td>80</td>
@@ -446,5 +461,7 @@
           });
         </script>
       </div>
+
+
       </body>
     </html>

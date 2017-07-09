@@ -35,6 +35,7 @@ import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
+import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -172,29 +173,29 @@ public class BoutiqueController extends BaseController{
         SkuDomain skuDomain =  skuDomainList.stream().filter(x-> JSONObject.fromObject(x.getSpecifications()).getLong("size")==sizeId).findFirst().orElse(null);
        GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
         if(skuDomain == null){
-            return errorResult("没有对应颜色和尺寸的商品");
+            return errorResult(ChooseLanguage.getI18N().getNoMatchGoods());
         }else if(goodsDomain.getIsPre()==0){
-            return errorResult("该商品不能预约");
+            return errorResult(ChooseLanguage.getI18N().getUnPre());
         }else if(skuDomain.getQuantity()<1){
-            return errorResult("该商品已售罄");
+            return errorResult(ChooseLanguage.getI18N().getSellOut());
         }
 
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain,skuDomain,SHOPPINGCART_TYPE);
         if(shoppingCartItemDomain!=null){
-            return  errorResult("精品店已存在此商品");
+            return  errorResult(ChooseLanguage.getI18N().getExistInPre());
         }else{
             shoppingCartService.addToCart(customerDomain, skuDomain, SHOPPINGCART_TYPE,num);
         }
-        return  successResult("添加成功");
+        return  successResult(ChooseLanguage.getI18N().getAddSuccess());
     }
 
     @RequestMapping(value = "removeFromBoutique" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult removeFromBoutique(Long shoppingcartId){
         shoppingCartService.removeFromCart(shoppingcartId);
-        return  successResult("删除成功");
+        return  successResult(ChooseLanguage.getI18N().getDelSuccess());
     }
 
 

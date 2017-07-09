@@ -242,7 +242,6 @@
         });
 
 
-
         //iframe窗
         $(".whatBoutique").click(function(){
             layer.open({
@@ -250,9 +249,19 @@
                 title: '<spring:message code="reservation.what"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['90%', '75%'],
+                area: ['100%', '100%'],
                 content: ['${ctx}/content/whatBoutique'],//iframe的url，no代表不显示滚动条
-                shadeClose: true
+                shadeClose: true,
+                success: function(layero, index){
+                    $('html').addClass("open-c");
+                    $('body').addClass("open-c");
+                    $('.main-content').addClass("open-c");
+                },
+                end:function () {
+                    $('html').removeClass("open-c");
+                    $('body').removeClass("open-c");
+                    $('.main-content').removeClass("open-c");
+                }
             });
         });
     });

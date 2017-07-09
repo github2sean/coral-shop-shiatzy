@@ -183,67 +183,61 @@
 <div class="email-submit">
     <p class="title"><img src="${picUrl}" alt=""></p>
     <div class="email-con">
-        <h1 class="email-title">${title}</h1>
+        <h1 class="email-title">Confirm Return</h1>
         <div class="email-txt">
-            <p class="name">亲爱的 ${name},</p>
+            <p class="name">Dear ${name},</p>
             <br>
             <p class="txt">
             ${content}</p>
             <div class="dingdan">
                 <div class="xzc-detail">
-                    <p class="dingdan-title">预约单详情</p>
+                    <p class="dingdan-title">confirm information</p>
                     <div class="detail">
                         <ul class="detail-list">
                             <li>
-                                <span class="list-name">预约单编号 : </span><span>${order.reservationNo}</span>
+                                <span class="list-name">orderNo : </span><span>${order.orderNo}</span>
                             </li>
                             <li>
-                                <span class="list-name">订单日期 : </span><span>${date}</span>
+                                <span class="list-name">orderTime : </span><span>${date}</span>
                             </li>
                             <li>
-                                <span class="list-name">预约门店 : </span><span>${order.storeDomain.name}</span>
+                                <span class="list-name">status : </span><span>${status}</span>
                             </li>
-                            <li>
-                                <span class="list-name">地址 : </span><span>${order.storeDomain.address}</span>
-                            </li>
-                            <li>
-                                <span class="list-name">电话号码 : </span><span>${order.storeDomain.tel}</span>
-                            </li>
-                            <li>
-                                <span class="list-name">营业时间 : </span><span>${openDate}</span>
-                            </li>
-                            <li>
-                                <span class="list-name">订单状态 : </span><span>${status}</span>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="dingdan-list">
-                <p class="yuyue-title">商品详情</p>
+                <p class="yuyue-title">details</p>
 
             <#if orderItem?? && (orderItem?size > 0) >
                 <#list orderItem as it>
                     <div class="list-left"><img src="${it.goodsItemDomain.picUrl}" alt=""></div>
                     <div class="list-right">
-                        <h3 class="pro-title">${it.goodsName} ${it.skuCode}</h3>
-                        <p class="pro-value">${it.goodsItemDomain.name}</p>
-                        <p class="pro-value">选择尺寸：  ${it.sizeDomain.name}</p>
-                        <p class="pro-value">数量：${it.num}</p>
-                        <p class="pro-value">单价：
+                        <h3 class="pro-title">${it.goodsName} ${it.goodsCode}</h3>
+                        <p class="pro-value">${it.goodsItemDomain.enName}</p>
+                        <p class="pro-value">size：  ${it.sizeDomain.enName}</p>
+                        <p class="pro-value">number：${it.num}</p>
+                        <p class="pro-value">unit price：
                             <#if order.currentCode=="USD">$
                             <#elseif order.currentCode=="EUR">€
                             <#else >¥
                             </#if>
                         ${it.goodsPrice}</p>
                         <#if it.goodsDisPrice??>
-                        <p class="pro-value">折扣价：
-                            <#if order.currentCode=="USD">$
-                            <#elseif order.currentCode=="EUR">€
-                            <#else >¥
-                            </#if>
-                        ${it.goodsDisPrice}</p>
+                            <p class="pro-value">discount price：
+                                <#if order.currentCode=="USD">$
+                                <#elseif order.currentCode=="EUR">€
+                                <#else >¥
+                                </#if>
+                            ${it.goodsDisPrice}</p>
                         </#if>
+                        <p class="pro-value">return shipping fee :<#if order.currentCode=="USD">$
+                        <#elseif order.currentCode=="EUR">€
+                        <#else >¥
+                        </#if> ${order.shipFee}</p>
+
                     </div>
 
                 </#list>
@@ -257,14 +251,32 @@
                     <p class="pro-value">尺寸 : S</p>
                     <p class="pro-value">数量 : 1</p>
                     <p class="pro-value">单价 : ¥1</p>
-                    <p class="pro-value">状态 : 已提交</p>
+                    <p class="pro-value">退货运费 : ￥25</p>
+                    <p class="pro-value">预计退回总额 : ￥25</p>
                 </div>-->
             </div>
+
             <div class="dingdan-sum">
-                <span class="dingdan-sum-tip">预计订单总额</span><span class="dingdan-money"><#if order.currentCode=="USD">$
+                <span class="dingdan-sum-tip">Estimated total return:</span><span class="dingdan-money"><#if order.currentCode=="USD">$
             <#elseif order.currentCode=="EUR">€
             <#else >¥
             </#if>${totalFee}</span>
+            </div>
+
+            <div class="dingdan">
+                <div class="xzc-detail">
+                    <p class="dingdan-title">address details</p>
+                    <div class="detail">
+                        <ul class="detail-list">
+                            <li>
+                                <span class="list-name">return way : </span><span>${backWay}</span>
+                            </li>
+                            <li>
+                                <span class="list-name">return address : </span><span>${backAddress}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -19,6 +19,7 @@ import java.util.List;
 public class GoodsQuery extends Query {
 
 	private  String name;
+	private  String enName;
 	private  Long categoryId;
 	private  Long prototypeId;
 	private  List<Long> colorIds;//颜色
@@ -39,9 +40,13 @@ public class GoodsQuery extends Query {
 		QueryCriteria queryCriteria = new QueryCriteria(GoodsDomain.class);
 		Example.Criteria criteria = queryCriteria.createCriteria();
 		if (valid(name)){
-			criteria.andLike("name","%"+name+"%");
+			String likeStr = "%" + name + "%";
+			queryCriteria.or().andLike("name",likeStr);
+			queryCriteria.or().andLike("enName",likeStr);
 		}
-
+		if (valid(enName)){
+			criteria.andLike("enName","%"+enName+"%");
+		}
 		if (valid(categoryId)){
 			criteria.andEqualTo("categoryId",categoryId);
 		}

@@ -172,9 +172,9 @@ public class OrderController extends BaseController {
         //修改状态
         orderDomain.setStatus(-1);
         orderService.update(orderDomain);
-        //发送短信
-        smsService.sendToSms(orderDomain.getShipPhone(), MessageTypeEnum.CANCEL_ORDER.getValue());
-        //发送邮件  TODO: 2017/6/15
+        //发送短信 定时任务中完成
+        //smsService.sendToSms(orderDomain.getShipPhone(), MessageTypeEnum.CANCEL_ORDER.getValue());
+        //发送邮件
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();

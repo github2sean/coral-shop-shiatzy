@@ -1,3 +1,4 @@
+<%@ taglib prefix="Web" uri="http://dookay.com/tags/default-functions" %>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
@@ -91,7 +92,7 @@
                             <input type="hidden" name="orderId" value="${item.skuId}">
                             <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="错误商品"><i
+                        <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="${Web:t("错误商品","Wrong Goods")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.service.erroGoods"/></label></span>
                         </div>
@@ -100,7 +101,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type1.reason2"
-                                                                              value="货运过长"><i
+                                                                              value="${Web:t("货运过长","Shipping time is too long.")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message code="returnOrderInfo.service.longDelivery"/></label></span>
                         </div>
                     </li>
@@ -112,7 +113,7 @@
                         <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="瑕紙品"><i
+                        <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="${Web:t("瑕疵品","Defective Goods")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.quality.defectiveGoods"/></label></span>
                         </div>
@@ -121,7 +122,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type2.reason2"
-                                                                              value="与图片不符"><i
+                                                                              value="${Web:t("与图片不符","Different from Picture")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.quality.picErro"/></label></span>
                         </div>
@@ -135,7 +136,7 @@
                         <span class="mr-2">
                             <label class="radiobox">
                         <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="太大">
+                        <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="${Web:t("太大","Too Big")}">
                             <i class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.size.toobig"/></label>
                         </span>
@@ -144,7 +145,7 @@
                     <li>
                         <div>
                             <span class="mr-2"><label class="radiobox">
-                                <input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="太小"><i
+                                <input type="checkbox" name="returnList[${num.count-1}].type4.reason2" value="${Web:t("太小","Too Small")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.size.toosmall"/></label></span>
                         </div>
@@ -153,7 +154,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type4.reason3"
-                                                                              value="太长"><i
+                                                                              value="${Web:t("太长","Too Long")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message code="returnOrderInfo.size.toolong"/></label></span>
                         </div>
                     </li>
@@ -161,7 +162,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type4.reason4"
-                                                                              value="太短"><i
+                                                                              value="${Web:t("太短","Too Short")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.size.tooshort"/></label></span>
                         </div>
@@ -174,7 +175,7 @@
                         <div>
                     <span class="mr-2"><label class="radiobox">
                         <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
-                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="色差"><i
+                        <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="${Web:t("色差","Color difference")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.other.colorErro"/></label></span>
                         </div>
@@ -183,7 +184,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type3.reason2"
-                                                                              value="面料"><i
+                                                                              value="${Web:t("面料","Fabric")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.other.skin"/></label></span>
                         </div>
@@ -192,7 +193,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type3.reason3"
-                                                                              value="风格不合适"><i
+                                                                              value="${Web:t("风格不合适","Inappropriate style")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.other.styleErro"/></label></span>
                         </div>
@@ -201,7 +202,7 @@
                         <div>
                             <span class="mr-2"><label class="radiobox"><input type="checkbox"
                                                                               name="returnList[${num.count-1}].type3.reason4"
-                                                                              value="改变心意"><i
+                                                                              value="${Web:t("改变心意","Your mind changed")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.other.changeHeart"/></label></span>
                         </div>

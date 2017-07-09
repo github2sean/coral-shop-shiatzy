@@ -234,7 +234,7 @@
                 setPrice();
             });
         }else{
-            $(".moreGoods").text("-已到底部-")
+            $(".moreGoods").text("${web:selectLanguage()=='en_US'?"-The end-":"-已到底部-"}")
         }
 
     };

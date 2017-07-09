@@ -2,6 +2,7 @@ package com.dookay.shiatzy.web.mobile.controller;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
+import com.dookay.coral.common.web.CookieUtil;
 import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
@@ -25,6 +26,7 @@ import com.dookay.shiatzy.web.mobile.base.MobileBaseController;
 import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.I18NReverse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -123,6 +125,8 @@ public class AccountController extends MobileBaseController {
         //查询出配送国家
         List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(new ShippingCountryQuery());
         mv.addObject("countryList",shippingCountryDomainList);
+        Date now  = new Date();
+        mv.addObject("now",now);
         return mv;
     }
 
@@ -147,8 +151,9 @@ public class AccountController extends MobileBaseController {
         AccountDomain updateAccount = accountService.get(accountId);
         CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());
         //第一次填写手机号发送短信通知
+        Boolean isEn = !"1".equals(CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"shippingCountry"));
         if(StringUtils.isNotBlank(phone)&& oldCustomer!=null && StringUtils.isBlank(oldCustomer.getPhone())){
-            smsService.sendToSms(phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
+            smsService.sendToSms(isEn,phone, MessageTypeEnum.LOGIN_SUCCESS.getValue());
         }
 
         Long countryId = getCustomeAddress.getCountryId();
@@ -260,7 +265,7 @@ public class AccountController extends MobileBaseController {
         query.setUserName(userName);
         AccountDomain accountDomain = accountService.getFirst(query);
         if(accountDomain!=null&&new Timestamp(accountDomain.getRegisterDate()).getTime()<= System.currentTimeMillis()){
-            return errorResult("修改时间已过期");
+            return errorResult(getI18N().getTimeOut());
         }
         String secretKey = accountDomain.getValidateCode();
         long date = accountDomain.getRegisterDate();//忽略毫秒数
@@ -268,7 +273,7 @@ public class AccountController extends MobileBaseController {
         String key = userName+"$"+date+"$"+secretKey;
         String digitalSignature = DigestUtils.md5Hex(key);//数字签名
         if(!digitalSignature.equals(sid)){
-            return errorResult("加密数据不正确");
+            return errorResult(getI18N().getEncrypDataErro());
         }
         accountService.setNewPassword(accountDomain,updatePasswordForm.getNewPassword());
         UserContext userContext = UserContext.current();
@@ -278,7 +283,7 @@ public class AccountController extends MobileBaseController {
                 UserContext.signOut();
             }
         }
-        return successResult(getI18N().getOperateSuccess());
+        return successResult(DefaultTags.translate("修改成功","Modify Successfully"));
     }
 
 
@@ -327,7 +332,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
         if(!(StringUtils.isNotBlank(customerDomain.getValidMobile())&&customerDomain.getIsArtClubMember()==1)){
-            throw new ServiceException("暂未绑定会员");
+            throw new ServiceException(getI18N().getNoBindVip());
         }
         query.setMobile(customerDomain.getValidMobile());
         List<String> cardType = new ArrayList<>();

@@ -53,7 +53,7 @@
             <ul  id="js_size" class="hide">
               <c:forEach var="item" items="${sizeList}" varStatus="status">
                 <li class="<c:if test=" ${status.first && item.stock>0}"></c:if>
-                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="#">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
+                  <c:if test="${item.stock<1}">disabled</c:if> sizeIds" data-value="${item.id}"><a href="javascript:void(0)">${item.name}&nbsp;&nbsp;&nbsp;<c:if test="${item.stock<1}">(<spring:message code="sellout"/>)</c:if><span></span></a>                  </li>
               </c:forEach>
             </ul>
           </div>
@@ -716,11 +716,12 @@
 
             layer.open({
               type: 2,
+                skin:'d-dialog',
               title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
               area: ['100%', '100%'],
-              content: ['${ctx}/content/sizeNotice'], //iframe的url，no代表不显示滚动条
+              content: ['${ctx}/content/sizeNotice?r='+Math.random()], //iframe的url，no代表不显示滚动条
               shade: [0.5, '#000'] , //0.1透明度的白色背景
 
               success: function(layero, index){
@@ -741,9 +742,19 @@
               title: '<spring:message code="reservation.what"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
-              area: ['90%', '75%'],
+              area: ['100%', '100%'],
               content: ['${ctx}/content/whatBoutique'], //iframe的url，no代表不显示滚动条
-              shade: [0.5, '#000'] //0.1透明度的白色背景
+              shade: [0.5, '#000'], //0.1透明度的白色背景,
+                success: function(layero, index){
+                    $('html').addClass("open-c");
+                    $('body').addClass("open-c");
+                    $('.main-content').addClass("open-c");
+                },
+                end:function () {
+                    $('html').removeClass("open-c");
+                    $('body').removeClass("open-c");
+                    $('.main-content').removeClass("open-c");
+                }
             });
           });
 

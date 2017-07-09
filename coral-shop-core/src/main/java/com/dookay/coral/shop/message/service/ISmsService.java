@@ -13,5 +13,5 @@ import com.dookay.coral.shop.message.domain.SmsDomain;
 public interface ISmsService extends IBaseService<SmsDomain> {
 
 
-   void  sendToSms(String phone,Integer content);
+   void  sendToSms(Boolean isEN,String phone,Integer content);
 }

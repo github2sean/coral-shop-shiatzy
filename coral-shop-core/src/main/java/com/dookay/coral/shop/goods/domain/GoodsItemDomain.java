@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 商品项目的domain
@@ -97,6 +98,9 @@ public class GoodsItemDomain implements Serializable {
 
 	@Transient
 	private String picUrl;
+
+	@Transient
+	private List<PrototypeSpecificationOptionDomain> sizeDomains;
 
 	
 }
