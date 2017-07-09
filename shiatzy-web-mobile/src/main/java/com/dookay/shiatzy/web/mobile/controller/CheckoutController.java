@@ -391,7 +391,7 @@ public class CheckoutController  extends BaseController{
         shoppingCartService.withGoodsItem(cartList);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
-        if(couponId!=null ){
+        if(couponId!=null){
             CouponDomain couponDomain = couponService.get(couponId);
             couponService.checkCoupon(couponDomain.getCode());
         }
@@ -401,8 +401,6 @@ public class CheckoutController  extends BaseController{
             if(couponId!=null ){
                 orderService.subCouponNum(order);
             }
-            //库存减少
-            orderService.updateSkuStock(order);
         }
         List<Long> itemIds = new ArrayList<Long>();
         List<OrderItemDomain> orderItemDomainList = new ArrayList<OrderItemDomain>();
@@ -425,9 +423,9 @@ public class CheckoutController  extends BaseController{
             ShoppingCartItemDomain items = cartList.get(j);
             OrderItemDomain orderItemDomain = new OrderItemDomain();
             orderItemDomain.setOrderId(order.getId());
-            SkuDomain skuDomain = skuService.get(items.getSkuId());
-            if (skuDomain.getQuantity()<=0){
-                itemIds.add(skuDomain.getGoodsId());
+            Long num = goodsService.getTempStock(cartList.get(j).getGoodsCode().split("\\s+")[0],cartList.get(j).getGoodsCode().split("\\s+")[1],prototypeSpecificationOptionService.get(JSONObject.fromObject(cartList.get(j).getSkuSpecifications()).getLong("size")).getName());
+            if (num<=0){
+                itemIds.add(cartList.get(j).getId());
                 continue;
             }
             orderItemDomain.setSkuId(items.getSkuId());
@@ -449,7 +447,7 @@ public class CheckoutController  extends BaseController{
 
         order.setSubmitted(true);
         //清除session
-        session.setAttribute(ORDER,order);
+        session.setAttribute(ORDER,null);
         session.setAttribute(CART_LIST,null);
         //清除购物车
         for(int i=0 ;i<cartList.size();i++){
@@ -488,7 +486,7 @@ public class CheckoutController  extends BaseController{
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
-            return successResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
+            return errorResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
         }
         return successResult(ChooseLanguage.getI18N().getOperateSuccess(),order);
     }

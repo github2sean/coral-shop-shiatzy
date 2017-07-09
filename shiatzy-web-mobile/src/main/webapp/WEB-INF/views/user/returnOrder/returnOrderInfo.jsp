@@ -91,7 +91,7 @@
                             <input type="hidden" name="skuId" value="${item.skuId}">
                             <input type="hidden" name="orderId" value="${item.skuId}">
                             <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
+                        <input type="hidden" value="service" name="returnList[${num.count-1}].type1.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="${Web:t("错误商品","Wrong Goods")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.service.erroGoods"/></label></span>
@@ -112,7 +112,7 @@
                     <li>
                         <div>
                     <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
+                        <input type="hidden" value="quanlity" name="returnList[${num.count-1}].type2.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="${Web:t("瑕疵品","Defective Goods")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.quality.defectiveGoods"/></label></span>
@@ -135,7 +135,7 @@
                         <div>
                         <span class="mr-2">
                             <label class="radiobox">
-                        <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
+                        <input type="hidden" value="size" name="returnList[${num.count-1}].type4.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="${Web:t("太大","Too Big")}">
                             <i class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.size.toobig"/></label>
@@ -174,7 +174,7 @@
                     <li>
                         <div>
                     <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
+                        <input type="hidden" value="other" name="returnList[${num.count-1}].type3.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="${Web:t("色差","Color difference")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.other.colorErro"/></label></span>

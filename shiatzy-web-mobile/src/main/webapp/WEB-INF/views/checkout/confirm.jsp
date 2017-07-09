@@ -173,7 +173,20 @@
         });
     };
 
+    function reloadUrl() {
+
+        var backUrl = document.referrer;
+        console.log(backUrl.indexOf("orderInfo")==-1);
+        console.log(backUrl.indexOf("listShipAddress")==-1);
+        console.log(backUrl.indexOf("confirm")==-1);
+        console.log("url:"+backUrl);
+        if(backUrl.indexOf("orderInfo")==-1 && backUrl.indexOf("listShipAddress")==-1 && backUrl.indexOf("confirm")==-1){
+            location.reload();
+        }
+    }
+
     $(function(){
+        reloadUrl();
         setPrice();
         noNeedBill();
 
@@ -211,7 +224,7 @@
                         if(data.code==200){
                             layer.msg(data.message);
                             var orderId = data.data.id;
-                            location.href = '/order/details?orderId='+orderId;
+                            location.href = '/u/order/details?orderId='+orderId;
                         }
                     });
                 }else{
@@ -225,8 +238,11 @@
             $.post("/checkout/setPaymentMethod",{"paymentId":id},function (data) {
                 if(data.code==200){
                     isCheckPayWay = true;
+                }else{
+                    layer.msg(data.message,{time: 1000},function () {
+                        location.reload();
+                    });
                 }
-                console.log(data);
             });
         });
 
@@ -241,12 +257,12 @@
                 return false;
             }
             $.post("/checkout/submitOrder",function (data) {
-                console.log(data);
+                console.log("data:"+data);
                 if(data.code==200){
                     layer.msg(data.message);
                     var orderNo  = data.data.orderNo;
                     var payMethod = data.data.paymentMethod;
-                    console.log(orderNo+" "+payMethod)
+                    console.log(orderNo+" "+payMethod);
                     if(payMethod=='1'){
                         location.href="/payment/buildPayment?paymentMethod="+payMethod+"&orderNo="+orderNo;
                     }else if(payMethod=='2'){
@@ -256,7 +272,10 @@
                         var ip = returnCitySN["cip"];
                         location.href="/payment/buildIpayLinks?orderNo="+orderNo+"&ipAddress="+ip;
                     }
-
+                }else{
+                    layer.msg(data.message,{time: 1000},function () {
+                        location.reload();
+                    });
                 }
             });
         });

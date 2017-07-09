@@ -37,6 +37,12 @@
                 <c:when test="${row.status==4}">
                     <spring:message code="order.status.reach"/>
                 </c:when>
+                <c:when test="${row.status==5}">
+                    <spring:message code="order.status.returned"/>
+                </c:when>
+                <c:when test="${row.status==5}">
+                    <spring:message code="order.status.refunded"/>
+                </c:when>
                 <c:when test="${row.status==-1}">
                     <spring:message code="order.status.cancel"/>
                 </c:when>

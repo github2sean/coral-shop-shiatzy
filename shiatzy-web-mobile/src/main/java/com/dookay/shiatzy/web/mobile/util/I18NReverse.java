@@ -41,10 +41,10 @@ public class I18NReverse {
     }
 
     public String getStockOut() {
-        return languageType==0?"优惠条件不符":"Don't match Condition";
+        return languageType==0?"库存不足":"The goods selled out";
     }
     public String getInconsistentCondition() {
-        return languageType==0?"库存不足":"The goods selled out";
+        return languageType==0?"优惠条件不符":"Don't match Condition";
     }
     public String getOrderTimeOut() {
         return languageType==0?"订单已经失效":"The Order is Time out";

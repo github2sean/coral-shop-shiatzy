@@ -40,9 +40,11 @@
                     </c:when>
                     <c:when test="${orderDomain.status==2}"><spring:message code="order.status.paid"/></c:when>
                     <c:when test="${orderDomain.status==3}"><spring:message code="order.status.send"/>
-                        <a href="javascript:void(0)" id="receivedBtn" class="btn btn-primary"   style="margin-left: 2rem;background-color: #2b2b2b;border-radius:1;color: white"><spring:message code="order.details.reseived"/></a>
+                        <a href="javascript:void(0)" id="receivedBtn hide" class="btn btn-primary"   style="margin-left: 2rem;background-color: #2b2b2b;border-radius:1;color: white"><spring:message code="order.details.reseived"/></a>
                     </c:when>
                     <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
+                    <c:when test="${orderDomain.status==5}"><spring:message code="order.status.returned"/></c:when>
+                    <c:when test="${orderDomain.status==6}"><spring:message code="order.status.refunded"/></c:when>
                     <c:when test="${orderDomain.status==-1}"><spring:message code="order.status.cancel"/></c:when>
                 </c:choose>
             </p>
@@ -58,7 +60,7 @@
                     <li class="${web:selectCountry()!=1?'hide':''}"><label for="unionPay2"><input type="radio" data-value="2" name="methodOfPayment" id="unionPay2" ><spring:message code="orderinfo.confirm.payway.union"/></label></li>
                     <li class="${web:selectCountry()!=1?'active':''}"><label for="iPay2"><input type="radio" data-value="3" name="methodOfPayment" id="iPay2"  ><spring:message code="orderinfo.confirm.payway.credits"/></label></li>
                 </ul>
-                <a href="'/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="pay-btn"><spring:message code="order.details.pay"/></a>
+                <a href="/payment/buildPayment?paymentMethod=1&orderNo=${orderDomain.orderNo}" id="payBtn" class="pay-btn"><spring:message code="order.details.pay"/></a>
             </div>
         </div>
 
