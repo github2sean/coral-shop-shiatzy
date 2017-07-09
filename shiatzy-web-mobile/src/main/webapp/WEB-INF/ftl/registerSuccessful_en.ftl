@@ -25,7 +25,8 @@
             margin-top: 20px;
         }
         .email-submit .email-con {
-            border: 1px solid #000;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
             padding: 30px 15px;
         }
         .email-con .email-title {
