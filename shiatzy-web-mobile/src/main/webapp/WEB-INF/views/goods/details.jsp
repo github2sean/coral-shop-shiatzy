@@ -161,13 +161,21 @@
           })
 
           $("body").on("click touchstart", '.gallery-close', function (e) {
-            $(".gallery-block").hide();
+              e.preventDefault();
+            $(".boutique>a").click(function (e) {
+                return false;
+            })
+            $(".gallery-block").hide(500,function () {
+                $(".boutique>a").click(function (e) {
+                   location.href = $(this).attr("href");
+                })
+            });
             $("body").css({
               "position":"",
               "overflow":""
             })
-          });
 
+          });
 
           var isSelected = false;
           $("#js_size").find("li").each(function () {

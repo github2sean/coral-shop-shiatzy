@@ -407,6 +407,7 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.href = "/cart/list";
                     }
+                    location.reload();
                 }
             });
         });

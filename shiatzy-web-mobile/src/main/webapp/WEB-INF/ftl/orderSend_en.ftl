@@ -53,7 +53,7 @@
         .email-con .email-txt .name {
             font-family: "宋体";
         }
-        .email-con .email-txt .txt {
+        .email-con .email-txt .mode-txt {
             font-size: 14px;
             line-height: 22px;
             font-family: "宋体";
@@ -212,7 +212,7 @@
             <div class="email-txt">
                 <p class="name">dear ${name},</p>
                 <br>
-                <p class="txt">
+                <p class="mode-txt">
                     ${content}</p>
                 <div class="dingdan">
                     <div class="xzc-detail goods-detail">

@@ -54,14 +54,14 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
-        .email-con .email-txt .txt {
+        .email-con .email-txt .mode-txt {
             font-size: 14px;
             line-height: 22px;
             height: auto;
             border: none;
 
         }
-        .email-con .email-txt .txt .link-web {
+        .email-con .email-txt .mode-txt .link-web {
             text-decoration: underline;
             color: #2a586f;
         }
@@ -79,7 +79,7 @@
             <div class="email-txt">
                 <p class="name">亲爱的 ${name} ,</p>
                 <br>
-                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>. </p>
+                <p class="mode-txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>. </p>
             <a href="http://shop.shiatzychen.com/" target="_blank" style="text-decoration-line: none; padding: 10px 0px; display: block; width: 240px; margin: 30px auto; background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); letter-spacing: 2px; cursor: pointer; text-align: center;">立刻购买</a>
             </div>
         </div>

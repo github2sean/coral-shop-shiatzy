@@ -51,12 +51,12 @@
             margin-bottom: 10px;
             height: auto;
         }
-        .email-con .email-txt .txt {
+        .email-con .email-txt .mode-txt {
             font-size: 14px;
             line-height: 22px;
             border: none;
         }
-        .email-con .email-txt .txt .link-web {
+        .email-con .email-txt .mode-txt .link-web {
             text-decoration: underline;
             color: #2a586f;
         }
@@ -74,7 +74,7 @@
             <div class="email-txt">
                 <p class="name">Dear ${name} ,</p>
                 <br>
-                <p class="txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.</p>
+                <p class="mode-txt">${contentPrefix}<a href="#" class="link-web">SHOP.SHIATZYCHEN.COM</a>.</p>
                 <a href="http://shop.shiatzychen.com/" target="_blank" style="text-align: center;padding: 10px 0; display:block; width: 70%; margin: 30px auto; background: #000; color: #fff; letter-spacing: 2px; text-decoration: none; cursor:pointer ">SHOP NOW</a>
             </div>
         </div>

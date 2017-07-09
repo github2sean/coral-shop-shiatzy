@@ -41,7 +41,7 @@
                     <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                 </div>
                 <div class="goods-info">
-                    <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="name">${web:t(item.goodsItemDomain.goods.name,item.goodsItemDomain.goods.enName)}</div>
                     <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
 
                         <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
@@ -84,14 +84,14 @@
                 <h4 class="title" style=""><spring:message code="returnOrderInfo.selectTips"/></h4>
                 <div style="margin-left: 2rem">
                     <%--服务--%>
-                <ul>
+                <ul style="height: 7rem;">
                     <li><spring:message code="returnOrderInfo.service"/></li>
                     <li>
                         <div>
                             <input type="hidden" name="skuId" value="${item.skuId}">
                             <input type="hidden" name="orderId" value="${item.skuId}">
                             <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="服务" name="returnList[${num.count-1}].type1.name">
+                        <input type="hidden" value="service" name="returnList[${num.count-1}].type1.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type1.reason1" value="${Web:t("错误商品","Wrong Goods")}"><i
                                     class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.service.erroGoods"/></label></span>
@@ -107,12 +107,12 @@
                     </li>
                 </ul>
                 <%--品质--%>
-                <ul>
+                <ul style="height: 7rem;">
                     <li><spring:message code="returnOrderInfo.quality"/></li>
                     <li>
                         <div>
                     <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="品质" name="returnList[${num.count-1}].type2.name">
+                        <input type="hidden" value="quality" name="returnList[${num.count-1}].type2.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type2.reason1" value="${Web:t("瑕疵品","Defective Goods")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.quality.defectiveGoods"/></label></span>
@@ -135,7 +135,7 @@
                         <div>
                         <span class="mr-2">
                             <label class="radiobox">
-                        <input type="hidden" value="尺寸" name="returnList[${num.count-1}].type4.name">
+                        <input type="hidden" value="size" name="returnList[${num.count-1}].type4.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type4.reason1" value="${Web:t("太大","Too Big")}">
                             <i class="i-radiobox iconfont icon-duigou"></i><spring:message
                                     code="returnOrderInfo.size.toobig"/></label>
@@ -174,7 +174,7 @@
                     <li>
                         <div>
                     <span class="mr-2"><label class="radiobox">
-                        <input type="hidden" value="其它" name="returnList[${num.count-1}].type3.name">
+                        <input type="hidden" value="other" name="returnList[${num.count-1}].type3.name">
                         <input type="checkbox" name="returnList[${num.count-1}].type3.reason1" value="${Web:t("色差","Color difference")}"><i
                             class="i-radiobox iconfont icon-duigou"></i><spring:message
                             code="returnOrderInfo.other.colorErro"/></label></span>

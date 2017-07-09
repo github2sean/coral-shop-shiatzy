@@ -301,7 +301,7 @@
 
            var key = $("#searchKey").val();
             if(key==''){
-                layer.msg("请输入搜索关键字");
+                //layer.msg("${web:t("请输入搜索关键字","Choose your location")}");
                 return false;
             }
             $("#contentForm").submit();
@@ -374,7 +374,7 @@
         $(".returnOrchange").click(function () {
             layer.open({
                 type: 2,
-                title: '退货政策',
+                title: '<spring:message code="privacyPolicy"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
                 skin:'d-dialog',
@@ -393,7 +393,6 @@
             });
         })
     });
-
 
     //滚动条在Y轴上的滚动距离
     function getScrollTop(){
@@ -450,7 +449,7 @@
                 [data],
                 {
                     container: '.container',
-                    title: '${web:selectLanguage()=='en_US'?"Choose your location":"选择您所在的地区"}',
+                    title: '${web:t("选择您所在的地区","Choose your location")}',
                     itemHeight: 50,
                     itemShowCount: 5,
                     oneLevelId: bankId,
@@ -467,7 +466,7 @@
                          });
                     }
                 });
-        $(".sure").html("${web:selectLanguage()=='en_US'?"DONE":"确认"}");
+        $(".sure").html("${web:t("确认","DONE")}");
         $(".close").hide();
     };
 
