@@ -41,7 +41,7 @@
 </head>
 <div class="dx-CommonProblems">
     <div class="content">
-        <c:if test="${web:selectLanguage()!='en_US'}">
+       <%-- <c:if test="${web:selectLanguage()!='en_US'}">
         <ul class="second-title j_toggle2 ">
             <li><p href="#"> 1. 为了给您提供更为便捷的购物，在线商品部分提供精品店预约功能，您可在商品页面将喜爱的商品添加至“精品店预约”，于“精品店预约清单”内选择相关精品店进行线下体验。目前该服务仅限于中国大陆地区。</p>
             </li>
@@ -57,8 +57,16 @@
             <li><p href="#">  Note: At present, ‘Store Reservation’ service is avaliable in China Mainland region only.</p>
             </li>
         </ul>
-        </c:if>
-
+        </c:if>--%>
+        <c:forEach var="itemDomain" items="${domainList}">
+            <ul class="second-title j_toggle2 ">
+                <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
+                    <li>
+                        <p class="answer">${web:selectLanguage()=='en_US'?domainlist.en_content:domainlist.content}</p>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:forEach>
     </div>
     <!-- 核心js插件开始 -->
     <script src="${ctx}/static/js/dookayui.min.js"></script>

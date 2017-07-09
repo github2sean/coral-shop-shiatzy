@@ -318,7 +318,7 @@
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
                 area: ['100%', '80%'],
-                content: ['${ctx}/content/returnOrchange'],//iframe的url，no代表不显示滚动条
+                content: ['${ctx}/content/returnOrchange?id=27'],//iframe的url，no代表不显示滚动条
                 shadeClose: true
             });
         });

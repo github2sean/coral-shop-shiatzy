@@ -62,6 +62,9 @@ public class I18NReverse {
     public String getAddSuccess() {
         return languageType==0?"添加成功":"Add Successful";
     }
+    public String getAdderror() {
+        return languageType==0?"精品店预约数量不能超过5件":"Boutique reservation number can not be more than 5 ";
+    }
     public String getDelSuccess() {
         return languageType==0?"删除成功":"Delete Successful";
     }

@@ -50,8 +50,18 @@ public class ContentController extends BaseController {
         return modelAndView;
     }
     @RequestMapping(value = "returnOrchange", method = RequestMethod.GET)
-    public ModelAndView returnOrchange(){
+    public ModelAndView returnOrchange(Long id){
+        ContentCategoryQuery query =new ContentCategoryQuery();
+        query.setParentId(id);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        ContentItemQuery itemQuery =new ContentItemQuery();
+        for (ContentCategoryDomain content:domainList) {
+            itemQuery.setCategoryId(content.getId());
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            content.setContentItemDomainList(contentItemDomains);
+        }
         ModelAndView modelAndView = new ModelAndView("content/returnOrchange");
+        modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
     @RequestMapping(value = "deliveryTime", method = RequestMethod.GET)
@@ -60,8 +70,18 @@ public class ContentController extends BaseController {
         return modelAndView;
     }
     @RequestMapping(value = "whatBoutique", method = RequestMethod.GET)
-    public ModelAndView whatBoutique(){
+    public ModelAndView whatBoutique(Long id){
+        ContentCategoryQuery query =new ContentCategoryQuery();
+        query.setParentId(id);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        ContentItemQuery itemQuery =new ContentItemQuery();
+        for (ContentCategoryDomain content:domainList) {
+            itemQuery.setCategoryId(content.getId());
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            content.setContentItemDomainList(contentItemDomains);
+        }
         ModelAndView modelAndView = new ModelAndView("content/whatBoutique");
+        modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
     @RequestMapping(value = "privacyNotice", method = RequestMethod.GET)
@@ -75,8 +95,18 @@ public class ContentController extends BaseController {
         return modelAndView;
     }
     @RequestMapping(value = "whatWish", method = RequestMethod.GET)
-    public ModelAndView whatWish(){
+    public ModelAndView whatWish(Long id){
+        ContentCategoryQuery query =new ContentCategoryQuery();
+        query.setParentId(id);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        ContentItemQuery itemQuery =new ContentItemQuery();
+        for (ContentCategoryDomain content:domainList) {
+            itemQuery.setCategoryId(content.getId());
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            content.setContentItemDomainList(contentItemDomains);
+        }
         ModelAndView modelAndView = new ModelAndView("content/whatWish");
+        modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
     @RequestMapping(value = "whatCoupon", method = RequestMethod.GET)

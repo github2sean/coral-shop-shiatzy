@@ -27,7 +27,7 @@
             <ul>
                 <li class="form-item2">
                     <span><spring:message code="account.personal.update.title"/>*
-                      <select name="customerAddressDomain.title" id="title" class="" value="${customerAddressDomain.title}"
+                      <select  name="customerAddressDomain.title" id="title" class="" value="${customerAddressDomain.title}"
                               data-rule="<spring:message code="account.personal.update.title"/>:required;">
                           <option value="<spring:message code="add.delivery.ms"/>"><spring:message code="add.delivery.ms"/></option>
                         <option value="<spring:message code="add.delivery.mr"/>"><spring:message code="add.delivery.mr"/></option>
