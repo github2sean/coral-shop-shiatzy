@@ -244,7 +244,7 @@
         </div>
     </div>
    <!--申请退货-->
-    <c:if test="${ orderDomain.status!=null && orderDomain.status==3 && orderDomain.canReturnNum>0}">
+    <c:if test="${ orderDomain.status!=null && orderDomain.status==3 && orderDomain.canReturnNum<=0}">
     <div class="item-group">
             <div class="item">
                 <a class="btn-item"  href="/u/returnOrder/initReturnOrder?orderId=${orderDomain.id}">

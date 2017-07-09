@@ -13,6 +13,7 @@ import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 优惠券的业务实现类
@@ -36,7 +37,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponDomain> implements 
 		query.setCode(couponCode);
 		CouponDomain couponDomain = getOne(query);
 		if(couponDomain==null){
-			throw new ServiceException("优惠券代码无效");
+			throw new ServiceException("无此优惠券");
 		}else{
 			if(couponDomain.getIsValid()==0){
 				throw new ServiceException("优惠券代码无效");

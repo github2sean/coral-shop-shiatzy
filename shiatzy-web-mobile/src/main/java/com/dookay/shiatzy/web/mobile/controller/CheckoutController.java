@@ -476,7 +476,7 @@ public class CheckoutController  extends BaseController{
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
-            return errorResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
+            return errorResult(ChooseLanguage.getI18N().getSomeStockOut(),itemIds);
         }
         return successResult(ChooseLanguage.getI18N().getOperateSuccess(),order);
     }
@@ -787,13 +787,14 @@ public class CheckoutController  extends BaseController{
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
             Double orderTotal = order.getOrderTotal();
+            System.out.println("total:"+orderTotal);
             switch (couponDomain.getRuleType()) {
                 case 0://全单打折 无限次
                     trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
                     System.out.println(0);
                     break;
                 case 1://全单满减 无限次
-                    if(couponDomain.getSatisfyTop()/rate>=orderTotal){
+                    if(couponDomain.getSatisfyTop()/rate<=orderTotal){
                         trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     }else{
                         return errorResult(ChooseLanguage.getI18N().getInconsistentCondition());
@@ -831,6 +832,16 @@ public class CheckoutController  extends BaseController{
         order.setCouponDiscount(0D);
         session.setAttribute(ORDER,order);
         return successResult(ChooseLanguage.getI18N().getOperateSuccess());
+    }
+
+    @RequestMapping(value = "isSubmited", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult isSubmited(){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        OrderDomain order = (OrderDomain)request.getSession().getAttribute(ORDER);
+        System.out.println("orderBoolean:"+order==null?true:false);
+        Boolean ret = order==null?true:false;
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),ret);
     }
 
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)

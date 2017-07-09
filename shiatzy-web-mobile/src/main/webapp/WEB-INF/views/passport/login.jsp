@@ -97,16 +97,5 @@
             dataNext = backUrl;
         }
         console.log("dataNext:"+dataNext);
-      /*  $(".login").click(function () {
-            var data = $(".j_ajaxForm").serializeArray();
-            $.post("/passport/login",data,function(data){
-               if(data.code==200){
-                   console.log("dataNext："+dataNext);
-                   location.href = dataNext;
-               }else {
-                   layer.msg(data.message);
-               }
-            });
-        });*/
     });
 </script>

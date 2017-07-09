@@ -21,11 +21,12 @@
         <div class="delivery">
 
                 <c:if test="${backWay==2}">
-                    <div class="delivery-message" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
+                    <div id="back2store">
+                    <div class="delivery-message" id="checkStore" style="background-color: inherit;border: 2px solid #999999;border-bottom: none;">
                         <span><spring:message code="consignee.shippingbackWay"/></span>
                         <p class="shipName"></p>
                         <p style="display: initial;" class="shipAddress"></p>
-                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
+                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                     <div class="delivery-message" style="height: 120px;background-color: #cccccc;">
                         <p><spring:message code="consignee.storebackWay"/></p>
@@ -33,31 +34,23 @@
                         <p>${web:selectLanguage()=='en_US'?return_order.storeDomain.enAddress:return_order.storeDomain.address}</p>
                         <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
+                    </div>
                 </c:if>
-                <c:if test="${backWay==1}">
+                    <div class="${backWay==2?'hide':''}" id="back2express">
                     <div class="delivery-message" style="margin-top: 2px">
                         <span><spring:message code="consignee.shippingbackWay"/></span>
-                        <p class="shipName">${sessionScope.shipName}</p>
-                        <p style="display: initial;" class="shipAddress">${sessionScope.returnAddress}</p>
-                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
+                        <p class="shipName">${web:t('电商客服','Shop.shiatzychen.com')}</p>
+                        <p style="display: initial;" class="shipAddress">${web:t('闵行区春申路1929号','No.1929,Chunshen Road,Minhang District')}</p>
+                        <p>${web:t('上海，200237','Shanghai，200237')}</p>
+                        <p>${web:t('中国','CHINA')}</p>
+                        <p>+86 21 64109988</p>
+                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
                     <div class="drugstore">
                         <p><spring:message code="consignee.storebackWay"/></p>
                         <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
                     </div>
-                </c:if>
-                <c:if test="${backWay!=1 &&backWay!=2}">
-                    <div class="delivery-message" style="margin-top: 2px">
-                        <span><spring:message code="consignee.shippingbackWay"/></span>
-                        <p class="shipName"></p>
-                        <p style="display: initial;" class="shipAddress"></p>
-                        <a href="javascript:void(0)" class="fillAddress"><spring:message code="delivery.address.update"/> ></a>
                     </div>
-                    <div class="drugstore">
-                        <p><spring:message code="consignee.storebackWay"/></p>
-                        <a href="/u/returnOrder/listStoreCountry"><spring:message code="orderinfo.confirm.select"/> ></a>
-                    </div>
-                </c:if>
         </div>
     </div>
     <div class="return-btn">
@@ -84,6 +77,12 @@
 
 <script>
     $(function () {
+        defaultBackWay();
+        $("#checkStore").click(function () {
+            defaultBackWay();
+            $('#back2store').addClass('hide');
+            $('#back2express').removeClass('hide');
+        });
 
         console.log('backWay '+'${backWay}');
         $(".sureBtn").click(function () {
@@ -94,7 +93,7 @@
             location.href="/u/returnOrder/returnOrderConsigneeInfo";
         });
 
-        $(".fillAddress").on("click",function () {
+       /* $(".fillAddress").on("click",function () {
             var html = '<div style="overflow: hidden;text-align: center"><div style="width: 100%"><div style="width: 50%;text-align: left"><spring:message code="consignee.chooseway.consignee"/>：</div><input type="text" id="shipName" style="width: 70%"/></div><div style="width: 100%;overflow: hidden"> <div style="width: 50%;text-align: left"><spring:message code="consignee.chooseway.consigneeAddress"/>：</div><input id="shipAddress" type="text" style="width: 70%"/></div><div style="text-align: center;margin-top: 5px"><button onclick="hideLayer()" class="btn btn-default fillBtn" style="margin: auto;width: 40%;border-radius: 0"><spring:message code="orderinfo.enter"/></button></div></div>';
             //页面层
             layer.open({
@@ -103,30 +102,19 @@
                 area: ['400px',' 30%'], //宽高
                 content: html
             });
-        });
-
+        });*/
     });
 
-    function hideLayer() {
-
+    function defaultBackWay() {
         var name = $("#shipName").val();
         var shipAddress = $("#shipAddress").val();
-        if(name==''||shipAddress==''){
-            layer.msg('<spring:message code="consignee.chooseway.mustrenturnInfo"/>');
-            return false;
-        }else {
-            $.post("/u/returnOrder/fillReturnAddress",{"address":shipAddress,"name":name},function (data) {
-
+        $.post("/u/returnOrder/fillReturnAddress",{"name":'${web:t('电商客服','Shop.shiatzychen.com')}',"address":'${web:t('闵行区春申路1929号','No.1929,Chunshen Road,Minhang District')}'},function (data) {
                 if(data.code==200){
                     $(".shipName").text(name);
                     $(".shipAddress").text(shipAddress);
-                    window.location.reload();
                 }
                 console.log(data);
-            });
-        }
-
-        layer.close(layer.index);
+        });
     };
 
 </script>

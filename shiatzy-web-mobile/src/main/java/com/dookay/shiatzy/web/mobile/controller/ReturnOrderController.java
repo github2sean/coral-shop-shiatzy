@@ -312,12 +312,17 @@ public class ReturnOrderController extends BaseController {
             Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
             preBackMoney += goodsPrice*line.getNum();
         }
+
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
         OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
+        OrderItemQuery itemQuery = new OrderItemQuery();
+        itemQuery.setOrderId(orderDomain.getId());
+        Integer length = orderItemService.getList(itemQuery).size();
+        Double size = list.size()/1.0;
         Double dis = orderDomain.getCouponDiscount();
         Double memDis = orderDomain.getMemberDiscount();
         dis = dis==null?0D:dis;
-        dis = memDis==null?dis:dis+memDis;
+        dis = memDis==null?dis:dis+memDis*(size/length);
 
         mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee()-dis);
         mv.addObject("returnReasonMap",newReturnReasonMap);
@@ -564,13 +569,7 @@ public class ReturnOrderController extends BaseController {
 
         Boolean isEN = orderDomain.getShippingCountryId()!=1?true:false;
         Double totalFee=totalAmt-returnRequestDomain.getShipFee()-dis;
-        //发送短信
-        if(StringUtils.isNotBlank(customerDomain.getPhone())){
-        smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
-        }
-        //发送邮件
-        //1.查询发送内容
-        EmailUtil.applyReturn(isEN,customerDomain.getEmail(),returnRequestDomain,requestList,totalFee);
+
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
@@ -580,7 +579,17 @@ public class ReturnOrderController extends BaseController {
         orderLogDomain.setMessage("买家申请退货");
         orderLogDomain.setIsSuccessed(1);
         orderLogService.create(orderLogDomain);
-
+        //发送短信
+        if(StringUtils.isNotBlank(customerDomain.getPhone())){
+            smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
+        }
+        //发送邮件
+        //1.查询发送内容
+        try{
+            EmailUtil.applyReturn(isEN,customerDomain.getEmail(),returnRequestDomain,requestList,totalFee);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return successResult("已发送申请",returnRequestDomain.getId());
     }
 
