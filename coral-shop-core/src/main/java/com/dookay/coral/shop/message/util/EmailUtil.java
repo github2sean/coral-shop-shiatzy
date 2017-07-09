@@ -44,7 +44,7 @@ public class EmailUtil {
         //生成模版
         Map<String, Object> map = new HashMap<>();
         map.put("picUrl", FreemarkerUtil.getLogoUrl("static/images/logoSC.png"));
-        map.put("title", isEn ? messageTemplate.getEnContent() : messageTemplate.getTitle());
+        map.put("title", isEn ? messageTemplate.getEnTitle() : messageTemplate.getTitle());
         map.put("name", userName);
         map.put("contentPrefix", !isEn ? messageTemplate.getContent() : messageTemplate.getEnContent());
         //map.put("contentSuffix",!isEn?"从现在起，您可以通过输入您的个人登录信息随时访问您的帐户。作为我们在线精品店的会员，你有幸成为第一个听到我们最新的收藏、特别活动和新闻的人。你可以充分利用一系列的好处和服务如下：在您的在线的时候":"From now on you can access your account at any time by entering your personal login details. As the member of our online boutique, you are privileged to be the first to hear about our latest collections, special events and style news. You could take full advantages of a range of benefits and services as below during your online sh");
