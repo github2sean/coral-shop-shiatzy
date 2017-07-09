@@ -17,7 +17,6 @@
     <div class="dx-title"><spring:message code="specialService"/> <a href="javascript:history.go(-1)"><spring:message code="goBack"/></a></div>
     <div class="content">
         <ul>
-
                 <li class="first-title j_collapse">
                     <a href="#"><spring:message code="service.line1.name"/></a>
                     <ul class="second-title">

@@ -2816,8 +2816,10 @@ textarea {
     overflow: hidden;
 }
 
+body .d-dialog{position: fixed;
+    top:0 !important;left: 0 !important;right: 0;bottom: 0;}
 body .d-dialog .layui-layer-title{position: fixed;top:0;left: 0; bottom: 0;width: 100%;z-index: 999999;}
 body .d-dialog  .layui-layer-setwin{z-index: 9999999}
-body  .d-dialog .layui-layer-content{position: fixed;top:42px;height: 100%;overflow-y: scroll;width: 100%;overflow-x: hidden}
+body  .d-dialog .layui-layer-content{position: fixed;top:42px;height: 100%;overflow-y: scroll;width: 100%;overflow-x: hidden;padding-bottom: 40px;}
 /*body .table{width: 80%}*/
 /*body .table-responsive{width: 80%}*/
