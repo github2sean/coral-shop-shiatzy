@@ -334,8 +334,14 @@ public class GoodsController extends BaseController{
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsPublished(ValidEnum.YES.getValue());
         List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
-        Collections.shuffle(goodsListAll);
-        List<GoodsDomain> goodsDomainList = goodsListAll.subList(0,4);
+        for (GoodsDomain goodsDomain1 :goodsListAll){
+            List<Long> categoryIdList = JSON.parseArray(goodsDomain1.getCategoryIds(),Long.class);
+            goodsDomain1.setCategoryIdList(categoryIdList);
+        }
+        List<GoodsDomain> likeGoodsList = goodsListAll.stream().filter(x->CollectionUtils.containsAny(x.getCategoryIdList(),JsonUtils.toLongArray(goodsDomain.getCategoryIds()))).collect(Collectors.toList());
+
+        Collections.shuffle(likeGoodsList);
+        List<GoodsDomain> goodsDomainList = likeGoodsList.subList(0,4);
         goodsService.withGoodsItemList(goodsDomainList);
         mv.addObject("likeGoodsList",goodsDomainList);
         //尺寸

@@ -41,11 +41,13 @@
                     <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
                 </div>
                 <p class="price ${not empty row.leftItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span>　</p>
-                <c:if test="${not empty row.leftItem.goodsDisPrice}">
-                    <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>
+
+                <p class="price xzc-dis-price"> <c:if test="${not empty row.leftItem.goodsDisPrice}">
+                   <spring:message code="shoppingCart.disPrice"/>
                         <span class="do-pro-price" data-value="${row.leftItem.goodsDisPrice}">&nbsp;</span>　
-                    </p>
+
                 </c:if>
+                </p>
                 <ul class="do-list-icon">
                     <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
                     <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
@@ -62,10 +64,10 @@
                         <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
                     </div>
                     <p class="price ${not empty row.rightItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
-                    <c:if test="${not empty row.rightItem.goodsDisPrice}">
-                    <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/><span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
+                    <p class="price xzc-dis-price"><c:if test="${not empty row.rightItem.goodsDisPrice}">
+                   <spring:message code="shoppingCart.disPrice"/><span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span>
                     </c:if>
-
+                    </p>
                     <ul class="do-list-icon">
                         <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
                         <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>

@@ -8,19 +8,16 @@ import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
 import com.dookay.coral.shop.customer.service.ICustomerService;
-import com.dookay.coral.shop.goods.domain.GoodsDomain;
-import com.dookay.coral.shop.goods.domain.GoodsItemDomain;
-import com.dookay.coral.shop.goods.query.GoodsItemQuery;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
-import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.*;
 import com.dookay.coral.shop.order.service.*;
 import com.dookay.coral.shop.shipping.service.IShippingCountryService;
+import com.dookay.coral.shop.store.service.IStoreService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by admin on 2017/4/25.
@@ -67,6 +63,7 @@ public class OrderController extends BaseController {
     @Autowired
     private IShippingCountryService shippingCountryService;
 
+
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     public ModelAndView list(){
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -87,18 +84,18 @@ public class OrderController extends BaseController {
         List<OrderItemDomain> orderItemList  = orderItemService.getList(query);
         orderDomain.setShippingCountryDomain(shippingCountryService.get(orderDomain.getShippingCountryId()));
 
+        orderService.withStore(orderDomain);
+
         //退货数量等于订单的数量不可再退货
         Integer orderNum = 0;
         Integer returnNum = 0;
         GoodsQuery goodsQuery = new GoodsQuery();
-        orderService.withGoodItme(orderItemList);
+        orderService.withGoodsItem(orderItemList);
         for (OrderItemDomain orderItemDomain:orderItemList){
             orderNum += orderItemDomain.getNum();
             returnNum += orderItemDomain.getReturnNum();
             JSONObject jsonObject  = JSONObject.fromObject(orderItemDomain.getSkuSpecifications());
             orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+jsonObject.get("size"))));
-            goodsQuery.setCode(orderItemDomain.getGoodsCode());
-            orderItemDomain.setGoodsDomain(goodsService.getFirst(goodsQuery));
         }
         //判断该订单是否有对应退货单
         ReturnRequestQuery backQuery = new ReturnRequestQuery();
@@ -116,7 +113,6 @@ public class OrderController extends BaseController {
         mv.addObject("orderItemList",orderItemList);
         return mv;
     }
-
 
     @RequestMapping(value = "receipt" ,method = RequestMethod.POST)
     @ResponseBody

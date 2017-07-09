@@ -57,6 +57,7 @@ import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import com.dookay.coral.shop.temp.query.TempMemberQuery;
 import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.coral.shop.temp.service.ITempStockService;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -462,7 +463,7 @@ public class CheckoutController  extends BaseController{
         freeMap.put("status",OrderStatusEnum.UNPAID.getValue());
         freeMap.put("content",messageTemplate.getContent());
         freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
-        orderService.withGoodItme(orderItemDomainList);
+        orderService.withGoodsItem(orderItemDomainList);
         freeMap.put("order",order);
         freeMap.put("orderItem",orderItemDomainList);
         String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
@@ -612,6 +613,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
 
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
+        ShippingCountryDomain shippingCountryDomain = shippingCountryService.get(customerAddressDomain.getCountryId());
         OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
         orderDomain.setCustomerAddressDomain(customerAddressDomain);
         orderDomain.setStoreDomain(null);
@@ -624,7 +626,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipTitle(customerAddressDomain.getTitle());
         orderDomain.setShipCity(customerAddressDomain.getCity());
         orderDomain.setShippingCountryId(customerAddressDomain.getCountryId());
-        orderDomain.setShipCountry(customerAddressDomain.getCountryId()+"");
+        orderDomain.setShipCountry(DefaultTags.translate(shippingCountryDomain.getName(),shippingCountryDomain.getEnName()));
         orderDomain.setShipProvince(customerAddressDomain.getProvince());
         orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());

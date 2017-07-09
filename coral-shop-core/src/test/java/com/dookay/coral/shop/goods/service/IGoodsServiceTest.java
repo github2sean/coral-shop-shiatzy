@@ -40,7 +40,8 @@ public class IGoodsServiceTest extends BaseTest {
     private IGoodsItemService goodsItemService;
     @Autowired
     private IGoodsItemPhotoService goodsItemPhotoService;
-
+    @Autowired
+    private IGoodsItemFormatService goodsItemFormatService;
 
     @Test
     public void updateGoodsSizes() throws Exception {
@@ -165,6 +166,29 @@ public class IGoodsServiceTest extends BaseTest {
             jsonObject.put("file",goodsItemPhotoDomain.getImage());
             jsonArray.add(jsonObject);
             goodsItemDomain.setThumb(JSON.toJSONString(jsonArray));
+            goodsItemService.update(goodsItemDomain);
+        }
+    }
+
+    @Test
+    public void updateGoodsItemFormat(){
+        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(new GoodsItemQuery());
+        for(GoodsItemDomain goodsItemDomain :goodsItemDomainList){
+            GoodsItemFormatQuery goodsItemFormatQuery = new GoodsItemFormatQuery();
+            goodsItemFormatQuery.setItemId(goodsItemDomain.getId());
+            goodsItemFormatQuery.setOrderBy("id");
+            goodsItemFormatQuery.setDesc(false);
+            List<GoodsItemFormatDomain> goodsItemFormatDomainList = goodsItemFormatService.getList(goodsItemFormatQuery);
+            String enFormat ="<ul>";
+            String format ="<ul>";
+            for(GoodsItemFormatDomain goodsItemFormatDomain:goodsItemFormatDomainList){
+                format = format+"<li>"+goodsItemFormatDomain.getName()+"</li>";
+                enFormat = enFormat+"<li>"+goodsItemFormatDomain.getEnName()+"</li>";
+            }
+            format = format+"</ul>";
+            enFormat = enFormat+"</ul>";
+            goodsItemDomain.setFormat(format);
+            goodsItemDomain.setEnFormat(enFormat);
             goodsItemService.update(goodsItemDomain);
         }
     }

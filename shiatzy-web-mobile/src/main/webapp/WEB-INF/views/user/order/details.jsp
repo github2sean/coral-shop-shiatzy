@@ -1,4 +1,6 @@
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
+<%@ page import="com.dookay.coral.shop.order.enums.ShippingMethodEnum" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 
@@ -221,25 +223,29 @@
     </div>
     <!--配送信息-->
     <div class="item-group">
-        <h4 class="title j_dropdown"><spring:message code="order.details.deliveryInfo"/> <span class="arrow">></span></h4>
-
+        <h4 class="title j_dropdown">${orderDomian.shippingMethod}<spring:message code="order.details.deliveryInfo"/> <span class="arrow">></span></h4>
         <div class="item"  style="display: none">
             <ul>
-
-                <c:if test="${web:selectCountry()!=1}">
-                    <li>${orderDomain.shipTitle}  ${orderDomain.shipFirstName}${orderDomain.shipLastName}</li>
-                </c:if>
-                <c:if test="${web:selectCountry()==1}">
-                    <li>${orderDomain.shipLastName}${orderDomain.shipFirstName} ${orderDomain.shipTitle}</li>
-                </c:if>
-
-                <li>${orderDomain.shipAddress}</li>
-                <c:if test="${not empty orderDomain.shipMemo}">
-                    <li>${orderDomain.shipMemo}</li>
-                </c:if>
-                <li>${orderDomain.shipCity} ${order.shipPostalCode}</li>
-                <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}</li>
-                <li>${orderDomain.shipPhone}</li>
+                <c:choose>
+                    <c:when test="${orderDomian.storeDomain==null}">
+                        <c:if test="${web:selectCountry()!=1}">
+                            <li>${orderDomain.shipTitle}  ${orderDomain.shipFirstName}${orderDomain.shipLastName}</li>
+                        </c:if>
+                        <c:if test="${web:selectCountry()==1}">
+                            <li>${orderDomain.shipLastName}${orderDomain.shipFirstName} ${orderDomain.shipTitle}</li>
+                        </c:if>
+                        <li>${orderDomain.shipAddress}</li>
+                        <c:if test="${not empty orderDomain.shipMemo}">
+                            <li>${orderDomain.shipMemo}</li>
+                        </c:if>
+                        <li>${orderDomain.shipCity} ${order.shipPostalCode}</li>
+                        <li>${web:selectLanguage()=='en_US'?orderDomain.shippingCountryDomain.enName:orderDomain.shippingCountryDomain.name}</li>
+                        <li>${orderDomain.shipPhone}</li>
+                    </c:when>
+                    <c:otherwise>
+                        <li>${web:t("门店","Store")}：${web:t(orderDomain.storeDomain.name,orderDomain.storeDomain.enName)}</li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>

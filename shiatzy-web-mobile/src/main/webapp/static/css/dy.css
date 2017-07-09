@@ -60,7 +60,9 @@
 }
 
 .order-main .product-name {
-    height: 2.4rem;
+    height: 4rem;
+    overflow: hidden;
+    margin-bottom: 5px;
 }
 
 .order-main .goodsDiv{

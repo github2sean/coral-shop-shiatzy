@@ -20,6 +20,8 @@ import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.service.IOrderItemService;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
 import com.dookay.coral.shop.promotion.service.ICouponService;
+import com.dookay.coral.shop.store.domain.StoreDomain;
+import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.coral.shop.temp.domain.TempStockDomain;
 import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempStockService;
@@ -67,9 +69,10 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 	private ITempStockService tempStockService;
 	@Autowired
 	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
-
+	@Autowired
+	private IStoreService storeService;
 	@Override
-	public void withGoodItme(List<OrderItemDomain> cartList) {
+	public void withGoodsItem(List<OrderItemDomain> cartList) {
 		List<Long> ids = cartList.stream().map(OrderItemDomain::getItemId).collect(Collectors.toList());
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setIds(ids);
@@ -86,6 +89,14 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderDomain> implements IO
 					.filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(new GoodsItemDomain());
 			orderItemDomain.setGoodsItemDomain(goodsItemDomain);
 			orderItemDomain.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(orderItemDomain.getSkuSpecifications()).getLong("size")));
+		}
+	}
+
+	@Override
+	public void withStore(OrderDomain orderDomain) {
+		if(orderDomain.getStoreId() != null){
+			StoreDomain storeDomain = storeService.get(orderDomain.getStoreId());
+			orderDomain.setStoreDomain(storeDomain);
 		}
 	}
 

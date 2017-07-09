@@ -1,5 +1,7 @@
 package com.dookay.shiatzy.web.mobile.util;
 
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
+
 /**
  * Created by admin on 2017/6/22.
  */
@@ -105,7 +107,6 @@ public class I18NReverse {
         return languageType==0?"邮箱已存在":"The Email Already Exists";
     }
 
-
     public String getPasswordAndUserNameErro() {
         return languageType==0?"帐号与密码不匹配":"The Account Mismatching The Password";
     }
@@ -116,7 +117,7 @@ public class I18NReverse {
 
 
     public String getVlaidSuccess() {
-        return languageType==0?"验证成功":"Verify Success";
+        return DefaultTags.translate("验证成功","Verify Success");
     }
 
     public String getOperateSuccess() {

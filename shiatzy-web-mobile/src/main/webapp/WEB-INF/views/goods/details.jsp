@@ -38,11 +38,13 @@
             ${web:selectLanguage()=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)
             </h3>
             <c:if test="${goodsDomain.goodsItemList.size()>0}">
+
               <ul class="clearfix">
-                <c:forEach var="item" items="${goodsDomain.goodsItemList}">
+                <c:forEach var="item" items="${goodsDomain.goodsItemList}" varStatus="status">
+                    <c:set var="startIndex" value="${goodsDomain.goodsItemList.size()-1 }"></c:set>
                   <li style="margin-bottom: 2rem;  ">
-                      <a href="/goods/details/${item.id}">
-                      <img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${item.id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
+                      <a href="/goods/details/${goodsDomain.goodsItemList[startIndex-status.index].id}">
+                      <img src="${ImageModel.toFirst(goodsDomain.goodsItemList[startIndex-status.index].thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${goodsDomain.goodsItemList[startIndex-status.index].id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
                 </c:forEach>
               </ul>
             </c:if>
@@ -71,11 +73,10 @@
           <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${web:selectLanguage()=='en_US'?goodsItemDomain.enDescription:goodsItemDomain.description}</p>
-            <ul class="format text">
-                <c:forEach var="item" items="${goodsItemFormatList}">
-                <li>${web:selectLanguage()=='en_US'?item.enName:item.name}</li>
-                </c:forEach>
-            </ul>
+              <div class="format text">
+                  ${web:t(goodsItemDomain.format,goodsItemDomain.enFormat)}
+              </div>
+
           </div>
         </div>
 

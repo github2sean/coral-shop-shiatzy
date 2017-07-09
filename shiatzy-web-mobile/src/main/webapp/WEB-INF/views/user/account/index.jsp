@@ -24,7 +24,6 @@
 <div class="my-account">
     <div style="display: inline-block;" class="my-account-title">
         <p><spring:message code="account.welcome"/>,</p>
-        <c:if test="${empty customerDomain.lastName && empty customerDomain.firstName}"><p>XX</p></c:if>
         <c:if test="${not empty customerDomain}"><p>${customerDomain.lastName}${customerDomain.firstName}!</p></c:if>
     </div>
     <div class="my-account-message">

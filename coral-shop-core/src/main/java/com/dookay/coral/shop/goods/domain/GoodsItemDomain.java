@@ -87,6 +87,9 @@ public class GoodsItemDomain implements Serializable {
 	/*规格说明*/
 	private String format;
 
+	/*英文规格说明*/
+	private String enFormat;
+
 	@Transient
 	/*库存*/
 	private Integer quantity;

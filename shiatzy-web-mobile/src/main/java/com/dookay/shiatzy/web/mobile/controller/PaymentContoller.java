@@ -708,7 +708,7 @@ public class PaymentContoller extends BaseController{
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
-        orderService.withGoodItme(itemDomainList);
+        orderService.withGoodsItem(itemDomainList);
         orderDomain.setOrderItemDomainList(itemDomainList);
         mv.addObject("order",orderDomain);
         return mv;
@@ -729,7 +729,7 @@ public class PaymentContoller extends BaseController{
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
-        orderService.withGoodItme(itemDomainList);
+        orderService.withGoodsItem(itemDomainList);
         orderDomain.setOrderItemDomainList(itemDomainList);
         mv.addObject("order",orderDomain);
         return mv;

@@ -107,7 +107,7 @@
                 </c:if>
                 <%--会员优惠--%>
                 <c:if test="${orderDomain.memberDiscount!=null}">
-                    <li>Art Club&nbsp;<spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
+                    <li><spring:message code="order.details.vipDiscount"/><span data-value="${orderDomain.memberDiscount==null?0:orderDomain.memberDiscount}">
                 &nbsp;<font class="coinSymbol">
                             <c:choose>
                                 <c:when test="${orderDomain.currentCode=='CNY'}">
@@ -169,7 +169,6 @@
         <c:if test="${order.paymentMethod==3}">
             <p>VISA</p>
         </c:if>
-
     </div>
 
     <!--配送信息-->
@@ -189,7 +188,7 @@
                     <li>${order.shipPhone}</li>
                 </c:if>
                 <c:if test="${order.shippingMethod==2 && not empty order.shippingMethod}">
-                    <li><spring:message code="payment.failed.shippingStore"/>：${order.shipShopId}</li>
+                    <li>222<spring:message code="payment.failed.shippingStore"/>：${order.shipShopId}</li>
                 </c:if>
                 <c:if test="${order.billRequired==0 || empty order.billRequired}">
                     <li><spring:message code="payment.failed.bill"/>：<spring:message code="payment.failed.noNeed"/></li>

@@ -431,7 +431,7 @@
     }
     //
 
-    <c:if test="${empty web:selectCountry()}">
+    <c:if test="${empty web:selectCountry() || web:selectCountry()<1}">
 
     var showBankDom = document.querySelector('#showBank');
     var bankIdDom = document.querySelector('#bankId');

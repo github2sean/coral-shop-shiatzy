@@ -63,13 +63,14 @@ public class ExceptionHandler implements HandlerExceptionResolver {
             errorMsg = msg;
         }
         String  lang =  CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"Language");
-
+        
         if("en_US".equals(lang)){
             errorMsg = errorMsg
                     .replace("优惠券代码无效","Invalid code")
                     .replace("优惠券代码已过期","Code expired")
                     .replace("优惠券使用次数不足","Code use limited")
-                    .replace("心愿单中已经存在","Already added");
+                    .replace("心愿单中已经存在","Already added")
+                    .replace("验证会员失败","Verify fail");
         }
         if (JsonUtils.isAjax(handler)) {
             try {

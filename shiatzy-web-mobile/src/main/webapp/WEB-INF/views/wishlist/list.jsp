@@ -36,20 +36,27 @@
     }
 </style>
 <div class="dx-shopping clearfix <c:if test='${empty wishList}'>dx-commodity</c:if>">
-    <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index"><spring:message code="goBack"/></a></div>
+    <div class="dx-title" style="background-color: #999999"><spring:message code="wish"/><a href="/u/account/index">< <spring:message code="goBack"/></a></div>
 <c:choose>
     <c:when test="${not empty wishList}">
         <div class="categoryList j_collapse">
-            <a  class="title"><spring:message code="wish.save"/></a>
+            <a  class="title">
+                <c:if test='${categoryDomain ==null}'>
+                    ${web:t("所有商品","Shop ALL")}
+                </c:if>
+                <c:if test='${categoryDomain !=null}'>
+                    ${web:t(categoryDomain.name,categoryDomain.enName)}
+                </c:if>
+            </a>
 
             <ul class="body">
+                <li class="category-item <c:if test='${categoryDomain ==null}'>active</c:if>"><a href="/cart/wishlist?categoryId=0">${web:t("所有商品","Shop ALL")}</a></li>
                 <c:forEach var="row" items="${categoryList}">
                     <li class="category-item <c:if test='${categoryDomain.id==row.id}'>active</c:if>" >
                         <a href="/cart/wishlist?categoryId=${row.id}">${web:selectLanguage()=='en_US'?row.enName:row.name}</a>
                     </li>
                 </c:forEach>
             </ul>
-
         </div>
     </c:when>
    <c:otherwise>
@@ -123,8 +130,8 @@
     </c:if>
         <div class="explain">
             <ul>
-                <li><a href="/goods/list?categoryId=17"><spring:message code="shoppingCart.selectWoman"/><span>&gt;</span></a></li>
-                <li><a href="/goods/list?categoryId=18"><spring:message code="shoppingCart.selectMan"/><span>&gt;</span></a></li>
+                <li><a href="/goods/list?categoryId=2"><spring:message code="shoppingCart.selectWoman"/><span>&gt;</span></a></li>
+                <li><a href="/goods/list?categoryId=3"><spring:message code="shoppingCart.selectMan"/><span>&gt;</span></a></li>
                 <li class="last whatWish"><a href="#"><spring:message code="wish.whatWish"/>?<span>&gt;</span></a></li>
             </ul>
         </div>
@@ -209,16 +216,26 @@
             });
         });
 
-
         $(".whatWish").click(function(){
             layer.open({
                 type: 2,
+                skin:'d-dialog',
                 title: '<spring:message code="wish.whatWish"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
-                area: ['100%', '50%'],
+                area: ['100%', '100%'],
                 content: ['${ctx}/content/whatWish?id=33'],//iframe的url，no代表不显示滚动条
-                shadeClose: true
+                shadeClose: true,
+                success: function(layero, index){
+                    $('html').addClass("open-c");
+                    $('body').addClass("open-c");
+                    $('.main-content').addClass("open-c");
+                },
+                end:function () {
+                    $('html').removeClass("open-c");
+                    $('body').removeClass("open-c");
+                    $('.main-content').removeClass("open-c");
+                }
             });
         });
 
