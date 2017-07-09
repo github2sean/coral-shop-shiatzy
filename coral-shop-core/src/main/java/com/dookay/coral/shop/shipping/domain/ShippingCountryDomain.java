@@ -54,5 +54,6 @@ public class ShippingCountryDomain implements Serializable {
 
 	/*汇率类型*/
 	private Integer rateType;
-
+    /*电话前缀*/
+    private String  phonePrefix;
 }
