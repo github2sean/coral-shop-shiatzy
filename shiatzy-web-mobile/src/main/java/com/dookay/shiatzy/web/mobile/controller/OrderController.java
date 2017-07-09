@@ -86,18 +86,13 @@ public class OrderController extends BaseController {
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> orderItemList  = orderItemService.getList(query);
         orderDomain.setShippingCountryDomain(shippingCountryService.get(orderDomain.getShippingCountryId()));
-        List<Long> ids = orderItemList.stream().map(OrderItemDomain::getItemId).collect(Collectors.toList());
-        GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
-        goodsItemQuery.setIds(ids);
-        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
+
         //退货数量等于订单的数量不可再退货
         Integer orderNum = 0;
         Integer returnNum = 0;
         GoodsQuery goodsQuery = new GoodsQuery();
+        orderService.withGoodItme(orderItemList);
         for (OrderItemDomain orderItemDomain:orderItemList){
-            GoodsItemDomain goodsItemDomain = goodsItemDomainList.stream()
-                    .filter(x-> Objects.equals(x.getId(), orderItemDomain.getItemId())).findFirst().orElse(null);
-            orderItemDomain.setGoodsItemDomain(goodsItemDomain);
             orderNum += orderItemDomain.getNum();
             returnNum += orderItemDomain.getReturnNum();
             JSONObject jsonObject  = JSONObject.fromObject(orderItemDomain.getSkuSpecifications());

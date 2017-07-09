@@ -385,7 +385,7 @@
             </thead>
             <tbody style="font-size:10px">
               <tr>
-                <td >法国 </td>
+                <td>法国 </td>
                 <td>70</td>
                 <td>75</td>
                 <td>80</td>

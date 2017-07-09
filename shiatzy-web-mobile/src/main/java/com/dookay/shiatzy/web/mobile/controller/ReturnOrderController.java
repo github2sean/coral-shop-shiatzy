@@ -171,11 +171,10 @@ public class ReturnOrderController extends BaseController {
             if(!(line.getStatus()==1 && line.getReturnNum()>=line.getNum())){
                 cartList.add(line);
             }
-            GoodsQuery goodsQuery = new GoodsQuery();
-            goodsQuery.setCode(line.getGoodsCode());
-            line.setGoodsDomain(goodsService.getFirst(goodsQuery));
             line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
+
+
         if(cartList.size()==0){
             return "redirect:u/order/list";
         }
@@ -306,12 +305,12 @@ public class ReturnOrderController extends BaseController {
         }
 
         //创建退货项目列表
-
         Double preBackMoney = 0D;
         for(OrderItemDomain line:list){
             Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
             preBackMoney += goodsPrice*line.getNum();
         }
+
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
         OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
         Double dis = orderDomain.getCouponDiscount();

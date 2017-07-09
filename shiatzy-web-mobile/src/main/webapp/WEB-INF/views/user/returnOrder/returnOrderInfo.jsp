@@ -41,7 +41,7 @@
                     <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                 </div>
                 <div class="goods-info">
-                    <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="name">${web:t(item.goodsItemDomain.goods.name,item.goodsItemDomain.goods.enName)}</div>
                     <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
 
                         <p style="float:left;margin-right: 3.0918rem;">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
@@ -84,7 +84,7 @@
                 <h4 class="title" style=""><spring:message code="returnOrderInfo.selectTips"/></h4>
                 <div style="margin-left: 2rem">
                     <%--服务--%>
-                <ul>
+                <ul style="height: 7rem;">
                     <li><spring:message code="returnOrderInfo.service"/></li>
                     <li>
                         <div>
@@ -107,7 +107,7 @@
                     </li>
                 </ul>
                 <%--品质--%>
-                <ul>
+                <ul style="height: 7rem;">
                     <li><spring:message code="returnOrderInfo.quality"/></li>
                     <li>
                         <div>

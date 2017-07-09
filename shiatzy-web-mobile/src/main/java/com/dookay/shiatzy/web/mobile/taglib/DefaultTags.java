@@ -64,6 +64,12 @@ public class DefaultTags {
 		return  selectLanguage;
 	}
 
+	public static Boolean isEn() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
+		return selectLanguage.equals("en_US");
+	}
+
 	public static String translate(String cnString,String enString) {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
