@@ -107,6 +107,9 @@ public class 	OrderDomain implements Serializable {
 	
 	/*发票抬头*/
 	private String billTitle;
+
+	/*税号*/
+	private String billCode;
 	
 	/*优惠券id*/
 	private Long couponId;

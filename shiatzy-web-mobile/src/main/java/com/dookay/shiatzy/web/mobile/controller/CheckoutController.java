@@ -745,7 +745,7 @@ public class CheckoutController  extends BaseController{
 
     @RequestMapping(value = "isNeedBill", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult isNeedBill(Integer isNeed,String info){
+    public JsonResult isNeedBill(Integer isNeed,String info,Integer type){
         if(isNeed==null){
             return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
@@ -756,7 +756,16 @@ public class CheckoutController  extends BaseController{
             return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setBillRequired(isNeed);
-        order.setBillTitle(info);
+        if(isNeed==0){
+            order.setBillTitle("");
+            order.setBillCode("");
+        }else{
+            if(type==0){
+                order.setBillTitle(info);
+            }else{
+                order.setBillCode(info);
+            }
+        }
         session.setAttribute(ORDER,order);
         return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
