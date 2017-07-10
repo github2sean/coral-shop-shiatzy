@@ -42,7 +42,7 @@
                     </select>
                     <%--<input type="text" value="${address.title}" name="title" id="title"> <span> ></span></div>--%>
                  </div>
-                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel"  name="phone" id="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
+                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" name="phone" id="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
             </div>
 
             <div class="address">
