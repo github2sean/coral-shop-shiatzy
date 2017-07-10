@@ -69,7 +69,7 @@ public class CouponController extends BaseApiController {
 
     @ApiOperation(value = "判断优惠券是否存在",httpMethod = "POST")
     @RequestMapping(value = "/isExist", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public JsonResult isExist(String code) {
+    public JsonResult isExist(@RequestParam("code") String code) {
         CouponQuery query = new CouponQuery();
         query.setCode(code);
         CouponDomain couponDomain = couponService.getFirst(query);

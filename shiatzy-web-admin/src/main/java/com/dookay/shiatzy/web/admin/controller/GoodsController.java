@@ -79,4 +79,6 @@ public class GoodsController extends BaseApiController {
         goodsService.delete(id);
         return successResponse("删除成功");
     }
+
+
 }
