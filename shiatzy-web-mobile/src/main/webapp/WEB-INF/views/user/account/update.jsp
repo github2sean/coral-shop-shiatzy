@@ -75,7 +75,7 @@
                                     value="${phone.id}">${phone.phonePrefix}</option>
                         </c:forEach>
 
-                    </select>&nbsp;+<input type="text"
+                    </select>&nbsp;+<input type="text"onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"
                                            value="${customerDomain.phone}"
                                            name="customerDomain.phone" id="phone"
                                            data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile"/>

@@ -357,7 +357,28 @@
                 }
             });
         });
+        //iframe窗
+        $(".customerService").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="customerServiceLine"/>',
+                closeBtn: 1, //不显示关闭按钮
+                skin:'d-dialog',
+                shade: [0],
+                area: ['100%', '100%'],
+                content: ['${ctx}/content/customerService'],//iframe的url，no代表不显示滚动条
+                shade: [0.3,'#000'], //0.1透明度的白色背景
 
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
+                }
+            });
+        });
         //弹出层
         $(".country-select").find("li").click(function(){
             $(this).addClass("active").siblings().removeClass("active");
