@@ -86,10 +86,6 @@
 
         console.log('backWay '+'${backWay}');
         $(".sureBtn").click(function () {
-            if('${backWay}'==''&&${return_order.storeDomain==null}){
-             layer.msg("<spring:message code="consignee.selectBackWay"/>");
-             return false;
-             }
             location.href="/u/returnOrder/returnOrderConsigneeInfo";
         });
 

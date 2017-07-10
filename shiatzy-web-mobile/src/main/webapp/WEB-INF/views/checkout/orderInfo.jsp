@@ -342,10 +342,10 @@
                 return false;
             }
 
-            var num = $(this).siblings(".quantity").val();
-            num = num+1>stock?stock:num+1;
+            var num = $(this).siblings(".quantitys").val();
+            num = num*1+1>stock?stock:num*1+1;
             //查询当前选择的商品的库存
-
+            $(this).siblings(".quantitys").val(num);
 
         });
 
