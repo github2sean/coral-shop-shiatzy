@@ -123,12 +123,8 @@ public class ReturnOrderController extends BaseController {
         HashMap<String, String> newReturnReasonMap =  new HashMap<>();
 
         for(ReturnRequestItemDomain line:returnOrderItemList){
-
             Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
             preBackMoney += goodsPrice*line.getNum();
-            GoodsQuery goodsQuery = new GoodsQuery();
-            goodsQuery.setCode(line.getGoodsCode());
-            line.setGoodsDomain(goodsService.getFirst(goodsQuery));
             line.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+ JSONObject.fromObject(line.getSkuSpecifications()).get("size"))));
             newReturnReasonMap.put(line.getId().toString(),getReasonList(line.getReturnReason()));
         }

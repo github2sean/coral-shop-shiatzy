@@ -913,7 +913,8 @@ i {
 
 .dx-shopping .dx-GoodsDetails .goods-right .name {
     font-size: 1.2rem;
-
+    word-break:keep-all ;
+    word-wrap: break-word;
 }
 
 .dx-shopping .dx-GoodsDetails .goods-right .number {

@@ -69,7 +69,7 @@
                             <img src="${ImageModel.toFirst(item.goodsItemDomain.thumb).file}" alt="">
                         </div>
                         <div class="goods-info">
-                            <div class="name">${item.goodsName}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <div class="name">${web:t(item.goodsItemDomain.goods.name,item.goodsItemDomain.goods.enName )}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <p class="code"><spring:message code="shoppingCart.no"/>：${item.goodsCode}</p>
                             <p class="color">${web:selectLanguage()=='en_US'?item.goodsItemDomain.enName:item.goodsItemDomain.name}</p>
                             <p><spring:message code="shoppingCart.size"/>

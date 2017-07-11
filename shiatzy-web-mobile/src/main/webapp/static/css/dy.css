@@ -30,6 +30,7 @@
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     position: relative;
+    height: 23rem;
 }
 
 .order-main-left .do-list-icon,
@@ -42,6 +43,7 @@
     float: right;
     position: relative;
     border-bottom: 1px solid #ccc;
+    height: 23rem;
 }
 
 .order-main .color-size p {

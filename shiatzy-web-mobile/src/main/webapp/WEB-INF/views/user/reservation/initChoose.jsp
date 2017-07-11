@@ -26,57 +26,83 @@
         transform: rotate(90deg);
         display: block;}
 </style>
+<style>
+    .goods-item:nth-of-type(even) {
+        border-right: 0;
+    }
+    .goods-item:nth-of-type(odd) {
+    }
+    .goods-item{
+        float: left;
+        padding: 1rem 0;
+        border-right: 1px solid #ccc;
+        text-align: center;
+        font-size: 1rem;
+        width: 50%;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        height: 25rem;
+        padding: 0 .6rem;
+    }
+    .goods-item .product-name{height: 4rem;overflow: hidden}
+    .goods-item .do-list-icon{ top: 3rem;}
+    .goods-item .pic {text-align: center;}
+    .goods-item .pic img{    max-height: 100%;width: 10rem;}
+</style>
 <div class="order">
     <p class="pull-left"><spring:message code="reservation.selectStore"/></p>
     <a style="float: right;" href=”#” onClick="javascript :history.back(-1);">< <spring:message code="goBack"/></a>
 </div>
-<div class="order-main clearfix">
-    <c:forEach var="row" items="${preOderItemList}">
-            <div class="order-main-left goodsDiv">
-                <p class="product-num"><spring:message code="shoppingCart.no"/>： ${row.leftItem.goodsCode}</p>
-                <img src="${ImageModel.toFirst(row.leftItem.goodsItemDomain.thumb).file}" alt="" style="height:14rem;">
-                <p class="product-name">${web:selectLanguage()=='en_US'?row.leftItem.goodsEnName:row.leftItem.goodsName}</p>
-                <div class="color-size">
-                    <p>${web:selectLanguage()=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
-                    <p>${JSONObject.fromObject(row.leftItem.skuSpecifications).getString("size")}</p>
-                </div>
-                <p class="price ${not empty row.leftItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.leftItem.goodsPrice}">&nbsp;</span>　</p>
-
-                <p class="price xzc-dis-price"> <c:if test="${not empty row.leftItem.goodsDisPrice}">
-                   <spring:message code="shoppingCart.disPrice"/>
-                        <span class="do-pro-price" data-value="${row.leftItem.goodsDisPrice}">&nbsp;</span>　
-
-                </c:if>
-                </p>
-                <ul class="do-list-icon">
-                    <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.leftItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
-                    <li><a href="javascript:;" class="j_collect" data-value="${row.leftItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
-                    <li><a href="javascript:;" class="deleteBtn" data-value="${row.leftItem.id}"><svg><use xlink:href="#close" data-value="${row.leftItem.id}"></use></svg></a></li>
-                </ul>
+<div class="goods-list clearfix">
+    <c:forEach var="row" items="${submitCartList}">
+        <div class="goods-item goodsDiv">
+            <p class="product-num"><spring:message code="shoppingCart.no"/>${row.goodsCode}</p>
+            <div class="pic">
+                <a href="/goods/details/${row.goodsItemDomain.id}"><img src="${ImageModel.toFirst(row.goodsItemDomain.thumb).file}" alt=""></a>
             </div>
-            <c:if test="${not empty row.rightItem}">
-                <div class="order-main-right goodsDiv">
-                    <p class="product-num"><spring:message code="shoppingCart.no"/>： ${row.rightItem.goodsCode}</p>
-                    <img src="${ImageModel.toFirst(row.rightItem.goodsItemDomain.thumb).file}" alt="" style="height: 14rem;">
-                    <p class="product-name">${web:selectLanguage()=='en_US'?row.rightItem.goodsEnName:row.rightItem.goodsName}</p>
-                    <div class="color-size">
-                        <p>${web:selectLanguage()=='en_US'?row.leftItem.goodsItemDomain.enName:row.leftItem.goodsItemDomain.name}</p>
-                        <p>${JSONObject.fromObject(row.rightItem.skuSpecifications).getString("size")}</p>
-                    </div>
-                    <p class="price ${not empty row.rightItem.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>　<span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span></p>
-                    <p class="price xzc-dis-price"><c:if test="${not empty row.rightItem.goodsDisPrice}">
-                   <spring:message code="shoppingCart.disPrice"/><span class="do-pro-price" data-value="${row.rightItem.goodsDisPrice}">&nbsp;</span>
-                    </c:if>
-                    </p>
-                    <ul class="do-list-icon">
-                        <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.rightItem.id}"><svg><use xlink:href="#bag"></use></svg></a></li>
-                        <li><a href="javascript:;" class="j_collect" data-value="${row.rightItem.id}"><svg><use xlink:href="#heart"></use></svg></a></li>
-                        <li><a href="javascript:;" class="deleteBtn" data-value="${row.leftItem.id}"><svg><use xlink:href="#close" data-value="${row.rightItem.id}"></use></svg></a></li>
-                    </ul>
-                </div>
+            <p class="product-name">${web:selectLanguage()=='en_US'?row.goodsEnName:row.goodsName}</p>
+            <div class="color-size">
+                <span>${web:selectLanguage()=='en_US'?row.goodsItemDomain.enName:row.goodsItemDomain.name}</span>
+                <span><spring:message
+                        code="shoppingCart.size"/>:&nbsp;${web:selectLanguage()=='en_US'?row.sizeDomain.enName:row.sizeDomain.name}</span>
+                &nbsp;&nbsp;
+                <c:if test="${row.stock>0}"><span class="sellOut" data-value="${row.id}"></span></c:if>
+                <c:if test="${row.stock<1}"><span class="sellOut hasOut" data-value="${row.id}">（<spring:message code="sellout" />）</span></c:if>
+            </div>
+            <p style="margin-bottom: 0px;" class="price ${not empty row.goodsDisPrice?'xzc-price':''}"><spring:message code="shoppingCart.unitPrice"/>&nbsp;
+                <span class="do-pro-price" data-value="${row.goodsPrice}">&nbsp;</span>
+            </p>
+            <c:if test="${not empty  row.goodsDisPrice}">
+                <p class="price xzc-dis-price"><spring:message code="shoppingCart.disPrice"/>&nbsp;
+                    <span class="do-pro-price" data-value="${row.goodsDisPrice}">&nbsp;</span>
+                </p>
             </c:if>
+
+            <ul class="do-list-icon">
+                <li><a href="javascript:;" class="j_bag icon-bag" data-value="${row.id}"
+                       <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >
+                    <svg>
+                        <use xlink:href="#bag"></use>
+                    </svg>
+                </a></li>
+                <li><a href="javascript:;" class="j_collect" data-value="${row.id}"
+                       <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if>  >
+                    <svg>
+                        <use xlink:href="#heart"></use>
+                    </svg>
+                </a></li>
+                <li><a href="" class="deleteBtn" data-value="${row.id}"
+                       <c:if test="${not empty row.formId}">data-formid='${row.formId}'</c:if> >
+                    <svg>
+                        <use xlink:href="#close"></use>
+                    </svg>
+                </a></li>
+            </ul>
+        </div>
     </c:forEach>
 </div>
+
+
 <div class="order-price hide" >
     <c:if test="web:selectLanguage()=='en_US'">
     <p>预计订单总额：¥ </p>
@@ -89,33 +115,33 @@
     <h1><spring:message code="reservation.selectStore"/></h1>
     <div class="model-select-box">
         <div class="model-select-country j_collapse" data-value="" id="countrySelect">
-            <a class="pl-2" id="chooseCountry">中国</a>
+            <a class="pl-2" id="chooseCountry">${web:t("中国","China" )}</a>
 
             <ul class="text-center model-select-option" style="display: none">
             <c:forEach var="row" items="${storeCountryList}">
-                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=1}'>hide</c:if>"><span>${row.name}</span></li>
+                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=1}'>hide</c:if>"><span>${web:t(row.name,row.enName )}</span></li>
             </c:forEach>
             </ul>
         </div>
     </div>
     <div class="model-select-box" >
         <div class="model-select-city" data-value="" id="citySelect">
-            <a class="pl-2" id="chooseCity">请选择城市</a>
+            <a class="pl-2" id="chooseCity">${web:t("请选择城市","Choose City")}</a>
 
             <ul class="text-center model-select-option" id="cityFather" style="display: none">
                 <c:forEach var="row" items="${storeCityList}">
-                    <li data-option="${row.id}" value="${row.id}"><span>${row.name}</span></li>
+                    <li data-option="${row.id}" value="${row.id}"><span>${web:t(row.name,row.enName )}</span></li>
                 </c:forEach>
             </ul>
         </div>
     </div>
     <div class="model-select-box" >
         <div class="model-select-store" data-value="" id="storeSelect">
-            <a class="pl-2" id="chooseStore">请选择门市</a>
+            <a class="pl-2" id="chooseStore">${web:t("请选择门市","Choose Store")}</a>
 
             <ul class="text-center model-select-option" id="storeFather" style="display: none">
             <c:forEach var="row" items="${storeList}" varStatus="num">
-                <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}"><span>${row.name}</span></li>
+                <li data-option="${row.id}" value="${row.id}" data-value="${num.count-1}"><span>${web:t(row.name,row.enName )}</span></li>
             </c:forEach>
             </ul>
         </div>
@@ -127,7 +153,7 @@
         <p id="storeTel"></p>
     </div>
     <div class="submit-btn">
-        <a href="#" class="sendBtn btn btn-default" data-value="" style="line-height: 3rem;">送出预约</a>
+        <a href="#" class="sendBtn btn btn-default" data-value="" style="line-height: 3rem;">${web:t("送出预约","SEND")}</a>
     </div>
 </div>
 
@@ -199,10 +225,11 @@
                     var json = eval(cityJson)
                     for(var i=0; i<json.length; i++)
                     {
-                        $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                        var name = ${web:t("json[i].name","json[i].enName")};
+                        $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                     }
                 }else{
-                    layer.msg("该国家下无门店");
+                    layer.msg("${web:t("该国家下无门店","No store in this location")}");
                 }
             });
             });
@@ -217,10 +244,11 @@
                 var json = eval(cityJson)
                 for(var i=0; i<json.length; i++)
                 {
-                    $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                    var name = ${web:t("json[i].name","json[i].enName")};
+                    $("#cityFather").append("<li data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                 }
             }else{
-                layer.msg("该国家下无门店");
+                layer.msg("${web:t("该国家下无门店","No store in this location")}");
             }
         });
 
@@ -247,32 +275,35 @@
                          json = eval(storeJson)
                         for(var i=0; i<json.length; i++)
                         {
-                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+json[i].name+"</li>");
+                            var name = ${web:t("json[i].name","json[i].enTitle")};
+                            $("#storeFather").append("<li data-value="+i+" data-option="+json[i].id+" value="+json[i].id+">"+name+"</li>");
                         }
                         $("#storeSelect").find(".model-select-store").addClass("active");
                         $("#storeSelect").find(".model-select-option").show();
-                         $("#chooseStore").text("请选择门店");
+                         $("#chooseStore").text("${web:t("请选择门店", "Please Choose Store")}");
                          $("#storeName").text("");
                         $("#storeAddress").text("");
                         $("#storeTime").text("");
                         $("#storeTel").text("");
                         $(".sendBtn").attr("data-value","");
                     }else{
-                        layer.msg("该城市下无门店");
+                        layer.msg("${web:t("该城市下无门店", "No store in this city")}");
                     }
                 });
             });
         });
 
         $("#storeSelect").on("click","li",function () {
-            var index = $(this).attr("data-value");
+            var i = $(this).attr("data-value");
             $(this).addClass("active").siblings().removeClass("active");
             var text = $(this).text();
             $(this).parent().siblings("#chooseStore").text(text);
-            console.log(index);
-            $(".storeInfo").show().find("#storeName").text("门店："+json[index].name)
-                .siblings("#storeAddress").text("地址："+json[index].address).siblings("#storeTel").text("TEL："+json[index].tel);
-            $(".sendBtn").attr("data-value",json[index].id);
+
+            var name = ${web:t("json[i].name","json[i].enTitle")};
+            var address = ${web:t("json[i].address","json[i].enAddress")};
+            $(".storeInfo").show().find("#storeName").text("${web:t("门店","Store" )}："+name)
+                .siblings("#storeAddress").text("${web:t("地址","Address" )}："+address).siblings("#storeTel").text("TEL："+json[i].tel);
+            $(".sendBtn").attr("data-value",json[i].id);
         });
 
         $("#storeSelect").click(function () {
@@ -285,7 +316,7 @@
         $(".sendBtn").click(function () {
             var storeId = $(this).attr("data-value");
             if(storeId==''){
-                layer.msg("请选择门店");
+                layer.msg("${web:t("请选择门店","Please choose store" )}");
                 return false;
             }
             $.post("/reservation/submitPreOrder",{"storeId":storeId},function (data) {
@@ -322,7 +353,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入心愿单成功");
+                    layer.msg("${web:t("加入心愿单成功","Add to wish list successfully")}");
                     if(typeof (isNull)=="undefined"){
                         location.href = "/boutique/list";
                     }
@@ -339,7 +370,7 @@
                 if(data.code==200){
                     $self.parents(".goodsDiv").remove();
                     var  isNull= $(".goodsDiv").attr("class");
-                    layer.msg("加入购物车成功");
+                    layer.msg("${web:t("加入购物袋成功","Add to shoppingcart  successfully")}");
                     if(typeof (isNull)=="undefined"){
                         location.href = "/boutique/list";
                     }

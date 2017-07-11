@@ -19,7 +19,7 @@
             <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">
                 <li><a href="http://brand.shiatzychen.com/"><spring:message code="officialSite"/></a></li>
-                <li><a href="#"><spring:message code="contactUs"/></a></li>
+                <li><a href="mailto:customercare@shiatzychen.com"><spring:message code="contactUs"/></a></li>
                 <li><a href="#" class="privacyNotice"><spring:message code="privacyPolicy"/></a></li>
             </ul>
         </li>
@@ -335,7 +335,21 @@
         });
 
 
-        //iframe窗
+
+        //弹出层
+        $(".country-select").find("li").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id =  $(this).find("a").attr("data-value");
+            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    var index = layer.index; //获取当前弹层的索引号
+                    layer.close(index); //关闭当前弹层
+                }
+            });
+        });
+
+
+        //隐私政策
         $(".privacyNotice").click(function(){
             layer.open({
                 type: 2,
@@ -358,18 +372,6 @@
             });
         });
 
-        //弹出层
-        $(".country-select").find("li").click(function(){
-            $(this).addClass("active").siblings().removeClass("active");
-            var id =  $(this).find("a").attr("data-value");
-            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-                if(data.code==200){
-                    var index = layer.index; //获取当前弹层的索引号
-                    layer.close(index); //关闭当前弹层
-                }
-            });
-        });
-
         //退货政策
         $(".returnOrchange").click(function () {
             layer.open({
@@ -379,7 +381,7 @@
                 shade: [0],
                 skin:'d-dialog',
                 area: ['100%', '100%'],
-                content: ['${ctx}/content/returnOrchange'],//iframe的url，no代表不显示滚动条
+                content: ['${ctx}/content/returnOrchange?id=27'],//iframe的url，no代表不显示滚动条
                 shade: [0.3,'#000'], //0.1透明度的白色背景
 
                 success: function(layero, index){

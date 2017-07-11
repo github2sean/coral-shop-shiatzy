@@ -233,9 +233,7 @@
         }else{
             $(".moreGoods").text("${web:selectLanguage()=='en_US'?"-The end-":"-已到底部-"}")
         }
-
     };
-
 
     //var initHeight = $(".moreGoods").offset().top;
     var moveHeight = ($(".do-pro-list").find("li").height())*19;//Li 的高度
@@ -253,9 +251,7 @@
             console.log("底部");
         }
         //scrollTop就是触发滚轮事件时滚轮的高度});
-
     };
-
 
     //滚动条在Y轴上的滚动距离
     function getScrollTop(){

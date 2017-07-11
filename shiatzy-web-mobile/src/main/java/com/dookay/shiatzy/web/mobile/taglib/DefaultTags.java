@@ -58,6 +58,7 @@ public class DefaultTags {
 		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
 		return  selectCountry;
 	}
+
 	public static List<ShippingCountryDomain> getSelectCountryPhoneList() {
 		IShippingCountryService shippingCountryService = SpringContextHolder.getBean("shippingCountryService");
 		ShippingCountryQuery query = new ShippingCountryQuery();
@@ -65,22 +66,33 @@ public class DefaultTags {
 		query.setOrderBy("rank");
 		return  shippingCountryService.getList(query);
 	}
+
 	public static String getSelectLanguage() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
 		return  selectLanguage;
 	}
 
+	/**
+	 * 选择地区是否中国
+	 * @return
+	 */
+	public static Boolean isChina() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+		return "1".equals(selectCountry);
+	}
+
 	public static Boolean isEn() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
-		return selectLanguage.equals("en_US");
+		return "en_US".equals(selectLanguage);
 	}
 
 	public static String translate(String cnString,String enString) {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
-		return selectLanguage.equals("en_US")?enString:cnString;
+		return "en_US".equals(selectLanguage)?enString:cnString;
 	}
 
 	public static Integer getCartNum(Integer type) {
