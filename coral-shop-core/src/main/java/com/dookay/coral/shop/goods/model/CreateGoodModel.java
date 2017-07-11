@@ -21,7 +21,7 @@ public class CreateGoodModel implements Serializable {
 	private String code = "";
 
 	/*[fk]原型id*/
-	private String prototypeId;
+	private Long prototypeId;
 
 	/*[fk]分类ids*/
 	private String categoryIds;

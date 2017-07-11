@@ -19,6 +19,7 @@ import java.util.List;
 public class GoodsQuery extends Query {
 
 	private  String name;
+	private  String equalName;
 	private  String enName;
 	private  Long categoryId;
 	private  Long prototypeId;
@@ -46,6 +47,9 @@ public class GoodsQuery extends Query {
 		}
 		if (valid(enName)){
 			criteria.andLike("enName","%"+enName+"%");
+		}
+		if (valid(equalName)){
+			criteria.andEqualTo("name",equalName);
 		}
 		if (valid(categoryId)){
 			criteria.andEqualTo("categoryId",categoryId);
