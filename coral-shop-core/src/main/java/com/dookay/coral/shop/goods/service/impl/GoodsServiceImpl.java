@@ -314,6 +314,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public void importGoods(String fileName) {
 		try {
 			File file = new File(fileName);
+			System.out.println("fileName"+fileName);
 			if(!file.exists()){
 				throw new ServiceException("未读取到文件");
 			}

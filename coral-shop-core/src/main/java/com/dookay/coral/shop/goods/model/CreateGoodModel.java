@@ -7,9 +7,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 商品项目的domain
- * @author : luxor
- * @since : 2017年05月06日
+ * 商品导入模型
+ * @author : sean
+ * @since : 2017年07月11日
  * @version : v0.0.1
  */
 @Data
