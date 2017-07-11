@@ -238,15 +238,15 @@
               url = "/cart/removeFromSessionCart";
             }*/
 
-            $.post(url, data, function (result) {
-
-              if (result.code == 200) {
-                layer.msg('<spring:message code="success.towish"/>');
-              }else{
-                layer.msg(result.message);
-              }
-            });
+              $.post(url, data, function (result) {
+                if (result.code == 200) {
+                  layer.msg('<spring:message code="success.towish"/>');
+                }else{
+                  layer.msg(result.message);
+                }
+              });
           });
+
           $(".addToCart").click(function () {
             if (!isSelected) {
               layer.msg("<spring:message code="goods.detail.pleaseSelectSize" />");
@@ -269,7 +269,7 @@
                 setCartNum();
                 //location.href="/cart/list";
               } else {
-                layer.msg('<spring:message code="sellout"/>');
+                layer.msg(result.message);
               }
             });
           });

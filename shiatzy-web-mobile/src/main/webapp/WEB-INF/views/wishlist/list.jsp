@@ -196,6 +196,8 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
+                }else {
+                    layer.msg('${web:t("精品店中已存在","The Goods Existed in Reservation")}');
                 }
             });
         });
@@ -212,6 +214,8 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
+                }else {
+                    layer.msg(data.message);
                 }
             });
         });

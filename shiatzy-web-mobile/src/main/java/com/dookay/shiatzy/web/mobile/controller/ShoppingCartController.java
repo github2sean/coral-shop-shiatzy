@@ -95,10 +95,18 @@ public class ShoppingCartController extends  BaseController{
             List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
             System.out.println("addShoppingCartForm:"+JsonUtils.toJSONString(addShoppingCartForm));
             if(listCart!=null&&listCart.size()>0){
-                /*if(listCart.size()==8){
-                    return successResult("购物车最多添加8件商品");
-                }*/
-                listCart.add(addShoppingCartForm);
+                if(!isExistInSessionCart(addShoppingCartForm.getType(),addShoppingCartForm.getItemId(),addShoppingCartForm.getSizeId())){
+                    listCart.add(addShoppingCartForm);
+                }else{
+                    if(addShoppingCartForm.getType().equals(1)){
+                        return  errorResult("该商品购物车中已存在");
+                    }else if(addShoppingCartForm.getType().equals(3)){
+                        return  errorResult("该商品精品店中已存在");
+                    }else if(addShoppingCartForm.getType().equals(2)){
+                        return  errorResult("该商品心愿单中已存在");
+                    }
+
+                }
             }else{
                 listCart = new ArrayList<>();
                 listCart.add(addShoppingCartForm);
@@ -178,6 +186,22 @@ public class ShoppingCartController extends  BaseController{
         return  successResult("删除成功");
     }
 
+    public Boolean isExistInSessionCart(Integer cartType,Long itemId,Long sizeId) {
+        Boolean ret = false;
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        for(AddShoppingCartForm form :listCart){
+            if( form.getType().equals(cartType)&&
+                form.getItemId().equals(itemId)&&
+                form.getSizeId().equals(sizeId)){
+                ret = true;
+            }
+        }
+        return ret;
+    }
+
+
     @RequestMapping(value = "changeFromSessionCartType" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult changeFromSessionCartType(String formId,Integer goalType){
@@ -192,6 +216,21 @@ public class ShoppingCartController extends  BaseController{
             while(it.hasNext()){
                 AddShoppingCartForm now = it.next();
                 if(now.getId().equals(formId)){
+                    if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue() &&
+                        isExistInSessionCart(ShoppingCartTypeEnum.RESERVATION.getValue(),now.getItemId(),now.getSizeId())
+                    ){
+                        return  errorResult("该商品精品店已存在");
+                    }
+                    if(goalType==ShoppingCartTypeEnum.WISH_LIST.getValue() &&
+                            isExistInSessionCart(ShoppingCartTypeEnum.WISH_LIST.getValue(),now.getItemId(),now.getSizeId())
+                            ){
+                        return  errorResult("该商品心愿单已存在");
+                    }
+                    if(goalType==ShoppingCartTypeEnum.SHOPPING_CART.getValue() &&
+                            isExistInSessionCart(ShoppingCartTypeEnum.SHOPPING_CART.getValue(),now.getItemId(),now.getSizeId())
+                            ){
+                        return  errorResult("该商品购物车已存在");
+                    }
                     GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(now.getItemId()).getGoodsId());
                     if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue()&&goodsDomain.getIsPre()==0){
                         return  errorResult("该商品无法预约");
@@ -461,7 +500,11 @@ public class ShoppingCartController extends  BaseController{
          if(goodsDomain.getIsPre()== ValidEnum.NO.getValue()){
              return errorResult("该商品不能预约");
          }
-         shoppingCartItemDomain.setShoppingCartType(3);
+        ShoppingCartItemDomain queryDomain = shoppingCartService.isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.RESERVATION.getValue());
+        if(queryDomain!=null){
+            return  errorResult("该商品精品店已存在");
+        }
+         shoppingCartItemDomain.setShoppingCartType(ShoppingCartTypeEnum.RESERVATION.getValue());
          shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
     }
@@ -511,7 +554,13 @@ public class ShoppingCartController extends  BaseController{
         if(shoppingCartItemId==null){
             return errorResult("参数为空");
         }
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        ShoppingCartItemDomain queryDomain = shoppingCartService.isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        if(queryDomain!=null){
+            return  errorResult("该商品购物车已存在");
+        }
         shoppingCartItemDomain.setShoppingCartType(1);
         shoppingCartService.update(shoppingCartItemDomain);
         updateBoutiqueListSession(shoppingCartItemId);

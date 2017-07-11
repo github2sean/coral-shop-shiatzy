@@ -237,6 +237,8 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
+                }else{
+                    layer.msg(data.message);
                 }
             });
         });

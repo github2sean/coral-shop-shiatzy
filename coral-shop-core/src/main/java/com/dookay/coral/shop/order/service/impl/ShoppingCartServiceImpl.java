@@ -63,8 +63,7 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	private IOrderItemService orderItemService;
 	@Autowired
 	private IGoodsItemService goodsItemService;
-	@Autowired
-	private  IShoppingCartService shoppingCartService;
+
 	@Autowired
 	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 
@@ -229,6 +228,11 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	public void wishToCart(CustomerDomain customerDomain, Long shoppingCartItemId) {
 		Long customerId = customerDomain.getId();
 		ShoppingCartItemDomain shoppingCartItemDomain = super.get(shoppingCartItemId);
+
+		ShoppingCartItemDomain queryDomain = isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+		if(queryDomain!=null){
+			throw new ServiceException("该商品购物车已存在");
+		}
 		if(Objects.equals(shoppingCartItemDomain.getCustomerId(), customerId)){
 			ShoppingCartItemQuery query = new ShoppingCartItemQuery();
 			query.setCustomerId(customerId);
@@ -256,12 +260,18 @@ public class ShoppingCartServiceImpl extends BaseServiceImpl<ShoppingCartItemDom
 	@Override
 	public void wishToBoutique(CustomerDomain customerDomain, Long shoppingCartItemId) {
 		ShoppingCartItemDomain shoppingCartItemDomain = get(shoppingCartItemId);
-		GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(shoppingCartItemDomain.getItemId()).getGoodsId());
-		if(goodsDomain.getIsPre()==0){
-			throw new  ServiceException("该商品无法预约");
+
+		ShoppingCartItemDomain queryDomain = isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.RESERVATION.getValue());
+		if(queryDomain!=null){
+			throw new  ServiceException("该商品精品店已存在");
+		}else{
+			GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(shoppingCartItemDomain.getItemId()).getGoodsId());
+			if(goodsDomain.getIsPre()==0){
+				throw new  ServiceException("该商品无法预约");
+			}
+			shoppingCartItemDomain.setShoppingCartType(3);
+			update(shoppingCartItemDomain);
 		}
-		shoppingCartItemDomain.setShoppingCartType(3);
-		update(shoppingCartItemDomain);
 	}
 
 
