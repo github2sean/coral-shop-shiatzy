@@ -66,7 +66,7 @@
             <spring:message code="orderinfo.confirm.billinfo.title"/><input id="billTitle" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right">
             <br/><spring:message code="orderinfo.confirm.billinfo.code"/>
             <br/>
-            <input id="billCode" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right">
+            <input id="billCode" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" type="text" style="border: none;border-bottom: 2px solid #cccccc;width: 100%;float: right">
         </p>
     </div>
 
