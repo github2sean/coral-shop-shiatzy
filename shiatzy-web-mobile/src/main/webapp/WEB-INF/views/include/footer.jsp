@@ -101,6 +101,7 @@
     <script src="${ctx}/static/js/plugins/validator/local/zh-CN.js"></script>
 </c:if>
 <script src="${ctx}/static/js/backend.js"></script>
+<script src="${ctx}/static/js/pinchzoom.js"></script>
 <!-- 页面插件结束 -->
 
 <!-- 轮播 开始 -->

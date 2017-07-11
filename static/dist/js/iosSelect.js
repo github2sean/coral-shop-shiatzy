@@ -759,10 +759,10 @@
 			oneHtml += this.getWhiteItem();
 			oneLevelData.forEach(function(v, i, o) {
 				if (v.id == oneLevelId) {
-					oneHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';" ' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
+					oneHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';" ' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
 					plast = i + 1;
 				} else {
-					oneHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
+					oneHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
 				}
 			}.bind(this));
 			oneHtml += this.getWhiteItem();
@@ -819,10 +819,10 @@
 			twoHtml += this.getWhiteItem();
 			twoLevelData.forEach(function(v, i, o) {
 				if (v.id == twoLevelId) {
-					twoHtml += '<li " style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
+					twoHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
 					plast = i + 1;
 				} else {
-					twoHtml += '<li " style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
+					twoHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
 				}
 			}.bind(this));
 			twoHtml += this.getWhiteItem();
@@ -878,10 +878,10 @@
 			threeHtml += this.getWhiteItem();
 			threeLevelData.forEach(function(v, i, o) {
 				if (v.id == threeLevelId) {
-					threeHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
+					threeHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
 					plast = i + 1;
 				} else {
-					threeHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
+					threeHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
 				}
 			}.bind(this));
 			threeHtml += this.getWhiteItem();
@@ -938,10 +938,10 @@
 			fourHtml += this.getWhiteItem();
 			fourLevelData.forEach(function(v, i, o) {
 				if (v.id == fourLevelId) {
-					fourHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
+					fourHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
 					plast = i + 1;
 				} else {
-					fourHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
+					fourHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
 				}
 			}.bind(this));
 			fourHtml += this.getWhiteItem();
@@ -998,10 +998,10 @@
 			fiveHtml += this.getWhiteItem();
 			fiveLevelData.forEach(function(v, i, o) {
 				if (v.id == fiveLevelId) {
-					fiveHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
+					fiveHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + ' class="at">' + v.value + '</li>';
 					plast = i + 1;
 				} else {
-					fiveHtml += '<li  style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
+					fiveHtml += '<li style="height: ' + this.options.itemHeight + this.options.cssUnit + '; line-height: ' + this.options.itemHeight + this.options.cssUnit +';"' + iosSelectUtil.attrToHtml(v) + '>' + v.value + '</li>';
 				}
 			}.bind(this));
 			fiveHtml += this.getWhiteItem();
@@ -1014,15 +1014,15 @@
 	    },
 	    getWhiteItem: function() {
 	    	var whiteItemHtml = '';
-	    	whiteItemHtml += '<li  style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+	    	whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
 	    	if (this.options.itemShowCount > 3) {
-	    		whiteItemHtml += '<li  style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
 	    	}
 	    	if (this.options.itemShowCount > 5) {
-	    		whiteItemHtml += '<li  style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
 	    	}
 	    	if (this.options.itemShowCount > 7) {
-	    		whiteItemHtml += '<li  style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
+	    		whiteItemHtml += '<li onclick="selectCountry()" style="height: ' + this.options.itemHeight +this.options.cssUnit +  '; line-height: ' + this.options.itemHeight +this.options.cssUnit + '"></li>';
 	    	}
 	    	return whiteItemHtml;
 	    }, 
@@ -1031,19 +1031,34 @@
 	    	if (this.options.itemShowCount === 3) {
 	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')');
 				pdom.classList.add('at');
-				selectCountry();
+				var id = pdom.attr("data-id")
+				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+					if(data.code==200){
+						console.log(code.message);
+					}
+				});
 	    	}
 	    	else if (this.options.itemShowCount === 5) {
 	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')');
 				pdom.classList.add('at');
-				selectCountry();
+				var id = pdom.attr("data-id")
+				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+					if(data.code==200){
+						console.log(code.message);
+					}
+				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')').classList.add('side1');
 	    	}
 	    	else if (this.options.itemShowCount === 7) {
 	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')');
 				pdom.classList.add('at');
-				selectCountry();
+				var id = pdom.attr("data-id")
+				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+					if(data.code==200){
+						console.log(code.message);
+					}
+				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 1) + ')').classList.add('side2');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 4) + ')').classList.add('side1');
@@ -1052,7 +1067,12 @@
 	    	else if (this.options.itemShowCount === 9) {
 	    		pdom = levelContainDom.querySelector('li:nth-child(' + (plast + 4) + ')');
 				pdom.classList.add('at');
-				selectCountry();
+				var id = pdom.attr("data-id")
+				$.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+					if(data.code==200){
+						console.log(code.message);
+					}
+				});
 				levelContainDom.querySelector('li:nth-child(' + (plast + 3) + ')').classList.add('side1');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 2) + ')').classList.add('side2');
 				levelContainDom.querySelector('li:nth-child(' + (plast + 5) + ')').classList.add('side1');
@@ -1089,5 +1109,4 @@
 	} else {
 		window.IosSelect = IosSelect;
 	}
-	
 })();

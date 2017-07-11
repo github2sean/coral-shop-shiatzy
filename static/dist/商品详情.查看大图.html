@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="renderer" content="webkit">
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="iconfont/iconfont.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/dookayui.css">
-    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/weui.min.css">
     <link rel="stylesheet" href="css/iosSelect.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/dx.css">
@@ -261,8 +262,15 @@
         </div>
     </div>
     <div class="main-content">
+<style>
+    div.pinch-zoom,
+    div.pinch-zoom img{
+        width: 100%;
+        -webkit-user-drag: none;
+    }
+</style>
 <div class="dx-commodity">
-    <div class="content">
+    <div class="content pinch-zoom"><!--添加了一个类-->
         <img src="images/goods-pic05.jpg" alt="">
     </div>
 </div>
@@ -307,7 +315,8 @@
 </div>
 <script src="js/dookayui.min.js" merge="true"></script>
 <script src="js/zepto.min.js"></script>
-<script src="js/weui.js"></script>
+<script src="js/weui.min.js"></script>
+<script src="js/pinchzoom.js"></script>
 <script src="js/iosSelect.js"></script>
 <script src="js/iscroll.js"></script>
 <script src="js/common.js"></script>
@@ -323,6 +332,12 @@
         });
 
     });
+    //加了一段js
+    $(function () {
+        $('div.pinch-zoom').each(function () {
+            new RTP.PinchZoom($(this), {});
+        });
+    })
 </script>
 </body>
 </html>

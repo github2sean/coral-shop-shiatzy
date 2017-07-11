@@ -1,7 +1,14 @@
 @include('include/head.html')
 @include('include/header.html')
+<style>
+    div.pinch-zoom,
+    div.pinch-zoom img{
+        width: 100%;
+        -webkit-user-drag: none;
+    }
+</style>
 <div class="dx-commodity">
-    <div class="content">
+    <div class="content pinch-zoom"><!--添加了一个类-->
         <img src="images/goods-pic05.jpg" alt="">
     </div>
 </div>
@@ -17,5 +24,11 @@
         });
 
     });
+    //加了一段js
+    $(function () {
+        $('div.pinch-zoom').each(function () {
+            new RTP.PinchZoom($(this), {});
+        });
+    })
 </script>
 @include('include/foot.html')
