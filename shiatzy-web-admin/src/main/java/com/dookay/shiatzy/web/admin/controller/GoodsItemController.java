@@ -29,8 +29,6 @@ public class GoodsItemController extends BaseApiController {
 
     @Autowired
     private IGoodsItemService goodsItemService;
-    @Autowired
-    private IGoodsService goodsService;
 
     @ApiOperation(value = "获取商品项目列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
@@ -54,7 +52,7 @@ public class GoodsItemController extends BaseApiController {
         goodsItemService.withColor(domain);
         goodsItemService.create(domain);
         //更新颜色
-        updateColors(domain);
+        goodsItemService.updateColors(domain);
         return successResponse("创建成功");
     }
 
@@ -64,7 +62,7 @@ public class GoodsItemController extends BaseApiController {
         goodsItemService.withColor(domain);
         goodsItemService.update(domain);
         //更新颜色
-        updateColors(domain);
+        goodsItemService.updateColors(domain);
         return successResponse("编辑成功");
     }
 
@@ -74,14 +72,8 @@ public class GoodsItemController extends BaseApiController {
         goodsItemService.delete(id);
         GoodsItemDomain domain = goodsItemService.get(id);
         //更新颜色
-        updateColors(domain);
+        goodsItemService.updateColors(domain);
         return successResponse("删除成功");
-    }
-
-    private void updateColors(GoodsItemDomain domain) {
-        GoodsDomain goodsDomain = new GoodsDomain();
-        goodsDomain.setId(domain.getGoodsId());
-        goodsService.updateColors(goodsDomain);
     }
 
 }

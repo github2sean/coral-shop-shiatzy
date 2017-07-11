@@ -12,6 +12,13 @@
     <param-name>spring.profiles.default</param-name>
     <param-value>production</param-value>
   </context-param>
+
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>com.dookay.shiatzy.web.admin.config.MyWebApplicationContext</param-value>
+  </context-param>
+
+
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>

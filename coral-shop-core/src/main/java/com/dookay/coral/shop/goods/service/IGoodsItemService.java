@@ -19,4 +19,5 @@ public interface IGoodsItemService extends IBaseService<GoodsItemDomain> {
     void withGoods(GoodsItemDomain goodsItemDomain);
     void withColor(GoodsItemDomain goodsItemDomain);
     void withColor(List<GoodsItemDomain> goodsItemDomainList);
+    void updateColors(GoodsItemDomain domain);
 }

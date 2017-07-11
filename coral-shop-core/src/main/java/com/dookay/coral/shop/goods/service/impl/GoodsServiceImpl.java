@@ -285,7 +285,6 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 
 	@Override
 	public List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList) {
-
 		List<Long> categoryIds = new ArrayList<>();
 		for (GoodsDomain line:goodsList){
 			categoryIds.add(line.getCategoryId());

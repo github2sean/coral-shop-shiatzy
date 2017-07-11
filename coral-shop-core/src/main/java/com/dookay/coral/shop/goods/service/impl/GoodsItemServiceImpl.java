@@ -86,4 +86,11 @@ public class GoodsItemServiceImpl extends BaseServiceImpl<GoodsItemDomain> imple
 		}
 	}
 
+	@Override
+	public void updateColors(GoodsItemDomain domain) {
+		GoodsDomain goodsDomain = new GoodsDomain();
+		goodsDomain.setId(domain.getGoodsId());
+		goodsService.updateColors(goodsDomain);
+	}
+
 }
