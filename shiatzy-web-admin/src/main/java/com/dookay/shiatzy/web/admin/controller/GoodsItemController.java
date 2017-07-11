@@ -84,11 +84,4 @@ public class GoodsItemController extends BaseApiController {
         goodsService.updateColors(goodsDomain);
     }
 
-    @ApiOperation(value = "导入商品", httpMethod = "POST")
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity importExcel(@RequestParam("fileName") String fileName) {
-        goodsItemService.importGoods(fileName);
-        return successResponse("删除成功");
-    }
-
 }

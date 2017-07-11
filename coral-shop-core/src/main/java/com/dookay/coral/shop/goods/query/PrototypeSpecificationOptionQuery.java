@@ -19,6 +19,7 @@ public class PrototypeSpecificationOptionQuery extends Query {
 	private List<Long> ids;
 	private Long specificationId;
 	private String name;
+	private List<String> names;
 	@Override
 	public QueryCriteria toCriteria() {
 		QueryCriteria queryCriteria = new QueryCriteria(PrototypeSpecificationOptionDomain.class);
@@ -29,6 +30,9 @@ public class PrototypeSpecificationOptionQuery extends Query {
 		}
 		if(valid(ids)){
 			criteria.andIn("id",ids);
+		}
+		if(valid(names)){
+			criteria.andIn("name",names);
 		}
 		if(valid(name))
 		{

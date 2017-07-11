@@ -31,6 +31,8 @@ public class CustomerAddressServiceImpl extends BaseServiceImpl<CustomerAddressD
 
 		CustomerAddressQuery query = new CustomerAddressQuery();
 		query.setCustomerId(customerId);
+		query.setDesc(false);
+		query.setOrderBy("id");
 		return super.getFirst(query);
 
 	}

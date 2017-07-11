@@ -1,6 +1,8 @@
 package com.dookay.shiatzy.web.admin.controller;
 
+import com.dookay.coral.adapter.payment.alipay.util.httpClient.HttpRequest;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.MediaTypes;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
@@ -8,16 +10,20 @@ import com.dookay.coral.shop.goods.extension.GoodsCategoryExtension;
 import com.dookay.coral.shop.goods.extension.GoodsExtension;
 import com.dookay.coral.shop.goods.query.GoodsQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
+import com.dookay.coral.shop.goods.service.IGoodsItemService;
 import com.dookay.coral.shop.goods.service.IGoodsService;
 import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +42,7 @@ public class GoodsController extends BaseApiController {
     private IGoodsService goodsService;
     @Autowired
     private GoodsCategoryExtension goodsCategoryExtension;
+
 
     @ApiOperation(value = "获取商品列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
@@ -80,5 +87,15 @@ public class GoodsController extends BaseApiController {
         return successResponse("删除成功");
     }
 
+    @ApiOperation(value = "导入商品", httpMethod = "POST")
+    @RequestMapping(value = "/importExcel", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity importExcel(@RequestParam("fileName") String fileName) {
+
+        fileName = JSONObject.fromObject(fileName).getString("");
+
+        HttpServletRequest request = HttpContext.current().getRequest();
+        goodsService.importGoods(request.getServletContext().getRealPath("/WEB-INF/uploads")+fileName);
+        return successResponse("删除成功");
+    }
 
 }

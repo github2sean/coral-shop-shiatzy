@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class AddShoppingCartForm {
-    private Integer type ;//1:购物车 2：心愿单
+    private Integer type ;//1:购物车 2：心愿单 3精品店
 
     private Long itemId;
 
