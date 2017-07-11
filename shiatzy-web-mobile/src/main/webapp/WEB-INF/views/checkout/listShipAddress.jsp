@@ -71,8 +71,7 @@
             var $now = $(this);
             var id = $now.attr("data-value");
             console.log(id);
-            layer.confirm('<spring:message code="delivery.address.isdelete"/>?',{
-            },function () {
+            layer.confirm('<spring:message code="delivery.address.isdelete"/>?',{icon: 3, title:'${web:t("信息","Confirm" )}',btn: ['${web:t("确认","Yes")}', '${web:t("取消","No")}']},function () {
                 $.post("/checkout/removeAddress",{"addressId":id},function (data) {
                     console.log(data);
                     if(data.code==200){

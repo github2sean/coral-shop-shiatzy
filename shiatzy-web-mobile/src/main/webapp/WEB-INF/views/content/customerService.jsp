@@ -26,12 +26,12 @@
     <script>
         (function (doc, win) {
             var docEl = doc.documentElement,
-                    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-                    recalc = function () {
-                        var clientWidth = docEl.clientWidth;
-                        if (!clientWidth) return;
-                        docEl.style.fontSize = 10 * (clientWidth / 320) + 'px';
-                    };
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    docEl.style.fontSize = 10 * (clientWidth / 320) + 'px';
+                };
             if (!doc.addEventListener) return;
             win.addEventListener(resizeEvt, recalc, false);
             doc.addEventListener('DOMContentLoaded', recalc, false);
@@ -41,24 +41,12 @@
 </head>
 <div class="dx-CommonProblems">
     <div class="content">
-        <c:if test="${web:selectLanguage()!='en_US'}">
-        <ul class="second-title j_toggle2 ">
-            <li><p href="#"> 1. 为了给您提供更为便捷的购物，在线商品部分提供精品店预约功能，您可在商品页面将喜爱的商品添加至“精品店预约”，于“精品店预约清单”内选择相关精品店进行线下体验。目前该服务仅限于中国大陆地区。</p>
-            </li>
-            <li><p href="#"> 2. 我们会将您预约清单内的商品配送至指定门店，便于您线下舒适快捷的体验，支付将于线下门店完成。</p>
-            </li>
-        </ul>
-        </c:if>
-        <c:if test="${web:selectLanguage()=='en_US'}">
-        <ul class="second-title j_toggle2 ">
-            <li><p href="#">  We offer ‘Store Reservation’ service for your convenient shopping. Click on ‘Store Reservation’ on the product detail page, you can add your favorite items to ‘Store Reservation List’ and choose your nearest offline store. We will deliver your reserved items to the designated store for your easy and convenient shopping. The order and payment will be completed offline.
-            </p>
-            </li>
-            <li><p href="#">  Note: At present, ‘Store Reservation’ service is avaliable in China Mainland region only.</p>
-            </li>
-        </ul>
-        </c:if>
-
+        <p class=" j_toggle"><a href="#"><spring:message code="customerServiceLine"/></a></p>
+        <p><spring:message code="chinaPhone"/> 4008 213 760</p>
+        <p>(<spring:message code="chinaOnly"/>)</p>
+        <p><spring:message code="onlineTime"/></p>
+        <p class="mt-1"><spring:message code="onlineEmail"/></p>
+        <p>(<spring:message code="allRegions"/>)</p>
     </div>
     <!-- 核心js插件开始 -->
     <script src="${ctx}/static/js/dookayui.min.js"></script>
@@ -71,7 +59,7 @@
     <script src="${ctx}/static/js/backend.js"></script>
     <script>
         $(function(){
-            //常见问题页面JS
+          /*  //常见问题页面JS
             //下拉菜单展开收起
             $(".j_toggle").on("click",function () {
                 $(this).next().toggleClass("hide");
@@ -79,7 +67,7 @@
 
             $(".j_toggle2>li").on("click",function () {
                 $(this).find(".answer").toggleClass("hide");
-            });
+            });*/
         });
     </script>
-</div>
+

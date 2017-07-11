@@ -1,5 +1,6 @@
 package com.dookay.shiatzy.web.mobile.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.dookay.coral.common.enums.ValidEnum;
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
@@ -25,6 +26,7 @@ import com.dookay.coral.shop.order.service.IShoppingCartService;
 import com.dookay.shiatzy.web.mobile.form.AddShoppingCartForm;
 import com.dookay.shiatzy.web.mobile.util.HistoryUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -91,10 +95,18 @@ public class ShoppingCartController extends  BaseController{
             List<AddShoppingCartForm> listCart = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
             System.out.println("addShoppingCartForm:"+JsonUtils.toJSONString(addShoppingCartForm));
             if(listCart!=null&&listCart.size()>0){
-                /*if(listCart.size()==8){
-                    return successResult("购物车最多添加8件商品");
-                }*/
-                listCart.add(addShoppingCartForm);
+                if(!isExistInSessionCart(addShoppingCartForm.getType(),addShoppingCartForm.getItemId(),addShoppingCartForm.getSizeId())){
+                    listCart.add(addShoppingCartForm);
+                }else{
+                    if(addShoppingCartForm.getType().equals(1)){
+                        return  errorResult("该商品购物车中已存在");
+                    }else if(addShoppingCartForm.getType().equals(3)){
+                        return  errorResult("该商品精品店中已存在");
+                    }else if(addShoppingCartForm.getType().equals(2)){
+                        return  errorResult("该商品心愿单中已存在");
+                    }
+
+                }
             }else{
                 listCart = new ArrayList<>();
                 listCart.add(addShoppingCartForm);
@@ -174,6 +186,22 @@ public class ShoppingCartController extends  BaseController{
         return  successResult("删除成功");
     }
 
+    public Boolean isExistInSessionCart(Integer cartType,Long itemId,Long sizeId) {
+        Boolean ret = false;
+        HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        List<AddShoppingCartForm> listCart  = (List<AddShoppingCartForm>)session.getAttribute(SESSION_CART);
+        for(AddShoppingCartForm form :listCart){
+            if( form.getType().equals(cartType)&&
+                form.getItemId().equals(itemId)&&
+                form.getSizeId().equals(sizeId)){
+                ret = true;
+            }
+        }
+        return ret;
+    }
+
+
     @RequestMapping(value = "changeFromSessionCartType" ,method = RequestMethod.POST)
     @ResponseBody
     public JsonResult changeFromSessionCartType(String formId,Integer goalType){
@@ -188,6 +216,21 @@ public class ShoppingCartController extends  BaseController{
             while(it.hasNext()){
                 AddShoppingCartForm now = it.next();
                 if(now.getId().equals(formId)){
+                    if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue() &&
+                        isExistInSessionCart(ShoppingCartTypeEnum.RESERVATION.getValue(),now.getItemId(),now.getSizeId())
+                    ){
+                        return  errorResult("该商品精品店已存在");
+                    }
+                    if(goalType==ShoppingCartTypeEnum.WISH_LIST.getValue() &&
+                            isExistInSessionCart(ShoppingCartTypeEnum.WISH_LIST.getValue(),now.getItemId(),now.getSizeId())
+                            ){
+                        return  errorResult("该商品心愿单已存在");
+                    }
+                    if(goalType==ShoppingCartTypeEnum.SHOPPING_CART.getValue() &&
+                            isExistInSessionCart(ShoppingCartTypeEnum.SHOPPING_CART.getValue(),now.getItemId(),now.getSizeId())
+                            ){
+                        return  errorResult("该商品购物车已存在");
+                    }
                     GoodsDomain goodsDomain = goodsService.get(goodsItemService.get(now.getItemId()).getGoodsId());
                     if(goalType==ShoppingCartTypeEnum.RESERVATION.getValue()&&goodsDomain.getIsPre()==0){
                         return  errorResult("该商品无法预约");
@@ -336,57 +379,96 @@ public class ShoppingCartController extends  BaseController{
     }
 
     @RequestMapping(value = "wishlist" ,method = RequestMethod.GET)
-    public ModelAndView wishlist(Long categoryId){
+    public ModelAndView wishlist(Long categoryId) throws UnsupportedEncodingException {
+        if(UserContext.current() == null){
+            String loginRef = "/passport/toLogin?ref=" + URLEncoder.encode(HttpContext.current().getRequest().getServletPath(), "UTF-8");
+            return new ModelAndView("redirect:"+loginRef);
+        }
+
         ModelAndView mv = new ModelAndView("wishlist/list");
+        //获取全部愿望清单列表
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         List<ShoppingCartItemDomain> wishList = shoppingCartService.listShoppingCartItemByCustomerId(customerDomain.getId(),2);
         shoppingCartService.withGoodsItem(wishList);
         shoppingCartService.withSizeDomain(wishList);
+
         GoodsQuery query = new GoodsQuery();
+        query.setIsPublished(ValidEnum.YES.getValue());
         List<Long> goodsIds = new ArrayList<>();
-        List<Long> categoryIds = new ArrayList<>();
         for(ShoppingCartItemDomain line:wishList){
-            SkuDomain skuDomain = skuService.get(line.getSkuId());
-            goodsIds.add(skuDomain.getGoodsId());
-            line.setCategoryId((goodsService.get(skuDomain.getGoodsId())).getCategoryId());
-            Long colorId = goodsItemService.get(line.getItemId()).getColorId();
-            String sizeValue = prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")).getName();
-            line.setStock(goodsService.getTempStock(line.getGoodsCode(),sizeValue,colorId));
+            GoodsDomain goodsDomain = goodsService.get(line.getGoodsItemDomain().getGoodsId());
+            line.setGoodsDomain(goodsDomain);
+            goodsIds.add(goodsDomain.getId());
         }
         updateStock(wishList);
 
         query.setIds(goodsIds);
         List<GoodsDomain> goodsList =  goodsService.getList(query);
-        for(GoodsDomain line:goodsList){
-            categoryIds.add(line.getCategoryId());
+
+        List<Long> categoryIdListAll = new ArrayList<>();
+        for (GoodsDomain goodsDomain1 :goodsList){
+            List<Long> categoryIdList = JSON.parseArray(goodsDomain1.getCategoryIds(),Long.class);
+            goodsDomain1.setCategoryIdList(categoryIdList);
+            categoryIdListAll.addAll(categoryIdList);
         }
+        categoryIdListAll = categoryIdListAll.stream().distinct().collect(Collectors.toList());
         List<GoodsCategoryDomain> categoryDomainList = new ArrayList<>();
 
         GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
-        categoryQuery.setIds(categoryIds);
+        categoryQuery.setIds(categoryIdListAll);
         categoryDomainList = goodsCategoryService.getList(categoryQuery);
-        if(categoryId!=null){
+
+
+        //根据一级分类进行筛选
+        GoodsCategoryDomain categoryDomain = goodsCategoryService.get(categoryId);
+        if(categoryDomain!=null){
+
+            List <GoodsCategoryDomain> list =null;
+            List<Long> childCategoryIds = new ArrayList<>();
+            if(categoryDomain.getLevel()==1){
+                GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
+                goodsCategoryQuery.setParentId(categoryDomain.getId());
+                goodsCategoryQuery.setLevel(2);
+                goodsCategoryQuery.setIsValid(ValidEnum.YES.getValue());
+                list  = goodsCategoryService.getList(goodsCategoryQuery);
+                for (GoodsCategoryDomain line: list){
+                    childCategoryIds.add(line.getId());
+                }
+            }
             mv.addObject("categoryDomain",goodsCategoryService.get(categoryId));
             List<ShoppingCartItemDomain> newWishList  = new ArrayList<>();
             for(ShoppingCartItemDomain line:wishList){
-                if(line.getCategoryId().equals(categoryId)){
+                if( CollectionUtils.containsAny(JsonUtils.toLongArray(line.getGoodsDomain().getCategoryIds()),childCategoryIds)){
                     newWishList.add(line);
                 }
             }
             wishList = newWishList;
         }
-        mv.addObject("categoryList",categoryDomainList);
+
+        //获取所有一级分类id集合
+        List<Long> firstCategoryIdsList = categoryDomainList.stream().filter(x->x.getIsValid()==ValidEnum.YES.getValue()).map(x->x.getParentId()).collect(Collectors.toList());
+        GoodsCategoryQuery categoryQuery1 = new GoodsCategoryQuery();
+        categoryQuery1.setIds(firstCategoryIdsList);
+        List<GoodsCategoryDomain>   firstCategoryList = goodsCategoryService.getList(categoryQuery1);
+        mv.addObject("categoryList",firstCategoryList);
         mv.addObject("wishList",wishList);
 
         //您也许也喜欢
+        List<Long> categoryIds = new ArrayList<>(categoryIdListAll);
         GoodsQuery goodsQuery = new GoodsQuery();
         goodsQuery.setIsPublished(ValidEnum.YES.getValue());
         List<GoodsDomain> goodsListAll =  goodsService.getList(goodsQuery);
-        Collections.shuffle(goodsListAll);
-        List<GoodsDomain> goodsDomainList = goodsListAll.subList(0,4);
+        for (GoodsDomain goodsDomain1 :goodsListAll){
+            List<Long> categoryIdList = JSON.parseArray(goodsDomain1.getCategoryIds(),Long.class);
+            goodsDomain1.setCategoryIdList(categoryIdList);
+        }
+        List<GoodsDomain> likeGoodsList = goodsListAll.stream().filter(x-> CollectionUtils.containsAny(x.getCategoryIdList(),categoryIds)).collect(Collectors.toList());
+
+        Collections.shuffle(likeGoodsList);
+        List<GoodsDomain> goodsDomainList = likeGoodsList.subList(0,4);
         goodsService.withGoodsItemList(goodsDomainList);
-        mv.addObject("likeGoodsList",goodsDomainList);
+        mv.addObject("likeGoodsList",likeGoodsList);
         return mv;
     }
 
@@ -419,7 +501,11 @@ public class ShoppingCartController extends  BaseController{
          if(goodsDomain.getIsPre()== ValidEnum.NO.getValue()){
              return errorResult("该商品不能预约");
          }
-         shoppingCartItemDomain.setShoppingCartType(3);
+        ShoppingCartItemDomain queryDomain = shoppingCartService.isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.RESERVATION.getValue());
+        if(queryDomain!=null){
+            return  errorResult("该商品精品店已存在");
+        }
+         shoppingCartItemDomain.setShoppingCartType(ShoppingCartTypeEnum.RESERVATION.getValue());
          shoppingCartService.update(shoppingCartItemDomain);
         return  successResult("操作成功");
     }
@@ -469,7 +555,13 @@ public class ShoppingCartController extends  BaseController{
         if(shoppingCartItemId==null){
             return errorResult("参数为空");
         }
+        Long accountId = UserContext.current().getAccountDomain().getId();
+        CustomerDomain customerDomain = customerService.getAccount(accountId);
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.get(shoppingCartItemId);
+        ShoppingCartItemDomain queryDomain = shoppingCartService.isExistInCart(customerDomain, skuService.get(shoppingCartItemDomain.getSkuId()), ShoppingCartTypeEnum.SHOPPING_CART.getValue());
+        if(queryDomain!=null){
+            return  errorResult("该商品购物车已存在");
+        }
         shoppingCartItemDomain.setShoppingCartType(1);
         shoppingCartService.update(shoppingCartItemDomain);
         updateBoutiqueListSession(shoppingCartItemId);

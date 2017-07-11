@@ -57,6 +57,7 @@ import com.dookay.coral.shop.temp.domain.TempMemberDomain;
 import com.dookay.coral.shop.temp.query.TempMemberQuery;
 import com.dookay.coral.shop.temp.service.ITempMemberService;
 import com.dookay.coral.shop.temp.service.ITempStockService;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -381,7 +382,7 @@ public class CheckoutController  extends BaseController{
         shoppingCartService.withGoodsItem(cartList);
         //持久化订单，验证优惠券码是否可用，商品库存是否足够
         Long couponId  = order.getCouponId();
-        if(couponId!=null ){
+        if(couponId!=null){
             CouponDomain couponDomain = couponService.get(couponId);
             couponService.checkCoupon(couponDomain.getCode());
         }
@@ -391,8 +392,6 @@ public class CheckoutController  extends BaseController{
             if(couponId!=null ){
                 orderService.subCouponNum(order);
             }
-            //库存减少
-            orderService.updateSkuStock(order);
         }
         List<Long> itemIds = new ArrayList<Long>();
         List<OrderItemDomain> orderItemDomainList = new ArrayList<OrderItemDomain>();
@@ -415,9 +414,9 @@ public class CheckoutController  extends BaseController{
             ShoppingCartItemDomain items = cartList.get(j);
             OrderItemDomain orderItemDomain = new OrderItemDomain();
             orderItemDomain.setOrderId(order.getId());
-            SkuDomain skuDomain = skuService.get(items.getSkuId());
-            if (skuDomain.getQuantity()<=0){
-                itemIds.add(skuDomain.getGoodsId());
+            Long num = goodsService.getTempStock(cartList.get(j).getGoodsCode().split("\\s+")[0],cartList.get(j).getGoodsCode().split("\\s+")[1],prototypeSpecificationOptionService.get(JSONObject.fromObject(cartList.get(j).getSkuSpecifications()).getLong("size")).getName());
+            if (num<=0){
+                itemIds.add(cartList.get(j).getId());
                 continue;
             }
             orderItemDomain.setSkuId(items.getSkuId());
@@ -439,7 +438,7 @@ public class CheckoutController  extends BaseController{
 
         order.setSubmitted(true);
         //清除session
-        session.setAttribute(ORDER,order);
+        session.setAttribute(ORDER,null);
         session.setAttribute(CART_LIST,null);
         //清除购物车
         for(int i=0 ;i<cartList.size();i++){
@@ -464,7 +463,7 @@ public class CheckoutController  extends BaseController{
         freeMap.put("status",OrderStatusEnum.UNPAID.getValue());
         freeMap.put("content",messageTemplate.getContent());
         freeMap.put("date",new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
-        orderService.withGoodItme(orderItemDomainList);
+        orderService.withGoodsItem(orderItemDomainList);
         freeMap.put("order",order);
         freeMap.put("orderItem",orderItemDomainList);
         String html = FreemarkerUtil.printString("orderPaid.ftl",freeMap);
@@ -478,7 +477,7 @@ public class CheckoutController  extends BaseController{
 
         Long orderId = order.getId();
         if(itemIds!=null && itemIds.size()>0){
-            return successResult(ChooseLanguage.getI18N().getStockOut(),itemIds);
+            return errorResult(ChooseLanguage.getI18N().getSomeStockOut(),itemIds);
         }
         return successResult(ChooseLanguage.getI18N().getOperateSuccess(),order);
     }
@@ -614,6 +613,7 @@ public class CheckoutController  extends BaseController{
         HttpSession session = request.getSession();
 
         CustomerAddressDomain customerAddressDomain =  customerAddressService.get(addressId);
+        ShippingCountryDomain shippingCountryDomain = shippingCountryService.get(customerAddressDomain.getCountryId());
         OrderDomain orderDomain = (OrderDomain)session.getAttribute(ORDER);
         orderDomain.setCustomerAddressDomain(customerAddressDomain);
         orderDomain.setStoreDomain(null);
@@ -626,7 +626,7 @@ public class CheckoutController  extends BaseController{
         orderDomain.setShipTitle(customerAddressDomain.getTitle());
         orderDomain.setShipCity(customerAddressDomain.getCity());
         orderDomain.setShippingCountryId(customerAddressDomain.getCountryId());
-        orderDomain.setShipCountry(customerAddressDomain.getCountryId()+"");
+        orderDomain.setShipCountry(DefaultTags.translate(shippingCountryDomain.getName(),shippingCountryDomain.getEnName()));
         orderDomain.setShipProvince(customerAddressDomain.getProvince());
         orderDomain.setShipAddress(customerAddressDomain.getAddress());
         orderDomain.setShipMemo(customerAddressDomain.getMemo());
@@ -747,7 +747,7 @@ public class CheckoutController  extends BaseController{
 
     @RequestMapping(value = "isNeedBill", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult isNeedBill(Integer isNeed,String info){
+    public JsonResult isNeedBill(Integer isNeed,String info,Integer type){
         if(isNeed==null){
             return errorResult(ChooseLanguage.getI18N().getParamErro());
         }
@@ -758,7 +758,16 @@ public class CheckoutController  extends BaseController{
             return errorResult(ChooseLanguage.getI18N().getOrderTimeOut());
         }
         order.setBillRequired(isNeed);
-        order.setBillTitle(info);
+        if(isNeed==0){
+            order.setBillTitle("");
+            order.setBillCode("");
+        }else{
+            if(type==0){
+                order.setBillTitle(info);
+            }else{
+                order.setBillCode(info);
+            }
+        }
         session.setAttribute(ORDER,order);
         return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
@@ -780,13 +789,14 @@ public class CheckoutController  extends BaseController{
         if(couponDomain!=null){
             order.setCouponId(couponDomain.getId());
             Double orderTotal = order.getOrderTotal();
+            System.out.println("total:"+orderTotal);
             switch (couponDomain.getRuleType()) {
                 case 0://全单打折 无限次
                     trueDiscountPrice = orderTotal*(1-couponDomain.getDiscount());
                     System.out.println(0);
                     break;
                 case 1://全单满减 无限次
-                    if(couponDomain.getSatisfyTop()/rate>=orderTotal){
+                    if(couponDomain.getSatisfyTop()/rate<=orderTotal){
                         trueDiscountPrice = couponDomain.getDiscountPrice()/rate;
                     }else{
                         return errorResult(ChooseLanguage.getI18N().getInconsistentCondition());
@@ -824,6 +834,16 @@ public class CheckoutController  extends BaseController{
         order.setCouponDiscount(0D);
         session.setAttribute(ORDER,order);
         return successResult(ChooseLanguage.getI18N().getOperateSuccess());
+    }
+
+    @RequestMapping(value = "isSubmited", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult isSubmited(){
+        HttpServletRequest request = HttpContext.current().getRequest();
+        OrderDomain order = (OrderDomain)request.getSession().getAttribute(ORDER);
+        System.out.println("orderBoolean:"+order==null?true:false);
+        Boolean ret = order==null?true:false;
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess(),ret);
     }
 
     @RequestMapping(value = "deleteGoods", method = RequestMethod.POST)

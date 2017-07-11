@@ -27,6 +27,7 @@ import com.dookay.shiatzy.web.mobile.form.UpdateAccountForm;
 import com.dookay.shiatzy.web.mobile.form.UpdateEmailForm;
 import com.dookay.shiatzy.web.mobile.form.UpdatePasswordForm;
 import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
+import com.dookay.shiatzy.web.mobile.util.ChooseLanguage;
 import com.dookay.shiatzy.web.mobile.util.I18NReverse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -117,14 +118,22 @@ public class AccountController extends MobileBaseController {
         }
         CustomerAddressDomain customerAddressDomain = customerAddressService.getAccount(customerDomain.getId());
         String phone = customerDomain.getPhone();
+        ShippingCountryDomain shippingCountryDomain=null;
         if(StringUtils.isNotBlank(phone)){
-            customerDomain.setPhone(phone.substring(2,phone.length()));
+          String  countryId= CookieUtil.getCookieValueByKey(HttpContext.current().getRequest(),"shippingCountry");
+          if(countryId.equals("")||countryId ==null)
+          {
+              countryId="1";
+          }
+            shippingCountryDomain=shippingCountryService.get(Long.valueOf(countryId));
+
+            customerDomain.setPhone(phone.substring(shippingCountryDomain.getPhonePrefix().length(),phone.length()));
         }
         ModelAndView mv = new ModelAndView("user/account/update");
         mv.addObject("accountDomain",accountDomain);
         mv.addObject("customerDomain",customerDomain);
         mv.addObject("customerAddressDomain",customerAddressDomain);
-
+        mv.addObject("countryPhone",shippingCountryDomain.getPhonePrefix());
         //查询出配送国家
         List<ShippingCountryDomain> shippingCountryDomainList = shippingCountryService.getList(new ShippingCountryQuery());
         mv.addObject("countryList",shippingCountryDomainList);
@@ -147,9 +156,11 @@ public class AccountController extends MobileBaseController {
         //生日...
         String phone = getCustomer.getPhone();
         if (phone.contains(",")){
-            phone = phone.replaceAll("\\,","");
+            String   phones = phone.split("\\,")[0];
+            phone =  shippingCountryService.get(Long.valueOf(phones)).getPhonePrefix()+phone.split("\\,")[1];
         }
         System.out.println("up-phone:"+phone);
+
         Long accountId = UserContext.current().getAccountDomain().getId();
         AccountDomain updateAccount = accountService.get(accountId);
         CustomerDomain oldCustomer = customerService.getAccount(updateAccount.getId());
@@ -191,10 +202,10 @@ public class AccountController extends MobileBaseController {
 
         Boolean isSuccess = customerService.updateCustomer(updateAccount,updateCustomer,updaCustomerAddress);
         if(!isSuccess){
-            return successResult(getI18N().getUpdateFailed());
+            return successResult(ChooseLanguage.getI18N().getUpdateFailed());
         }
 
-        return successResult(getI18N().getUpdateSuccess());
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
     @RequestMapping(value = "toUpdateEmail", method = RequestMethod.GET)
@@ -238,13 +249,13 @@ public class AccountController extends MobileBaseController {
             accountDomain.setUserName(email);
             customerDomain.setEmail(email);
             if(accountService.getAccountByEmail(email)!=null){
-                return errorResult(getI18N().getEmailIsExsit());
+                return errorResult(ChooseLanguage.getI18N().getEmailIsExsit());
             }
             accountService.update(accountDomain);
             customerService.update(customerDomain);
-            return successResult(getI18N().getUpdateSuccess());
+            return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
         }else {
-            return errorResult(getI18N().getPasswordAndUserNameErro());
+            return errorResult(ChooseLanguage.getI18N().getPasswordAndUserNameErro());
         }
     }
 
@@ -256,9 +267,9 @@ public class AccountController extends MobileBaseController {
            // accountService.updateEmailOrPassword(accountDomain, accountDomain.getEmail(), updatePasswordForm.getNewPassword());
             accountService.changePassword(accountDomain,updatePasswordForm.getOldPassword(),updatePasswordForm.getNewPassword());
         }else{
-            return errorResult(getI18N().getOldPasswordErro());
+            return errorResult(ChooseLanguage.getI18N().getOldPasswordErro());
         }
-        return successResult(getI18N().getUpdateSuccess());
+        return successResult(ChooseLanguage.getI18N().getUpdateSuccess());
     }
 
     @RequestMapping(value = "setNewPassword", method = RequestMethod.POST)
@@ -270,7 +281,7 @@ public class AccountController extends MobileBaseController {
         query.setUserName(userName);
         AccountDomain accountDomain = accountService.getFirst(query);
         if(accountDomain!=null&&new Timestamp(accountDomain.getRegisterDate()).getTime()<= System.currentTimeMillis()){
-            return errorResult(getI18N().getTimeOut());
+            return errorResult(ChooseLanguage.getI18N().getTimeOut());
         }
         String secretKey = accountDomain.getValidateCode();
         long date = accountDomain.getRegisterDate();//忽略毫秒数
@@ -278,7 +289,7 @@ public class AccountController extends MobileBaseController {
         String key = userName+"$"+date+"$"+secretKey;
         String digitalSignature = DigestUtils.md5Hex(key);//数字签名
         if(!digitalSignature.equals(sid)){
-            return errorResult(getI18N().getEncrypDataErro());
+            return errorResult(ChooseLanguage.getI18N().getEncrypDataErro());
         }
         accountService.setNewPassword(accountDomain,updatePasswordForm.getNewPassword());
         UserContext userContext = UserContext.current();
@@ -316,7 +327,7 @@ public class AccountController extends MobileBaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerService.validVip(customerDomain,phoneNumber);
-        return successResult(getI18N().getVlaidSuccess());
+        return successResult(ChooseLanguage.getI18N().getVlaidSuccess());
     }
 
     @RequestMapping(value = "validUserName", method = RequestMethod.POST)
@@ -325,9 +336,9 @@ public class AccountController extends MobileBaseController {
         AccountQuery query = new AccountQuery();
         query.setUserName(userName);
         if(accountService.getOne(query)!=null){
-            return errorResult(getI18N().getEmailIsExsit());
+            return errorResult(ChooseLanguage.getI18N().getEmailIsExsit());
         }
-        return successResult(getI18N().getVlaidSuccess());
+        return successResult(ChooseLanguage.getI18N().getVlaidSuccess());
     }
 
     @RequestMapping(value = "vipDetail", method = RequestMethod.GET)
@@ -337,7 +348,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         TempMemberQuery query = new TempMemberQuery();
         if(!(StringUtils.isNotBlank(customerDomain.getValidMobile())&&customerDomain.getIsArtClubMember()==1)){
-            throw new ServiceException(getI18N().getNoBindVip());
+            throw new ServiceException(ChooseLanguage.getI18N().getNoBindVip());
         }
         query.setMobile(customerDomain.getValidMobile());
         List<String> cardType = new ArrayList<>();
@@ -363,7 +374,7 @@ public class AccountController extends MobileBaseController {
         mv.addObject("customerDomain",customerDomain);
         return mv;
     }
-
+    
     @RequestMapping(value = "setSubscribe", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult setSubscribe(String subscribeType0,String subscribeType1,String subscribeType2){
@@ -382,14 +393,7 @@ public class AccountController extends MobileBaseController {
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         customerDomain.setSubscribeType(subscribeType);
         customerService.update(customerDomain);
-        return successResult(getI18N().getOperateSuccess());
+        return successResult(ChooseLanguage.getI18N().getOperateSuccess());
     }
 
-    public I18NReverse getI18N() {
-        HttpSession session = HttpContext.current().getRequest().getSession();
-        int type = 0;
-        String  lang = (String)session.getAttribute("language");
-        type = "en_US".equals(lang)?1:0;
-        return new I18NReverse(type);
-    }
 }

@@ -14,8 +14,10 @@ var commonApp = function () {
     //顶部导航显示隐藏
     $('#j_show_nav').on("click", function () {
       navPanel.fadeIn();
+      $("body").addClass("open-c")
       $('#j_close_nav').on('click', function () {
         navPanel.fadeOut();
+          $("body").removeClass("open-c")
       })
     });
     //下拉菜单展开收起

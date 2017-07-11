@@ -18,7 +18,7 @@
         <a onclick="history.go(-1)" class="icon iconfont" type="button">&#xe67d;</a>
     </div>
 
-    <form class="j_ajaxForm" action="${ctx}/passport/login"  data-next="${ctx}/u/account/index">
+    <form class="j_ajaxForm_login" action="${ctx}/passport/login"  data-next="${ctx}/u/account/index" method="post">
         <div class="dx-form">
             <h3 class="title"><spring:message code="login"/></h3>
             <div class="tips"><spring:message code="login.tips"/></div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-item button">
-            <button type="submit"  class="btn btn-default login"><spring:message code="login"/></button>
+            <button type="button"  class="btn btn-default login"><spring:message code="login"/></button>
             </div>
             <div class="form-item text-center"><spring:message code="login.noneAccount"/>？ <a
                     href="${ctx}/passport/toRegister"><spring:message code="register"/></a></div>
@@ -85,7 +85,6 @@
         $(".top-right-nav").find("li:eq(2)").addClass("active");
         var backUrl = document.referrer;
         var ctx = '<%=request.getServerName()%>';
-        console.log("backUrl:"+backUrl+" ctx:"+ctx);
         var dataNext = '';
         if(backUrl.indexOf("toLogin")>-1 || backUrl.indexOf("toRegister")>-1 ||backUrl.indexOf("toSetNewPassword")>-1
             ||backUrl.indexOf("activeEmail")>-1||(ctx!=''&& backUrl.indexOf(ctx)<0 )
@@ -96,17 +95,17 @@
             $(".j_ajaxForm").attr("data-next",backUrl);
             dataNext = backUrl;
         }
-        console.log("dataNext:"+dataNext);
-      /*  $(".login").click(function () {
-            var data = $(".j_ajaxForm").serializeArray();
-            $.post("/passport/login",data,function(data){
-               if(data.code==200){
-                   console.log("dataNext："+dataNext);
-                   location.href = dataNext;
-               }else {
-                   layer.msg(data.message);
-               }
+        $(".login").click(function () {
+            var data  = $(".j_ajaxForm_login").serializeArray();
+            $.post("${ctx}/passport/login",data,function (ret) {
+                if(ret.code==200){
+                    layer.msg(ret.message,{time:1000},function () {
+                        location.href = dataNext;
+                    });
+                }else{
+                    layer.msg(ret.message);
+                }
             });
-        });*/
+        });
     });
 </script>

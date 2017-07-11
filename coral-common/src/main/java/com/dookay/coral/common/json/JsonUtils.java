@@ -225,4 +225,13 @@ public class JsonUtils {
 		}
 		return longArrayList;
 	}
+
+	public static List<String> toStringArray(String json){
+		List<String> stringArrayList = new ArrayList<>();
+		JSONArray jsonArray = JSONArray.fromObject(json);
+		for (int i = 0; i < jsonArray.size(); i++) {
+			stringArrayList.add(jsonArray.getString(i));
+		}
+		return stringArrayList;
+	}
 }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by admin on 2017/4/25.
@@ -36,7 +38,8 @@ public class ContentController extends BaseController {
         ContentItemQuery itemQuery =new ContentItemQuery();
         for (ContentCategoryDomain content:domainList) {
             itemQuery.setCategoryId(content.getId());
-            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery).stream()
+                    .sorted(Comparator.comparing(ContentItemDomain::getId)).collect(Collectors.toList());
             content.setContentItemDomainList(contentItemDomains);
         }
         ModelAndView modelAndView = new ModelAndView("content/faq");
@@ -49,15 +52,18 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/specialService");
         return modelAndView;
     }
+
     @RequestMapping(value = "returnOrchange", method = RequestMethod.GET)
     public ModelAndView returnOrchange(Long id){
         ContentCategoryQuery query =new ContentCategoryQuery();
         query.setParentId(id);
-        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query).stream()
+                .sorted(Comparator.comparing(ContentCategoryDomain::getId)).collect(Collectors.toList());
         ContentItemQuery itemQuery =new ContentItemQuery();
         for (ContentCategoryDomain content:domainList) {
             itemQuery.setCategoryId(content.getId());
-            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery).stream()
+                    .sorted(Comparator.comparing(ContentItemDomain::getId)).collect(Collectors.toList());
             content.setContentItemDomainList(contentItemDomains);
         }
         ModelAndView modelAndView = new ModelAndView("content/returnOrchange");
@@ -69,24 +75,34 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/deliveryTime");
         return modelAndView;
     }
+
     @RequestMapping(value = "whatBoutique", method = RequestMethod.GET)
     public ModelAndView whatBoutique(Long id){
         ContentCategoryQuery query =new ContentCategoryQuery();
         query.setParentId(id);
-        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query).stream()
+                .sorted(Comparator.comparing(ContentCategoryDomain::getId).reversed()).collect(Collectors.toList());
         ContentItemQuery itemQuery =new ContentItemQuery();
         for (ContentCategoryDomain content:domainList) {
             itemQuery.setCategoryId(content.getId());
-            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery).stream()
+                    .sorted(Comparator.comparing(ContentItemDomain::getId)).collect(Collectors.toList());
             content.setContentItemDomainList(contentItemDomains);
         }
+
         ModelAndView modelAndView = new ModelAndView("content/whatBoutique");
         modelAndView.addObject("domainList",domainList);
         return modelAndView;
     }
+
     @RequestMapping(value = "privacyNotice", method = RequestMethod.GET)
     public ModelAndView privacyNotice(){
         ModelAndView modelAndView = new ModelAndView("content/privacyNotice");
+        return modelAndView;
+    }
+    @RequestMapping(value = "customerService", method = RequestMethod.GET)
+    public ModelAndView customerService(){
+        ModelAndView modelAndView = new ModelAndView("content/customerService");
         return modelAndView;
     }
     @RequestMapping(value = "sizeNotice", method = RequestMethod.GET)
@@ -94,15 +110,18 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/sizeNotice");
         return modelAndView;
     }
+
     @RequestMapping(value = "whatWish", method = RequestMethod.GET)
     public ModelAndView whatWish(Long id){
         ContentCategoryQuery query =new ContentCategoryQuery();
         query.setParentId(id);
-        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query);
+        List<ContentCategoryDomain> domainList=contentCategoryService.getList(query).stream()
+                .sorted(Comparator.comparing(ContentCategoryDomain::getId).reversed()).collect(Collectors.toList());
         ContentItemQuery itemQuery =new ContentItemQuery();
         for (ContentCategoryDomain content:domainList) {
             itemQuery.setCategoryId(content.getId());
-            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery);
+            List<ContentItemDomain> contentItemDomains=contentItemService.getList(itemQuery).stream()
+                    .sorted(Comparator.comparing(ContentItemDomain::getId)).collect(Collectors.toList());
             content.setContentItemDomainList(contentItemDomains);
         }
         ModelAndView modelAndView = new ModelAndView("content/whatWish");
@@ -114,7 +133,5 @@ public class ContentController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("content/whatCoupon");
         return modelAndView;
     }
-
-
-
+    
 }

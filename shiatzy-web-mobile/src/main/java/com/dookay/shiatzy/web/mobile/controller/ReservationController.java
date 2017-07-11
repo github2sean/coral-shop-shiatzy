@@ -29,6 +29,7 @@ import com.dookay.coral.shop.store.service.IStoreCityService;
 import com.dookay.coral.shop.store.service.IStoreCountryService;
 import com.dookay.coral.shop.store.service.IStoreService;
 import com.dookay.shiatzy.web.mobile.model.PreOderItem;
+import com.dookay.shiatzy.web.mobile.taglib.DefaultTags;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -74,7 +77,6 @@ public class ReservationController extends BaseController{
     private IShippingCountryService shippingCountryService;
 
 
-
     public static int RESERVATION_TYPE=3;
 
 
@@ -82,7 +84,9 @@ public class ReservationController extends BaseController{
      * 预约单列表
      */
     @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ModelAndView list(){
+    public ModelAndView list() throws UnsupportedEncodingException {
+        ModelAndView loginRef = getModelAndView();
+        if (loginRef != null) return loginRef;
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //预约单查询
@@ -97,7 +101,9 @@ public class ReservationController extends BaseController{
 
 
     @RequestMapping(value = "details",method = RequestMethod.GET)
-    public ModelAndView details(Long reservationId){
+    public ModelAndView details(Long reservationId) throws UnsupportedEncodingException {
+        ModelAndView loginRef = getModelAndView();
+        if (loginRef != null) return loginRef;
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         //预约单查询
@@ -120,10 +126,19 @@ public class ReservationController extends BaseController{
         return mv;
     }
 
+    private ModelAndView getModelAndView() throws UnsupportedEncodingException {
+        if(UserContext.current() == null){
+            String loginRef = "/passport/toLogin?ref=" + URLEncoder.encode(HttpContext.current().getRequest().getServletPath(), "UTF-8");
+            return new ModelAndView("redirect:"+loginRef);
+        }
+        return null;
+    }
 
 
     @RequestMapping(value = "initChoose" ,method = RequestMethod.GET)
-    public ModelAndView initChoose(){
+    public ModelAndView initChoose() throws UnsupportedEncodingException {
+        ModelAndView loginRef = getModelAndView();
+        if (loginRef != null) return loginRef;
         HttpServletRequest request = HttpContext.current().getRequest();
         HttpSession session = request.getSession();
         Long accountId = UserContext.current().getAccountDomain().getId();
@@ -135,16 +150,10 @@ public class ReservationController extends BaseController{
         query.setShoppingCartType(RESERVATION_TYPE);
         List<ShoppingCartItemDomain> cartList = shoppingCartService.getList(query);
         shoppingCartService.withGoodsItem(cartList);
-        List<PreOderItem> preOderItemList = new ArrayList<PreOderItem>();
-        for (int i=0;cartList!=null&&cartList.size()>0 && i<cartList.size();i++){
-            if(i!=0&&i%2!=0){
-                continue;
-            }
-            PreOderItem preOderItem = i+1<cartList.size()?new PreOderItem(cartList.get(i),cartList.get(i+1)):new PreOderItem(cartList.get(i),null);
-            preOderItemList.add(preOderItem);
+        for (ShoppingCartItemDomain line : cartList) {
+            line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
         mv.addObject("storeCountryList",storeCountryList);
-        mv.addObject("preOderItemList",preOderItemList);
         session.setAttribute("submitCartList",cartList);
         return mv;
     }
@@ -170,27 +179,30 @@ public class ReservationController extends BaseController{
 
     @RequestMapping(value = "submitPreOrder" ,method = RequestMethod.POST)
     @ResponseBody
-    public  JsonResult submitPreOrder(Long storeId){
+    public  JsonResult submitPreOrder(Long storeId)  {
+        if(UserContext.current() == null)
+            return errorResult(DefaultTags.translate("预约单过期","Session expired"));
+
         Long accountId = UserContext.current().getAccountDomain().getId();
         CustomerDomain customerDomain = customerService.getAccount(accountId);
         HttpSession session = HttpContext.current().getRequest().getSession();
 
         if(storeId==null){
-            return errorResult("请选择门店");
+            return errorResult(DefaultTags.translate("请选择门店","Please choose store"));
         }
         StoreDomain storeDomain = storeService.get(storeId);
         if(storeDomain==null){
-            return errorResult("无此门店");
+            return errorResult(DefaultTags.translate("无此门店","Error store"));
         }
         //判断传入商品ID是否在精品店中
         List<ShoppingCartItemDomain> cartList = (List<ShoppingCartItemDomain>)session.getAttribute("submitCartList");
         if(!(cartList!=null&&cartList.size()>0)){
-            return errorResult("预约单过期");
+            return errorResult(DefaultTags.translate("预约单过期","Session expired"));
         }
         Long reservationDomainId =  reservationService.submit(cartList,customerDomain,storeDomain);
         //清空session
         session.setAttribute("submitCartList",null);
-        return successResult("提交成功",reservationDomainId);
+        return successResult(DefaultTags.translate("提交成功","Send successfully"),reservationDomainId);
     }
 
 

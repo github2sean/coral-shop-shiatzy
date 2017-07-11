@@ -108,7 +108,7 @@ public class EmailUtil {
         freeMap.put("date", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
         freeMap.put("order", order);
         //绑定order
-        orderService.withGoodItme(orderItemDomainList);
+        orderService.withGoodsItem(orderItemDomainList);
         freeMap.put("orderItem", orderItemDomainList);
         String html = FreemarkerUtil.printString(isEN ? "orderPaid_en.ftl" : "orderPaid.ftl", freeMap);
 
@@ -143,7 +143,7 @@ public class EmailUtil {
         freeMap.put("date", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(order.getOrderTime()));
         freeMap.put("order", order);
         //绑定order
-        orderService.withGoodItme(orderItemDomainList);
+        orderService.withGoodsItem(orderItemDomainList);
         freeMap.put("orderItem", orderItemDomainList);
         String html = FreemarkerUtil.printString(isEN ? "orderSend_en.ftl" : "orderSend.ftl", freeMap);
 

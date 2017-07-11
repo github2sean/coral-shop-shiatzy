@@ -54,4 +54,7 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
     void sizeWithStock(List<PrototypeSpecificationOptionDomain> sizeDomainList, List<Long> goodsId, List<Long> parmaId);
 
     List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList);
+
+    void importGoods(String s);
+
 }

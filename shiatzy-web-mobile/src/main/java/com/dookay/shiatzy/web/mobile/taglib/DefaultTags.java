@@ -11,6 +11,7 @@ import com.dookay.coral.shop.customer.service.ICustomerService;
 import com.dookay.coral.shop.goods.domain.GoodsCategoryDomain;
 import com.dookay.coral.shop.goods.query.GoodsCategoryQuery;
 import com.dookay.coral.shop.goods.service.IGoodsCategoryService;
+import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
 import com.dookay.coral.shop.order.enums.ShoppingCartTypeEnum;
 import com.dookay.coral.shop.order.query.ShoppingCartItemQuery;
@@ -37,7 +38,7 @@ public class DefaultTags {
 	public static List<GoodsCategoryDomain> getGoodsCategoryList() {
 		IGoodsCategoryService goodsCategoryService = SpringContextHolder.getBean("goodsCategoryService");
 		GoodsCategoryQuery query = new GoodsCategoryQuery();
-		query.setOrderBy("displayOrder");
+		query.setOrderBy("rank");
 		query.setDesc(false);
 		query.setLevel(1);
 		query.setIsValid(ValidEnum.YES.getValue());
@@ -58,16 +59,40 @@ public class DefaultTags {
 		return  selectCountry;
 	}
 
+	public static List<ShippingCountryDomain> getSelectCountryPhoneList() {
+		IShippingCountryService shippingCountryService = SpringContextHolder.getBean("shippingCountryService");
+		ShippingCountryQuery query = new ShippingCountryQuery();
+		query.setDesc(false);
+		query.setOrderBy("rank");
+		return  shippingCountryService.getList(query);
+	}
+
 	public static String getSelectLanguage() {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
 		return  selectLanguage;
 	}
 
+	/**
+	 * 选择地区是否中国
+	 * @return
+	 */
+	public static Boolean isChina() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectCountry = CookieUtil.getCookieValueByKey(request,"shippingCountry");
+		return "1".equals(selectCountry);
+	}
+
+	public static Boolean isEn() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
+		return "en_US".equals(selectLanguage);
+	}
+
 	public static String translate(String cnString,String enString) {
 		HttpServletRequest request = HttpContext.current().getRequest();
 		String selectLanguage = CookieUtil.getCookieValueByKey(request,"Language");
-		return selectLanguage.equals("en_US")?enString:cnString;
+		return "en_US".equals(selectLanguage)?enString:cnString;
 	}
 
 	public static Integer getCartNum(Integer type) {
@@ -95,5 +120,11 @@ public class DefaultTags {
 		return  cartList!=null&&cartList.size()>0?cartList.size():0;
 	}
 
+	public static Boolean isSubmited() {
+		HttpServletRequest request = HttpContext.current().getRequest();
+		OrderDomain order = (OrderDomain)request.getSession().getAttribute("order");
+		System.out.println("order:"+order==null?true:false);
+		return order==null?true:false;
+	}
 
 }

@@ -7,7 +7,7 @@
 </jsp:include>
 
 <div class="dx-orderList clearfix">
-    <div class="dx-title"><spring:message code="reservation.list.title"/> <a style="float: right;" href="/u/account/index"><spring:message code="goBack"/></a></div>
+    <div class="dx-title"><spring:message code="reservation.list.title"/> <a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a></div>
     <div class="content">
         <div class="dx-reservation"><spring:message code="reservation.list.reservationorders"/></div>
         <c:if test="${empty reservationList}">

@@ -68,10 +68,14 @@
                            data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
                 </li>
                 <li class="form-item2 form-item3"><spring:message code="account.personal.phoneNum"/>*
-                    <select name="customerDomain.phone">
-                        <option value="86">86</option>
-                        <option value="88">88</option>
-                    </select>&nbsp;+<input type="text"
+                    <select name="customerDomain.phone" id="phones">
+                        <c:forEach items="${countryList}" var="phone">
+                            <option
+                                    <c:if test="${customerAddressDomain.countryId==phone.id}"> selected="selected"</c:if>
+                                    value="${phone.id}">${phone.phonePrefix}</option>
+                        </c:forEach>
+
+                    </select>&nbsp;+<input type="text"onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"
                                            value="${customerDomain.phone}"
                                            name="customerDomain.phone" id="phone"
                                            data-rule="<spring:message code="account.personal.phoneNum"/>:required;mobile"/>
@@ -207,6 +211,30 @@
     $(function () {
         $(".top-right-nav").find("li:eq(2)").addClass("active");
         $("#title").val("${customerAddressDomain.title}");
+
+        $('#phones').change(function (e) {
+            e.preventDefault();
+            var phones = $('#phones').val();
+            $("#countryId").find("option").each(function () {
+                $(this).attr("selected", null);
+                if ($(this).val() == phones) {
+                    $(this).attr("selected", "selected");
+                }
+            })
+
+        });
+
+        $('#countryId').change(function (e) {
+            e.preventDefault();
+            var countryId = $('#countryId').val();
+            $("#phones").find("option").each(function () {
+                $(this).attr("selected", null);
+                if ($(this).val() == countryId) {
+                    $(this).attr("selected", "selected");
+                }
+            })
+
+        });
 
     });
 

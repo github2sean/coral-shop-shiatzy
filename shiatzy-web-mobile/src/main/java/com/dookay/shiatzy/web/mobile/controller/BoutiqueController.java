@@ -183,12 +183,7 @@ public class BoutiqueController extends BaseController {
         GoodsDomain goodsDomain = goodsService.get(skuDomain.getGoodsId());
         if (skuDomain == null) {
             return errorResult(ChooseLanguage.getI18N().getNoMatchGoods());
-        } else if (goodsDomain.getIsPre() == 0) {
-            return errorResult(ChooseLanguage.getI18N().getUnPre());
-        } else if (skuDomain.getQuantity() < 1) {
-            return errorResult(ChooseLanguage.getI18N().getSellOut());
         }
-
         skuDomain.setItemId(itemId);
         Integer num = addShoppingCartForm.getNum();
         ShoppingCartItemDomain shoppingCartItemDomain = shoppingCartService.isExistInCart(customerDomain, skuDomain, SHOPPINGCART_TYPE);

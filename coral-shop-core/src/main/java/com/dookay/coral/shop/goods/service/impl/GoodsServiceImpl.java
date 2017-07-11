@@ -5,7 +5,9 @@ import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.json.JsonUtils;
 import com.dookay.coral.common.persistence.criteria.QueryCriteria;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.utils.ExcelUtils;
 import com.dookay.coral.shop.goods.domain.*;
+import com.dookay.coral.shop.goods.model.CreateGoodModel;
 import com.dookay.coral.shop.goods.query.*;
 import com.dookay.coral.shop.goods.service.*;
 import com.dookay.coral.shop.order.domain.ShoppingCartItemDomain;
@@ -15,17 +17,19 @@ import com.dookay.coral.shop.temp.query.TempStockQuery;
 import com.dookay.coral.shop.temp.service.ITempStockService;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dookay.coral.common.persistence.Mapper;
 import com.dookay.coral.common.service.impl.BaseServiceImpl;
 import com.dookay.coral.shop.goods.mapper.GoodsMapper;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -67,6 +71,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public int countGoodsByCategoryId(Long categoryId) {
 		GoodsQuery goodsQuery = new GoodsQuery();
+		goodsQuery.setIsPublished(ValidEnum.YES.getValue());
 		goodsQuery.setCategoryId(categoryId);
 		return super.count(goodsQuery);
 	}
@@ -116,6 +121,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public void withGoodsItemList(List<GoodsDomain> goodsDomainList) {
 		List<Long> ids = goodsDomainList.stream().map(GoodsDomain::getId).collect(Collectors.toList());
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsIds(ids);
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for (GoodsDomain goodsDomain:goodsDomainList){
@@ -131,6 +137,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsIds(ids);
 		query.setIsSale(onsale);
+		query.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for (GoodsDomain goodsDomain:goodsDomainList){
 			List<GoodsItemDomain> goodsItemDomainList1 = goodsItemDomainList.stream()
@@ -142,6 +149,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public void withGoodsItemList(GoodsDomain goodsDomain) {
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
@@ -150,6 +158,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public void withGoodsItemListAndQuantity(GoodsDomain goodsDomain, Long sizeId) {
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for(GoodsItemDomain line:goodsItemDomainList){
@@ -174,6 +183,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public void withGoodsItemListAndQuantityByColor(GoodsDomain goodsDomain,List<Long> sizeIds) {
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsId(goodsDomain.getId());
+		query.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 
 		for(GoodsItemDomain line:goodsItemDomainList){
@@ -243,6 +253,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		GoodsItemQuery itemQuery = new GoodsItemQuery();
 		itemQuery.setGoodsIds(parmaId);
 		itemQuery.setColorIds(parmaId);
+		itemQuery.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> itemDomainList = goodsItemService.getList(itemQuery);
 
 		List<Long> itemIds = new ArrayList<>();
@@ -287,8 +298,100 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			categoryIds.add(line.getCategoryId());
 		}
 		GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
+		categoryQuery.setIsValid(ValidEnum.YES.getValue());
 		categoryQuery.setIds(categoryIds);
 		return goodsCategoryService.getList(categoryQuery);
+	}
+
+	public Boolean isExistGoodItem(GoodsItemQuery query){
+		return goodsItemService.getFirst(query)!=null?true:false;
+	}
+	public Boolean isExistGoods(GoodsQuery query){
+		return getFirst(query)!=null?true:false;
+	}
+
+	@Override
+	@Transactional("transactionManager")
+	public void importGoods(String fileName) {
+		try {
+			File file = new File(fileName);
+			if(!file.exists()){
+				throw new ServiceException("未读取到文件");
+			}
+			List<CreateGoodModel> modelList = ExcelUtils.importExcel(file,CreateGoodModel.class);
+			Date createDate = new Date();
+			for(CreateGoodModel row:modelList){
+				GoodsQuery goodsQuery = new GoodsQuery();
+				goodsQuery.setEqualName(row.getName());
+				GoodsDomain goodsDomain = getFirst(goodsQuery);
+				//不存在则创建商品
+				if(goodsDomain==null){
+					//根据原型和尺寸名查询出具体size
+					List<String> sizeNames =  JsonUtils.toStringArray(row.getSizeIds());
+					PrototypeSpecificationQuery specificationQuery = new PrototypeSpecificationQuery();
+					specificationQuery.setPrototypeId(row.getPrototypeId());
+					PrototypeSpecificationDomain specificationDomain =  prototypeSpecificationService.getFirst(specificationQuery);
+					if(specificationDomain==null){
+						continue;
+					}
+					PrototypeSpecificationOptionQuery optionQuery = new PrototypeSpecificationOptionQuery();
+					optionQuery.setSpecificationId(specificationDomain.getId());
+					optionQuery.setNames(sizeNames);
+					List<PrototypeSpecificationOptionDomain> sizeDomainList = prototypeSpecificationOptionService.getList(optionQuery);
+					List<Long> optionIds = sizeDomainList.stream().distinct().map(PrototypeSpecificationOptionDomain::getId).collect(Collectors.toList());
+
+					goodsDomain = new GoodsDomain();
+					goodsDomain.setName(row.getName());
+					goodsDomain.setEnName(row.getEnName());
+					goodsDomain.setPrice(row.getPrice());
+					goodsDomain.setDisPrice(row.getDiscountPrice());
+					goodsDomain.setCategoryIds(row.getCategoryIds());
+					goodsDomain.setSizeIds(optionIds.toString());
+					goodsDomain.setDetails(row.getDescription());
+					goodsDomain.setEnDetails(row.getEnDescription());
+					goodsDomain.setCode(row.getGoodsNo().split("\\t+")[0]);
+					goodsDomain.setCreateTime(createDate);
+
+					create(goodsDomain);
+				}
+
+				GoodsItemQuery itemQuery = new GoodsItemQuery();
+				itemQuery.setGoodsId(goodsDomain.getId());
+				itemQuery.setGoodsNo(row.getGoodsNo());
+				//不存在则创建商品item
+				if(isExistGoodItem(itemQuery)){
+					GoodsItemDomain goodsItemDomain = new GoodsItemDomain();
+					goodsItemDomain.setGoodsId(goodsDomain.getId());
+					goodsItemDomain.setColorId(row.getColorId());
+					goodsItemDomain.setFormat(row.getFormat());
+					goodsItemDomain.setEnFormat(row.getEnFormat());
+					goodsItemDomain.setPrice(row.getPrice());
+					goodsItemDomain.setDiscountPrice(row.getDiscountPrice());
+					goodsItemDomain.setGoodsNo(row.getGoodsNo());
+					goodsItemDomain.setCreateTime(createDate);
+
+					goodsItemService.create(goodsItemDomain);
+
+					//创建sku
+					List<Long> sizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
+					for(Long id:sizeIds){
+						SkuDomain sku = new SkuDomain();
+						sku.setGoodsId(goodsDomain.getId());
+						sku.setGoodsNo(row.getGoodsNo());
+						sku.setItemId(goodsItemDomain.getId());
+						PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(id);
+						sku.setSize(sizeDomain.getName());
+						sku.setSpecifications("{\"size\":"+id+"}");
+						sku.setIsValid(1);
+						sku.setIsPre(1);
+						sku.setCreateTime(createDate);
+						skuService.create(sku);
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

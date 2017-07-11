@@ -114,7 +114,7 @@
         <div class="privacy">
             <a href="#">
                 <span style="float:left;margin-left: -10px">&gt; </span>
-                <span style="float: left;" class="privacyNotice"><spring:message code="customerServiceLine"/></span>
+                <span style="float: left;" class="customerService"><spring:message code="customerServiceLine"/></span>
             </a>
         </div>
         <!--<div class="dx-privacy"><a href="#">隐私权政策</a></div>-->

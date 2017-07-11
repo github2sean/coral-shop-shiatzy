@@ -1,6 +1,7 @@
 <%@ taglib prefix="sping" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="web" uri="http://dookay.com/tags/default-functions" %>
 <%@ page import="com.dookay.coral.common.model.ImageModel" %>
   <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
@@ -38,8 +39,10 @@
             ${web:selectLanguage()=='en_US'?goodsItemDomain.goodsColor.enName:goodsItemDomain.goodsColor.name}&nbsp;(<spring:message code="goods.detail.thereAre"/>&nbsp;${goodsDomain.goodsItemList.size()-1}&nbsp;<spring:message code="goods.detail.colors"/>)
             </h3>
             <c:if test="${goodsDomain.goodsItemList.size()>0}">
+
               <ul class="clearfix">
-                <c:forEach var="item" items="${goodsDomain.goodsItemList}">
+                <c:forEach var="item" items="${goodsDomain.goodsItemList}" varStatus="status">
+                    <c:set var="startIndex" value="${goodsDomain.goodsItemList.size()-1 }"></c:set>
                   <li style="margin-bottom: 2rem;  ">
                       <a href="/goods/details/${item.id}">
                       <img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${item.id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
@@ -61,21 +64,20 @@
           <div style="margin-top: 2rem;">
           <a  type="button" class="btn-default addToCart" style="background-color: #cecece;color: #222222;border: #cecece solid 2px;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;color: #2a2a2a" ><svg><use xlink:href="#cart-nav"></use></svg></span><spring:message code="goods.detail.add2cart"/></a>
 
-            <c:if test="${goodsDomain.isPre==1}">
+            <c:if test="${goodsDomain.isPre==1 && web:china()}">
               <a type="button" class="btn-default addToBoutique" style="background-color: #ffffff;border: #cccccc solid 2px;color: #000000;margin-top: 1rem;width: 100%;"><span style="position: relative;left: 0;top: 6px;margin-right: 8px;"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#appointment-nav"></use></svg></span><spring:message code="goods.detail.add2reservation"/></a>
               <div class="remind whatBoutique"><span class="icon iconfont ">&#xe77d;</span><spring:message code="reservation.what"/></div>
             </c:if>
           </div>
 
             <%--商品详情--%>
-          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0?'margin-top:2.8rem':''}" >
+          <div class="dx-GoodsDetails j_collapse" style="${goodsDomain.isPre==0 || !web:china()?'margin-top:2.8rem':''}" >
             <h3 class="title"><spring:message code="goods.detail.details"/></h3>
             <p class="text">${web:selectLanguage()=='en_US'?goodsItemDomain.enDescription:goodsItemDomain.description}</p>
-            <ul class="format text">
-                <c:forEach var="item" items="${goodsItemFormatList}">
-                <li>${web:selectLanguage()=='en_US'?item.enName:item.name}</li>
-                </c:forEach>
-            </ul>
+              <div class="format text">
+                  ${web:t(goodsItemDomain.format,goodsItemDomain.enFormat)}
+              </div>
+
           </div>
         </div>
 
@@ -161,13 +163,21 @@
           })
 
           $("body").on("click touchstart", '.gallery-close', function (e) {
-            $(".gallery-block").hide();
+              e.preventDefault();
+            $(".boutique>a").click(function (e) {
+                return false;
+            })
+            $(".gallery-block").hide(500,function () {
+                $(".boutique>a").click(function (e) {
+                   location.href = $(this).attr("href");
+                })
+            });
             $("body").css({
               "position":"",
               "overflow":""
             })
-          });
 
+          });
 
           var isSelected = false;
           $("#js_size").find("li").each(function () {
@@ -229,15 +239,15 @@
               url = "/cart/removeFromSessionCart";
             }*/
 
-            $.post(url, data, function (result) {
-
-              if (result.code == 200) {
-                layer.msg('<spring:message code="success.towish"/>');
-              }else{
-                layer.msg(result.message);
-              }
-            });
+              $.post(url, data, function (result) {
+                if (result.code == 200) {
+                  layer.msg('<spring:message code="success.towish"/>');
+                }else{
+                  layer.msg(result.message);
+                }
+              });
           });
+
           $(".addToCart").click(function () {
             if (!isSelected) {
               layer.msg("<spring:message code="goods.detail.pleaseSelectSize" />");
@@ -260,7 +270,7 @@
                 setCartNum();
                 //location.href="/cart/list";
               } else {
-                layer.msg('<spring:message code="sellout"/>');
+                layer.msg(result.message);
               }
             });
           });
@@ -297,7 +307,7 @@
             layer.open({
               type: 2,
                 skin:'d-dialog',
-              title: '<spring:message code="shoppingCart.size"/>' + '<spring:message code="goods.detail.guide"/>',
+              title: '<spring:message code="shoppingCart.size"/>' +" "+'<spring:message code="goods.detail.guide"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],
               area: ['100%', '100%'],
@@ -319,6 +329,7 @@
           $(".whatBoutique").click(function () {
             layer.open({
               type: 2,
+                skin:'d-dialog',
               title: '<spring:message code="reservation.what"/>',
               closeBtn: 1, //不显示关闭按钮
               shade: [0],

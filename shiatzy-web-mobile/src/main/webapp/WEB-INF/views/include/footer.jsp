@@ -19,7 +19,7 @@
             <a href="javascript:;"><spring:message code="aboutUs"/></a>
             <ul class="do-sub-list-btm">
                 <li><a href="http://brand.shiatzychen.com/"><spring:message code="officialSite"/></a></li>
-                <li><a href="#"><spring:message code="contactUs"/></a></li>
+                <li><a href="mailto:customercare@shiatzychen.com"><spring:message code="contactUs"/></a></li>
                 <li><a href="#" class="privacyNotice"><spring:message code="privacyPolicy"/></a></li>
             </ul>
         </li>
@@ -302,7 +302,7 @@
 
            var key = $("#searchKey").val();
             if(key==''){
-                layer.msg("请输入搜索关键字");
+                //layer.msg("${web:t("请输入搜索关键字","Choose your location")}");
                 return false;
             }
             $("#contentForm").submit();
@@ -336,7 +336,21 @@
         });
 
 
-        //iframe窗
+
+        //弹出层
+        $(".country-select").find("li").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id =  $(this).find("a").attr("data-value");
+            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
+                if(data.code==200){
+                    var index = layer.index; //获取当前弹层的索引号
+                    layer.close(index); //关闭当前弹层
+                }
+            });
+        });
+
+
+        //隐私政策
         $(".privacyNotice").click(function(){
             layer.open({
                 type: 2,
@@ -358,29 +372,40 @@
                 }
             });
         });
+        //iframe窗
+        $(".customerService").click(function(){
+            layer.open({
+                type: 2,
+                title: '<spring:message code="customerServiceLine"/>',
+                closeBtn: 1, //不显示关闭按钮
+                skin:'d-dialog',
+                shade: [0],
+                area: ['100%', '100%'],
+                content: ['${ctx}/content/customerService'],//iframe的url，no代表不显示滚动条
+                shade: [0.3,'#000'], //0.1透明度的白色背景
 
-        //弹出层
-        $(".country-select").find("li").click(function(){
-            $(this).addClass("active").siblings().removeClass("active");
-            var id =  $(this).find("a").attr("data-value");
-            $.post("/home/chooseShippingCountry",{"shippingCountryId":id},function (data) {
-                if(data.code==200){
-                    var index = layer.index; //获取当前弹层的索引号
-                    layer.close(index); //关闭当前弹层
+                success: function(layero, index){
+                    $('html').css("height","100%").css("overflow","hidden");
+                    $('body').css("height","100%").css("overflow","hidden");
+                },
+                end:function () {
+                    $('html').css("height","auto").css("overflow","auto");
+                    $('body').css("height","auto").css("overflow","auto");
                 }
             });
         });
+
 
         //退货政策
         $(".returnOrchange").click(function () {
             layer.open({
                 type: 2,
-                title: '退货政策',
+                title: '<spring:message code="privacyPolicy"/>',
                 closeBtn: 1, //不显示关闭按钮
                 shade: [0],
                 skin:'d-dialog',
                 area: ['100%', '100%'],
-                content: ['${ctx}/content/returnOrchange'],//iframe的url，no代表不显示滚动条
+                content: ['${ctx}/content/returnOrchange?id=27'],//iframe的url，no代表不显示滚动条
                 shade: [0.3,'#000'], //0.1透明度的白色背景
 
                 success: function(layero, index){
@@ -394,7 +419,6 @@
             });
         })
     });
-
 
     //滚动条在Y轴上的滚动距离
     function getScrollTop(){
@@ -433,7 +457,7 @@
     }
     //
 
-    <c:if test="${empty web:selectCountry()}">
+    <c:if test="${empty web:selectCountry() || web:selectCountry()<1}">
 
     var showBankDom = document.querySelector('#showBank');
     var bankIdDom = document.querySelector('#bankId');
@@ -451,7 +475,7 @@
                 [data],
                 {
                     container: '.container',
-                    title: '${web:selectLanguage()=='en_US'?"Choose your location":"选择您所在的地区"}',
+                    title: '${web:t("选择您所在的地区","Choose your location")}',
                     itemHeight: 50,
                     itemShowCount: 5,
                     oneLevelId: bankId,
@@ -468,7 +492,7 @@
                          });
                     }
                 });
-        $(".sure").html("${web:selectLanguage()=='en_US'?"DONE":"确认"}");
+        $(".sure").html("${web:t("确认","DONE")}");
         $(".close").hide();
     };
 

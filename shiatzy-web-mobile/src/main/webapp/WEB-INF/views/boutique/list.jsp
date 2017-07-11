@@ -37,13 +37,15 @@
             width: 50%;
             border-bottom: 1px solid #ccc;
             position: relative;
-            height: 23rem;
+            height: 25rem;
+            padding: 0 .6rem;
         }
-        .goods-item .product-name{height: 2rem;}
+        .goods-item .product-name{height: 4rem;overflow: hidden}
         .goods-item .do-list-icon{ top: 3rem;}
         .goods-item .pic {text-align: center;}
         .goods-item .pic img{    max-height: 100%;width: 10rem;}
     </style>
+    <c:if test="${not empty cartList}">
     <div class="goods-list clearfix">
         <c:forEach var="row" items="${cartList}">
             <div class="goods-item goodsDiv">
@@ -92,6 +94,7 @@
             </div>
         </c:forEach>
     </div>
+    </c:if>
 <div class="explain">
 
     <c:if test="${empty cartList}">
@@ -105,8 +108,8 @@
     </div>
     </c:if>
     <ul>
-        <li><a href="/goods/list?categoryId=17"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
-        <li><a href="/goods/list?categoryId=18"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=2"><spring:message code="shoppingCart.selectWoman"/><span>></span></a></li>
+        <li><a href="/goods/list?categoryId=3"><spring:message code="shoppingCart.selectMan"/><span>></span></a></li>
         <li><a href="#" class="whatBoutique"><spring:message code="reservation.what"/>?<span>></span></a></li>
     </ul>
 </div>
@@ -173,7 +176,14 @@
             if($sellOut.hasClass("hasOut")){
                 layer.msg('<spring:message code="shoppingCart.deleteOut"/>');
             }
-            setTimeout(checkout,500);
+
+            if("${web:china()}" == "true"){
+                setTimeout(checkout,500);
+            }else{
+                var msg= "${web:t("抱歉，中国外的地区不能预约","Sorry, can\'t reserve  out of china")}";
+                layer.msg(msg)
+            }
+
             //location.href = $(this).attr("data-href");
         });
 
@@ -237,6 +247,8 @@
                     if(typeof (isNull)=="undefined"){
                         window.location.reload();
                     }
+                }else{
+                    layer.msg(data.message);
                 }
             });
         });

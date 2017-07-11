@@ -1,8 +1,12 @@
 package com.dookay.coral.shop.order.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
+import com.dookay.coral.shop.order.domain.OrderDomain;
 import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
+import com.dookay.coral.shop.order.enums.OrderStatusEnum;
+import com.dookay.coral.shop.order.query.OrderQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
+import com.dookay.coral.shop.order.service.IOrderService;
 import com.dookay.coral.shop.order.service.IReturnRequestItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,8 @@ public class ReturnRequestServiceImpl extends BaseServiceImpl<ReturnRequestDomai
 	
 	@Autowired
 	private ReturnRequestMapper returnRequestMapper;
+	@Autowired
+	private IOrderService orderService;
 
 	@Autowired
 	private IReturnRequestItemService returnRequestItemService;
@@ -35,22 +41,20 @@ public class ReturnRequestServiceImpl extends BaseServiceImpl<ReturnRequestDomai
 
 
 	@Override
-	public void isAgree(Long id, Integer isAgree,List<ReturnRequestItemDomain> returnRequestItemDomain) {
+	public void isAgree(Long id, Integer isAgree) {
 		if(id==null||isAgree==null){
 			throw new ServiceException("传入参数出错");
 		}
 		ReturnRequestDomain  returnRequestDomain = get(id);
 		if(isAgree!=null&&isAgree==2){
 			returnRequestDomain.setStatus(isAgree);//同意
+			OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
+			orderDomain.setStatus(OrderStatusEnum.RETURNED.getValue());
+			orderService.update(orderDomain);
 		}else if(isAgree!=null&&isAgree==3){
 			returnRequestDomain.setStatus(isAgree);//取消
 		}
 		update(returnRequestDomain);
-		if(returnRequestItemDomain!=null){
-			for(ReturnRequestItemDomain line: returnRequestItemDomain){
-				returnRequestItemService.update(line);
-			}
-		}
 	}
 
 }

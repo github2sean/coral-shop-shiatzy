@@ -2156,9 +2156,13 @@ h3 {
 .do-list-lang>.do-login:after {
     content: ">";
     position: absolute;
-    right: 2.5rem;
+    right: 2.4rem;
     top: 50%;
-    margin-top: -.6rem
+    margin-top: -.6rem;
+    -webkit-transition: -webkit-transform .5s;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s, -webkit-transform .5s;
 }
 
 .do-list-lang>.do-login>a:after {

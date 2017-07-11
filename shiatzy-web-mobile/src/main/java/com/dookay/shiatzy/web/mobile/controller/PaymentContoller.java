@@ -512,6 +512,7 @@ public class PaymentContoller extends BaseController{
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
         OrderDomain orderDomain = orderService.getOrder(orderNo);
+        String language = "CNY".equals(orderDomain.getCurrentCode())?"cn":"en";
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> list = orderItemService.getList(query);
@@ -538,7 +539,7 @@ public class PaymentContoller extends BaseController{
         requestData.put(IpayLinksStatics.BORROWING_MARKED,ipayLinksConfig.getBorrowingMarked());
         requestData.put(IpayLinksStatics.PARTNER_ID,ipayLinksConfig.getPartnerId());
         requestData.put(IpayLinksStatics.MCC,ipayLinksConfig.getMcc());
-        requestData.put(IpayLinksStatics.LANGUAGE,ipayLinksConfig.getLanguage());
+        requestData.put(IpayLinksStatics.LANGUAGE,language);
         requestData.put(IpayLinksStatics.ORDER_TERMINAL,ipayLinksConfig.getOrderTerminal());
         if(StringUtils.isNotBlank(ipayLinksConfig.getCardLimit())){
             requestData.put(IpayLinksStatics.CARD_LIMIT,ipayLinksConfig.getCardLimit());
@@ -707,7 +708,7 @@ public class PaymentContoller extends BaseController{
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
-        orderService.withGoodItme(itemDomainList);
+        orderService.withGoodsItem(itemDomainList);
         orderDomain.setOrderItemDomainList(itemDomainList);
         mv.addObject("order",orderDomain);
         return mv;
@@ -728,7 +729,7 @@ public class PaymentContoller extends BaseController{
         OrderItemQuery query = new OrderItemQuery();
         query.setOrderId(orderDomain.getId());
         List<OrderItemDomain> itemDomainList = orderItemService.getList(query);
-        orderService.withGoodItme(itemDomainList);
+        orderService.withGoodsItem(itemDomainList);
         orderDomain.setOrderItemDomainList(itemDomainList);
         mv.addObject("order",orderDomain);
         return mv;

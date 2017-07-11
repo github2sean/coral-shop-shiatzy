@@ -21,13 +21,26 @@
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.util.List getShippingCountryList()</function-signature>
     </function>
-
+    <function>
+        <description>获取配送国家电话前缀列表</description>
+        <name>countryPhoneList</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.util.List getSelectCountryPhoneList()</function-signature>
+    </function>
     <function>
         <description>获取选择国家</description>
         <name>selectCountry</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.lang.String getSelectCountry()</function-signature>
     </function>
+
+    <function>
+        <description>是否中国</description>
+        <name>china</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.Boolean isChina()</function-signature>
+    </function>
+
 
     <function>
         <description>获取选择语言</description>
@@ -42,12 +55,24 @@
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.lang.String translate(java.lang.String,java.lang.String)</function-signature>
     </function>
-
+    <function>
+        <description>是否英文</description>
+        <name>en</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.Boolean isEn() isEn()</function-signature>
+    </function>
     <function>
         <description>获取购物车数量</description>
         <name>getCartNum</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
         <function-signature>java.lang.Integer getCartNum(java.lang.Integer)</function-signature>
+    </function>
+
+    <function>
+        <description>是否点击过付款</description>
+        <name>isSubmited</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature> java.lang.Boolean isSubmited()</function-signature>
     </function>
 
 

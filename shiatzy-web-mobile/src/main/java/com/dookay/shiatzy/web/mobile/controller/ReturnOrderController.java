@@ -9,8 +9,6 @@ import com.dookay.coral.common.web.HttpContext;
 import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.host.user.context.UserContext;
 import com.dookay.coral.host.user.domain.AccountDomain;
-import com.dookay.coral.shop.content.domain.MessageTemplateDomain;
-import com.dookay.coral.shop.content.query.MessageTemplateQuery;
 import com.dookay.coral.shop.content.service.IMessageTemplateService;
 import com.dookay.coral.shop.customer.domain.CustomerAddressDomain;
 import com.dookay.coral.shop.customer.domain.CustomerDomain;
@@ -24,7 +22,6 @@ import com.dookay.coral.shop.goods.service.IPrototypeSpecificationOptionService;
 import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.message.util.EmailUtil;
-import com.dookay.coral.shop.message.util.FreemarkerUtil;
 import com.dookay.coral.shop.order.domain.*;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
@@ -48,11 +45,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -128,12 +123,8 @@ public class ReturnOrderController extends BaseController {
         HashMap<String, String> newReturnReasonMap =  new HashMap<>();
 
         for(ReturnRequestItemDomain line:returnOrderItemList){
-
             Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
             preBackMoney += goodsPrice*line.getNum();
-            GoodsQuery goodsQuery = new GoodsQuery();
-            goodsQuery.setCode(line.getGoodsCode());
-            line.setGoodsDomain(goodsService.getFirst(goodsQuery));
             line.setSizeDomain(prototypeSpecificationOptionService.get(Long.parseLong(""+ JSONObject.fromObject(line.getSkuSpecifications()).get("size"))));
             newReturnReasonMap.put(line.getId().toString(),getReasonList(line.getReturnReason()));
         }
@@ -171,15 +162,14 @@ public class ReturnOrderController extends BaseController {
             if(!(line.getStatus()==1 && line.getReturnNum()>=line.getNum())){
                 cartList.add(line);
             }
-            GoodsQuery goodsQuery = new GoodsQuery();
-            goodsQuery.setCode(line.getGoodsCode());
-            line.setGoodsDomain(goodsService.getFirst(goodsQuery));
             line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
+
+
         if(cartList.size()==0){
             return "redirect:u/order/list";
         }
-        orderService.withGoodItme(cartList);
+        orderService.withGoodsItem(cartList);
         OrderDomain orderDomain = orderService.get(orderId);
         orderDomain.setOrderItemDomainList(cartList);
 
@@ -306,18 +296,22 @@ public class ReturnOrderController extends BaseController {
         }
 
         //创建退货项目列表
-
         Double preBackMoney = 0D;
         for(OrderItemDomain line:list){
             Double goodsPrice = line.getGoodsDisPrice()!=null?line.getGoodsDisPrice():line.getGoodsPrice();
             preBackMoney += goodsPrice*line.getNum();
         }
+
         ModelAndView mv = new ModelAndView("user/returnOrder/returnOrderConsigneeInfo");
         OrderDomain orderDomain = orderService.get(returnRequestDomain.getOrderId());
+        OrderItemQuery itemQuery = new OrderItemQuery();
+        itemQuery.setOrderId(orderDomain.getId());
+        Integer length = orderItemService.getList(itemQuery).size();
+        Double size = list.size()/1.0;
         Double dis = orderDomain.getCouponDiscount();
         Double memDis = orderDomain.getMemberDiscount();
         dis = dis==null?0D:dis;
-        dis = memDis==null?dis:dis+memDis;
+        dis = memDis==null?dis:dis+memDis*(size/length);
 
         mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee()-dis);
         mv.addObject("returnReasonMap",newReturnReasonMap);
@@ -329,8 +323,8 @@ public class ReturnOrderController extends BaseController {
         System.out.print(reasonJson);
         com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(reasonJson);
         List<String> reasonList = new ArrayList<>();
-        if(jsonObject.containsKey("服务")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("服务");
+        if(jsonObject.containsKey("service")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("service");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -344,8 +338,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("品质")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("品质");
+        if(jsonObject.containsKey("quality")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("quality");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -359,8 +353,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("选择尺寸")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("选择尺寸");
+        if(jsonObject.containsKey("size")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("size");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -374,8 +368,8 @@ public class ReturnOrderController extends BaseController {
                 reasonList.add(jsonObject1.getString("reason4"));
             }
         }
-        if(jsonObject.containsKey("其它")){
-            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("其它");
+        if(jsonObject.containsKey("other")){
+            com.alibaba.fastjson.JSONObject jsonObject1 = jsonObject.getJSONObject("other");
             if(jsonObject1.containsKey("reason1")){
                 reasonList.add(jsonObject1.getString("reason1"));
             }
@@ -564,13 +558,7 @@ public class ReturnOrderController extends BaseController {
 
         Boolean isEN = orderDomain.getShippingCountryId()!=1?true:false;
         Double totalFee=totalAmt-returnRequestDomain.getShipFee()-dis;
-        //发送短信
-        if(StringUtils.isNotBlank(customerDomain.getPhone())){
-        smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
-        }
-        //发送邮件
-        //1.查询发送内容
-        EmailUtil.applyReturn(isEN,customerDomain.getEmail(),returnRequestDomain,requestList,totalFee);
+
 
         //生成操作订单日志
         OrderLogDomain orderLogDomain = new OrderLogDomain();
@@ -580,7 +568,17 @@ public class ReturnOrderController extends BaseController {
         orderLogDomain.setMessage("买家申请退货");
         orderLogDomain.setIsSuccessed(1);
         orderLogService.create(orderLogDomain);
-
+        //发送短信
+        if(StringUtils.isNotBlank(customerDomain.getPhone())){
+            smsService.sendToSms(isEN,customerDomain.getPhone(), MessageTypeEnum.RETURN_REQUEST.getValue());
+        }
+        //发送邮件
+        //1.查询发送内容
+        try{
+            EmailUtil.applyReturn(isEN,customerDomain.getEmail(),returnRequestDomain,requestList,totalFee);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return successResult("已发送申请",returnRequestDomain.getId());
     }
 

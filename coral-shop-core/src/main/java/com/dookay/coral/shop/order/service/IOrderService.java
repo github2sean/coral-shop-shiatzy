@@ -15,15 +15,26 @@ import java.util.List;
  */
 public interface IOrderService extends IBaseService<OrderDomain> {
 
-    void withGoodItme(List<OrderItemDomain> cartList);
+    void withGoodsItem(List<OrderItemDomain> cartList);
+
+    /**
+     * 获取门店信息
+     * @param orderDomain
+     */
+    void withStore(OrderDomain orderDomain);
     void returnWithGoodItem(List<ReturnRequestItemDomain> requestItemDomainList);
 
     OrderDomain getOrder(String orderNo);
 
+    /**
+     * 更新库存
+     * @param orderDomain
+     */
     void updateSkuStock(OrderDomain orderDomain);
 
     void updateOrderStatus(OrderDomain orderDomain);
 
     void subCouponNum(OrderDomain orderDomain);
+
     List<OrderDomain> getUnpaidOrder();
 }
