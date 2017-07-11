@@ -44,10 +44,7 @@ public class GoodsCategoryDomain implements Serializable {
 
 	/*英文描述*/
 	private String enDescription;
-	
-	/*slug*/
-	private String slug;
-	
+
 	/*缩略图*/
 	private String thumb;
 	
@@ -55,13 +52,13 @@ public class GoodsCategoryDomain implements Serializable {
 	private Integer isValid;
 	
 	/*显示顺序*/
-	private Integer displayOrder;
+	private Integer rank;
 	
 	/*创建时间*/
 	private Date createTime;
-	
-	/*创建人id*/
-	private Long creatorId;
+
+	/*更新时间*/
+	private Long updateTime;
 
 	/*分类等级*/
 	private Integer level;

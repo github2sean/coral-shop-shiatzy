@@ -80,7 +80,7 @@ public class GoodsCategoryServiceImpl extends BaseServiceImpl<GoodsCategoryDomai
     @Override
     public List<GoodsCategoryDomain> listCategoryByParentId(Long parentId, Boolean isBack) {
         GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
-        goodsCategoryQuery.setOrderBy("displayOrder");
+        goodsCategoryQuery.setOrderBy("rank");
         goodsCategoryQuery.setDesc(false);
         goodsCategoryQuery.setParentId(parentId);
         if (!isBack) {

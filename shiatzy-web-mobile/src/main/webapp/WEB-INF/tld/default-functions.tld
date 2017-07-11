@@ -35,6 +35,14 @@
     </function>
 
     <function>
+        <description>是否中国</description>
+        <name>china</name>
+        <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>
+        <function-signature>java.lang.Boolean isChina()</function-signature>
+    </function>
+
+
+    <function>
         <description>获取选择语言</description>
         <name>selectLanguage</name>
         <function-class>com.dookay.shiatzy.web.mobile.taglib.DefaultTags</function-class>

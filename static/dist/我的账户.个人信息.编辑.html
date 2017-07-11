@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="renderer" content="webkit">
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -12,15 +13,11 @@
     <link rel="stylesheet" href="iconfont/iconfont.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/dookayui.css">
-    <!--<link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">-->
-    <!--<link rel="stylesheet" href="js/laydate/need/laydate.css">-->
     <link rel="stylesheet" href="css/weui.min.css">
     <link rel="stylesheet" href="css/iosSelect.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/dx.css">
     <link rel="stylesheet" href="css/dy.css">
-    <link rel="stylesheet" href="js/example.css">
-    <!--<link rel="stylesheet" href="js/laydate/laydate.js">-->
     <!--设置浏览器根元素的值-->
     <script>
         (function (doc, win) {
@@ -367,61 +364,16 @@
 </div>
 <script src="js/dookayui.min.js" merge="true"></script>
 <script src="js/zepto.min.js"></script>
-<!--<script src="js/flatpickr/flatpickr.min.js"></script>-->
-<!--<script src="js/flatpickr/l10n/zh.js"></script>-->
 <script src="js/weui.min.js"></script>
+<script src="js/pinchzoom.js"></script>
 <script src="js/iosSelect.js"></script>
 <script src="js/iscroll.js"></script>
 <script src="js/common.js"></script>
 <script src="js/layer/layer.js"></script>
-<script src="js/example.js"></script>
 <script>
     $(function(){
         commonApp.init();
     });
-
 </script>
-<script type="text/javascript" class="picker js_show">
-    $(function(){
-
-        $('#datetime-picker-begin').on('click', function () {
-            weui.datePicker({
-                start: 1990,
-                defaultValue: [2017,1,1],
-//                yearSplit: '-',
-//                monthSplit: '-',
-//                dateSplit: '-',
-                className: "datetime",
-                end: new Date().getFullYear(),
-                onChange: function (result) {
-                    console.log(result);
-                },
-                onConfirm: function (result) {
-                    console.log($(this));
-                    var yea = result[0].value;
-                    var mon = result[1].value;
-                    var day = result[2].value;
-
-                    $('#datetime-picker-begin').val(yea+"-"+mon+"-"+day)
-                }
-            });
-        });
-//        $('#datetime-picker-end').on('click', function () {
-//            weui.datePicker({
-//                start: 1990,
-//                defaultValue: [2017,1,1],
-//                className: "datetime",
-//                end: new Date().getFullYear(),
-//                onChange: function (result) {
-//                    console.log(result);
-//                },
-//                onConfirm: function (result) {
-//                    console.log(result);
-//                }
-//            });
-//        });
-    });
-
-    </script>
 </body>
 </html>

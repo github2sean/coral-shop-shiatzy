@@ -103,9 +103,12 @@ public class IGoodsServiceTest extends BaseTest {
         }
     }
 
+
     @Test
     public void  updateGoodsItemColor(){
-        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(new GoodsItemQuery());
+        GoodsItemQuery goodsItemQuery = new GoodsItemQuery();
+        goodsItemQuery.setIsValid(ValidEnum.YES.getValue());
+        List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(goodsItemQuery);
         for(GoodsItemDomain goodsItemDomain :goodsItemDomainList){
             GoodsColorQuery goodsColorQuery = new GoodsColorQuery();
             goodsColorQuery.setName(goodsItemDomain.getName());

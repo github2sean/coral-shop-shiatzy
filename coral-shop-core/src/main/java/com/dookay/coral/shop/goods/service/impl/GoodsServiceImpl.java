@@ -71,6 +71,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public int countGoodsByCategoryId(Long categoryId) {
 		GoodsQuery goodsQuery = new GoodsQuery();
+		goodsQuery.setIsPublished(ValidEnum.YES.getValue());
 		goodsQuery.setCategoryId(categoryId);
 		return super.count(goodsQuery);
 	}
@@ -120,6 +121,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public void withGoodsItemList(List<GoodsDomain> goodsDomainList) {
 		List<Long> ids = goodsDomainList.stream().map(GoodsDomain::getId).collect(Collectors.toList());
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsIds(ids);
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for (GoodsDomain goodsDomain:goodsDomainList){
@@ -135,6 +137,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsIds(ids);
 		query.setIsSale(onsale);
+		query.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for (GoodsDomain goodsDomain:goodsDomainList){
 			List<GoodsItemDomain> goodsItemDomainList1 = goodsItemDomainList.stream()
@@ -146,6 +149,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public void withGoodsItemList(GoodsDomain goodsDomain) {
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		goodsDomain.setGoodsItemList(goodsItemDomainList);
@@ -154,6 +158,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Override
 	public void withGoodsItemListAndQuantity(GoodsDomain goodsDomain, Long sizeId) {
 		GoodsItemQuery query = new GoodsItemQuery();
+		query.setIsValid(ValidEnum.YES.getValue());
 		query.setGoodsId(goodsDomain.getId());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 		for(GoodsItemDomain line:goodsItemDomainList){
@@ -178,6 +183,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	public void withGoodsItemListAndQuantityByColor(GoodsDomain goodsDomain,List<Long> sizeIds) {
 		GoodsItemQuery query = new GoodsItemQuery();
 		query.setGoodsId(goodsDomain.getId());
+		query.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> goodsItemDomainList = goodsItemService.getList(query);
 
 		for(GoodsItemDomain line:goodsItemDomainList){
@@ -247,6 +253,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		GoodsItemQuery itemQuery = new GoodsItemQuery();
 		itemQuery.setGoodsIds(parmaId);
 		itemQuery.setColorIds(parmaId);
+		itemQuery.setIsValid(ValidEnum.YES.getValue());
 		List<GoodsItemDomain> itemDomainList = goodsItemService.getList(itemQuery);
 
 		List<Long> itemIds = new ArrayList<>();
@@ -290,6 +297,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 			categoryIds.add(line.getCategoryId());
 		}
 		GoodsCategoryQuery categoryQuery = new GoodsCategoryQuery();
+		categoryQuery.setIsValid(ValidEnum.YES.getValue());
 		categoryQuery.setIds(categoryIds);
 		return goodsCategoryService.getList(categoryQuery);
 	}

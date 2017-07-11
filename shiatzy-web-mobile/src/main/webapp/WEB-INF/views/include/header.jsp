@@ -10,6 +10,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <title><%=request.getParameter("pageTitle")%>-<spring:message code="shiatzhChen"/></title>
     <!-- 核心样式 开始 -->
     <link rel="stylesheet" href="${ctx}/static/iconfont/iconfont.css">
