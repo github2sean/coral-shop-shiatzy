@@ -4,7 +4,9 @@ import com.dookay.coral.common.persistence.pager.PageList;
 import com.dookay.coral.common.web.MediaTypes;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.order.domain.ReturnRequestDomain;
+import com.dookay.coral.shop.order.domain.ReturnRequestItemDomain;
 import com.dookay.coral.shop.order.extension.ReturnRequestExtension;
+import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestQuery;
 import com.dookay.coral.shop.order.service.*;
 import com.dookay.shiatzy.web.admin.base.BaseApiController;
@@ -33,6 +35,8 @@ public class ReturnRequestController extends BaseApiController {
 
     @Autowired
     private ReturnRequestExtension returnRequestExtension;
+    @Autowired
+    private IReturnRequestItemService returnRequestItemService;
 
     private final static Integer ACCEPT_BACK = 3;
     private final static Integer REFUSE_BACK = 4;
@@ -79,10 +83,22 @@ public class ReturnRequestController extends BaseApiController {
 
     @ApiOperation(value = "是否同意退货", httpMethod = "POST")
     @RequestMapping(value = "/isAgree", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-    public ResponseEntity isAgree(@RequestParam("id") Long id,Integer isAgree,@ModelAttribute ReturnForm returnForm) {
-        returnRequestService.isAgree(id,isAgree,returnForm.getReturnItemList());
+    public ResponseEntity isAgree(@RequestParam("id") Long id,@RequestParam("isAgree")Integer isAgree){
+        returnRequestService.isAgree(id,isAgree);
         return successResponse("操作成功");
     }
+
+    @ApiOperation(value = "设置退货备注", httpMethod = "POST")
+    @RequestMapping(value = "/setAdminMemo", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public ResponseEntity setAdminMemo(@RequestParam("id") Long id,String adminMemo) {
+        ReturnRequestItemDomain requestItemDomain = returnRequestItemService.get(id);
+        requestItemDomain.setAdminMemo(adminMemo);
+        returnRequestItemService.update(requestItemDomain);
+        return successResponse("设置成功");
+    }
+
+
+
 
 
 }

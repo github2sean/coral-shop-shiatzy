@@ -40,7 +40,7 @@
                         <option value="<spring:message code="add.delivery.none"/>"><spring:message code="add.delivery.none"/></option>
                     </select>
                 </div>
-                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel" value="${address.phone}" name="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
+                <div class="tel form-item2"><spring:message code="delivery.address.phone"/>* <input type="tel"onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" value="${address.phone}" name="phone" data-rule="<spring:message code='delivery.address.phone'/>:required;mobile"></div>
             </div>
             <div class="address">
                 <div class="title"><spring:message code="account.personal.address"/></div>

@@ -567,10 +567,10 @@ var backendApp = function () {
                             }
 
                             var time = parseInt($form.data('time'));
+
                             if (isNaN(time)) {
                                 time = 2000;
                             }
-
                             if (time <= 0) {
                                 okfun();
                             } else {

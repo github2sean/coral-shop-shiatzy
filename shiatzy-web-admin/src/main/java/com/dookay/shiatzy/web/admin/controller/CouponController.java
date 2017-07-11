@@ -1,6 +1,8 @@
 package com.dookay.shiatzy.web.admin.controller;
 
+import com.dookay.coral.common.persistence.Query;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.web.JsonResult;
 import com.dookay.coral.common.web.MediaTypes;
 import com.dookay.coral.shop.goods.domain.GoodsDomain;
 import com.dookay.coral.shop.promotion.domain.CouponDomain;
@@ -14,6 +16,7 @@ import com.dookay.shiatzy.web.admin.base.BaseApiController;
 import com.dookay.shiatzy.web.admin.response.goods.ListGoodsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +65,15 @@ public class CouponController extends BaseApiController {
         }
         couponService.create(domain);
         return successResponse("创建成功");
+    }
+
+    @ApiOperation(value = "判断优惠券是否存在",httpMethod = "POST")
+    @RequestMapping(value = "/isExist", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
+    public JsonResult isExist(@RequestParam("code") String code) {
+        CouponQuery query = new CouponQuery();
+        query.setCode(code);
+        CouponDomain couponDomain = couponService.getFirst(query);
+        return successResult("查询成功",couponDomain!=null?true:false);
     }
 
     @ApiOperation(value = "修改优惠券", httpMethod = "POST")

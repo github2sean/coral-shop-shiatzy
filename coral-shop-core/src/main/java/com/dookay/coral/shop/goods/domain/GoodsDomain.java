@@ -22,7 +22,27 @@ import java.util.List;
 public class GoodsDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	public GoodsDomain() {}
+
+	public GoodsDomain(String name, String enName, String brief, String code, String description, String colorIds, String sizeIds, String skinIds, String details, String enDetails, Long prototypeId, Long categoryId, Integer isPublished, Date createTime, Date updateTime, String thumb, Double price, Double disPrice, Integer isSale, Integer isPre, String categoryIds, Integer rank) {
+		this.name = name;//名字
+		this.enName = enName;//英文名字
+		this.code = code;//款号
+		this.description = description;
+		this.colorIds = colorIds;
+		this.sizeIds = sizeIds;//尺寸
+		this.details = details;//详情
+		this.enDetails = enDetails;//英文详情
+		this.createTime = createTime;
+		this.price = price;//价格
+		this.disPrice = disPrice;//折扣价
+		this.isSale = isSale;
+		this.isPre = isPre;
+		this.categoryIds = categoryIds;//分类
+		this.rank = rank;
+	}
+
 	/*主键id*/
 	@Id
 	private Long id;

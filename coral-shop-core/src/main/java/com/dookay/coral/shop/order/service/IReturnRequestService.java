@@ -14,6 +14,6 @@ import java.util.List;
  */
 public interface IReturnRequestService extends IBaseService<ReturnRequestDomain> {
 
-    void isAgree(Long id, Integer isAgree,List<ReturnRequestItemDomain> returnRequestItemDomain);
+    void isAgree(Long id, Integer isAgree);
 
 }
