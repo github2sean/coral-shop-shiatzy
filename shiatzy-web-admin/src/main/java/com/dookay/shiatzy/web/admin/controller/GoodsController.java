@@ -42,8 +42,7 @@ public class GoodsController extends BaseApiController {
     private IGoodsService goodsService;
     @Autowired
     private GoodsCategoryExtension goodsCategoryExtension;
-    @Autowired
-    private IGoodsItemService goodsItemService;
+
 
     @ApiOperation(value = "获取商品列表", httpMethod = "GET", response = ListGoodsResponse.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
@@ -95,7 +94,7 @@ public class GoodsController extends BaseApiController {
         fileName = JSONObject.fromObject(fileName).getString("");
 
         HttpServletRequest request = HttpContext.current().getRequest();
-        goodsItemService.importGoods(request.getServletContext().getRealPath("/WEB-INF/uploads")+fileName);
+        goodsService.importGoods(request.getServletContext().getRealPath("/WEB-INF/uploads")+fileName);
         return successResponse("删除成功");
     }
 

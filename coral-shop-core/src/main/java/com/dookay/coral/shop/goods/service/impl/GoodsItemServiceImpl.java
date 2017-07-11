@@ -44,13 +44,6 @@ public class GoodsItemServiceImpl extends BaseServiceImpl<GoodsItemDomain> imple
 	private IGoodsService goodsService;
 	@Autowired
 	private IGoodsColorService goodsColorService;
-	@Autowired
-	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
-	@Autowired
-	private IPrototypeSpecificationService prototypeSpecificationService;
-	@Autowired
-	private ISkuService skuService;
-
 
 
 	public void withGoods(PageList<GoodsItemDomain> goodsItemDomainList){
@@ -92,98 +85,5 @@ public class GoodsItemServiceImpl extends BaseServiceImpl<GoodsItemDomain> imple
 			goodsItemDomain.setGoodsColor(goodsDomain);
 		}
 	}
-
-	public Boolean isExistGoodItem(GoodsItemQuery query){
-		return getFirst(query)!=null?true:false;
-	}
-	public Boolean isExistGoods(GoodsQuery query){
-		return goodsService.getFirst(query)!=null?true:false;
-	}
-	@Override
-	@Transactional("transactionManager")
-	public void importGoods(String fileName) {
-		try {
-			File file = new File(fileName);
-			if(!file.exists()){
-				throw new ServiceException("未读取到文件");
-			}
-			List<CreateGoodModel> modelList = ExcelUtils.importExcel(file,CreateGoodModel.class);
-			Date createDate = new Date();
-			for(CreateGoodModel row:modelList){
-				GoodsQuery goodsQuery = new GoodsQuery();
-				goodsQuery.setEqualName(row.getName());
-				GoodsDomain goodsDomain = goodsService.getFirst(goodsQuery);
-				//不存在则创建商品
-				if(goodsDomain==null){
-					//根据原型和尺寸名查询出具体size
-					List<String> sizeNames =  JsonUtils.toStringArray(row.getSizeIds());
-					PrototypeSpecificationQuery specificationQuery = new PrototypeSpecificationQuery();
-					specificationQuery.setPrototypeId(row.getPrototypeId());
-					PrototypeSpecificationDomain specificationDomain =  prototypeSpecificationService.getFirst(specificationQuery);
-					if(specificationDomain==null){
-						continue;
-					}
-					PrototypeSpecificationOptionQuery optionQuery = new PrototypeSpecificationOptionQuery();
-					optionQuery.setSpecificationId(specificationDomain.getId());
-					optionQuery.setNames(sizeNames);
-					List<PrototypeSpecificationOptionDomain> sizeDomainList = prototypeSpecificationOptionService.getList(optionQuery);
-					List<Long> optionIds = sizeDomainList.stream().distinct().map(PrototypeSpecificationOptionDomain::getId).collect(Collectors.toList());
-
-					goodsDomain = new GoodsDomain();
-					goodsDomain.setName(row.getName());
-					goodsDomain.setEnName(row.getEnName());
-					goodsDomain.setPrice(row.getPrice());
-					goodsDomain.setDisPrice(row.getDiscountPrice());
-					goodsDomain.setCategoryIds(row.getCategoryIds());
-					goodsDomain.setSizeIds(optionIds.toString());
-					goodsDomain.setDetails(row.getDescription());
-					goodsDomain.setEnDetails(row.getEnDescription());
-					goodsDomain.setCode(row.getGoodsNo().split("\\t+")[0]);
-					goodsDomain.setCreateTime(createDate);
-
-					goodsService.create(goodsDomain);
-				}
-
-				GoodsItemQuery itemQuery = new GoodsItemQuery();
-				itemQuery.setGoodsId(goodsDomain.getId());
-				itemQuery.setGoodsNo(row.getGoodsNo());
-				//不存在则创建商品item
-				if(isExistGoodItem(itemQuery)){
-					GoodsItemDomain goodsItemDomain = new GoodsItemDomain();
-					goodsItemDomain.setGoodsId(goodsDomain.getId());
-					goodsItemDomain.setColorId(row.getColorId());
-					goodsItemDomain.setFormat(row.getFormat());
-					goodsItemDomain.setEnFormat(row.getEnFormat());
-					goodsItemDomain.setPrice(row.getPrice());
-					goodsItemDomain.setDiscountPrice(row.getDiscountPrice());
-					goodsItemDomain.setGoodsNo(row.getGoodsNo());
-					goodsItemDomain.setCreateTime(createDate);
-
-					super.create(goodsItemDomain);
-
-					//创建sku
-					List<Long> sizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
-					for(Long id:sizeIds){
-						SkuDomain sku = new SkuDomain();
-						sku.setGoodsId(goodsDomain.getId());
-						sku.setGoodsNo(row.getGoodsNo());
-						sku.setItemId(goodsItemDomain.getId());
-						PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(id);
-						sku.setSize(sizeDomain.getName());
-						sku.setSpecifications("{\"size\":"+id+"}");
-						sku.setIsValid(1);
-						sku.setIsPre(1);
-						sku.setCreateTime(createDate);
-						skuService.create(sku);
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-
 
 }

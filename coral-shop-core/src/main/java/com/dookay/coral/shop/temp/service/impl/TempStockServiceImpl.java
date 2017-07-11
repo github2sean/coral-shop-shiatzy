@@ -30,8 +30,6 @@ public class TempStockServiceImpl extends BaseServiceImpl<TempStockDomain> imple
 	@Autowired
 	private TempStockMapper tempStockMapper;
 	@Autowired
-	private IGoodsService goodsService;
-	@Autowired
 	private IPrototypeSpecificationOptionService prototypeSpecificationOptionService;
 	@Autowired
 	private IGoodsItemService goodsItemService;
