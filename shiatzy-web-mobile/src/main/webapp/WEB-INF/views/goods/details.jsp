@@ -44,8 +44,8 @@
                 <c:forEach var="item" items="${goodsDomain.goodsItemList}" varStatus="status">
                     <c:set var="startIndex" value="${goodsDomain.goodsItemList.size()-1 }"></c:set>
                   <li style="margin-bottom: 2rem;  ">
-                      <a href="/goods/details/${goodsDomain.goodsItemList[startIndex-status.index].id}">
-                      <img src="${ImageModel.toFirst(goodsDomain.goodsItemList[startIndex-status.index].thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${goodsDomain.goodsItemList[startIndex-status.index].id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
+                      <a href="/goods/details/${item.id}">
+                      <img src="${ImageModel.toFirst(item.thumb).file}" alt="" style="width:70px;margin-bottom: 6px;<c:if test="${item.id==goodsItemDomain.id}">border-bottom: #e6e6e6 solid 6px</c:if>"></a></li>
                 </c:forEach>
               </ul>
             </c:if>

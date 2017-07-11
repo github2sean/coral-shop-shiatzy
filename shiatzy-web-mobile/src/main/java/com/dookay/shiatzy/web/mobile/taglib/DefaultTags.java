@@ -38,7 +38,7 @@ public class DefaultTags {
 	public static List<GoodsCategoryDomain> getGoodsCategoryList() {
 		IGoodsCategoryService goodsCategoryService = SpringContextHolder.getBean("goodsCategoryService");
 		GoodsCategoryQuery query = new GoodsCategoryQuery();
-		query.setOrderBy("displayOrder");
+		query.setOrderBy("rank");
 		query.setDesc(false);
 		query.setLevel(1);
 		query.setIsValid(ValidEnum.YES.getValue());

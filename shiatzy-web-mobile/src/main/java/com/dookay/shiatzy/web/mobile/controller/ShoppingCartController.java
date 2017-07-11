@@ -355,6 +355,7 @@ public class ShoppingCartController extends  BaseController{
         shoppingCartService.withSizeDomain(wishList);
 
         GoodsQuery query = new GoodsQuery();
+        query.setIsPublished(ValidEnum.YES.getValue());
         List<Long> goodsIds = new ArrayList<>();
         for(ShoppingCartItemDomain line:wishList){
             GoodsDomain goodsDomain = goodsService.get(line.getGoodsItemDomain().getGoodsId());
