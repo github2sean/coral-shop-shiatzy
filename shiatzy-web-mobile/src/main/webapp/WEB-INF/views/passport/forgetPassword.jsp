@@ -29,7 +29,7 @@
                            name="validCode" id="validCode" onfocus="this.placeholder=''"
                            onblur="this.placeholder='<spring:message code="register.holderValidCode"/>'"
                            data-rule="<spring:message code="register.holderValidCode"/>:required;" style="float: left;width: 60%">
-                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg"></div>
+                    <div class="dx-verify-pic"><img src="/captcha" alt="" id="codeImg" class="j_captcha"></div>
                 </div>
             </div>
             <div class="remind"></div>
@@ -70,6 +70,13 @@
 
         return true;
     }
+
+    $(function () {
+        $('.j_captcha').click(function () {
+            var $this = $(this);
+            $this.attr('src', '/captcha');
+        });
+    });
    /* $(function () {
         $('#userName').focus(function () {
             $(".remind").show().css("color", "red").text("<spring:message code="register.validEmail"/>");
