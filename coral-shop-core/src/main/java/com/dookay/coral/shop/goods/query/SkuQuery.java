@@ -20,6 +20,9 @@ public class SkuQuery extends Query {
 	private Long goodsId;
 	private Integer isValid;
 	private Long itemId;
+	private String goodsNo;
+	private String size;
+	private String specifications;
 
 	private List<Long> goodsIds;
 	private List<Long> itemIds;
@@ -33,6 +36,15 @@ public class SkuQuery extends Query {
 		}
 		if (valid(itemId)){
 			criteria.andEqualTo("itemId",itemId);
+		}
+		if (valid(goodsNo)){
+			criteria.andEqualTo("goodsNo",goodsNo);
+		}
+		if (valid(size)){
+			criteria.andEqualTo("size",size);
+		}
+		if (valid(specifications)){
+			criteria.andEqualTo("specifications",specifications);
 		}
 		if (valid(itemId)){
 			criteria.andIn("itemId",itemIds);

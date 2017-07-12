@@ -55,6 +55,6 @@ public interface IGoodsService extends IBaseService<GoodsDomain> {
 
     List<GoodsCategoryDomain> getAll2Category(List<GoodsDomain> goodsList);
 
-    void importGoods(String s);
+    String importGoods(String s);
 
 }

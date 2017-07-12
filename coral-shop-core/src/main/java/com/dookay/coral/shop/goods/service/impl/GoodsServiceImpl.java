@@ -63,6 +63,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 	@Autowired
 	private IGoodsCategoryService goodsCategoryService;
 
+
 	@Override
 	public PageList<GoodsDomain> getGoodsList(GoodsQuery query) {
 		return getPageList(query);
@@ -309,17 +310,26 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 		return getFirst(query)!=null?true:false;
 	}
 
+	public Boolean isExistSku(SkuQuery query){
+		return skuService.getFirst(query)!=null?true:false;
+	}
+
 	@Override
 	@Transactional("transactionManager")
-	public void importGoods(String fileName) {
+	public String importGoods(String fileName) {
+		String msg ="导入成功";
+		int goodsNum = 0;
+		int goodsItemNum = 0;
+		int skuNum = 0;
 		try {
 			File file = new File(fileName);
 			System.out.println("fileName"+fileName);
 			if(!file.exists()){
-				throw new ServiceException("未读取到文件");
+				return "未读取到文件";
 			}
 			List<CreateGoodModel> modelList = ExcelUtils.importExcel(file,CreateGoodModel.class);
 			Date createDate = new Date();
+
 			for(CreateGoodModel row:modelList){
 				GoodsQuery goodsQuery = new GoodsQuery();
 				goodsQuery.setEqualName(row.getName());
@@ -353,13 +363,14 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 					goodsDomain.setCreateTime(createDate);
 
 					create(goodsDomain);
+					goodsNum++;
 				}
 
 				GoodsItemQuery itemQuery = new GoodsItemQuery();
 				itemQuery.setGoodsId(goodsDomain.getId());
 				itemQuery.setGoodsNo(row.getGoodsNo());
 				//不存在则创建商品item
-				if(isExistGoodItem(itemQuery)){
+				if(!isExistGoodItem(itemQuery)){
 					GoodsItemDomain goodsItemDomain = new GoodsItemDomain();
 					goodsItemDomain.setGoodsId(goodsDomain.getId());
 					goodsItemDomain.setColorId(row.getColorId());
@@ -369,29 +380,50 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsDomain> implements IG
 					goodsItemDomain.setDiscountPrice(row.getDiscountPrice());
 					goodsItemDomain.setGoodsNo(row.getGoodsNo());
 					goodsItemDomain.setCreateTime(createDate);
-
+					goodsItemDomain.setIsValid(ValidEnum.YES.getValue());
+					GoodsColorDomain colorDomain= goodsColorService.get(row.getColorId());
+					goodsItemDomain.setColorValue(colorDomain.getColor());
+					goodsItemDomain.setName(colorDomain.getName());
+					goodsItemDomain.setEnName(colorDomain.getEnName());
+					goodsItemDomain.setDescription(row.getDescription());
+					goodsItemDomain.setEnDescription(row.getEnDescription());
+					goodsItemDomain.setRelatedGoods("");
+					goodsItemDomain.setIsSale(ValidEnum.NO.getValue());
+					goodsItemDomain.setRank(1);
 					goodsItemService.create(goodsItemDomain);
+					goodsItemNum++;
 
-					//创建sku
+					//是否存在否则创建sku
+					SkuQuery skuQuery = new SkuQuery();
 					List<Long> sizeIds = JsonUtils.toLongArray(goodsDomain.getSizeIds());
 					for(Long id:sizeIds){
+						PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(id);
+						skuQuery.setGoodsId(goodsDomain.getId());
+						skuQuery.setItemId(goodsItemDomain.getId());
+						skuQuery.setGoodsNo(goodsItemDomain.getGoodsNo());
+						skuQuery.setSize(sizeDomain.getName());
+						if(isExistSku(skuQuery)){
+							continue;
+						}
 						SkuDomain sku = new SkuDomain();
 						sku.setGoodsId(goodsDomain.getId());
 						sku.setGoodsNo(row.getGoodsNo());
 						sku.setItemId(goodsItemDomain.getId());
-						PrototypeSpecificationOptionDomain sizeDomain = prototypeSpecificationOptionService.get(id);
 						sku.setSize(sizeDomain.getName());
 						sku.setSpecifications("{\"size\":"+id+"}");
 						sku.setIsValid(1);
 						sku.setIsPre(1);
 						sku.setCreateTime(createDate);
 						skuService.create(sku);
+						skuNum++;
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			return "导入失败";
 		}
+		return goodsNum==0&&goodsItemNum==0&&skuNum==0?"数据都已存在，请仔细检查excel中数据。":msg+",共导入 "+goodsNum+" 个商品, "+goodsItemNum+" 个商品Item, "+skuNum+" 个sku数据";
 	}
 
 }
