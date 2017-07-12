@@ -9,11 +9,11 @@
 <div class="dx-orderList clearfix">
     <div class="dx-title"><spring:message code="reservation.list.title"/> <a style="float: right;" href="/u/account/index">< <spring:message code="goBack"/></a></div>
     <div class="content">
-        <div class="dx-reservation"><spring:message code="reservation.list.reservationorders"/></div>
+     <%--   <div class="dx-reservation"><spring:message code="reservation.list.reservationorders"/></div>--%>
         <c:if test="${empty reservationList}">
-            <div class="content ">
+            <div class="content dx-wish dx-shopping">
                 <div id="toggleDiv3">
-                    <div class="dx-collect"><spring:message code="reservation.list.reservationorder"/>（0）</div>
+                    <div class="message"><p><spring:message code="reservation.list.reservationorder"/>（0）</p></div>
                 </div>
             </div>
         </c:if>

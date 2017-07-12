@@ -34,7 +34,10 @@ public class CustomerDomain implements Serializable {
 	
 	/*姓*/
 	private String lastName;
-	
+
+	/*称谓*/
+	private String title;
+
 	/*邮件*/
 	private String email;
 	

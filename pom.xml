@@ -601,7 +601,6 @@
             <filter>${basedir}/../config/${env}.properties</filter>
         </filters>
 
-
         <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <!-- 编译源代码插件 -->
