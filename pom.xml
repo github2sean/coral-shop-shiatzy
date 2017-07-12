@@ -561,7 +561,7 @@
         <profile>
             <id>test</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <env>test</env>
@@ -571,7 +571,7 @@
         <profile>
             <id>product</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <env>product</env>
