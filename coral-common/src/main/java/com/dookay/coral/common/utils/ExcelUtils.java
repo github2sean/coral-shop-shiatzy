@@ -9,6 +9,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -87,6 +90,18 @@ public class ExcelUtils {
 
 
     /**
+    *判断该行是否为空
+     */
+    public static boolean isRowEmpty(Row row) {
+        for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+            Cell cell = row.getCell(c);
+            if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * 导入Excel为对象列表
      *
      * @param file
@@ -99,10 +114,13 @@ public class ExcelUtils {
         if (file == null) {
             return null;
         }
-
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(file));
-        HSSFSheet sheet = workbook.getSheetAt(0);
-
+        Workbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook(file);
+        } catch (Exception ex) {
+            workbook = new HSSFWorkbook(new FileInputStream(file));
+        }
+        Sheet sheet = workbook.getSheetAt(0);
         // 读取表头
         Row sheetHeader = sheet.getRow(0);
         List<String> headerList = new ArrayList<>();
@@ -128,6 +146,9 @@ public class ExcelUtils {
         List<T> dataList = new LinkedList<>();
         for (int j = 1; j <= sheet.getLastRowNum(); j++) {
             Row row = sheet.getRow(j);
+            if(isRowEmpty(row)){
+                continue;
+            }
             if (row == null) continue;
             try {
                 T data = (T) dataClass.newInstance();

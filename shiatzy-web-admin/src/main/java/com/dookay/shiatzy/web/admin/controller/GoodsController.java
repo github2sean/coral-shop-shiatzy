@@ -91,8 +91,8 @@ public class GoodsController extends BaseApiController {
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
     public ResponseEntity importExcel(@RequestParam("fileName") String fileName) {
         HttpServletRequest request = HttpContext.current().getRequest();
-        goodsService.importGoods(request.getServletContext().getRealPath("/uploads")+fileName);
-        return successResponse("删除成功");
+        String msg =  goodsService.importGoods(request.getServletContext().getRealPath("/")+fileName);
+        return successResponse(msg);
     }
 
 }
