@@ -32,6 +32,12 @@ public class GoodsCategoryExtension {
         GoodsCategoryQuery goodsCategoryQuery = new GoodsCategoryQuery();
         goodsCategoryQuery.setIds(categoryIds);
         List<GoodsCategoryDomain> goodsCategoryDomainList = goodsCategoryService.listCategory(goodsCategoryQuery);
+
+        for(GoodsCategoryDomain category:goodsCategoryDomainList){
+            if(!category.getLevel().equals(1)){
+                category.setParent(goodsCategoryService.get(category.getParentId()));
+            }
+        }
         for (GoodsDomain goodsDomain:goodsDomainList){
             GoodsCategoryDomain goodsCategoryDomain = goodsCategoryDomainList.stream()
                     .filter(x-> Objects.equals(x.getId(), goodsDomain.getCategoryId())).findFirst().orElse(null);
