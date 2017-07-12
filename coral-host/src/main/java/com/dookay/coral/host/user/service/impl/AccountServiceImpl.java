@@ -2,6 +2,7 @@ package com.dookay.coral.host.user.service.impl;
 
 import com.dookay.coral.common.exception.ServiceException;
 import com.dookay.coral.common.persistence.pager.PageList;
+import com.dookay.coral.common.security.BCrypt;
 import com.dookay.coral.common.security.Digests;
 import com.dookay.coral.common.utils.EncodeUtil;
 import com.dookay.coral.host.user.domain.AccountDomain;
@@ -214,11 +215,9 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
      * @param accountDomain 帐号信息adminDomain
      */
     private void encryptPassword(AccountDomain accountDomain) {
-        byte[] salt = Digests.generateSalt(SALT_SIZE);
-        accountDomain.setSalt(EncodeUtil.encodeHex(salt));
+        String generatedSecuredPasswordHash = BCrypt.hashpw(accountDomain.getPassword(), BCrypt.gensalt(10));
 
-        byte[] hashPassword = Digests.sha1(accountDomain.getPassword().getBytes(), salt, HASH_INTERATIONS);
-        accountDomain.setPassword(EncodeUtil.encodeHex(hashPassword));
+        accountDomain.setPassword(generatedSecuredPasswordHash);
     }
 
     /**
@@ -229,9 +228,6 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDomain> implement
      * @return 是否相等
      */
     private boolean comparePassword(AccountDomain accountDomain, String originalPassword) {
-        byte[] salt = EncodeUtil.decodeHex(accountDomain.getSalt());
-        byte[] hashPassword = Digests.sha1(originalPassword.getBytes(), salt, HASH_INTERATIONS);
-        String password = EncodeUtil.encodeHex(hashPassword);
-        return accountDomain.getPassword().equals(password);
+       return BCrypt.checkpw(originalPassword,accountDomain.getPassword());
     }
 }
