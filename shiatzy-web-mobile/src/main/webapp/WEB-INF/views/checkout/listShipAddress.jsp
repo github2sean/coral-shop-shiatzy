@@ -22,6 +22,7 @@
                     <div class="text-left">
                         <div class="postcode">${web:selectLanguage()!='en_US'?(row.lastName):(row.firstName)}${web:selectLanguage()!='en_US'?(row.firstName):(row.lastName)}${row.title}</div>
                         <div class="street">${row.address}</div>
+                        <c:if test="${not empty row.memo}"><div class="street">${row.memo}</div></c:if>
                         <div class="tel"><spring:message code="delivery.address.phone"/>：${row.phone}</div>
                     </div>
                     <div class="text-right">

@@ -1329,7 +1329,7 @@ i {
 
 .dx-shipping .content .address {
     border: 2px solid #ccc;
-    padding: 1.4rem .8rem 0;
+    padding: 1.4rem .8rem;
 }
 
 .dx-shipping .content .address+.address {

@@ -23,6 +23,7 @@ import com.dookay.coral.shop.message.enums.MessageTypeEnum;
 import com.dookay.coral.shop.message.service.ISmsService;
 import com.dookay.coral.shop.message.util.EmailUtil;
 import com.dookay.coral.shop.order.domain.*;
+import com.dookay.coral.shop.order.enums.OrderStatusEnum;
 import com.dookay.coral.shop.order.query.OrderItemQuery;
 import com.dookay.coral.shop.order.query.ReturnRequestItemQuery;
 import com.dookay.coral.shop.order.service.*;
@@ -546,6 +547,10 @@ public class ReturnOrderController extends BaseController {
             orderItemDomain.setReturnNum(returnRequestItemDomain.getNum());
             orderItemService.update(orderItemDomain);
         }
+
+        //修改订单为退货中状态
+        orderDomain.setStatus(OrderStatusEnum.RETURNING.getValue());
+        orderService.updateOrderStatus(orderDomain);
 
         //清空session
         session.setAttribute(ORDER,null);

@@ -47,6 +47,9 @@
                     <c:when test="${orderDomain.status==4}"><spring:message code="order.status.reach"/></c:when>
                     <c:when test="${orderDomain.status==5}"><spring:message code="order.status.returned"/></c:when>
                     <c:when test="${orderDomain.status==6}"><spring:message code="order.status.refunded"/></c:when>
+                    <c:when test="${orderDomain.status==7}">
+                        ${web:t("退货中", "Returning")}
+                    </c:when>
                     <c:when test="${orderDomain.status==-1}"><spring:message code="order.status.cancel"/></c:when>
                 </c:choose>
             </p>
@@ -247,6 +250,11 @@
                     </c:otherwise>
                 </c:choose>
             </ul>
+            <div class="privacy">
+                <p style="font-size: 12px">
+                    ${web:t("标准递送和固定邮资（中国大陆：顺丰速运 / 国际快运：联邦快递）您的订单将在下单后的3至7个工作日内送抵 请注意：国际订单包裹送抵时，联邦快递会根据当地海关政策代收取相应海关关税。", "Standard shipping and fixed rate ( China Region: SF Express / International Regions: FedEx ) Your order will be arriving after 3-7 working days. Note: According to the local Customs policy, FedEx will charge the relevant DUTIES & TAXES for international orders upon your receiving.")}
+                </p>
+            </div>
         </div>
     </div>
    <!--申请退货-->
@@ -268,6 +276,9 @@
             </div>
     </div>
     </c:if>
+
+
+
     <div class="privacy">
         <a href="#" class="returnOrchange">
             <span style="float:left;margin-left: -10px">> </span>
