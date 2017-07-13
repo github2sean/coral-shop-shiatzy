@@ -548,9 +548,9 @@ public class ReturnOrderController extends BaseController {
             orderItemService.update(orderItemDomain);
         }
 
-        //修改订单为退货中状态
+        /*//修改订单为退货中状态
         orderDomain.setStatus(OrderStatusEnum.RETURNING.getValue());
-        orderService.updateOrderStatus(orderDomain);
+        orderService.updateOrderStatus(orderDomain);*/
 
         //清空session
         session.setAttribute(ORDER,null);

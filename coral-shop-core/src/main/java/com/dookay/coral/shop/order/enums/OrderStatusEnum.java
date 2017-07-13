@@ -15,7 +15,7 @@ public enum OrderStatusEnum implements IEnum {
     RECEIVED(4, "已收货"),
     RETURNED(5, "已退货"),
     REFUNDED(6, "已退款"),
-    RETURNING(7, "退货中"),
+    RETURNING(7, "退款中"),
     CANCELED(-1, "已取消"),;
 
     private int value;

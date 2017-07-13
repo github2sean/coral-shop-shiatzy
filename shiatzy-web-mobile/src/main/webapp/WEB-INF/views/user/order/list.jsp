@@ -44,7 +44,7 @@
                     <spring:message code="order.status.refunded"/>
                 </c:when>
                 <c:when test="${row.status==7}">
-                    ${web:t("退货中", "Returning")}
+                    ${web:t("退款中", "Returning")}
                 </c:when>
                 <c:when test="${row.status==-1}">
                     <spring:message code="order.status.cancel"/>
