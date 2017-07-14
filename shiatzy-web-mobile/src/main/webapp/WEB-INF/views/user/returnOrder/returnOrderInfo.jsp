@@ -253,7 +253,11 @@
 
         $(".goods-item").find(".i-radiobox").click(function () {
             $(this).parents(".goods-item").next(".return-list").slideToggle(300);
-
+            var $dom = $(this).parent(".goods-item").siblings(".return-list").find("input:checked");
+            console.log($dom);
+            if($dom.length>0){
+                alert(1);
+            }
 
         });
 
