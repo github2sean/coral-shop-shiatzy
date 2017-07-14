@@ -34,7 +34,7 @@
                     </c:forEach>
                 </select></a>
         </li>
-        <li><a href="javascript:void(0);"><spring:message code="selectLanguage"/></a>
+        <li><a href="javascript:void(0);">选择语言 LANGUAGE</a>
             <ul class="do-sub-list-btm">
                 <li><a class="language" id="CHINA" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>
                 <li><a class="language" id="OTHER" data-value="en_US" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.en" /></a></li>
@@ -334,7 +334,6 @@
             }
             return false;
         });
-
 
 
         //弹出层
