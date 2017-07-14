@@ -1851,7 +1851,7 @@ i {
 }
 
 .gallery-block .gallery-img-list>li {
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }

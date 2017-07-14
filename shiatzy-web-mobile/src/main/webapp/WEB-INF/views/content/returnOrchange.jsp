@@ -38,6 +38,14 @@
         })(document, window);
 
     </script>
+    <style>
+        .second-title {display: none}
+        .active  .second-title {display: block}
+        .dx-CommonProblems .content .active .first-title>a:after {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+    </style>
 </head>
 <div class="dx-CommonProblems">
     <%-- <div class="content">
@@ -85,17 +93,19 @@
     <div class="content">
 
         <c:forEach var="itemDomain" items="${domainList}">
+            <div class="j_collapse">
             <c:if test="${itemDomain.title !=null}">
-                <p class="first-title j_toggle"><a
+                <p class="first-title "><a
                         href="#">${web:selectLanguage()=='en_US'?itemDomain.en_title:itemDomain.title}</a></p>
             </c:if>
-            <ul class="second-title j_toggle2 hide">
+            <ul class="second-title">
                 <c:forEach var="domainlist" items="${itemDomain.contentItemDomainList}">
                     <li class="j_collapse">
                         <p class="answer">${web:selectLanguage()=='en_US'?domainlist.en_content:domainlist.content}</p>
                     </li>
                 </c:forEach>
             </ul>
+            </div>
         </c:forEach>
 
     </div>
@@ -118,6 +128,11 @@
 
             $(".j_toggle2>li").on("click", function () {
                 $(this).find(".answer").toggleClass("hide");
+            });
+
+            $(".j_collapse").find("a").on("click", function () {
+                $(this).parents(".j_collapse").siblings().removeClass("active");
+                $(this).parents(".j_collapse").toggleClass("active");
             });
         });
     </script>
