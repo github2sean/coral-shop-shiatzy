@@ -63,7 +63,7 @@
                 <li class="form-item2">
                     <spring:message code="account.personal.update.birthday"/>
                     <input type="date" id="customerDomain.birthday" name="customerDomain.birthday"
-                           max="<fmt:formatDate value="${now}" type="date" pattern="yyyy-MM-dd"/>"
+                           <%--max="<fmt:formatDate value="${now}" type="date" pattern="yyyy-MM-dd"/>"--%>
                            value="<fmt:formatDate value="${customerDomain.birthday}" type="date" pattern="yyyy-MM-dd"/>"
                            data-rule="<spring:message code="account.personal.update.birthday"/>:required;"/>
                 </li>

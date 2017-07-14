@@ -165,8 +165,6 @@ public class ReturnOrderController extends BaseController {
             }
             line.setSizeDomain(prototypeSpecificationOptionService.get(JSONObject.fromObject(line.getSkuSpecifications()).getLong("size")));
         }
-
-
         if(cartList.size()==0){
             return "redirect:u/order/list";
         }
@@ -174,7 +172,33 @@ public class ReturnOrderController extends BaseController {
         OrderDomain orderDomain = orderService.get(orderId);
         orderDomain.setOrderItemDomainList(cartList);
 
+        //创建订单对象
+        ReturnRequestDomain returnRequestDomain = new ReturnRequestDomain();
+        returnRequestDomain.setCustomerId(customerDomain.getId());
+        returnRequestDomain.setCreateTime(new Date());
+        returnRequestDomain.setOrderId(orderDomain.getId());
+        returnRequestDomain.setOrderNo(orderDomain.getOrderNo());
+        returnRequestDomain.setShipName(customerDomain.getFirstName()+customerDomain.getLastName());
+        returnRequestDomain.setOrderTime(orderDomain.getOrderTime());
+        //returnRequestDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
+        //BACK_FEE = returnRequestDomain.getShipFee();
+        //returnRequestDomain.setCurrentCode(currentCode);
+        returnRequestDomain.setStatus(1);
+        //保存订单对象到session
         HttpServletRequest request = HttpContext.current().getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute(CART_LIST,cartList);
+        session.setAttribute(ORDER,orderDomain);
+        session.setAttribute(RETURN_ORDER,returnRequestDomain);
+        //跳转到填写信息页面
+        return "redirect:returnOrderInfo";
+    }
+
+
+    public void setReturnShippingFee(Long orderId){
+        OrderDomain orderDomain = orderService.get(orderId);
+        HttpServletRequest request = HttpContext.current().getRequest();
+        ReturnRequestDomain returnRequestDomain = (ReturnRequestDomain)request.getSession().getAttribute(RETURN_ORDER);
         Long countryId = orderDomain.getShippingCountryId();
         ShippingCountryDomain shippingCountryDomain = null;
         String currentCode = "CNY";
@@ -194,27 +218,13 @@ public class ReturnOrderController extends BaseController {
                 fee = 25D/rate;
             }
         }
-        //创建订单对象
-        ReturnRequestDomain returnRequestDomain = new ReturnRequestDomain();
-        returnRequestDomain.setCustomerId(customerDomain.getId());
-        returnRequestDomain.setCreateTime(new Date());
-        returnRequestDomain.setOrderId(orderDomain.getId());
-        returnRequestDomain.setOrderNo(orderDomain.getOrderNo());
-        returnRequestDomain.setShipName(customerDomain.getFirstName()+customerDomain.getLastName());
-        returnRequestDomain.setOrderTime(orderDomain.getOrderTime());
         returnRequestDomain.setShipFee(new BigDecimal(fee).setScale(0,BigDecimal.ROUND_HALF_DOWN).doubleValue());
-        BACK_FEE = returnRequestDomain.getShipFee();
         returnRequestDomain.setCurrentCode(currentCode);
-        returnRequestDomain.setStatus(1);
-        //保存订单对象到session
-
-        HttpSession session = request.getSession();
-        session.setAttribute(CART_LIST,cartList);
-        session.setAttribute(ORDER,orderDomain);
-        session.setAttribute(RETURN_ORDER,returnRequestDomain);
-        //跳转到填写信息页面
-        return "redirect:returnOrderInfo";
+        BACK_FEE = returnRequestDomain.getShipFee();
+        request.getSession().setAttribute(RETURN_ORDER,returnRequestDomain);
     }
+
+
 
     /**
      * 选择退货商品和理由页面
@@ -314,7 +324,9 @@ public class ReturnOrderController extends BaseController {
         dis = dis==null?0D:dis;
         dis = memDis==null?dis:dis+memDis*(size/length);
 
-        mv.addObject("preBackMoney",preBackMoney-returnRequestDomain.getShipFee()-dis);
+        Double shippingFee = returnRequestDomain.getShipFee()==null?0D:returnRequestDomain.getShipFee();
+
+        mv.addObject("preBackMoney",preBackMoney-dis-shippingFee);
         mv.addObject("returnReasonMap",newReturnReasonMap);
         session.setAttribute("referrerPage",page);
         return mv;
@@ -439,7 +451,7 @@ public class ReturnOrderController extends BaseController {
         returnRequest.setShipAddress(address);
         returnRequest.setShipName(name);
         returnRequest.setReturnShippingMethod(1);
-        returnRequest.setShipFee(BACK_FEE);
+        setReturnShippingFee(returnRequest.getOrderId());
         return successResult("操作成功");
     }
 
@@ -496,7 +508,7 @@ public class ReturnOrderController extends BaseController {
         AccountDomain accountDomain = UserContext.current().getAccountDomain();
         CustomerDomain customerDomain = customerService.getAccount(accountDomain.getId());
         Long customerId = orderDomain.getCustomerId();
-        if(customerDomain.getId()!=customerId){
+        if(!customerDomain.getId().equals(customerId)){
             return errorResult("无权操作此订单");
         }
         //查询订单状态是否付款是否取消

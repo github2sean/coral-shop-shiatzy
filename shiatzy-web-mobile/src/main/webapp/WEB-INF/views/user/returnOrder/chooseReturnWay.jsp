@@ -77,7 +77,9 @@
 
 <script>
     $(function () {
+        if(${backWay!=2}){
         defaultBackWay();
+        }
         $("#checkStore").click(function () {
             defaultBackWay();
             $('#back2store').addClass('hide');

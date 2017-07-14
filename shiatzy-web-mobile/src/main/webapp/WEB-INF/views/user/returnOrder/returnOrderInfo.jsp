@@ -32,7 +32,7 @@
         <!--商品列表-->
         <div class="goods-list return-goods clearfix">
             <c:forEach var="item" items="${cartList}" varStatus="num">
-            <div class="goods-item clearfix ">
+            <div class="goods-item clearfix " style="margin-top: 20px">
                 <label class="radiobox" style="float: left">
                     <input type="checkbox" name="returnList[${num.count-1}].orderItemId" value="${item.id}">
                     <i class="i-radiobox iconfont icon-duigou" style="float: left;"></i>
@@ -80,7 +80,7 @@
                 </div>
 
             </div>
-            <div class="return-list clearfix" style="display: none">
+            <div class="return-list clearfix" style="display: none;">
                 <h4 class="title" style=""><spring:message code="returnOrderInfo.selectTips"/></h4>
                 <div style="margin-left: 2rem">
                     <%--服务--%>
@@ -251,8 +251,10 @@
             // do something
         }
 
-        $(".goods-item ").find(".i-radiobox").click(function () {
+        $(".goods-item").find(".i-radiobox").click(function () {
             $(this).parents(".goods-item").next(".return-list").slideToggle(300);
+
+
         });
 
         $(".submitBtn").click(function () {
