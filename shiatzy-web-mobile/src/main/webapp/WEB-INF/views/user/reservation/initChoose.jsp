@@ -119,7 +119,7 @@
 
             <ul class="text-center model-select-option" style="display: none">
             <c:forEach var="row" items="${storeCountryList}">
-                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=1}'>hide</c:if>"><span>${web:t(row.name,row.enName )}</span></li>
+                <li data-option="${row.id}" value="${row.id}" class="active <c:if test='${row.id!=3}'>hide</c:if>"><span>${web:t(row.name,row.enName )}</span></li>
             </c:forEach>
             </ul>
         </div>
@@ -234,7 +234,7 @@
             });
             });
         });
-        $.post("/reservation/chooseCity",{"countryId":1},function (data) {
+        $.post("/reservation/chooseCity",{"countryId":3},function (data) {
             var cityJson = data.data;
             console.log(cityJson);
             if(data.code==200 && cityJson!=null){

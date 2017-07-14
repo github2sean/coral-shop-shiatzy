@@ -275,7 +275,7 @@
         </ul>
         <ul class="do-list-lang j_drop_down">
             <li class=""><a href="javascript:void(0);">
-               <spring:message code="selectLanguage"/>
+                选择语言 LANGUAGE
             </a>
                 <ul class="do-sub-list-btm">
                     <li><a class="language" data-value="zh_CN" href="javascript:void(0);" style="text-decoration: underline"><spring:message code="language.cn" /></a></li>

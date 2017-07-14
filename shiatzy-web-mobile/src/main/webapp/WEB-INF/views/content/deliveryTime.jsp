@@ -38,6 +38,13 @@
         })(document, window);
 
     </script>
+    <style>
+
+        .dx-CommonProblems .content .active .first-title>a:after {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+    </style>
 </head>
 <div class="dx-CommonProblems">
     <c:if test="${web:selectLanguage()!='en_US'}">
@@ -239,6 +246,7 @@
             //常见问题页面JS
             //下拉菜单展开收起
             $(".j_toggle").on("click", function () {
+                $(this).toggleClass("active");
                 $(this).next().toggleClass("hide");
             });
 
